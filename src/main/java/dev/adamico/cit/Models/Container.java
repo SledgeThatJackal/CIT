@@ -1,5 +1,6 @@
 package dev.adamico.cit.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,5 +27,6 @@ public class Container {
     private Long parentContainer;
 
     @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<ContainerItem> containerItems;
 }
