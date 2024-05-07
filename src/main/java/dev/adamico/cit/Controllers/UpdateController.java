@@ -22,12 +22,12 @@ public class UpdateController {
     @Autowired
     ContainerService containerService;
 
-    @PutMapping("/{containerId}&{itemId}")
+    @PutMapping("/item/{containerId}&{itemId}")
     void addItemToContainer(@PathVariable Long containerId, @PathVariable Long itemId){
         containerItemService.createContainerItemLink(containerId, itemId);
     }
 
-    @PutMapping("/{parentContainerId}&{childContainerId}")
+    @PutMapping("/container/{parentContainerId}&{childContainerId}")
     void addContainerToAContainer(@PathVariable Long parentContainerId, @PathVariable Long childContainerId){
         Container child = containerService.findContainerById(childContainerId);
 
