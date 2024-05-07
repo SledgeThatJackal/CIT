@@ -1,4 +1,4 @@
-package dev.adamico.bit;
+package dev.adamico.cit;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

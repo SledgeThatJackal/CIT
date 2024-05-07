@@ -1,4 +1,4 @@
-package dev.adamico.bit.Models;
+package dev.adamico.cit.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

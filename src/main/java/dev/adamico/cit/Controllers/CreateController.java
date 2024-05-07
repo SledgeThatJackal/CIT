@@ -1,9 +1,9 @@
-package dev.adamico.bit.Controllers;
+package dev.adamico.cit.Controllers;
 
-import dev.adamico.bit.Models.Container;
-import dev.adamico.bit.Models.Item;
-import dev.adamico.bit.Services.ContainerService;
-import dev.adamico.bit.Services.ItemService;
+import dev.adamico.cit.Models.Container;
+import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Services.ContainerService;
+import dev.adamico.cit.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

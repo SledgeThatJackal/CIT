@@ -1,6 +1,6 @@
-package dev.adamico.bit.Services;
+package dev.adamico.cit.Services;
 
-import dev.adamico.bit.Models.Container;
+import dev.adamico.cit.Models.Container;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

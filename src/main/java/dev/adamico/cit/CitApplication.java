@@ -1,4 +1,4 @@
-package dev.adamico.bit;
+package dev.adamico.cit;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
