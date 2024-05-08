@@ -1,5 +1,6 @@
 package dev.adamico.cit.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,19 +26,7 @@ public class Container {
 
     private Long parentContainer;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "containeritem_table",
-            joinColumns = {@JoinColumn(name = "container_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "item_id", referencedColumnName = "id")})
-    private Set<Item> items;
-
-    public void addItem(Item item){
-        items.add(item);
-        item.getContainers().add(this);
-    }
-
-    public void removeItem(Item item){
-        this.items.remove(item);
-        item.getContainers().remove(this);
-    }
+    @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<ContainerItem> containerItems;
 }
