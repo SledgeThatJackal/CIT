@@ -21,7 +21,21 @@
                 <td th:text="${container.scannerId}"></td>
                 <td th:text="${container.parentContainer}"></td>
                 <td><a class="btn btn-info btn-sm" th:href="@{'/container/edit/' + ${container.id}}" role="button">Edit</a></td>
-                <td><a class="btn btn-danger btn-sm" th:href="@{'/container/delete/' + ${container.id}}" role="button">Delete</a></td>
+                <td><button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal" data-bs-target="#containerConfirmationModal">Delete</button></td>
+                <div class="modal fade" id="containerConfirmationModal" tabindex="-1" aria-labelledby="containerConfirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="containerConfirmationModalLabel">Are you sure you want to delete this?</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a class="btn btn-danger" th:href="@{'/container/delete/' + ${container.id}}" role="button">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tr>
         </th:block>
     </tbody>
