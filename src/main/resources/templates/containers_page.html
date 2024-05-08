@@ -1,6 +1,6 @@
 <div th:replace="~{fragments/headerFragment::headerFragment}"></div>
 
-<table class="table">
+<table class="table table-secondary table-hover">
     <thead>
         <tr>
             <th scope="col">id</th>
@@ -8,7 +8,7 @@
             <th scope="col">Description</th>
             <th scope="col">Scanner ID</th>
             <th scope="col">Parent Container ID</th>
-            <th scope="col"><a class="btn btn-outline-primary btn-sm" th:href="@{/container/create}" role="button">Create</a></th>
+            <th scope="col"><a class="btn btn-primary btn-sm" th:href="@{/container/create}" role="button">Create</a></th>
             <th></th>
         </tr>
     </thead>
@@ -20,8 +20,8 @@
                 <td th:text="${container.description}"></td>
                 <td th:text="${container.scannerId}"></td>
                 <td th:text="${container.parentContainer}"></td>
-                <td><a class="btn btn-outline-secondary btn-sm" th:href="@{'/container/edit/' + ${container.id}}" role="button">Edit</a></td>
-                <td><a class="btn btn-outline-danger btn-sm" th:href="@{'/container/delete/' + ${container.id}}" role="button">Delete</a></td>
+                <td><a class="btn btn-info btn-sm" th:href="@{'/container/edit/' + ${container.id}}" role="button">Edit</a></td>
+                <td><a class="btn btn-danger btn-sm" th:href="@{'/container/delete/' + ${container.id}}" role="button">Delete</a></td>
             </tr>
         </th:block>
     </tbody>

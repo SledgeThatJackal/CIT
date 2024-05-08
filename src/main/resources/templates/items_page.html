@@ -1,12 +1,12 @@
 <div th:replace="~{fragments/headerFragment::headerFragment}"></div>
 
-<table class="table">
+<table class="table table-secondary table-hover">
     <thead>
         <tr>
             <th scope="col">id</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
-            <th scope="col"><a class="btn btn-outline-primary btn-sm" th:href="@{/item/create}" role="button">Create</a></th>
+            <th scope="col"><a class="btn btn-primary btn-sm" th:href="@{/item/create}" role="button">Create</a></th>
             <th></th>
         </tr>
     </thead>
@@ -16,8 +16,8 @@
                 <th scope="row" th:text="${item.id}"></th>
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.description}"></td>
-                <td><a class="btn btn-outline-secondary btn-sm" th:href="@{'/item/edit/' + ${item.id}}" role="button">Edit</a></td>
-                <td><a class="btn btn-outline-danger btn-sm" th:href="@{'/item/delete/' + ${item.id}}" role="button">Delete</a></td>
+                <td><a class="btn btn-info btn-sm" th:href="@{'/item/edit/' + ${item.id}}" role="button">Edit</a></td>
+                <td><a class="btn btn-danger btn-sm" th:href="@{'/item/delete/' + ${item.id}}" role="button">Delete</a></td>
             </tr>
         </th:block>
     </tbody>
