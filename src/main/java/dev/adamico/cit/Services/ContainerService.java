@@ -23,6 +23,10 @@ public class ContainerService {
         return containerRepository.findByName(name).orElse(null);
     }
 
+    public Container findContainerByScannerId(String scannerId){
+        return containerRepository.findByScannerId(scannerId).orElse(null);
+    }
+
     public Container saveContainer(Container container){
         return containerRepository.save(container);
     }

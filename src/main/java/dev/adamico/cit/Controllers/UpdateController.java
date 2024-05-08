@@ -19,12 +19,22 @@ public class UpdateController {
     @Autowired
     ContainerService containerService;
 
-    @PutMapping("/{containerId}/{itemId}")
+    @PutMapping("/{containerId}&{itemId}")
     void addItemToContainer(@PathVariable Long containerId, @PathVariable Long itemId){
         Container container = containerService.findContainerById(containerId);
         Item item = itemService.findItemById(itemId);
 
         container.addItem(item);
+
         containerService.saveContainer(container);
+        itemService.saveItem(item);
+    }
+
+    @PutMapping("/{parentContainerId}&{childContainerId}")
+    void addContainerToAContainer(@PathVariable Long parentContainerId, @PathVariable Long childContainerId){
+        Container child = containerService.findContainerById(childContainerId);
+
+        child.setParentContainer(parentContainerId);
+        containerService.saveContainer(child);
     }
 }

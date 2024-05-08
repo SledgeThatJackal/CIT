@@ -1,6 +1,7 @@
 package dev.adamico.cit.Controllers;
 
 import dev.adamico.cit.Models.Container;
+import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,21 @@ public class DeleteController {
     ContainerService containerService;
 
     // Item
-    @PostMapping("/{containerId}/{itemId}")
+    @PostMapping("/item/{containerId}/{itemId}")
     void removeItemFromContainer(@PathVariable Long containerId, @PathVariable Long itemId) {
         Container container = containerService.findContainerById(containerId);
-        container.removeItem(itemId);
+        Item item = itemService.findItemById(itemId);
+
+        container.removeItem(item);
         containerService.saveContainer(container);
     }
 
     // Container
+    @PostMapping("/container={childContainerId}")
+    void removeContainerFromContainer(@PathVariable Long childContainerId){
+        Container child = containerService.findContainerById(childContainerId);
 
+        child.setParentContainer(null);
+        containerService.saveContainer(child);
+    }
 }

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,6 +20,10 @@ public class Container {
     private Long id;
 
     private String name;
+    private String description;
+    private String scannerId;
+
+    private Long parentContainer;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "containeritem_table",
@@ -30,9 +33,11 @@ public class Container {
 
     public void addItem(Item item){
         items.add(item);
+        item.getContainers().add(this);
     }
 
-    public void removeItem(Long itemId){
-        items.removeIf(item -> Objects.equals(item.getId(), itemId));
+    public void removeItem(Item item){
+        this.items.remove(item);
+        item.getContainers().remove(this);
     }
 }
