@@ -19,13 +19,14 @@ public class ContainerItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public void createContainerItemLink(Long containerId, Long itemId){
+    public void createContainerItemLink(Long containerId, Long itemId, Integer quantity){
         Container container = containerRepository.findById(containerId).orElse(null);
         Item item = itemRepository.findById(itemId).orElse(null);
 
         ContainerItem containerItem = new ContainerItem();
         containerItem.setContainer(container);
         containerItem.setItem(item);
+        containerItem.setQuantity(quantity);
 
         containerItemRepository.save(containerItem);
     }
@@ -34,5 +35,12 @@ public class ContainerItemService {
         Optional<ContainerItem> containerItem = containerItemRepository.findById(containerItemId);
 
         containerItem.ifPresent(item -> containerItemRepository.delete(item));
+    }
+
+    public void changeQuantityAmount(Long linkId, Integer quantity){
+        containerItemRepository.findById(linkId).ifPresent(link -> {
+            link.setQuantity(quantity);
+            containerItemRepository.save(link);
+        });
     }
 }

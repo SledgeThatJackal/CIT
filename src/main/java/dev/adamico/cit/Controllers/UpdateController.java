@@ -22,9 +22,9 @@ public class UpdateController {
     @Autowired
     ContainerService containerService;
 
-    @PutMapping("/item/{containerId}&{itemId}")
-    void addItemToContainer(@PathVariable Long containerId, @PathVariable Long itemId){
-        containerItemService.createContainerItemLink(containerId, itemId);
+    @PutMapping("/item/{containerId}&{itemId}&{quantity}")
+    void addItemToContainer(@PathVariable Long containerId, @PathVariable Long itemId, @PathVariable Integer quantity){
+        containerItemService.createContainerItemLink(containerId, itemId, quantity);
     }
 
     @PutMapping("/container/{parentContainerId}&{childContainerId}")
@@ -33,5 +33,10 @@ public class UpdateController {
 
         child.setParentContainer(parentContainerId);
         containerService.saveContainer(child);
+    }
+
+    @PutMapping("/{linkId}/quantity={quantity}")
+    void changeQuantity(@PathVariable Long linkId, @PathVariable Integer quantity){
+        containerItemService.changeQuantityAmount(linkId, quantity);
     }
 }
