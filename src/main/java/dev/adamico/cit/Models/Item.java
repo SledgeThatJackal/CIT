@@ -22,7 +22,6 @@ public class Item {
 
     private String name;
     private String description;
-    private int totalQuantity;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
