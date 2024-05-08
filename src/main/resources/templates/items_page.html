@@ -7,6 +7,7 @@
             <th scope="col">Name</th>
             <th scope="col">Description</th>
             <th scope="col"><a class="btn btn-outline-primary btn-sm" th:href="@{/item/create}" role="button">Create</a></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.description}"></td>
                 <td><a class="btn btn-outline-secondary btn-sm" th:href="@{'/item/edit/' + ${item.id}}" role="button">Edit</a></td>
+                <td><a class="btn btn-outline-danger btn-sm" th:href="@{'/item/delete/' + ${item.id}}" role="button">Delete</a></td>
             </tr>
         </th:block>
     </tbody>

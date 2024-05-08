@@ -44,4 +44,13 @@ public class ItemController {
 
         return "redirect:/item";
     }
+
+    @GetMapping("/delete/{itemId}")
+    @Transactional
+    public String deleteItem(@PathVariable Long itemId){
+        Item item = itemService.findItemById(itemId);
+        itemService.deleteItem(item);
+
+        return "redirect:/item";
+    }
 }

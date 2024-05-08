@@ -44,4 +44,13 @@ public class ContainerController {
 
         return "redirect:/container";
     }
+
+    @GetMapping("/delete/{containerId}")
+    @Transactional
+    public String deleteContainer(@PathVariable Long containerId){
+        Container container = containerService.findContainerById(containerId);
+        containerService.deleteContainer(container);
+
+        return "redirect:/container";
+    }
 }

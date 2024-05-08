@@ -30,4 +30,8 @@ public class ContainerService {
     public Container saveContainer(Container container){
         return containerRepository.save(container);
     }
+
+    public void deleteContainer(Container container){
+        containerRepository.delete(container);
+    }
 }
