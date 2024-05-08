@@ -1,0 +1,24 @@
+<div th:replace="~{fragments/headerFragment::headerFragment}"></div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col"><a class="btn btn-outline-primary btn-sm" th:href="@{/item/create}" role="button">Create</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        <th:block th:each="item : ${items}">
+            <tr>
+                <th scope="row" th:text="${item.id}"></th>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.description}"></td>
+                <td><a class="btn btn-outline-secondary btn-sm" th:href="@{'/item/edit/' + ${item.id}}" role="button">Edit</a></td>
+            </tr>
+        </th:block>
+    </tbody>
+</table>
+
+<div th:replace="~{fragments/footerFragment::footerFragment}"></div>
