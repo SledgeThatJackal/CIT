@@ -1,6 +1,7 @@
 package dev.adamico.cit.Controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class HomeController {
     @GetMapping
-    public String getHomePage(){
+    public String getHomePage(Model model){
+        model.addAttribute("objectName", "Home");
+
         return "home_page";
     }
 }
