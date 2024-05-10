@@ -22,4 +22,8 @@ public class ItemService {
     public Item saveItem(Item item){
         return itemRepository.save(item);
     }
+
+    public void deleteItem(Item item){
+        itemRepository.delete(item);
+    }
 }
