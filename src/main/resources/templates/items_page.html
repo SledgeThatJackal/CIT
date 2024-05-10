@@ -17,8 +17,8 @@
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.description}"></td>
                 <td><a class="btn btn-info btn-sm" th:href="@{'/item/edit/' + ${item.id}}" role="button">Edit</a></td>
-                <td><button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal" data-bs-target="#itemConfirmationModal">Delete</button></td>
-                <div class="modal fade" id="itemConfirmationModal" tabindex="-1" aria-labelledby="itemConfirmationModalLabel" aria-hidden="true">
+                <td><button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal" th:attr="data-bs-target=${'#item' + item.id + 'ConfirmationModal'}">Delete</button></td>
+                <div class="modal fade" th:id="${'item' + item.id + 'ConfirmationModal'}" tabindex="-1" aria-labelledby="itemConfirmationModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -27,7 +27,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <a class="btn btn-danger" th:href="@{'/item/delete/' + ${item.id}}" role="button">Delete</a>
+                                <a class="btn btn-danger" th:href="@{${'/item/delete/' + item.id}}" role="button">Delete</a>
                             </div>
                         </div>
                     </div>

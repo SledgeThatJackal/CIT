@@ -1,6 +1,9 @@
 package dev.adamico.cit.Controllers;
 
+import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Services.ContainerItemService;
+import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Services.ItemService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +19,16 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ContainerService containerService;
+
+    @Autowired
+    private ContainerItemService containerItemService;
+
     @GetMapping
     public String getItemsPage(Model model){
         model.addAttribute("items", itemService.findAllItems());
+        model.addAttribute("objectName", "Item");
 
         return "items_page";
     }
@@ -26,23 +36,44 @@ public class ItemController {
     @GetMapping("/create")
     public String getCreatePage(Model model){
         model.addAttribute("newItem", new Item());
+        model.addAttribute("isEdit", false);
 
         return "create_page";
     }
 
-    @GetMapping("/edit/{id}")
-    public String getEditPage(Model model, @PathVariable Long id){
-        model.addAttribute("item", itemService.findItemById(id));
-
-        return "edit_page";
-    }
-
-    @PostMapping("/update")
-    @Transactional
-    public String updateItem(@ModelAttribute("item") Item item){
+    @PostMapping("/create")
+    public String createItem(@ModelAttribute("item") Item item,
+                             @RequestParam String containerScannerId,
+                             @RequestParam Integer quantity){
         itemService.saveItem(item);
 
-        return "redirect:/item";
+        if(quantity == null){
+            return "redirect:/item/create";
+        }
+
+        Container container = containerService.findContainerByScannerId(containerScannerId);
+
+        if(container != null){
+            containerItemService.createContainerItemLink(containerScannerId, item, quantity);
+        }
+
+        return "redirect:/item/create";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String getEditPage(Model model, @PathVariable Long id){
+        model.addAttribute("newItem", itemService.findItemById(id));
+        model.addAttribute("isEdit", true);
+
+        return "create_page";
+    }
+
+    @PostMapping("/edit")
+    @Transactional
+    public String editItem(@ModelAttribute("item") Item item){
+        itemService.saveItem(item);
+
+        return "create_page";
     }
 
     @GetMapping("/delete/{itemId}")

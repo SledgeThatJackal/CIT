@@ -2,7 +2,6 @@ package dev.adamico.cit.Controllers;
 
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Services.ContainerService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,34 +18,42 @@ public class ContainerController {
     @GetMapping
     public String getContainersPage(Model model){
         model.addAttribute("containers", containerService.findAllContainers());
+        model.addAttribute("objectName", "Container");
 
         return "containers_page";
     }
 
     @GetMapping("/create")
     public String getCreatePage(Model model){
-        model.addAttribute("newContainer", new Container());
+        model.addAttribute("container", new Container());
+        model.addAttribute("isEdit", false);
 
         return "create_page";
+    }
+
+    @PostMapping("/create")
+    public String createContainer(@ModelAttribute("container") Container container){
+        containerService.saveContainer(container);
+
+        return "redirect:/container/create";
     }
 
     @GetMapping("/edit/{id}")
     public String getEditPage(Model model, @PathVariable Long id){
         model.addAttribute("container", containerService.findContainerById(id));
+        model.addAttribute("isEdit", true);
 
-        return "edit_page";
+        return "create_page";
     }
 
-    @PostMapping("/update")
-    @Transactional
-    public String updateContainer(@ModelAttribute("container") Container container){
+    @PostMapping("/edit")
+    public String editContainer(@ModelAttribute("container") Container container){
         containerService.saveContainer(container);
 
-        return "redirect:/container";
+        return "redirect:/container/create";
     }
 
     @GetMapping("/delete/{containerId}")
-    @Transactional
     public String deleteContainer(@PathVariable Long containerId){
         Container container = containerService.findContainerById(containerId);
         containerService.deleteContainer(container);
