@@ -6,11 +6,17 @@ import dev.adamico.cit.Services.ContainerItemService;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Services.ItemService;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +33,17 @@ public class ItemController {
 
     @GetMapping
     public String getItemsPage(Model model){
-        model.addAttribute("items", itemService.findAllItems());
+        List<Item> items = itemService.findAllItems();
+        List<ItemDTO> itemList = new ArrayList<>();
+
+        items.forEach(item -> {
+            Set<Container> containers = containerItemService.findAllAssociatedContainersBasedOnItemId(item.getId());
+            ItemDTO itemContainers = new ItemDTO(item, containers);
+
+            itemList.add(itemContainers);
+        });
+
+        model.addAttribute("itemDTOs", itemList);
         model.addAttribute("objectName", "Item");
 
         return "items_page";
@@ -84,4 +100,11 @@ public class ItemController {
 
         return "redirect:/item";
     }
+}
+
+@Data
+@AllArgsConstructor
+class ItemDTO{
+    private Item item;
+    private Set<Container> containers;
 }

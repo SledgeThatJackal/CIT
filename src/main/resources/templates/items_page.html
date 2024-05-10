@@ -11,30 +11,68 @@
         </tr>
     </thead>
     <tbody>
-        <th:block th:each="item : ${items}">
-            <tr>
-                <th scope="row" th:text="${item.id}"></th>
-                <td th:text="${item.name}"></td>
-                <td th:text="${item.description}"></td>
-                <td><a class="btn btn-info btn-sm" th:href="@{'/item/edit/' + ${item.id}}" role="button">Edit</a></td>
-                <td><button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal" th:attr="data-bs-target=${'#item' + item.id + 'ConfirmationModal'}">Delete</button></td>
-                <div class="modal fade" th:id="${'item' + item.id + 'ConfirmationModal'}" tabindex="-1" aria-labelledby="itemConfirmationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="itemConfirmationModalLabel">Are you sure you want to delete this?</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <a class="btn btn-danger" th:href="@{${'/item/delete/' + item.id}}" role="button">Delete</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <th:block th:each="itemDTO : ${itemDTOs}">
+            <tr data-bs-toggle="collapse" th:attr="data-bs-target=${'#containers-' + itemDTO.item.id}, aria-expanded=${false}, aria-controls=${'containers-' + itemDTO.item.id}">
+                <th scope="row" th:text="${itemDTO.item.id}"></th>
+                <td th:text="${itemDTO.item.name}"></td>
+                <td th:text="${itemDTO.item.description}"></td>
+                <td>
+                    <form th:action="@{${'/item/edit/' + itemDTO.item.id}}" method="get">
+                        <button type="submit" class="btn btn-info btn-small">Edit</button>
+                    </form>
+                </td>
+                <td><button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal" th:attr="data-bs-target=${'#item' + itemDTO.item.id + 'ConfirmationModal'}">Delete</button></td>
+            </tr>
+
+            <tr scope="row">
+                <td colspan="5" th:id="'containers-' + ${itemDTO.item.id}" class="collapse">
+                    <table class="table table-info table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Scanner ID</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="container : ${itemDTO.containers}">
+                            <tr>
+                                <th scope="row" th:text="${container.id}"></th>
+                                <td th:text="${container.name}"></td>
+                                <td th:text="${container.description}"></td>
+                                <td th:text="${container.scannerId}"></td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </td>
             </tr>
         </th:block>
     </tbody>
 </table>
+
+<div th:each="itemDTO : ${itemDTOs}">
+    <div class="modal fade" th:id="${'item' + itemDTO.item.id + 'ConfirmationModal'}" tabindex="-1" aria-labelledby="itemConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="itemConfirmationModalLabel">Are you sure you want to delete this?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a class="btn btn-danger" th:href="@{${'/item/delete/' + itemDTO.item.id}}" role="button">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .collapsing {
+        transition: none !important;
+    }
+</style>
 
 <div th:replace="~{fragments/footerFragment::footerFragment}"></div>
