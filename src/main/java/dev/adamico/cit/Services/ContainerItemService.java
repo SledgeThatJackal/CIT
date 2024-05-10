@@ -14,20 +14,22 @@ public class ContainerItemService {
     private ContainerItemRepository containerItemRepository;
 
     @Autowired
+    ContainerItemJdbcRepository containerItemJdbcRepository;
+
+    @Autowired
     private ContainerRepository containerRepository;
 
     @Autowired
     private ItemRepository itemRepository;
 
-    public void createContainerItemLink(Long containerId, Long itemId, Integer quantity){
-        Container container = containerRepository.findById(containerId).orElse(null);
-        Item item = itemRepository.findById(itemId).orElse(null);
+    public void createContainerItemLink(String scannerId, Item item, Integer quantity){
+        Container container = containerRepository.findByScannerId(scannerId).orElse(null);
 
-        ContainerItem containerItem = new ContainerItem();
-        containerItem.setContainer(container);
-        containerItem.setItem(item);
-        containerItem.setQuantity(quantity);
+        if(container == null){
+            return;
+        }
 
+        ContainerItem containerItem = new ContainerItem(null, container, item, quantity);
         containerItemRepository.save(containerItem);
     }
 
