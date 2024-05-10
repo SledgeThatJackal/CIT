@@ -1,6 +1,6 @@
 <div th:replace="~{fragments/headerFragment::headerFragment}"></div>
 
-<form th:if="${newContainer != null}" th:object="${newContainer}" th:action="@{/container/update}" method="post">
+<form th:if="${container != null}" th:object="${container}" th:action="@{${'/container' + (isEdit ? '/edit' : '/create')}}" method="post">
     <input type="hidden" th:field="*{id}"/>
     <div class="mb-3">
         <label for="containerName" class="form-label">Name</label>
@@ -19,10 +19,10 @@
         <input type="number" class="form-control" id="parentContainerId" th:field="*{parentContainer}">
     </div>
     <input type="hidden" th:field="*{containerItems}"/>
-    <button type="submit" class="btn btn-primary">Update Container</button>
+    <button type="submit" class="btn btn-primary" th:text="${isEdit ? 'Update' : 'Create'}"></button>
 </form>
 
-<form th:if="${newItem != null}" th:object="${newItem}" th:action="@{/item/update}" method="post">
+<form th:if="${item != null}" th:object="${item}" th:action="@{${'/item' + (isEdit ? '/edit' : '/create')}}" method="post">
     <input type="hidden" th:field="*{id}"/>
     <div class="mb-3">
         <label for="itemName" class="form-label">Name</label>
@@ -32,8 +32,16 @@
         <label for="itemDescription" class="form-label">Description</label>
         <input type="text" class="form-control" id="itemDescription" th:field="*{description}">
     </div>
+    <div class="mb-3" th:if="${isEdit == false}">
+        <label for="containerScannerId" class="form-label">Scanner ID (Optional)</label>
+        <input type="text" class="form-control" id="containerScannerId" name="containerScannerId">
+    </div>
+    <div class="mb-3" th:if="${isEdit == false}">
+        <label for="quantity" class="form-label">Quantity</label>
+        <input type="number" class="form-control" id="quantity" name="quantity">
+    </div>
     <input type="hidden" th:field="*{containerItems}"/>
-    <button type="submit" class="btn btn-primary">Update Item</button>
+    <button type="submit" class="btn btn-primary" th:text="${isEdit ? 'Update' : 'Create'}"></button>
 </form>
 
 <div th:replace="~{fragments/footerFragment::footerFragment}"></div>

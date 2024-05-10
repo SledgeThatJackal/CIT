@@ -21,8 +21,8 @@
                 <td th:text="${container.scannerId}"></td>
                 <td th:text="${container.parentContainer}"></td>
                 <td><a class="btn btn-info btn-sm" th:href="@{'/container/edit/' + ${container.id}}" role="button">Edit</a></td>
-                <td><button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal" data-bs-target="#containerConfirmationModal">Delete</button></td>
-                <div class="modal fade" id="containerConfirmationModal" tabindex="-1" aria-labelledby="containerConfirmationModalLabel" aria-hidden="true">
+                <td><button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal" th:attr="data-bs-target=${'#container' + container.id + 'ConfirmationModal'}">Delete</button></td>
+                <div class="modal fade" th:id="${'container' + container.id + 'ConfirmationModal'}" tabindex="-1" aria-labelledby="containerConfirmationModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
