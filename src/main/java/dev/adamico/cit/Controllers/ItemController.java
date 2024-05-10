@@ -62,7 +62,7 @@ public class ItemController {
 
     @GetMapping("/edit/{id}")
     public String getEditPage(Model model, @PathVariable Long id){
-        model.addAttribute("newItem", itemService.findItemById(id));
+        model.addAttribute("item", itemService.findItemById(id));
         model.addAttribute("isEdit", true);
 
         return "create_page";
