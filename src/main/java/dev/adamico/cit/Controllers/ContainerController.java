@@ -16,8 +16,12 @@ public class ContainerController {
     private ContainerService containerService;
 
     @GetMapping
-    public String getContainersPage(Model model){
-        model.addAttribute("containers", containerService.findAllContainers());
+    public String getContainersPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model){
+
+        model.addAttribute("containerPage", containerService.findAllPaginatedContainers(page, size));
         model.addAttribute("objectName", "Container");
 
         return "containers_page";

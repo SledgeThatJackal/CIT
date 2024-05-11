@@ -2,6 +2,9 @@ package dev.adamico.cit.Services;
 
 import dev.adamico.cit.Models.Container;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +16,12 @@ public class ContainerService {
 
     public List<Container> findAllContainers(){
         return containerRepository.findAll();
+    }
+
+    public Page<Container> findAllPaginatedContainers(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+
+        return containerRepository.findAll(pageable);
     }
 
     public Container findContainerById(Long id){

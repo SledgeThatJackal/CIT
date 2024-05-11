@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        <th:block th:each="itemDTO : ${itemDTOs}">
+        <th:block th:each="itemDTO : ${itemPage.content}">
             <tr data-bs-toggle="collapse" th:attr="data-bs-target=${'#containers-' + itemDTO.item.id}, aria-expanded=${false}, aria-controls=${'containers-' + itemDTO.item.id}">
                 <th scope="row" th:text="${itemDTO.item.id}"></th>
                 <td th:text="${itemDTO.item.name}"></td>
@@ -52,7 +52,21 @@
     </tbody>
 </table>
 
-<div th:each="itemDTO : ${itemDTOs}">
+<div th:if="${itemPage.totalPages > 0}">
+    <ul class="pagination">
+        <li th:if="${itemPage.hasPrevious()}" class="page-item">
+            <a class="page-link" th:href="@{/item(page=${itemPage.previousPageable().pageNumber})}">Previous</a>
+        </li>
+        <li th:each="pageNumber : ${#numbers.sequence(0, itemPage.totalPages - 1)}" class="page-item">
+            <a class="page-link" th:href="@{/item(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+        </li>
+        <li th:if="${itemPage.hasNext()}" class="page-item">
+            <a class="page-link" th:href="@{/item(page=${itemPage.nextPageable().pageNumber})}">Next</a>
+        </li>
+    </ul>
+</div>
+
+<div th:each="itemDTO : ${itemPage.content}">
     <div class="modal fade" th:id="${'item' + itemDTO.item.id + 'ConfirmationModal'}" tabindex="-1" aria-labelledby="itemConfirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

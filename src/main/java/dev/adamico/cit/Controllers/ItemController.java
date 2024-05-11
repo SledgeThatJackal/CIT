@@ -1,22 +1,18 @@
 package dev.adamico.cit.Controllers;
 
+import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Services.ContainerItemService;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Services.ItemService;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,18 +28,11 @@ public class ItemController {
     private ContainerItemService containerItemService;
 
     @GetMapping
-    public String getItemsPage(Model model){
-        List<Item> items = itemService.findAllItems();
-        List<ItemDTO> itemList = new ArrayList<>();
-
-        items.forEach(item -> {
-            Set<Container> containers = containerItemService.findAllAssociatedContainersBasedOnItemId(item.getId());
-            ItemDTO itemContainers = new ItemDTO(item, containers);
-
-            itemList.add(itemContainers);
-        });
-
-        model.addAttribute("itemDTOs", itemList);
+    public String getItemsPage(@RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size,
+                               Model model){
+        Page<ItemDTO> itemPage = containerItemService.findPaginatedItemsWithContainers(page, size);
+        model.addAttribute("itemPage", itemPage);
         model.addAttribute("objectName", "Item");
 
         return "items_page";
@@ -100,11 +89,4 @@ public class ItemController {
 
         return "redirect:/item";
     }
-}
-
-@Data
-@AllArgsConstructor
-class ItemDTO{
-    private Item item;
-    private Set<Container> containers;
 }
