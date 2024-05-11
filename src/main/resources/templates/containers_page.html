@@ -21,7 +21,7 @@
                 <td th:text="${container.scannerId}"></td>
                 <td th:text="${container.parentContainer}"></td>
                 <td><a class="btn btn-info btn-sm" th:href="@{'/container/edit/' + ${container.id}}" role="button">Edit</a></td>
-                <td><button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal" th:attr="data-bs-target=${'#container' + container.id + 'ConfirmationModal'}">Delete</button></td>
+                <td><button type="button" id="deleteButton" th:href="@{'/container/delete/' + ${container.id}}" class="btn btn-danger btn-small" data-bs-toggle="modal" data-bs-target="#containerConfirmationModal">Delete</button></td>
             </tr>
         </th:block>
     </tbody>
@@ -41,21 +41,28 @@
     </ul>
 </div>
 
-<div th:each="container: ${containerPage.content}">
-    <div class="modal fade" th:id="${'container' + container.id + 'ConfirmationModal'}" tabindex="-1" aria-labelledby="containerConfirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="containerConfirmationModalLabel">Are you sure you want to delete this?</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a class="btn btn-danger" th:href="@{'/container/delete/' + ${container.id}}" role="button">Delete</a>
-                </div>
+<div class="modal fade" id="containerConfirmationModal" tabindex="-1" aria-labelledby="containerConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="containerConfirmationModalLabel">Are you sure you want to delete this?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a class="btn btn-danger" href="" id="deleteButtonReference" role="button">Delete</a>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll("#deleteButton").forEach((e) => {
+        e.addEventListener("click", () => {
+            var href= e.getAttribute('href');
+            $('#containerConfirmationModal #deleteButtonReference').attr('href', href);
+        });
+    });
+</script>
 
 <div th:replace="~{fragments/footerFragment::footerFragment}"></div>
