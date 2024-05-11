@@ -41,7 +41,7 @@
     </ul>
 </div>
 
-<div th:each="container: ${containers}">
+<div th:each="container: ${containerPage.content}">
     <div class="modal fade" th:id="${'container' + container.id + 'ConfirmationModal'}" tabindex="-1" aria-labelledby="containerConfirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
