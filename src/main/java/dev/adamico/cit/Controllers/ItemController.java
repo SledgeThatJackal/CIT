@@ -51,7 +51,7 @@ public class ItemController {
 
     @GetMapping("/create")
     public String getCreatePage(Model model){
-        model.addAttribute("newItem", new Item());
+        model.addAttribute("item", new Item());
         model.addAttribute("isEdit", false);
 
         return "create_page";
