@@ -54,14 +54,14 @@
 
 <div th:if="${itemPage.totalPages > 0}">
     <ul class="pagination">
-        <li th:if="${itemPage.hasPrevious()}" class="page-item">
-            <a class="page-link" th:href="@{/item(page=${itemPage.previousPageable().pageNumber})}">Previous</a>
+        <li class="page-item">
+            <a class="page-link" th:href="${itemPage.hasPrevious()} ? @{/item(page=${itemPage.previousPageable().pageNumber})} : ''" th:classappend="${!itemPage.hasPrevious()} ? 'disabled' : ''">Previous</a>
         </li>
         <li th:each="pageNumber : ${#numbers.sequence(0, itemPage.totalPages - 1)}" class="page-item">
             <a class="page-link" th:href="@{/item(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
         </li>
-        <li th:if="${itemPage.hasNext()}" class="page-item">
-            <a class="page-link" th:href="@{/item(page=${itemPage.nextPageable().pageNumber})}">Next</a>
+        <li class="page-item">
+            <a class="page-link" th:href="${itemPage.hasNext()} ? @{/item(page=${itemPage.nextPageable().pageNumber})} : ''" th:classappend="${!itemPage.hasNext()} ? 'disabled' : ''">Next</a>
         </li>
     </ul>
 </div>
@@ -84,6 +84,11 @@
 <style>
     .collapsing {
         transition: none !important;
+    }
+
+    .disabled {
+        cursor: not-allowed;
+        opacity 0.5;
     }
 </style>
 
