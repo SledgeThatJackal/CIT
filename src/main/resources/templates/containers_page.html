@@ -12,7 +12,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
         <th:block th:each="container : ${containerPage.content}">
             <tr>
                 <th scope="row" th:text="${container.id}"></th>
@@ -29,14 +29,14 @@
 
 <div th:if="${containerPage.totalPages > 0}">
     <ul class="pagination">
-        <li th:if="${containerPage.hasPrevious()}" class="page-item">
-            <a class="page-link" th:href="@{/container(page=${containerPage.previousPageable().pageNumber})}">Previous</a>
+        <li class="page-item">
+            <a class="page-link" th:href="${containerPage.hasPrevious()} ? @{/container(page=${containerPage.previousPageable().pageNumber})} : ''" th:classappend="${!containerPage.hasPrevious()} ? 'disabled' : ''">Previous</a>
         </li>
         <li th:each="pageNumber : ${#numbers.sequence(0, containerPage.totalPages - 1)}" class="page-item">
             <a class="page-link" th:href="@{/container(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
         </li>
-        <li th:if="${containerPage.hasNext()}" class="page-item">
-            <a class="page-link" th:href="@{/container(page=${containerPage.nextPageable().pageNumber})}">Next</a>
+        <li class="page-item">
+            <a class="page-link" th:href="${containerPage.hasNext()} ? @{/container(page=${containerPage.nextPageable().pageNumber})} : ''" th:classappend="${!containerPage.hasNext()} ? 'disabled' : ''">Next</a>
         </li>
     </ul>
 </div>
@@ -55,6 +55,13 @@
         </div>
     </div>
 </div>
+
+<style>
+    .disabled {
+        cursor: not-allowed;
+        opacity 0.5;
+    }
+</style>
 
 <script>
     document.querySelectorAll("#deleteButton").forEach((e) => {

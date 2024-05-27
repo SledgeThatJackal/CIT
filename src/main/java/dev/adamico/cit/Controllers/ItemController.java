@@ -29,13 +29,29 @@ public class ItemController {
 
     @GetMapping
     public String getItemsPage(@RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(defaultValue = "2") int size,
+                               @RequestParam(defaultValue = "") String search,
                                Model model){
-        Page<ItemDTO> itemPage = containerItemService.findPaginatedItemsWithContainers(page, size);
-        model.addAttribute("itemPage", itemPage);
-        model.addAttribute("objectName", "Item");
+        findItemPage(page, size, search, model);
 
         return "items_page";
+    }
+
+    @GetMapping("/search")
+    public String searchItems(@RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "2") int size,
+                              @RequestParam(defaultValue = "") String search,
+                               Model model){
+        findItemPage(page, size, search, model);
+
+        return "fragments/tableFragment :: tableFragment";
+    }
+
+    private void findItemPage(int page, int size, String search, Model model){
+        Page<ItemDTO> itemPage = containerItemService.findPaginatedItemsWithContainers(page, size, search);
+        model.addAttribute("itemPage", itemPage);
+        model.addAttribute("objectName", "Item");
+        model.addAttribute("search", search);
     }
 
     @GetMapping("/create")
