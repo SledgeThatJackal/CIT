@@ -94,7 +94,7 @@ public class ItemController {
     public String editItem(@ModelAttribute("item") Item item){
         itemService.saveItem(item);
 
-        return "create_page";
+        return "redirect:/item";
     }
 
     @GetMapping("/delete/{itemId}")
