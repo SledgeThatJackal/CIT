@@ -18,13 +18,26 @@ public class ContainerController {
     @GetMapping
     public String getContainersPage(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int size,
             Model model){
 
-        model.addAttribute("containerPage", containerService.findAllPaginatedContainers(page, size));
-        model.addAttribute("objectName", "Container");
+        findContainerPage(page, size, model);
 
         return "containers_page";
+    }
+
+    @GetMapping("/page")
+    public String updateContainers(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "1") int size,
+                                   Model model){
+        findContainerPage(page, size, model);
+
+        return"fragments/containerTableFragment :: containerTableFragment";
+    }
+
+    private void findContainerPage(int page, int size, Model model){
+        model.addAttribute("containerPage", containerService.findAllPaginatedContainers(page, size));
+        model.addAttribute("objectName", "Container");
     }
 
     @GetMapping("/create")

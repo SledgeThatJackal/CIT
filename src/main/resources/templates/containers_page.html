@@ -1,44 +1,7 @@
 <div th:replace="~{fragments/headerFragment::headerFragment}"></div>
 
-<table class="table table-secondary table-hover">
-    <thead>
-        <tr>
-            <th scope="col">id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Scanner ID</th>
-            <th scope="col">Parent Container ID</th>
-            <th scope="col"><a class="btn btn-primary btn-sm" th:href="@{/container/create}" role="button">Create</a></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody class="table-group-divider">
-        <th:block th:each="container : ${containerPage.content}">
-            <tr>
-                <th scope="row" th:text="${container.id}"></th>
-                <td th:text="${container.name}"></td>
-                <td th:text="${container.description}"></td>
-                <td th:text="${container.scannerId}"></td>
-                <td th:text="${container.parentContainer}"></td>
-                <td><a class="btn btn-info btn-sm" th:href="@{'/container/edit/' + ${container.id}}" role="button">Edit</a></td>
-                <td><button type="button" id="deleteButton" th:href="@{'/container/delete/' + ${container.id}}" class="btn btn-danger btn-small" data-bs-toggle="modal" data-bs-target="#containerConfirmationModal">Delete</button></td>
-            </tr>
-        </th:block>
-    </tbody>
-</table>
-
-<div th:if="${containerPage.totalPages > 0}">
-    <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" th:href="${containerPage.hasPrevious()} ? @{/container(page=${containerPage.previousPageable().pageNumber})} : ''" th:classappend="${!containerPage.hasPrevious()} ? 'disabled' : ''">Previous</a>
-        </li>
-        <li th:each="pageNumber : ${#numbers.sequence(0, containerPage.totalPages - 1)}" class="page-item">
-            <a class="page-link" th:href="@{/container(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" th:href="${containerPage.hasNext()} ? @{/container(page=${containerPage.nextPageable().pageNumber})} : ''" th:classappend="${!containerPage.hasNext()} ? 'disabled' : ''">Next</a>
-        </li>
-    </ul>
+<div id="dataTable">
+    <div th:replace="~{fragments/containerTableFragment::containerTableFragment}"></div>
 </div>
 
 <div class="modal fade" id="containerConfirmationModal" tabindex="-1" aria-labelledby="containerConfirmationModalLabel" aria-hidden="true">
@@ -64,10 +27,44 @@
 </style>
 
 <script>
-    document.querySelectorAll("#deleteButton").forEach((e) => {
-        e.addEventListener("click", () => {
-            var href= e.getAttribute('href');
-            $('#containerConfirmationModal #deleteButtonReference').attr('href', href);
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll("#deleteButton").forEach((e) => {
+            e.addEventListener("click", () => {
+                var href= e.getAttribute('href');
+                $('#containerConfirmationModal #deleteButtonReference').attr('href', href);
+            });
+        });
+
+        var currentPage = 0;
+
+        document.getElementById('dataTable').addEventListener('click', function(event) {
+            if(event.target.classList.contains('page-link')){
+                var targetPage = event.target.getAttribute('data-page');
+
+                if(targetPage === 'prev'){
+                    currentPage--;
+                } else if(targetPage === 'next'){
+                    currentPage++;
+                } else {
+                    currentPage = parseInt(targetPage);
+                }
+
+                var url = "/container/page?page=" + currentPage;
+
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            document.getElementById('containerTableFragment').innerHTML = xhr.responseText;
+                        } else {
+                            console.error('Request failed: ' + xhr.status);
+                        }
+                    }
+                };
+
+                xhr.open('GET', url, true);
+                xhr.send();
+            }
         });
     });
 </script>

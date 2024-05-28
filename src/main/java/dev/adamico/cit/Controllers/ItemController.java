@@ -37,14 +37,14 @@ public class ItemController {
         return "items_page";
     }
 
-    @GetMapping("/search")
-    public String searchItems(@RequestParam(defaultValue = "0") int page,
+    @GetMapping("/page")
+    public String updateItems(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "2") int size,
                               @RequestParam(defaultValue = "") String search,
                                Model model){
         findItemPage(page, size, search, model);
 
-        return "fragments/tableFragment :: tableFragment";
+        return "fragments/itemTableFragment::itemTableFragment";
     }
 
     private void findItemPage(int page, int size, String search, Model model){
