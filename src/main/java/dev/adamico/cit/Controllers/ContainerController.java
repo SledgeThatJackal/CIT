@@ -67,7 +67,7 @@ public class ContainerController {
     public String editContainer(@ModelAttribute("container") Container container){
         containerService.saveContainer(container);
 
-        return "redirect:/container/create";
+        return "redirect:/container";
     }
 
     @GetMapping("/delete/{containerId}")

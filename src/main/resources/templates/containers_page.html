@@ -65,6 +65,11 @@
                 xhr.open('GET', url, true);
                 xhr.send();
             }
+
+            if(event.target.id === 'deleteButton'){
+                var href= event.target.getAttribute('href');
+                $('#containerConfirmationModal #deleteButtonReference').attr('href', href);
+            }
         });
     });
 </script>

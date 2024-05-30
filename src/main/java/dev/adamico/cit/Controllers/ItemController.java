@@ -65,12 +65,8 @@ public class ItemController {
     @PostMapping("/create")
     public String createItem(@ModelAttribute("item") Item item,
                              @RequestParam String containerScannerId,
-                             @RequestParam Integer quantity){
+                             @RequestParam(required = false, defaultValue = "1") Integer quantity){
         itemService.saveItem(item);
-
-        if(quantity == null){
-            return "redirect:/item/create";
-        }
 
         Container container = containerService.findContainerByScannerId(containerScannerId);
 
