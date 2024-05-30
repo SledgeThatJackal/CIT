@@ -1,0 +1,42 @@
+<div th:fragment="containerTableFragment" id="containerTableFragment">
+    <table class="table table-secondary table-hover">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Scanner ID</th>
+                <th scope="col">Parent Container ID</th>
+                <th scope="col"><a class="btn btn-primary btn-sm" th:href="@{/container/create}" role="button">Create</a></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <th:block th:each="container : ${containerPage.content}">
+                <tr>
+                    <th scope="row" th:text="${container.id}"></th>
+                    <td th:text="${container.name}"></td>
+                    <td th:text="${container.description}"></td>
+                    <td th:text="${container.scannerId}"></td>
+                    <td th:text="${container.parentContainer}"></td>
+                    <td><a class="btn btn-info btn-sm" th:href="@{'/container/edit/' + ${container.id}}" role="button">Edit</a></td>
+                    <td><button type="button" id="deleteButton" th:href="@{'/container/delete/' + ${container.id}}" class="btn btn-danger btn-small" data-bs-toggle="modal" data-bs-target="#containerConfirmationModal">Delete</button></td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+
+    <div th:if="${containerPage.totalPages > 0}">
+        <ul class="pagination">
+            <li class="page-item">
+                <button class="page-link" th:classappend="${!containerPage.hasPrevious()} ? 'disabled' : ''" data-page="prev">Previous</button>
+            </li>
+            <li th:each="pageNumber : ${#numbers.sequence(0, containerPage.totalPages - 1)}" class="page-item">
+                <button class="page-link" th:text="${pageNumber + 1}" th:attr="data-page=${pageNumber}"></button>
+            </li>
+            <li class="page-item">
+                <button class="page-link" th:classappend="${!containerPage.hasNext()} ? 'disabled' : ''" data-page="next">Next</button>
+            </li>
+        </ul>
+    </div>
+</div>

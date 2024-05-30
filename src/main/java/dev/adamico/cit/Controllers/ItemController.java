@@ -29,13 +29,29 @@ public class ItemController {
 
     @GetMapping
     public String getItemsPage(@RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(defaultValue = "2") int size,
+                               @RequestParam(defaultValue = "") String search,
                                Model model){
-        Page<ItemDTO> itemPage = containerItemService.findPaginatedItemsWithContainers(page, size);
-        model.addAttribute("itemPage", itemPage);
-        model.addAttribute("objectName", "Item");
+        findItemPage(page, size, search, model);
 
         return "items_page";
+    }
+
+    @GetMapping("/page")
+    public String updateItems(@RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "2") int size,
+                              @RequestParam(defaultValue = "") String search,
+                               Model model){
+        findItemPage(page, size, search, model);
+
+        return "fragments/itemTableFragment::itemTableFragment";
+    }
+
+    private void findItemPage(int page, int size, String search, Model model){
+        Page<ItemDTO> itemPage = containerItemService.findPaginatedItemsWithContainers(page, size, search);
+        model.addAttribute("itemPage", itemPage);
+        model.addAttribute("objectName", "Item");
+        model.addAttribute("search", search);
     }
 
     @GetMapping("/create")
@@ -78,7 +94,7 @@ public class ItemController {
     public String editItem(@ModelAttribute("item") Item item){
         itemService.saveItem(item);
 
-        return "create_page";
+        return "redirect:/item";
     }
 
     @GetMapping("/delete/{itemId}")
