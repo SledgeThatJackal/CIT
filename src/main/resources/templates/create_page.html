@@ -26,7 +26,7 @@
     <input type="hidden" th:field="*{id}"/>
     <div class="mb-3">
         <label for="itemName" class="form-label">Name</label>
-        <input type="text" class="form-control" id="itemName" th:field="*{name}">
+        <input type="text" class="form-control" id="itemName" th:field="*{name}" required>
     </div>
     <div class="mb-3">
         <label for="itemDescription" class="form-label">Description</label>
@@ -36,12 +36,38 @@
         <label for="containerScannerId" class="form-label">Scanner ID (Optional)</label>
         <input type="text" class="form-control" id="containerScannerId" name="containerScannerId">
     </div>
-    <div class="mb-3" th:if="${isEdit == false}">
+    <div class="mb-3" id="quantityInput" style="display: none">
         <label for="quantity" class="form-label">Quantity</label>
-        <input type="number" class="form-control" id="quantity" name="quantity">
+        <input type="number" class="form-control" id="quantity" name="quantity" value="1">
     </div>
     <input type="hidden" th:field="*{containerItems}"/>
     <button type="submit" class="btn btn-primary" th:text="${isEdit ? 'Update' : 'Create'}"></button>
 </form>
+
+<style>
+    [required] {
+        border: 2px solid red;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        var containerInput = document.getElementById('containerScannerId');
+
+        containerInput.addEventListener('input', function() {
+            var quantityDiv = document.getElementById('quantityInput'); // This is the div that contains the label and input for quantity
+            var quantityInput = document.getElementById('quantity'); // This is the specific input for quantity
+
+            if(containerInput.value.trim() !== ''){
+                quantityDiv.style.display = 'block';
+                quantityInput.required = true;
+            } else {
+                quantityDiv.style.display = 'none';
+                quantityInput.required = false;
+            }
+        });
+    });
+</script>
 
 <div th:replace="~{fragments/footerFragment::footerFragment}"></div>
