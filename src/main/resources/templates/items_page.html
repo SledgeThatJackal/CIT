@@ -40,14 +40,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         var currentPage = 0;
 
-        document.querySelectorAll("#deleteButton").forEach((e) => {
-            e.addEventListener("click", () => {
-                var href= e.getAttribute('href');
-                console.log(href);
-                $('#itemConfirmationModal #deleteButtonReference').attr('href', href);
-            });
-        });
-
         document.getElementById('searchInput').addEventListener('input', function() {
             var search = this.value;
             currentPage = 0;
@@ -73,6 +65,11 @@
                 var url = "/item/page?page=" + currentPage + "&search=" + search;
 
                 updateData(url);
+            }
+
+            if(event.target.id === 'deleteButton'){
+                var href= event.target.getAttribute('href');
+                $('#itemConfirmationModal #deleteButtonReference').attr('href', href);
             }
         });
 
