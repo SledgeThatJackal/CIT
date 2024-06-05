@@ -1,9 +1,9 @@
-FROM eclipse-temurin:17-jdk-focal
+FROM eclipse-temurin:17-jre-focal
 
 WORKDIR /app
 
-COPY target/cit-0.0.1-SNAPSHOT.jar /app/cit-0.0.1-SNAPSHOT.jar
+COPY target/cit.jar /app/cit.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/cit-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/app/cit.jar"]

@@ -10,7 +10,6 @@
 	</parent>
 	<groupId>dev.adamico</groupId>
 	<artifactId>cit</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>cit</name>
 	<description>A project using SpringBoot to run MariaDB that will keep track of items.</description>
 	<properties>
@@ -63,6 +62,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>cit</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

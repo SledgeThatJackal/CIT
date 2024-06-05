@@ -1,6 +1,7 @@
 package dev.adamico.cit.Services;
 
 import dev.adamico.cit.DTOs.ItemDTO;
+import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ContainerItemService {
@@ -30,15 +28,24 @@ public class ContainerItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public void createContainerItemLink(String scannerId, Item item, Integer quantity){
-        Container container = containerRepository.findByScannerId(scannerId).orElse(null);
-
-        if(container == null){
-            return;
-        }
-
+    public void createContainerItemLink(Container container, Item item, Integer quantity){
         ContainerItem containerItem = new ContainerItem(null, container, item, quantity);
         containerItemRepository.save(containerItem);
+    }
+
+    public List<LinkDTO> findContainerItemLink(Long itemId){
+        Set<ContainerItem> containerItems = containerItemRepository.findByItemId(itemId);
+        List<LinkDTO> links = new ArrayList<>();
+
+        containerItems.forEach((containerItem -> {
+            links.add(new LinkDTO(containerItem.getContainer().getScannerId(), containerItem.getQuantity()));
+        }));
+
+        if(links.isEmpty()){
+            links.add(new LinkDTO("", 1));
+        }
+
+        return links;
     }
 
     public void removeContainerItemLink(Long containerItemId){

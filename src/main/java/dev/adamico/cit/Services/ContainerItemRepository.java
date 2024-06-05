@@ -13,5 +13,7 @@ import java.util.Set;
 public interface ContainerItemRepository extends JpaRepository<ContainerItem, Long> {
     @Query("Select containerItem.container FROM ContainerItem containerItem WHERE containerItem.item.id = :itemId")
     Set<Container> findContainersByItemId(@Param("itemId") Long itemId);
+
+    Set<ContainerItem> findByItemId(Long itemId);
 }
 

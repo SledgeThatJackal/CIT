@@ -1,6 +1,8 @@
 package dev.adamico.cit.Controllers;
 
+import dev.adamico.cit.DTOs.ItemCreationDTO;
 import dev.adamico.cit.DTOs.ItemDTO;
+import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Services.ContainerItemService;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -56,30 +60,36 @@ public class ItemController {
 
     @GetMapping("/create")
     public String getCreatePage(Model model){
-        model.addAttribute("item", new Item());
+        ItemCreationDTO itemCreationDTO = new ItemCreationDTO(new Item(), containerItemService.findContainerItemLink(null));
+
+        model.addAttribute("itemCreationDTO", itemCreationDTO);
         model.addAttribute("isEdit", false);
 
         return "create_page";
     }
 
     @PostMapping("/create")
-    public String createItem(@ModelAttribute("item") Item item,
-                             @RequestParam String containerScannerId,
-                             @RequestParam(required = false, defaultValue = "1") Integer quantity){
+    public String createItem(@ModelAttribute("itemCreationDTO") ItemCreationDTO itemCreationDTO){
+        Item item = itemCreationDTO.getItem();
+        List<LinkDTO> links = itemCreationDTO.getLinks();
         itemService.saveItem(item);
 
-        Container container = containerService.findContainerByScannerId(containerScannerId);
+        links.forEach((LinkDTO link) -> {
+            Container container = containerService.findContainerByScannerId(link.getScannerId());
 
-        if(container != null){
-            containerItemService.createContainerItemLink(containerScannerId, item, quantity);
-        }
+            if(container != null){
+                containerItemService.createContainerItemLink(container, item, link.getQuantity());
+            }
+        });
 
         return "redirect:/item/create";
     }
 
     @GetMapping("/edit/{id}")
     public String getEditPage(Model model, @PathVariable Long id){
-        model.addAttribute("item", itemService.findItemById(id));
+        ItemCreationDTO itemCreationDTO = new ItemCreationDTO(itemService.findItemById(id), containerItemService.findContainerItemLink(id));
+
+        model.addAttribute("itemCreationDTO", itemCreationDTO);
         model.addAttribute("isEdit", true);
 
         return "create_page";
