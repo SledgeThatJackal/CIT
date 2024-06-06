@@ -18,7 +18,7 @@ public class ContainerController {
     @GetMapping
     public String getContainersPage(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "1") int size,
+            @RequestParam(defaultValue = "10") int size,
             Model model){
 
         findContainerPage(page, size, model);
@@ -28,7 +28,7 @@ public class ContainerController {
 
     @GetMapping("/page")
     public String updateContainers(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "1") int size,
+                                   @RequestParam(defaultValue = "10") int size,
                                    Model model){
         findContainerPage(page, size, model);
 

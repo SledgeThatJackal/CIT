@@ -34,7 +34,7 @@ public class ItemController {
 
     @GetMapping
     public String getItemsPage(@RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "2") int size,
+                               @RequestParam(defaultValue = "10") int size,
                                @RequestParam(defaultValue = "") String search,
                                Model model){
         findItemPage(page, size, search, model);
@@ -44,7 +44,7 @@ public class ItemController {
 
     @GetMapping("/page")
     public String updateItems(@RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "2") int size,
+                              @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "") String search,
                                Model model){
         findItemPage(page, size, search, model);
