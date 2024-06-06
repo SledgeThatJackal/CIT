@@ -1,7 +1,8 @@
 package dev.adamico.cit.Controllers;
 
+import dev.adamico.cit.DTOs.ItemCreationDTO;
 import dev.adamico.cit.DTOs.ItemDTO;
-import dev.adamico.cit.Models.Container;
+import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Services.ContainerItemService;
 import dev.adamico.cit.Services.ContainerService;
@@ -10,9 +11,13 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +34,7 @@ public class ItemController {
 
     @GetMapping
     public String getItemsPage(@RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "2") int size,
+                               @RequestParam(defaultValue = "10") int size,
                                @RequestParam(defaultValue = "") String search,
                                Model model){
         findItemPage(page, size, search, model);
@@ -39,7 +44,7 @@ public class ItemController {
 
     @GetMapping("/page")
     public String updateItems(@RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "2") int size,
+                              @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "") String search,
                                Model model){
         findItemPage(page, size, search, model);
@@ -56,30 +61,30 @@ public class ItemController {
 
     @GetMapping("/create")
     public String getCreatePage(Model model){
-        model.addAttribute("item", new Item());
+        ItemCreationDTO itemCreationDTO = new ItemCreationDTO(new Item(), containerItemService.findContainerItemLink(null));
+
+        model.addAttribute("itemCreationDTO", itemCreationDTO);
         model.addAttribute("isEdit", false);
 
         return "create_page";
     }
 
     @PostMapping("/create")
-    public String createItem(@ModelAttribute("item") Item item,
-                             @RequestParam String containerScannerId,
-                             @RequestParam(required = false, defaultValue = "1") Integer quantity){
+    public String createItem(@ModelAttribute("itemCreationDTO") ItemCreationDTO itemCreationDTO){
+        Item item = itemCreationDTO.getItem();
+        List<LinkDTO> links = itemCreationDTO.getLinks();
+
         itemService.saveItem(item);
-
-        Container container = containerService.findContainerByScannerId(containerScannerId);
-
-        if(container != null){
-            containerItemService.createContainerItemLink(containerScannerId, item, quantity);
-        }
+        containerItemService.createContainerItemLink(links, item);
 
         return "redirect:/item/create";
     }
 
     @GetMapping("/edit/{id}")
     public String getEditPage(Model model, @PathVariable Long id){
-        model.addAttribute("item", itemService.findItemById(id));
+        ItemCreationDTO itemCreationDTO = new ItemCreationDTO(itemService.findItemById(id), containerItemService.findContainerItemLink(id));
+
+        model.addAttribute("itemCreationDTO", itemCreationDTO);
         model.addAttribute("isEdit", true);
 
         return "create_page";
@@ -87,8 +92,11 @@ public class ItemController {
 
     @PostMapping("/edit")
     @Transactional
-    public String editItem(@ModelAttribute("item") Item item){
-        itemService.saveItem(item);
+    public String editItem(@ModelAttribute("itemCreationDTO") ItemCreationDTO itemCreationDTO){
+        Item item = itemService.saveItem(itemCreationDTO.getItem());
+        List<LinkDTO> links = itemCreationDTO.getLinks();
+
+        containerItemService.changeQuantityAmount(links, item);
 
         return "redirect:/item";
     }
@@ -100,5 +108,13 @@ public class ItemController {
         itemService.deleteItem(item);
 
         return "redirect:/item";
+    }
+
+    @PostMapping("/delete-link")
+    @Transactional
+    public ResponseEntity<String> deleteLink(@RequestBody Long id){
+        containerItemService.removeContainerItemLink(id);
+
+        return new ResponseEntity<>("Request processed successfully", HttpStatus.OK);
     }
 }
