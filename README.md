@@ -1,6 +1,6 @@
 # CIT
 v0.0.3
-- Link multiple containers when creating items
+- Ability to link multiple containers when creating items
 - Delete links between items and containers
 - Edit items and there associated links
 
