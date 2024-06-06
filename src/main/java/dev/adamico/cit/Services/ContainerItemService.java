@@ -28,9 +28,18 @@ public class ContainerItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public void createContainerItemLink(Container container, Item item, Integer quantity){
-        ContainerItem containerItem = new ContainerItem(null, container, item, quantity);
-        containerItemRepository.save(containerItem);
+    public void createContainerItemLink(List<LinkDTO> links, Item item){
+        links.forEach(link -> {
+            createContainerItemLink(link, item);
+        });
+    }
+
+    public void createContainerItemLink(LinkDTO link, Item item){
+        Optional<Container> optionalContainer = containerRepository.findByScannerId(link.getScannerId());
+
+        optionalContainer.ifPresent(container -> {
+            containerItemRepository.save(new ContainerItem(null, container, item, link.getQuantity()));
+        });
     }
 
     public List<LinkDTO> findContainerItemLink(Long itemId){
@@ -38,27 +47,28 @@ public class ContainerItemService {
         List<LinkDTO> links = new ArrayList<>();
 
         containerItems.forEach((containerItem -> {
-            links.add(new LinkDTO(containerItem.getContainer().getScannerId(), containerItem.getQuantity()));
+            links.add(new LinkDTO(containerItem.getContainer().getScannerId(), containerItem.getQuantity(), containerItem.getId()));
         }));
 
         if(links.isEmpty()){
-            links.add(new LinkDTO("", 1));
+            links.add(new LinkDTO("", 1, null));
         }
 
         return links;
     }
 
     public void removeContainerItemLink(Long containerItemId){
-        Optional<ContainerItem> containerItem = containerItemRepository.findById(containerItemId);
-
-        containerItem.ifPresent(item -> containerItemRepository.delete(item));
+        containerItemRepository.deleteById(containerItemId);
     }
 
-    public void changeQuantityAmount(Long linkId, Integer quantity){
-        containerItemRepository.findById(linkId).ifPresent(link -> {
-            link.setQuantity(quantity);
-            containerItemRepository.save(link);
-        });
+    public void changeQuantityAmount(List<LinkDTO> links, Item item){
+        for(LinkDTO link : links){
+            if(link.getId() == null){
+                createContainerItemLink(link, item);
+            }
+
+            containerItemRepository.updateQuantityById(link.getQuantity(), link.getId());
+        }
     }
 
     public Set<Container> findAllAssociatedContainersBasedOnItemId(Long itemId){

@@ -3,7 +3,6 @@ package dev.adamico.cit.Controllers;
 import dev.adamico.cit.DTOs.ItemCreationDTO;
 import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
-import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Services.ContainerItemService;
 import dev.adamico.cit.Services.ContainerService;
@@ -12,6 +11,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -72,15 +73,9 @@ public class ItemController {
     public String createItem(@ModelAttribute("itemCreationDTO") ItemCreationDTO itemCreationDTO){
         Item item = itemCreationDTO.getItem();
         List<LinkDTO> links = itemCreationDTO.getLinks();
+
         itemService.saveItem(item);
-
-        links.forEach((LinkDTO link) -> {
-            Container container = containerService.findContainerByScannerId(link.getScannerId());
-
-            if(container != null){
-                containerItemService.createContainerItemLink(container, item, link.getQuantity());
-            }
-        });
+        containerItemService.createContainerItemLink(links, item);
 
         return "redirect:/item/create";
     }
@@ -97,8 +92,11 @@ public class ItemController {
 
     @PostMapping("/edit")
     @Transactional
-    public String editItem(@ModelAttribute("item") Item item){
-        itemService.saveItem(item);
+    public String editItem(@ModelAttribute("itemCreationDTO") ItemCreationDTO itemCreationDTO){
+        Item item = itemService.saveItem(itemCreationDTO.getItem());
+        List<LinkDTO> links = itemCreationDTO.getLinks();
+
+        containerItemService.changeQuantityAmount(links, item);
 
         return "redirect:/item";
     }
@@ -110,5 +108,13 @@ public class ItemController {
         itemService.deleteItem(item);
 
         return "redirect:/item";
+    }
+
+    @PostMapping("/delete-link")
+    @Transactional
+    public ResponseEntity<String> deleteLink(@RequestBody Long id){
+        containerItemService.removeContainerItemLink(id);
+
+        return new ResponseEntity<>("Request processed successfully", HttpStatus.OK);
     }
 }

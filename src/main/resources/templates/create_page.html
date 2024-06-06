@@ -38,19 +38,22 @@
                 <th scope="col"></th>
                 <th scope="col">Scanner ID</th>
                 <th scope="col">Quantity</th>
+                <th scope="col">Remove</th>
             </tr>
         </thead>
         <tbody id="linkTableBody">
-            <tr th:each="link, iterStat : *{links}" id="containerRow">
-                <th>
-                    <label th:text="${iterStat.index + 1}"></label>
-                </th>
+            <tr th:each="link, iterStat : *{links}" id="containerRow" th:attr="data-id=${link.id}" class="link">
+                <th th:text="${iterStat.index + 1}"></th>
                 <td id="scannerIdInput">
-                    <input th:field="*{links[__${iterStat.index}__].scannerId}" type="text" class="form-control input" />
+                    <input th:field="*{links[__${iterStat.index}__].scannerId}" type="text" class="form-control input" th:disabled="${link.id != null}"/>
                 </td>
                 <td id="quantityInput">
                     <input th:field="*{links[__${iterStat.index}__].quantity}" type="number" class="form-control" />
                 </td>
+                <td>
+                    <button type="button" class="btn-close" aria-label="Close"></button>
+                </td>
+                <input type="hidden" th:field="*{links[__${iterStat.index}__].id}"/>
             </tr>
         </tbody>
     </table>
@@ -67,22 +70,32 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        if(window.location.href.indexOf("container") > -1){
+            return;
+        }
+
         var lastInput = document.querySelector('#linkTableBody:last-child #scannerIdInput');
         var rowToDuplicate = document.getElementById('containerRow');
         var numberOfRows = document.getElementById('linkTableBody').children.length;
+        var table = document.getElementById('linkTableBody');
 
         lastInput.addEventListener('input', cloneRow);
 
+        if(numberOfRows > 1){
+            lastInput.dispatchEvent(new Event('input', {bubbles: true}));
+        }
+
         function cloneRow(){
-            var table = document.getElementById('linkTableBody');
             var newRow = rowToDuplicate.cloneNode(true);
             numberOfRows++;
 
             newRow.removeAttribute('id');
-            newRow.querySelector('th label').textContent = numberOfRows;
+            newRow.removeAttribute('data-id');
+            newRow.querySelector('th').textContent = numberOfRows;
 
             var scannerIdInput = newRow.querySelector('#scannerIdInput input');
             scannerIdInput.value = '';
+            scannerIdInput.removeAttribute('disabled');
             scannerIdInput.addEventListener('input', cloneRow);
             scannerIdInput.id = 'links' + (numberOfRows - 1) + '.scannerId';
             scannerIdInput.name = 'links[' + (numberOfRows - 1) + '].scannerId';
@@ -97,6 +110,52 @@
             table.appendChild(newRow);
 
             this.removeEventListener('input', cloneRow);
+        }
+
+        table.addEventListener('click', function(e) {
+            if(e.target.matches('button.btn-close')){
+                const link = e.target.closest('.link');
+                const linkId = link.getAttribute('data-id');
+                deleteLink(link, linkId);
+            }
+        });
+
+        function deleteLink(link, linkId){
+            if(linkId === null){
+                if(numberOfRows > 1) deleteRow(link);
+
+                return;
+            }
+
+            fetch('/item/delete-link', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: linkId
+            })
+            .then(response => {
+                if(response.ok){
+                    if(link){
+                        deleteRow(link);
+                    }
+                }
+            });
+        }
+
+        function deleteRow(link){
+            link.remove();
+            numberOfRows--;
+
+            if(numberOfRows === 0) cloneRow();
+
+            table.querySelector(':last-child').addEventListener('input', cloneRow);
+
+            var rows = table.getElementsByTagName('tr');
+
+            for(var i = 0; i < rows.length; i++){
+                rows[i].getElementsByTagName('th')[0].innerText = i + 1;
+            }
         }
     });
 </script>
