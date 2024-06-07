@@ -4,6 +4,7 @@ import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Services.ContainerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +17,18 @@ public class ContainerController {
     private ContainerService containerService;
 
     @GetMapping
-    public String getContainersPage(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model){
-
-        findContainerPage(page, size, model);
+    public String getContainersPage(Model model){
+        model.addAttribute("objectName", "Container");
 
         return "containers_page";
     }
 
     @GetMapping("/page")
-    public String updateContainers(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size,
-                                   Model model){
-        findContainerPage(page, size, model);
+    @ResponseBody
+    public Page<Container> updateContainers(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size){
 
-        return"fragments/containerTableFragment :: containerTableFragment";
-    }
-
-    private void findContainerPage(int page, int size, Model model){
-        model.addAttribute("containerPage", containerService.findAllPaginatedContainers(page, size));
-        model.addAttribute("objectName", "Container");
+        return containerService.findAllPaginatedContainers(page, size);
     }
 
     @GetMapping("/create")
