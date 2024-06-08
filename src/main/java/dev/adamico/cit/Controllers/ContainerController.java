@@ -26,7 +26,7 @@ public class ContainerController {
     @GetMapping("/page")
     @ResponseBody
     public Page<Container> updateContainers(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size){
+                                            @RequestParam(defaultValue = "1") int size){
 
         return containerService.findAllPaginatedContainers(page, size);
     }
