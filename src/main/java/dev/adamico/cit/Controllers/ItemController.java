@@ -37,26 +37,21 @@ public class ItemController {
                                @RequestParam(defaultValue = "10") int size,
                                @RequestParam(defaultValue = "") String search,
                                Model model){
-        findItemPage(page, size, search, model);
+        Page<ItemDTO> itemPage = containerItemService.findPaginatedItemsWithContainers(page, size, search);
+        model.addAttribute("itemPage", itemPage);
+        model.addAttribute("objectName", "Item");
+        model.addAttribute("search", search);
 
         return "items_page";
     }
 
     @GetMapping("/page")
-    public String updateItems(@RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "10") int size,
-                              @RequestParam(defaultValue = "") String search,
-                               Model model){
-        findItemPage(page, size, search, model);
+    @ResponseBody
+    public Page<ItemDTO> updateItems(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size,
+                                     @RequestParam(defaultValue = "") String search){
 
-        return "fragments/itemTableFragment::itemTableFragment";
-    }
-
-    private void findItemPage(int page, int size, String search, Model model){
-        Page<ItemDTO> itemPage = containerItemService.findPaginatedItemsWithContainers(page, size, search);
-        model.addAttribute("itemPage", itemPage);
-        model.addAttribute("objectName", "Item");
-        model.addAttribute("search", search);
+        return containerItemService.findPaginatedItemsWithContainers(page, size, search);
     }
 
     @GetMapping("/create")

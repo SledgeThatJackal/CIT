@@ -9,13 +9,13 @@ function ItemTable(){
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
     const [itemData, setItemData] = useState([]);
-    const [searchResults, setSearchResults] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [deleteId, setDeleteId] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
             try{
-                const url = `/item/page?page=${currentPage}`;
+                const url = `/item/page?page=${currentPage}&search=${searchTerm}`;
                 const response = await axios.get(url);
 
                 setItemData(response.data.content);
@@ -26,7 +26,7 @@ function ItemTable(){
         };
 
         fetchData();
-    }, [currentPage]);
+    }, [currentPage, searchTerm]);
 
     const handleDelete = async () => {
         try{
@@ -39,11 +39,11 @@ function ItemTable(){
 
     const handleEdit = function(itemId){
         window.location.href = `/item/edit/${itemId}`;
-    }
+    };
 
     return(
         <div>
-            <SearchComponent data={itemData} onSearch={handleSearch} />
+            <SearchComponent onSearch={setSearchTerm} />
 
             <table className="table table-secondary table-hover table-striped">
                 <thead>
@@ -63,13 +63,13 @@ function ItemTable(){
                             <td>{itemDTO.item.name}</td>
                             <td>{itemDTO.item.description}</td>
                             <td>
-                                <button type="button" className="btn btn-info btn-small" onClick={handleEdit(itemDTO.item.id)}>Edit</button>
+                                <button type="button" className="btn btn-info btn-small" onClick={() => handleEdit(itemDTO.item.id)}>Edit</button>
                             </td>
                             <td>
                                 <button type="button" onClick={() => setDeleteId(`${itemDTO.item.id}`)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
                             </td>
                         </tr>
-                        {itemDTO.containers.length > 0 (
+                        {itemDTO.containers.length > 0 && (
                             <tr scope="row">
                                 <td colspan="5" class="collapse" id={`containers-${itemDTO.item.id}`}>
                                     <table className="table table-info table-hover table-striped">
@@ -82,7 +82,7 @@ function ItemTable(){
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {itemDTO.map((container, containerIndex) => (
+                                            {itemDTO.containers.map((container, containerIndex) => (
                                                 <tr key={`container-${index}-${containerIndex}`}>
                                                     <th scope="row">{container.id}</th>
                                                     <td>{container.name}</td>

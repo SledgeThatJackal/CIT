@@ -5,7 +5,7 @@ import ItemTable from "./src/Components/Item/ItemTable.jsx";
 
 document.addEventListener('DOMContentLoaded', () => {
     const containerTable = document.getElementById('containerTable');
-    const itemTable = document.getElemenyById('itemTable');
+    const itemTable = document.getElementById('itemTable');
 
     if(containerTable){
         const root = createRoot(containerTable);
