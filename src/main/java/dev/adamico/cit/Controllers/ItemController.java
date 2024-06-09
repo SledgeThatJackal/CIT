@@ -96,13 +96,17 @@ public class ItemController {
         return "redirect:/item";
     }
 
-    @GetMapping("/delete/{itemId}")
+    @DeleteMapping("/delete")
     @Transactional
-    public String deleteItem(@PathVariable Long itemId){
-        Item item = itemService.findItemById(itemId);
-        itemService.deleteItem(item);
+    public ResponseEntity<?> deleteItem(@RequestParam Long id){
+        try {
+            Item item = itemService.findItemById(id);
+            itemService.deleteItem(item);
 
-        return "redirect:/item";
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting item: " + e.getMessage());
+        }
     }
 
     @PostMapping("/delete-link")

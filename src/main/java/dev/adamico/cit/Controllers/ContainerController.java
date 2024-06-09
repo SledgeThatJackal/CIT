@@ -2,9 +2,12 @@ package dev.adamico.cit.Controllers;
 
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Services.ContainerService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +29,7 @@ public class ContainerController {
     @GetMapping("/page")
     @ResponseBody
     public Page<Container> updateContainers(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "1") int size){
+                                            @RequestParam(defaultValue = "10") int size){
 
         return containerService.findAllPaginatedContainers(page, size);
     }
@@ -61,11 +64,16 @@ public class ContainerController {
         return "redirect:/container";
     }
 
-    @GetMapping("/delete/{containerId}")
-    public String deleteContainer(@PathVariable Long containerId){
-        Container container = containerService.findContainerById(containerId);
-        containerService.deleteContainer(container);
+    @DeleteMapping("/delete")
+    @Transactional
+    public ResponseEntity<?> deleteContainer(@RequestParam Long id){
+        try{
+            Container container = containerService.findContainerById(id);
+            containerService.deleteContainer(container);
 
-        return "redirect:/container";
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting item: " + e.getMessage());
+        }
     }
 }

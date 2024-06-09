@@ -26,11 +26,11 @@ function ItemTable(){
         };
 
         fetchData();
-    }, [currentPage, searchTerm]);
+    }, [currentPage, searchTerm, itemData]);
 
     const handleDelete = async () => {
         try{
-            await axios.delete(`/item/delete/${deleteId}`);
+            await axios.delete(`/item/delete?id=${deleteId}`);
             setItemData(itemData.filter(item => item.id !== deleteId));
         } catch (error){
             console.error('Error deleteing entry: ', error);
@@ -44,6 +44,7 @@ function ItemTable(){
     return(
         <div>
             <SearchComponent onSearch={setSearchTerm} />
+            <ConfirmationModal onDelete={handleDelete} />
 
             <table className="table table-secondary table-hover table-striped">
                 <thead>
@@ -101,7 +102,6 @@ function ItemTable(){
             </table>
 
             <PaginationComponent currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-            <ConfirmationModal onDelete={handleDelete} />
         </div>
     );
 }
