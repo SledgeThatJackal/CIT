@@ -39,7 +39,7 @@ public class ContainerController {
         model.addAttribute("container", new Container());
         model.addAttribute("isEdit", false);
 
-        return "create_page";
+        return "create_page_react";
     }
 
     @PostMapping("/create")

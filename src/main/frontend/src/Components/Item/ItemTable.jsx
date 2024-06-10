@@ -26,7 +26,7 @@ function ItemTable(){
         };
 
         fetchData();
-    }, [currentPage, searchTerm, itemData]);
+    }, [currentPage, searchTerm]);
 
     const handleDelete = async () => {
         try{

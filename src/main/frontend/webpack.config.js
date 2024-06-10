@@ -8,7 +8,7 @@ module.exports = {
         filename: 'bundle.js'
     },
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
     module: {
         rules : [
@@ -20,6 +20,13 @@ module.exports = {
                     options: {
                         presets: ['@babel/preset-env', '@babel/preset-react']
                     }
+                }
+            },
+            {
+                test: /\.(ts|tsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'ts-loader'
                 }
             },
             {
