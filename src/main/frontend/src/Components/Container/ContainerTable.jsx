@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
 import PaginationComponent from '../Pagination.jsx';
@@ -45,7 +46,7 @@ function ContainerTable(){
                         <th scope="col">Description</th>
                         <th scope="col">Scanner ID</th>
                         <th scope="col">Parent Container ID</th>
-                        <th scope="col"><a className="btn btn-primary btn-sm" href="/container/create" role="button">Create</a></th>
+                        <th scope="col"><NavLink to="/container/create" className="btn btn-primary btn-sm" role="button">Create</NavLink></th>
                         <th></th>
                     </tr>
                 </thead>
