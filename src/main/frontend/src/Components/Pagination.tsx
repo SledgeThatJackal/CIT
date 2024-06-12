@@ -1,7 +1,13 @@
 import React from 'react';
 import {generate} from '@bramus/pagination-sequence';
 
-const PaginationComponent = ({currentPage, totalPages, onPageChange}) => {
+type paginationComponentProp = {
+    currentPage: number;
+    totalPages: number;
+    onPageChange: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const PaginationComponent = ({currentPage, totalPages, onPageChange}: paginationComponentProp) => {
     const sequence = generate(currentPage, totalPages, 3, 2);
 
     return (
@@ -13,7 +19,7 @@ const PaginationComponent = ({currentPage, totalPages, onPageChange}) => {
 
                 {sequence.map((value, index) => (
                     <li className="page-item">
-                        <button key={`page-${index}`} onClick={value === '...' ? null : () => onPageChange(index)} className={`page-link ${currentPage === index ? 'active' : ''}`}>{value}</button>
+                        <button key={`page-${index}`} onClick={value === '...' ? undefined : () => onPageChange(index)} className={`page-link ${currentPage === index ? 'active' : ''}`}>{value}</button>
                     </li>
                 ))}
 

@@ -4,14 +4,14 @@ import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Container } from '../../Types/Container';
 
-const containerFormSchema = z.object({
+const ContainerFormSchema = z.object({
     name: z.string(),
-    description: z.string(),
-    parent_container: z.number(),
+    description: z.string().optional(),
+    parent_container: z.number().optional(),
     scanner_id: z.string(),
 });
 
-type ContainerFormSchemaType = z.infer<typeof containerFormSchema>;
+type ContainerFormSchemaType = z.infer<typeof ContainerFormSchema>;
 
 type ContainerFormProps = {
     container?: Container;
@@ -31,7 +31,7 @@ export default function ContainerForm({ container }: ContainerFormProps){
             parent_container: container.parentContainer,
             scanner_id: container.scannerId,
         } : undefined,
-        resolver: zodResolver(containerFormSchema),
+        resolver: zodResolver(ContainerFormSchema),
     });
 
     const onSubmit = async (data: ContainerFormSchemaType) => {

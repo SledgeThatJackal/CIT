@@ -7,4 +7,9 @@ export type Container = {
     scannerId: string;
     parentContainer: number;
     containerItems: ContainerItem[];
-}
+};
+
+export type ContainerResponse = {
+    content: Container[];
+    totalPages: number;
+};
