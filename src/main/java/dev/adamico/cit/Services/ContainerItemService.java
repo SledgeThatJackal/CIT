@@ -63,11 +63,11 @@ public class ContainerItemService {
 
     public void changeQuantityAmount(List<LinkDTO> links, Item item){
         for(LinkDTO link : links){
-            if(link.getId() == null){
+            if(link.getLinkId() == null){
                 createContainerItemLink(link, item);
+            } else {
+                containerItemRepository.updateQuantityById(link.getQuantity(), link.getLinkId());
             }
-
-            containerItemRepository.updateQuantityById(link.getQuantity(), link.getId());
         }
     }
 

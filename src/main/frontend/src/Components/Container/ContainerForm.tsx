@@ -46,25 +46,37 @@ export default function ContainerForm({ container }: ContainerFormProps){
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("name")} type="text" className="form-control" placeholder="Container Name" />
-            {errors.name && (
-                <p>{`${errors.name.message}`}</p>
-            )}
+            <div>
+                <label htmlFor='nameInput' className='form-label'></label>
+                <input {...register("name")} type="text" id="nameInput" className="form-control" placeholder="Container Name" />
+                {errors.name && (
+                    <p>{`${errors.name.message}`}</p>
+                )}
+            </div>
 
-            <input {...register("description")} type="text" className="form-control" placeholder="Container Description" />
-            {errors.description && (
-                <p>{`${errors.description.message}`}</p>
-            )}
+            <div>
+                <label htmlFor='descriptionTextArea' className='form-label'>Description</label>
+                <textarea {...register("description")} id='descriptionTextArea' className="form-control" placeholder="Container Description" />
+                {errors.description && (
+                    <p>{`${errors.description.message}`}</p>
+                )}
+            </div>
 
-            <input {...register("parent_container", {valueAsNumber: true})} type="number" className="form-control" placeholder="Parent Container ID" />
-            {errors.parent_container && (
-                <p>{`${errors.parent_container.message}`}</p>
-            )}
+            <div>
+                <label htmlFor='parentConatainerInput' className='form-label'>Parent Container ID</label>
+                <input {...register("parent_container", {valueAsNumber: true})} id='parentConatainerInput' type="number" className="form-control" placeholder="Parent Container ID" />
+                {errors.parent_container && (
+                    <p>{`${errors.parent_container.message}`}</p>
+                )}
+            </div>
 
-            <input {...register("scanner_id")} type="text" className="form-control" placeholder="Scanner ID" />
-            {errors.scanner_id && (
-                <p>{`${errors.scanner_id.message}`}</p>
-            )}
+            <div>
+                <label htmlFor='scannerIdInput' className='form-label'>Scanner ID</label>
+                <input {...register("scanner_id")} type="text" id='scannerIdInput' className="form-control" placeholder="Scanner ID" />
+                {errors.scanner_id && (
+                    <p>{`${errors.scanner_id.message}`}</p>
+                )}
+            </div>
 
             <button type="submit" disabled={isSubmitting}>Submit</button>
         </form>

@@ -1,11 +1,12 @@
-import { ContainerItem } from './ContainerItem';
+import { ContainerItem, ContainerItemSchema } from './ContainerItem';
 import { Container } from './Container';
+import { z } from 'zod';
 
 export type Item = {
     id: number;
     name: string;
-    description: string;
-    containerItems: ContainerItem[];
+    description?: string;
+    containerItems?: ContainerItem[];
 };
 
 export type ItemResponse = {
@@ -21,10 +22,17 @@ export type ItemDTO = {
 export type LinkDTO = {
     scannerId: string;
     quantity: number;
-    id: number;
+    linkId: number;
 };
 
 export type ItemCreationDTO = {
     item: Item;
     links: LinkDTO[];
 };
+
+export const ItemSchema = z.object({
+    id: z.number().optional(),
+    name: z.string({message: 'The Item name is required'}),
+    description: z.string().optional(),
+    containerItems: z.array(ContainerItemSchema).optional(),
+});

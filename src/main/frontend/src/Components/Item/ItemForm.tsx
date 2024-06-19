@@ -1,83 +1,122 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-import { Item, ItemCreationDTO, LinkDTO } from '../../Types/Item';
+import { ItemCreationDTO, LinkDTO, ItemSchema } from '../../Types/Item';
 
 const LinkSchema = z.object({
-    scannerId: z.string(),
-    quantity: z.number().positive(),
-    id: z.number()
-});
+    scannerId: z.string().optional(),
+    quantity: z.number().positive({message: 'Quantity must be positive'}).optional(),
+    linkId: z.number().optional(),
+}).optional();
 
 const ItemFormSchema = z.object({
-    name: z.string(),
-    description: z.string().optional(),
-    links: z.array(LinkSchema).optional()
+    item: ItemSchema,
+    links: z.array(LinkSchema),
 });
 
 type ItemFormSchemaType = z.infer<typeof ItemFormSchema>;
 
 export default function ItemForm(){
-const location = useLocation();
-const { item, links } = location.state?.response;
-
-const itemCreationDTO: ItemCreationDTO | undefined = item && links ? {
-    item: item as Item,
-    links: links as LinkDTO[]
-} : undefined;
+    const location = useLocation();
+    const itemCreationDTO: ItemCreationDTO = location.state?.response;
 
     const {
         register,
         handleSubmit,
         formState: {errors, isSubmitting},
+        control,
         reset,
     } = useForm<ItemFormSchemaType>({
-        defaultValues: itemCreationDTO?.item && itemCreationDTO?.links
+        defaultValues: itemCreationDTO
         ? {
-            name: itemCreationDTO.item.name,
-            description: itemCreationDTO.item.description,
+            item: itemCreationDTO.item,
             links: itemCreationDTO.links,
-        } : undefined,
+        } : {
+            item: {},
+            links: [{quantity: 1}],
+        },
         resolver: zodResolver(ItemFormSchema),
     });
 
+    const { fields, append, remove} = useFieldArray({
+        control, 
+        name: 'links',
+    });
+
+    const watchLinks = useWatch({
+        control, 
+        name: 'links',
+    }) as LinkDTO[];
+
     const onSubmit = async (data: ItemFormSchemaType) => {
-        if(itemCreationDTO){
-            // Implement functionality
-        } else {
-            // Implement functionality
-        }
-    ;}
-
-    const onDelete = async (linkId: number) => {
-        try{
-            await axios.delete(`/api/link?id=${linkId}`);
-
-            const linkRow = document.querySelector(`[data-key='${linkId}']`);
-
-            if(linkRow){
-                linkRow.remove();
+        console.log("Submitting");
+        
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
             }
+        };
+
+        if(itemCreationDTO){
+            console.log("Edit");
+            await axios.patch(`/api/item/edit`, data, config);
+        } else {
+            console.log("Create");
+            await axios.post(`/api/item/create`, data, config);
+        }
+    };
+
+    const onDelete = async (index: number, id?: number) => {
+        if(id === undefined){
+            remove(index);
+            return;
+        }
+
+        try{
+            await axios.delete(`/api/link?id=${id}`);
+
+            remove(index);
         } catch (error) {
             console.error('Error deleting link: ', error);
         }
     };
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("name")} type="text" className="form-control" placeholder="Item Name" />
-            {errors.name && (
-                <p>{`${errors.name.message}`}</p>
-            )}
+    useEffect(() => {
+        if(watchLinks?.[watchLinks.length - 1]?.scannerId){
+            append({scannerId: '', quantity: 1});
 
-            <input {...register("description")} type="text" className="form-control" placeholder="Item Description" />
-            {errors.description && (
-                <p>{`${errors.description.message}`}</p>
-            )}
+            console.log(watchLinks.length - 1);
+            document.getElementById(`linkId-${watchLinks.length - 1}`)?.focus();
+        };
+    
+        if(watchLinks?.length > 1 && !watchLinks?.[watchLinks.length - 2]?.scannerId && !watchLinks?.[watchLinks.length - 1]?.scannerId){
+            remove(watchLinks.length - 1);
+        };
+    }, [watchLinks]);
+
+    return (
+        <form onSubmit={handleSubmit(onSubmit, (errors => {
+            console.log("Validation Errors: ", errors);
+        }))}>
+            <div className='mb-3'>
+                <label htmlFor='nameInput' className='form-label'>Name</label>
+                <input {...register("item.name")} type="text" id="nameInput" className="form-control" placeholder="Item Name" />
+                {errors.item?.name && (
+                    <p>{`${errors.item.name.message}`}</p>
+                )}
+            </div>
+            
+            <div className='mb-3'>
+                <label htmlFor='descriptionTextArea' className='form-label'>Description</label>
+                <textarea {...register("item.description")} id="descriptionTextArea" className="form-control" placeholder="Item Description" />
+                {errors.item?.description && (
+                    <p>{`${errors.item.description.message}`}</p>
+                )}
+            </div>
 
             <table id="linkTable" className="table table-secondary table-hover table-striped">
                 <thead>
@@ -89,17 +128,17 @@ const itemCreationDTO: ItemCreationDTO | undefined = item && links ? {
                     </tr>
                 </thead>
                 <tbody id="linkTableBody" className="link">
-                    {itemCreationDTO?.links.map((link, index) => (
+                    {fields.map((link, index) => (
                         <tr key={link.id} data-key={link.id}>
                             <th>{index + 1}</th>
                             <td>
-                                <input {...register(`links.${index}.scannerId`)} className="form-control" defaultValue={link.scannerId} />
+                                <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={link.scannerId} />
                             </td>
                             <td>
-                                <input {...register(`links.${index}.quantity`)} className="form-control" defaultValue={link.quantity} />
+                                <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />
                             </td>
                             <td>
-                                <button className="btn-close" aria-label="Close" onClick={() => onDelete(link.id)}></button>
+                                <button className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId)}></button>
                             </td>
                             {errors.links && errors.links[index] && (
                                 <p>{errors.links[index]?.message}</p>

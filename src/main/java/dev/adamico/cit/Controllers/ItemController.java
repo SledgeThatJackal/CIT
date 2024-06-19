@@ -39,7 +39,15 @@ public class ItemController {
     @PatchMapping("/edit")
     public void updateItem(@RequestBody ItemCreationDTO itemCreationDTO){
         Item item = itemService.saveItem(itemCreationDTO.getItem());
+
         containerItemService.changeQuantityAmount(itemCreationDTO.getLinks(), item);
+    }
+
+    @PostMapping("/create")
+    public void createItem(@RequestBody ItemCreationDTO itemCreationDTO){
+        Item item = itemService.saveItem(itemCreationDTO.getItem());
+
+        containerItemService.createContainerItemLink(itemCreationDTO.getLinks(), item);
     }
 
     @DeleteMapping("/delete")
