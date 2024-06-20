@@ -31,7 +31,7 @@ function ContainerTable(){
 
     const handleDelete = async () => {
         try{
-            await axios.delete(`/container/delete?id=${deleteId}`);
+            await axios.delete(`/api/container/delete?id=${deleteId}`);
             setContainerData(containerData.filter(container => container.id !== deleteId));
         } catch (error){
             console.error('Error deleteing entry: ', error);

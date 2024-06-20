@@ -20,7 +20,7 @@ function ItemTable(){
     useEffect(() => {
         const fetchData = async () => {
             try{
-                const url = `/item/page?page=${currentPage}&search=${searchTerm}`;
+                const url = `/api/item?page=${currentPage}&search=${searchTerm}`;
                 const response = await axios.get<ItemResponse>(url);
 
                 setItemData(response.data.content);
@@ -35,7 +35,7 @@ function ItemTable(){
 
     const handleDelete = async () => {
         try{
-            await axios.delete(`/item/delete?id=${deleteId}`);
+            await axios.delete(`/api/item/delete?id=${deleteId}`);
             setItemData(itemData.filter(itemDTO => itemDTO.item.id !== deleteId));
         } catch (error){
             console.error('Error deleteing entry: ', error);

@@ -31,9 +31,9 @@ public class ContainerController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteContainer(@RequestBody Container container){
+    public ResponseEntity<?> deleteContainer(@RequestParam("id") Long id){
         try{
-            containerService.deleteContainer(container);
+            containerService.deleteContainer(id);
 
             return ResponseEntity.ok().build();
         } catch (Exception e){

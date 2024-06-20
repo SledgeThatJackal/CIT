@@ -27,6 +27,6 @@ public class Container {
     private Long parentContainer;
 
     @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("containerReference")
     private Set<ContainerItem> containerItems;
 }

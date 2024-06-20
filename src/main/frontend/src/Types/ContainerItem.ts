@@ -4,12 +4,12 @@ import { z } from 'zod';
 
 export type ContainerItem = {
     id?: number;
-    container: Container;
-    item: Item;
+    container?: Container;
+    item?: Item;
     quantity: number;
 };
 
 export const ContainerItemSchema = z.object({
-    id: z.number().optional(),
+    id: z.number(),
     quantity: z.number().optional(),
 });

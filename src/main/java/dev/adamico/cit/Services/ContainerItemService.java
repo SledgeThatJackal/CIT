@@ -5,6 +5,7 @@ import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,7 +31,10 @@ public class ContainerItemService {
 
     public void createContainerItemLink(List<LinkDTO> links, Item item){
         links.forEach(link -> {
-            createContainerItemLink(link, item);
+            System.out.println(link);
+            if(!link.getScannerId().isEmpty()){
+                createContainerItemLink(link, item);
+            }
         });
     }
 
@@ -61,6 +65,7 @@ public class ContainerItemService {
         containerItemRepository.deleteById(containerItemId);
     }
 
+    @Transactional
     public void changeQuantityAmount(List<LinkDTO> links, Item item){
         for(LinkDTO link : links){
             if(link.getLinkId() == null){

@@ -63,7 +63,7 @@ export default function ItemForm(){
 
         if(itemCreationDTO){
             console.log("Edit");
-            await axios.patch(`/api/item/edit`, data, config);
+            await axios.patch(`/api/item/edit`, data);
         } else {
             console.log("Create");
             await axios.post(`/api/item/create`, data, config);
@@ -89,8 +89,9 @@ export default function ItemForm(){
         if(watchLinks?.[watchLinks.length - 1]?.scannerId){
             append({scannerId: '', quantity: 1});
 
-            console.log(watchLinks.length - 1);
-            document.getElementById(`linkId-${watchLinks.length - 1}`)?.focus();
+            setTimeout(() => {
+                document.getElementById(`linkId-${watchLinks.length - 1}`)?.focus(); 
+            }, 0);
         };
     
         if(watchLinks?.length > 1 && !watchLinks?.[watchLinks.length - 2]?.scannerId && !watchLinks?.[watchLinks.length - 1]?.scannerId){

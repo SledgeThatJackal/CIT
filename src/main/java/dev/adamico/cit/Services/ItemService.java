@@ -23,7 +23,7 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public void deleteItem(Item item){
-        itemRepository.delete(item);
+    public void deleteItem(Long id){
+        itemRepository.deleteById(id);
     }
 }
