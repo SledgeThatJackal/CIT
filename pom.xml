@@ -11,7 +11,7 @@
 	<groupId>dev.adamico</groupId>
 	<artifactId>cit</artifactId>
 	<name>cit</name>
-	<description>A project using SpringBoot to run MariaDB that will keep track of items.</description>
+	<description>A project using SpringBoot to run PostgresSQL that will keep track of items.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

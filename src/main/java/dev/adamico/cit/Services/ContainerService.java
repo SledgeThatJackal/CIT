@@ -40,7 +40,7 @@ public class ContainerService {
         return containerRepository.save(container);
     }
 
-    public void deleteContainer(Container container){
-        containerRepository.delete(container);
+    public void deleteContainer(Long id){
+        containerRepository.deleteById(id);
     }
 }

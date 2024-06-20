@@ -19,12 +19,12 @@ public class ContainerItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "container_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("containerReference")
     private Container container;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("itemReference")
     private Item item;
 
     @JoinColumn(name = "quantity", nullable = false)

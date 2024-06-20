@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class LinkDTO {
     private String scannerId;
     private Integer quantity;
-    private Long id;
+    private Long linkId;
 }

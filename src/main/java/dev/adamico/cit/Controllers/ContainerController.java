@@ -2,79 +2,42 @@ package dev.adamico.cit.Controllers;
 
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Services.ContainerService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequiredArgsConstructor
-@RequestMapping("/container")
+@RestController
+@RequestMapping("/api/container")
 public class ContainerController {
     @Autowired
     private ContainerService containerService;
 
     @GetMapping
-    public String getContainersPage(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model){
-
-        findContainerPage(page, size, model);
-
-        return "containers_page";
+    public Page<Container> getContainerPage(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size){
+        return containerService.findAllPaginatedContainers(page, size);
     }
 
-    @GetMapping("/page")
-    public String updateContainers(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size,
-                                   Model model){
-        findContainerPage(page, size, model);
-
-        return"fragments/containerTableFragment :: containerTableFragment";
+    @GetMapping("/edit")
+    public Container getContainer(@RequestParam Long id){
+        return containerService.findContainerById(id);
     }
 
-    private void findContainerPage(int page, int size, Model model){
-        model.addAttribute("containerPage", containerService.findAllPaginatedContainers(page, size));
-        model.addAttribute("objectName", "Container");
+    @PatchMapping("/edit")
+    public Container updateContainer(@RequestBody Container container){
+        return containerService.saveContainer(container);
     }
 
-    @GetMapping("/create")
-    public String getCreatePage(Model model){
-        model.addAttribute("container", new Container());
-        model.addAttribute("isEdit", false);
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteContainer(@RequestParam("id") Long id){
+        try{
+            containerService.deleteContainer(id);
 
-        return "create_page";
-    }
-
-    @PostMapping("/create")
-    public String createContainer(@ModelAttribute("container") Container container){
-        containerService.saveContainer(container);
-
-        return "redirect:/container/create";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String getEditPage(Model model, @PathVariable Long id){
-        model.addAttribute("container", containerService.findContainerById(id));
-        model.addAttribute("isEdit", true);
-
-        return "create_page";
-    }
-
-    @PostMapping("/edit")
-    public String editContainer(@ModelAttribute("container") Container container){
-        containerService.saveContainer(container);
-
-        return "redirect:/container";
-    }
-
-    @GetMapping("/delete/{containerId}")
-    public String deleteContainer(@PathVariable Long containerId){
-        Container container = containerService.findContainerById(containerId);
-        containerService.deleteContainer(container);
-
-        return "redirect:/container";
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting container: " + e.getMessage());
+        }
     }
 }
