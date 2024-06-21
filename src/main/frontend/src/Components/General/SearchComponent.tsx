@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../Styles/Search.css';
+import '../../Styles/Search.css';
 
 type searchComponentProp = {
     onSearch: React.Dispatch<React.SetStateAction<string>>;

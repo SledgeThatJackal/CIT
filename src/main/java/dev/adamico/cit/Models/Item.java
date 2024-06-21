@@ -26,4 +26,12 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("itemReference")
     private Set<ContainerItem> containerItems;
+
+    @ManyToMany
+    @JoinTable(
+            name = "itemtag_table",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags;
 }

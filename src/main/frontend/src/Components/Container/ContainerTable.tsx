@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
-import PaginationComponent from '../Pagination';
-import ConfirmationModal from '../ConfirmationModal';
+import PaginationComponent from '../General/Pagination';
+import ConfirmationModal from '../General/ConfirmationModal';
 
 import { Container, ContainerResponse } from '../../Types/Container';
 

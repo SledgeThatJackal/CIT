@@ -1,6 +1,7 @@
 package dev.adamico.cit.Services;
 
 import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

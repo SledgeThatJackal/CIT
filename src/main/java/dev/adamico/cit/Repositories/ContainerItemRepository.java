@@ -1,4 +1,4 @@
-package dev.adamico.cit.Services;
+package dev.adamico.cit.Repositories;
 
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.ContainerItem;

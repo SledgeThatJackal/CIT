@@ -1,5 +1,6 @@
 import { ContainerItem, ContainerItemSchema } from './ContainerItem';
 import { Container } from './Container';
+import { Tag, TagSchema } from './Tag';
 import { z } from 'zod';
 
 export type Item = {
@@ -7,6 +8,7 @@ export type Item = {
     name: string;
     description?: string;
     containerItems?: ContainerItem[];
+    tags?: Tag[];
 };
 
 export type ItemResponse = {
@@ -35,4 +37,5 @@ export const ItemSchema = z.object({
     name: z.string({message: 'The Item name is required'}),
     description: z.string().optional(),
     containerItems: z.array(ContainerItemSchema).optional(),
+    tags: z.array(TagSchema).optional(),
 });

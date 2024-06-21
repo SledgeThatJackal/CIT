@@ -1,4 +1,4 @@
-package dev.adamico.cit.Services;
+package dev.adamico.cit.Repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import PaginationComponent from '../Pagination';
-import ConfirmationModal from '../ConfirmationModal';
-import SearchComponent from '../SearchComponent';
+import PaginationComponent from '../General/Pagination';
+import ConfirmationModal from '../General/ConfirmationModal';
+import SearchComponent from '../General/SearchComponent';
+import TagBlock from '../Tag/TagBlock';
 
-import { ItemResponse, ItemDTO, ItemCreationDTO } from '../../Types/Item';
+import { ItemResponse, ItemDTO, ItemCreationDTO, Item } from '../../Types/Item';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
@@ -57,7 +58,7 @@ function ItemTable(){
             <SearchComponent onSearch={setSearchTerm} />
             <ConfirmationModal onDelete={handleDelete} />
 
-            <table className="table table-secondary table-hover table-striped">
+            <table className="table table-secondary table-hover">
                 <thead>
                     <tr>
                         <th scope="col">id</th>
@@ -76,10 +77,9 @@ function ItemTable(){
                             <td>{itemDTO.item.description}</td>
                             <td>
                                 <button type="button" className="btn btn-info btn-small" onClick={() => handleEdit(itemDTO.item.id)}>Edit</button>
-                            </td>
-                            <td>
                                 <button type="button" onClick={() => setDeleteId(itemDTO.item.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
                             </td>
+                            <td></td>
                         </tr>
                         {itemDTO.containers.length > 0 && (
                             <tr>
