@@ -6,7 +6,6 @@ export type Tag = {
     id: number;
     name: string;
     color: string;
-    items?: Item[];
 };
 
 export const TagSchema = z.object({
@@ -14,3 +13,5 @@ export const TagSchema = z.object({
     name: z.string({message: 'A tag is required'}),
     color: z.string(),
 });
+
+export type TagSchemaType = z.infer<typeof TagSchema>;

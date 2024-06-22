@@ -39,3 +39,16 @@ export const ItemSchema = z.object({
     containerItems: z.array(ContainerItemSchema).optional(),
     tags: z.array(TagSchema).optional(),
 });
+
+export const LinkSchema = z.object({
+    scannerId: z.string().optional(),
+    quantity: z.number().positive({message: 'Quantity must be positive'}).optional(),
+    linkId: z.number().optional(),
+}).optional();
+
+export const ItemFormSchema = z.object({
+    item: ItemSchema,
+    links: z.array(LinkSchema),
+});
+
+export type ItemFormSchemaType = z.infer<typeof ItemFormSchema>;

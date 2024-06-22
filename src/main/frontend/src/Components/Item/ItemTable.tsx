@@ -5,7 +5,6 @@ import axios from 'axios';
 import PaginationComponent from '../General/Pagination';
 import ConfirmationModal from '../General/ConfirmationModal';
 import SearchComponent from '../General/SearchComponent';
-import TagBlock from '../Tag/TagBlock';
 
 import { ItemResponse, ItemDTO, ItemCreationDTO, Item } from '../../Types/Item';
 

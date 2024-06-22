@@ -1,19 +1,26 @@
 import React from 'react';
-import { Tag } from '../../Types/Tag';
-import { Item } from '../../Types/Item';
-
+import { useController, Control, FieldValues } from 'react-hook-form';
 import axios from 'axios';
 
+import { Tag, TagSchemaType } from '../../Types/Tag';
+import { Item, ItemFormSchemaType } from '../../Types/Item';
+
 type TagBlockProps = {
-    tag: Tag
+    control: Control<ItemFormSchemaType>;
+    name: `item.tags.${number}`;
 };
 
-const TagBlock = ({ tag }: TagBlockProps) => {
+const TagBlock = ({ control, name }: TagBlockProps) => {
+    const { field, fieldState } = useController({
+        control,
+        name
+    });
+
     return (
         <div className='rounded-pill border d-inline-flex p-2' style={{
-            backgroundColor: tag.color,
+            backgroundColor: field.value.color
         }}>
-            {tag.name}
+            {field.value.name}
             <button className="btn-close" aria-label="Close"></button>
         </div>
     );

@@ -5,20 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-import { ItemCreationDTO, LinkDTO, ItemSchema } from '../../Types/Item';
+import { ItemCreationDTO, LinkDTO, ItemFormSchema, ItemFormSchemaType } from '../../Types/Item';
+import TagInput from '../Tag/TagInput';
 
-const LinkSchema = z.object({
-    scannerId: z.string().optional(),
-    quantity: z.number().positive({message: 'Quantity must be positive'}).optional(),
-    linkId: z.number().optional(),
-}).optional();
 
-const ItemFormSchema = z.object({
-    item: ItemSchema,
-    links: z.array(LinkSchema),
-});
-
-type ItemFormSchemaType = z.infer<typeof ItemFormSchema>;
 
 export default function ItemForm(){
     const location = useLocation();
@@ -118,6 +108,8 @@ export default function ItemForm(){
                     <p>{`${errors.item.description.message}`}</p>
                 )}
             </div>
+
+            <TagInput control={ control } name='item.tags' />
 
             <table id="linkTable" className="table table-secondary table-hover table-striped">
                 <thead>
