@@ -4,13 +4,13 @@ import { z } from 'zod';
 
 export type Tag = {
     id: number;
-    name: string;
+    tag: string;
     color: string;
 };
 
 export const TagSchema = z.object({
     id: z.number(),
-    name: z.string({message: 'A tag is required'}),
+    tag: z.string({message: 'A tag is required'}),
     color: z.string(),
 });
 

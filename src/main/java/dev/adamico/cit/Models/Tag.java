@@ -1,5 +1,6 @@
 package dev.adamico.cit.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,6 @@ public class Tag {
     private String color;
 
     @ManyToMany(mappedBy = "tags", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private Set<Item> item;
 }

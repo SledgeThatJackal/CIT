@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { ItemCreationDTO, LinkDTO, ItemFormSchema, ItemFormSchemaType } from '../../Types/Item';
@@ -12,6 +11,8 @@ import TagInput from '../Tag/TagInput';
 
 export default function ItemForm(){
     const location = useLocation();
+    const navigate = useNavigate();
+    
     const itemCreationDTO: ItemCreationDTO = location.state?.response;
 
     const {
@@ -42,22 +43,17 @@ export default function ItemForm(){
         name: 'links',
     }) as LinkDTO[];
 
-    const onSubmit = async (data: ItemFormSchemaType) => {
-        console.log("Submitting");
-        
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-
+    const onSubmit = async (data: ItemFormSchemaType) => {    
         if(itemCreationDTO){
-            console.log("Edit");
+            // Edit 
             await axios.patch(`/api/item/edit`, data);
+            navigate(-1); // Go to the previous page
         } else {
-            console.log("Create");
-            await axios.post(`/api/item/create`, data, config);
+            // Create
+            await axios.post(`/api/item/create`, data);
+            reset();
         }
+
     };
 
     const onDelete = async (index: number, id?: number) => {
@@ -131,7 +127,7 @@ export default function ItemForm(){
                                 <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />
                             </td>
                             <td>
-                                <button className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId)}></button>
+                                <button type='button' className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId)}></button>
                             </td>
                             {errors.links && errors.links[index] && (
                                 <p>{errors.links[index]?.message}</p>

@@ -8,9 +8,10 @@ import { Item, ItemFormSchemaType } from '../../Types/Item';
 type TagBlockProps = {
     control: Control<ItemFormSchemaType>;
     name: `item.tags.${number}`;
+    onDelete: () => Promise<void>;
 };
 
-const TagBlock = ({ control, name }: TagBlockProps) => {
+const TagBlock = ({ control, name, onDelete }: TagBlockProps) => {
     const { field, fieldState } = useController({
         control,
         name
@@ -20,8 +21,8 @@ const TagBlock = ({ control, name }: TagBlockProps) => {
         <div className='rounded-pill border d-inline-flex p-2' style={{
             backgroundColor: field.value.color
         }}>
-            {field.value.name}
-            <button className="btn-close" aria-label="Close"></button>
+            <p>{field.value.tag}</p>
+            <button type='button' className="btn-close" aria-label="Close" onClick={ onDelete }></button>
         </div>
     );
 };

@@ -12,12 +12,12 @@ public class TagController {
     private TagService tagService;
 
     @PostMapping("/create")
-    public void createTag(@RequestBody Tag tag){
-        tagService.createTag(tag);
+    public Tag createTag(@RequestBody Tag tag){
+        return tagService.createTag(tag);
     }
 
     @DeleteMapping("/delete")
-    public void deleteTag(@RequestBody Long id){
+    public void deleteTag(@RequestParam Long id){
         tagService.deleteTag(id);
     }
 }

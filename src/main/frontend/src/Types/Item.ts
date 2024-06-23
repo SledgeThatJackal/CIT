@@ -33,7 +33,7 @@ export type ItemCreationDTO = {
 };
 
 export const ItemSchema = z.object({
-    id: z.number(),
+    id: z.number().optional(),
     name: z.string({message: 'The Item name is required'}),
     description: z.string().optional(),
     containerItems: z.array(ContainerItemSchema).optional(),

@@ -10,8 +10,8 @@ public class TagService {
     @Autowired
     private TagRepository tagRepository;
 
-    public void createTag(Tag tag){
-        tagRepository.save(tag);
+    public Tag createTag(Tag tag){
+        return tagRepository.save(tag);
     }
 
     public Tag findTagById(Long id){
