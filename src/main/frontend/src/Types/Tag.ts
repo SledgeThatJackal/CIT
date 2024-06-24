@@ -1,5 +1,3 @@
-import { Item, ItemSchema } from './Item';
-
 import { z } from 'zod';
 
 export type Tag = {

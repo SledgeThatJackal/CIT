@@ -1,9 +1,7 @@
 import React from 'react';
-import { useController, Control, FieldValues } from 'react-hook-form';
-import axios from 'axios';
+import { useController, Control } from 'react-hook-form';
 
-import { Tag, TagSchemaType } from '../../Types/Tag';
-import { Item, ItemFormSchemaType } from '../../Types/Item';
+import { ItemFormSchemaType } from '../../Types/Item';
 
 type TagBlockProps = {
     control: Control<ItemFormSchemaType>;
@@ -18,10 +16,18 @@ const TagBlock = ({ control, name, onDelete }: TagBlockProps) => {
     });
 
     return (
-        <div className='rounded-pill border d-inline-flex p-2' style={{
-            backgroundColor: field.value.color
+        <div className='d-inline-flex badge rounded-pill align-items-center' style={{
+            backgroundColor: field.value.color,
         }}>
-            <p>{field.value.tag}</p>
+            <span style={{
+                color: field.value.color,
+                mixBlendMode: 'multiply',
+                paddingRight: 10,
+                whiteSpace: 'nowrap',
+            }}>
+                {field.value.tag}
+            </span>
+
             <button type='button' className="btn-close" aria-label="Close" onClick={ onDelete }></button>
         </div>
     );

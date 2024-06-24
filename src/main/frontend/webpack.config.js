@@ -6,12 +6,44 @@ module.exports = {
     entry: './app.js',
     output: {
         path: path.resolve(__dirname, '..', 'resources', 'static'),
-        filename: 'index.js'
+        filename: '[name].[contenthash].js',
+        clean: true
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all',
+                    priority: 10,
+                    enforce: true,
+                    maxSize: 244 * 1024
+                },
+                common: {
+                    name: 'common',
+                    chunks: 'all',
+                    minChunks: 2,
+                    priority: 5,
+                    enforce: true,
+                    reuseExistingChunk: true,
+                    maxSize: 244 * 1024
+                }
+            }
+        }
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './public/index.html',
-            filename: 'index.html'
+            filename: 'index.html',
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                useShortDoctype: true
+            }
         })
     ],
     resolve: {
@@ -39,6 +71,14 @@ module.exports = {
             {
                 test: /\.css$/,
                 use:['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(scss|sass)$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
             }
         ]
     }
