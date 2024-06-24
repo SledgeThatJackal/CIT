@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import PaginationComponent from '../General/Pagination';
@@ -12,6 +12,8 @@ function ContainerTable(){
     const [totalPages, setTotalPages] = useState<number>(1);
     const [containerData, setContainerData] = useState<Container[]>([]);
     const [deleteId, setDeleteId] = useState<number>(-1);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,6 +40,16 @@ function ContainerTable(){
         }
     };
 
+    const handleEdit = async (id: number) => {
+        try{
+            const response = (await axios.get<Container>(`/api/container/edit?id=${id}`)).data;
+
+            navigate('/container/form', {state: { response }});
+        } catch (error){
+            console.error('Error deleteing entry: ', error);
+        }
+    };
+
     return (
         <div>
             <table className="table table-secondary table-hover">
@@ -49,7 +61,6 @@ function ContainerTable(){
                         <th scope="col">Scanner ID</th>
                         <th scope="col">Parent Container ID</th>
                         <th scope="col"><NavLink to="/container/form" className="btn btn-primary btn-sm" role="button">Create</NavLink></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody className="table-group-divider">
@@ -60,8 +71,12 @@ function ContainerTable(){
                             <td>{container.description}</td>
                             <td>{container.scannerId}</td>
                             <td>{container.parentContainer}</td>
-                            <td><NavLink to="/container/form" className="btn btn-info btn-sm" role="button">Edit</NavLink></td>
-                            <td><button type="button" onClick={() => setDeleteId(container.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button></td>
+                            <td>
+                                <div className='btn-group'>
+                                    <button type="button" className="btn btn-info btn-sm" onClick={() => handleEdit(container.id)}>Edit</button>
+                                    <button type="button" onClick={() => setDeleteId(container.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
+                                </div>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

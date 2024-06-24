@@ -1,12 +1,15 @@
 package dev.adamico.cit.Controllers;
 
 import dev.adamico.cit.Models.Container;
+import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Services.ContainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/container")
@@ -27,6 +30,9 @@ public class ContainerController {
 
     @PatchMapping("/edit")
     public Container updateContainer(@RequestBody Container container){
+        Set<ContainerItem> containerItems = containerService.findContainerById(container.getId()).getContainerItems();
+        container.setContainerItems(containerItems);
+
         return containerService.saveContainer(container);
     }
 
