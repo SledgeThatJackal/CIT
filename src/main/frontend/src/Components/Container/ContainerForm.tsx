@@ -2,22 +2,25 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Container } from '../../Types/Container';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ContainerFormSchema = z.object({
+    id: z.number().optional(),
     name: z.string(),
     description: z.string().optional(),
-    parent_container: z.number().optional(),
-    scanner_id: z.string(),
+    parentContainer: z.number().optional(),
+    scannerId: z.string(),
 });
 
 type ContainerFormSchemaType = z.infer<typeof ContainerFormSchema>;
 
-type ContainerFormProps = {
-    container?: Container;
-};
+export default function ContainerForm(){
+    const location = useLocation();
+    const navigate = useNavigate();
 
-export default function ContainerForm({ container }: ContainerFormProps){
+    const container = location.state?.response;
+
     const {
         register,
         handleSubmit,
@@ -26,59 +29,64 @@ export default function ContainerForm({ container }: ContainerFormProps){
     } = useForm<ContainerFormSchemaType>({
         defaultValues: container 
         ? {
+            id: container.id,
             name: container.name,
             description: container.description,
-            parent_container: container.parentContainer,
-            scanner_id: container.scannerId,
+            parentContainer: container.parentContainer,
+            scannerId: container.scannerId,
         } : undefined,
         resolver: zodResolver(ContainerFormSchema),
     });
 
     const onSubmit = async (data: ContainerFormSchemaType) => {
         if(container){
-            // Edit the container
+            // Edit
+            await axios.patch(`/api/container/edit`, data);
+            navigate(-1); // Go to the previous page
         } else {
-            console.log(data);
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Create
+            await axios.post(`/api/container/create`, data);
             reset();
         }
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <label htmlFor='nameInput' className='form-label'></label>
-                <input {...register("name")} type="text" id="nameInput" className="form-control" placeholder="Container Name" />
-                {errors.name && (
-                    <p>{`${errors.name.message}`}</p>
-                )}
-            </div>
+        <div className='d-flex justify-content-center align-items-center'>
+            <form className='w-75 p-3' onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                    <label htmlFor='nameInput' className='form-label'>Name</label>
+                    <input {...register("name")} type="text" id="nameInput" className="form-control" placeholder="Container Name" />
+                    {errors.name && (
+                        <p>{`${errors.name.message}`}</p>
+                    )}
+                </div>
 
-            <div>
-                <label htmlFor='descriptionTextArea' className='form-label'>Description</label>
-                <textarea {...register("description")} id='descriptionTextArea' className="form-control" placeholder="Container Description" />
-                {errors.description && (
-                    <p>{`${errors.description.message}`}</p>
-                )}
-            </div>
+                <div>
+                    <label htmlFor='descriptionTextArea' className='form-label'>Description</label>
+                    <textarea {...register("description")} id='descriptionTextArea' className="form-control" placeholder="Container Description" />
+                    {errors.description && (
+                        <p>{`${errors.description.message}`}</p>
+                    )}
+                </div>
 
-            <div>
-                <label htmlFor='parentConatainerInput' className='form-label'>Parent Container ID</label>
-                <input {...register("parent_container", {valueAsNumber: true})} id='parentConatainerInput' type="number" className="form-control" placeholder="Parent Container ID" />
-                {errors.parent_container && (
-                    <p>{`${errors.parent_container.message}`}</p>
-                )}
-            </div>
+                <div>
+                    <label htmlFor='parentConatainerInput' className='form-label'>Parent Container ID</label>
+                    <input {...register("parentContainer", {valueAsNumber: true})} id='parentConatainerInput' type="number" className="form-control" placeholder="Parent Container ID" />
+                    {errors.parentContainer && (
+                        <p>{`${errors.parentContainer.message}`}</p>
+                    )}
+                </div>
 
-            <div>
-                <label htmlFor='scannerIdInput' className='form-label'>Scanner ID</label>
-                <input {...register("scanner_id")} type="text" id='scannerIdInput' className="form-control" placeholder="Scanner ID" />
-                {errors.scanner_id && (
-                    <p>{`${errors.scanner_id.message}`}</p>
-                )}
-            </div>
+                <div>
+                    <label htmlFor='scannerIdInput' className='form-label'>Scanner ID</label>
+                    <input {...register("scannerId")} type="text" id='scannerIdInput' className="form-control" placeholder="Scanner ID" />
+                    {errors.scannerId && (
+                        <p>{`${errors.scannerId.message}`}</p>
+                    )}
+                </div>
 
-            <button type="submit" disabled={isSubmitting}>Submit</button>
-        </form>
+                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Submit</button>
+            </form>
+        </div>
     );
 };

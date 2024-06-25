@@ -1,4 +1,4 @@
-package dev.adamico.cit.Services;
+package dev.adamico.cit.Repositories;
 
 import dev.adamico.cit.Models.Item;
 import org.springframework.data.domain.Page;

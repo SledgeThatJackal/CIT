@@ -1,27 +1,16 @@
 import React, { useEffect } from 'react';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import { ItemCreationDTO, LinkDTO, ItemSchema } from '../../Types/Item';
-
-const LinkSchema = z.object({
-    scannerId: z.string().optional(),
-    quantity: z.number().positive({message: 'Quantity must be positive'}).optional(),
-    linkId: z.number().optional(),
-}).optional();
-
-const ItemFormSchema = z.object({
-    item: ItemSchema,
-    links: z.array(LinkSchema),
-});
-
-type ItemFormSchemaType = z.infer<typeof ItemFormSchema>;
+import { ItemCreationDTO, LinkDTO, ItemFormSchema, ItemFormSchemaType } from '../../Types/Item';
+import TagInput from '../Tag/TagInput';
 
 export default function ItemForm(){
     const location = useLocation();
+    const navigate = useNavigate();
+    
     const itemCreationDTO: ItemCreationDTO = location.state?.response;
 
     const {
@@ -52,22 +41,17 @@ export default function ItemForm(){
         name: 'links',
     }) as LinkDTO[];
 
-    const onSubmit = async (data: ItemFormSchemaType) => {
-        console.log("Submitting");
-        
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-
+    const onSubmit = async (data: ItemFormSchemaType) => {    
         if(itemCreationDTO){
-            console.log("Edit");
+            // Edit 
             await axios.patch(`/api/item/edit`, data);
+            navigate(-1); // Go to the previous page
         } else {
-            console.log("Create");
-            await axios.post(`/api/item/create`, data, config);
+            // Create
+            await axios.post(`/api/item/create`, data);
+            reset();
         }
+
     };
 
     const onDelete = async (index: number, id?: number) => {
@@ -100,56 +84,60 @@ export default function ItemForm(){
     }, [watchLinks]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit, (errors => {
-            console.log("Validation Errors: ", errors);
-        }))}>
-            <div className='mb-3'>
-                <label htmlFor='nameInput' className='form-label'>Name</label>
-                <input {...register("item.name")} type="text" id="nameInput" className="form-control" placeholder="Item Name" />
-                {errors.item?.name && (
-                    <p>{`${errors.item.name.message}`}</p>
-                )}
-            </div>
-            
-            <div className='mb-3'>
-                <label htmlFor='descriptionTextArea' className='form-label'>Description</label>
-                <textarea {...register("item.description")} id="descriptionTextArea" className="form-control" placeholder="Item Description" />
-                {errors.item?.description && (
-                    <p>{`${errors.item.description.message}`}</p>
-                )}
-            </div>
+        <div className='d-flex justify-content-center align-items-center'>
+            <form className='w-75 p-3' onSubmit={handleSubmit(onSubmit, (errors => {
+                console.log("Validation Errors: ", errors);
+            }))}>
+                <div className='mb-3'>
+                    <label htmlFor='nameInput' className='form-label'>Name</label>
+                    <input {...register("item.name")} type="text" id="nameInput" className="form-control" placeholder="Item Name" autoFocus />
+                    {errors.item?.name && (
+                        <p>{`${errors.item.name.message}`}</p>
+                    )}
+                </div>
+                
+                <div className='mb-3'>
+                    <label htmlFor='descriptionTextArea' className='form-label'>Description</label>
+                    <textarea {...register("item.description")} id="descriptionTextArea" className="form-control" placeholder="Item Description" />
+                    {errors.item?.description && (
+                        <p>{`${errors.item.description.message}`}</p>
+                    )}
+                </div>
 
-            <table id="linkTable" className="table table-secondary table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Scanner ID</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Remove</th>
-                    </tr>
-                </thead>
-                <tbody id="linkTableBody" className="link">
-                    {fields.map((link, index) => (
-                        <tr key={link.id} data-key={link.id}>
-                            <th>{index + 1}</th>
-                            <td>
-                                <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={link.scannerId} />
-                            </td>
-                            <td>
-                                <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />
-                            </td>
-                            <td>
-                                <button className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId)}></button>
-                            </td>
-                            {errors.links && errors.links[index] && (
-                                <p>{errors.links[index]?.message}</p>
-                            )}
+                <TagInput control={ control } name='item.tags' />
+
+                <table id="linkTable" className="table table-secondary table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Scanner ID</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Remove</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody id="linkTableBody" className="link">
+                        {fields.map((link, index) => (
+                            <tr key={link.id} data-key={link.id}>
+                                <th>{index + 1}</th>
+                                <td>
+                                    <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={link.scannerId} />
+                                </td>
+                                <td>
+                                    <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />
+                                </td>
+                                <td>
+                                    <button type='button' className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId)}></button>
+                                </td>
+                                {errors.links && errors.links[index] && (
+                                    <p>{errors.links[index]?.message}</p>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{itemCreationDTO ? 'Update' : 'Create'}</button>
-        </form>
+                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{itemCreationDTO ? 'Update' : 'Create'}</button>
+            </form>
+        </div>
     );
 };

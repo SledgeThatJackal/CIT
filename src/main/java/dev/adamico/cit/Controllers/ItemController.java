@@ -4,9 +4,11 @@ import dev.adamico.cit.DTOs.ItemCreationDTO;
 import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ContainerItemService;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Services.ItemService;
+import dev.adamico.cit.Services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,9 @@ import java.util.List;
 public class ItemController {
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private TagService tagService;
 
     @Autowired
     private ContainerService containerService;
@@ -59,6 +64,22 @@ public class ItemController {
         Item item = itemService.saveItem(itemCreationDTO.getItem());
 
         containerItemService.createContainerItemLink(itemCreationDTO.getLinks(), item);
+    }
+
+    @DeleteMapping("/delete-tag")
+    public ResponseEntity<?> deleteTag(@RequestParam("itemId") Long itemId, @RequestParam("tagId") Long tagId){
+        try{
+            Item item = itemService.findItemById(itemId);
+            Tag tag = tagService.findTagById(tagId);
+
+            item.getTags().remove(tag);
+
+            itemService.saveItem(item);
+
+            return ResponseEntity.ok().build();
+        } catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting tag: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete")
