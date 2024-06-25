@@ -1,4 +1,7 @@
 # CIT
+v0.1.1
+- Items can now have tags associated with them
+
 v0.1.0
 - Application now uses React to render frontend elements instead of Thymeleaf
 
