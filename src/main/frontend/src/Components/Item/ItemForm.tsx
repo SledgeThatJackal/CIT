@@ -90,7 +90,7 @@ export default function ItemForm(){
             }))}>
                 <div className='mb-3'>
                     <label htmlFor='nameInput' className='form-label'>Name</label>
-                    <input {...register("item.name")} type="text" id="nameInput" className="form-control" placeholder="Item Name" />
+                    <input {...register("item.name")} type="text" id="nameInput" className="form-control" placeholder="Item Name" autoFocus />
                     {errors.item?.name && (
                         <p>{`${errors.item.name.message}`}</p>
                     )}

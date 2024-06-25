@@ -5,6 +5,7 @@ import axios from 'axios';
 import PaginationComponent from '../General/Pagination';
 import ConfirmationModal from '../General/ConfirmationModal';
 import SearchComponent from '../General/SearchComponent';
+import TagBadge from '../Tag/TagBadge';
 
 import { ItemResponse, ItemDTO, ItemCreationDTO } from '../../Types/Item';
 
@@ -63,8 +64,8 @@ function ItemTable(){
                         <th scope="col">id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
-                        <th scope="col"><NavLink to="/item/form" className="btn btn-primary btn-sm" role="button">Create</NavLink></th>
                         <th scope="col">Tag(s)</th>
+                        <th scope="col"><NavLink to="/item/form" className="btn btn-primary btn-sm" role="button">Create</NavLink></th>
                     </tr>
                 </thead>
                 <tbody className="table-group-divider">
@@ -75,29 +76,19 @@ function ItemTable(){
                             <td>{itemDTO.item.name}</td>
                             <td>{itemDTO.item.description}</td>
                             <td>
+                                {itemDTO.item.tags && itemDTO.item.tags.length > 0 && (
+                                    <>
+                                        {itemDTO.item.tags.map((tag, tagIndex) => (
+                                            <TagBadge key={`tag-${index}-${tagIndex}`} tag={ tag } />
+                                        ))}
+                                    </>
+                                )}
+                            </td>
+                            <td>
                                 <div className='btn-group'>
                                     <button type="button" className="btn btn-info btn-sm" onClick={() => handleEdit(itemDTO.item.id)}>Edit</button>
                                     <button type="button" onClick={() => setDeleteId(itemDTO.item.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
                                 </div>
-                            </td>
-                            <td>
-                                {itemDTO.item.tags && itemDTO.item.tags.length > 0 && (
-                                    <>
-                                        {itemDTO.item.tags.map((tag, tagIndex) => (
-                                            <div key={`tag-${index}-${tagIndex}`} className='d-inline-flex badge rounded-pill align-items-center' style={{
-                                                backgroundColor: tag.color,
-                                            }}>
-                                                <span style={{
-                                                    color: tag.color,
-                                                    mixBlendMode: 'multiply',
-                                                    whiteSpace: 'nowrap',
-                                                }}>
-                                                    {tag.tag}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </>
-                                )}
                             </td>
                         </tr>
                         {itemDTO.containers.length > 0 && (

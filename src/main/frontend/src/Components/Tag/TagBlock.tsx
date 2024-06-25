@@ -15,13 +15,22 @@ const TagBlock = ({ control, name, onDelete }: TagBlockProps) => {
         name
     });
 
+    const tagColor = field.value.color.replace('#', '');
+
+    // Darken base color
+    const colorValue = (parseInt(tagColor, 16) & 0xfefefe) >> 1; 
+
+    // Turn the numbered color back into a hex number and pad the start, if there's not enough values
+    const darkerColor = `#${colorValue.toString(16).padStart(6, '0')}`;
+
     return (
         <div className='d-inline-flex badge rounded-pill align-items-center' style={{
             backgroundColor: field.value.color,
+            border: `3px solid ${darkerColor}`,
+            marginRight: 3,
         }}>
             <span style={{
-                color: field.value.color,
-                mixBlendMode: 'multiply',
+                color: darkerColor,
                 paddingRight: 10,
                 whiteSpace: 'nowrap',
             }}>
