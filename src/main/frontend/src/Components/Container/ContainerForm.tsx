@@ -55,7 +55,7 @@ export default function ContainerForm(){
             <form className='w-75 p-3' onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor='nameInput' className='form-label'>Name</label>
-                    <input {...register("name")} type="text" id="nameInput" className="form-control" placeholder="Container Name" />
+                    <input {...register("name")} type="text" id="nameInput" className="form-control" placeholder="Container Name" autoFocus/>
                     {errors.name && (
                         <p>{`${errors.name.message}`}</p>
                     )}

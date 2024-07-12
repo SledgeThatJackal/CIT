@@ -24,7 +24,7 @@ export type ItemDTO = {
 export type LinkDTO = {
     scannerId: string;
     quantity: number;
-    linkId: number;
+    linkId?: number;
 };
 
 export type ItemCreationDTO = {
@@ -43,7 +43,7 @@ export const ItemSchema = z.object({
 export const LinkSchema = z.object({
     scannerId: z.string().optional(),
     quantity: z.number().positive({message: 'Quantity must be positive'}).optional(),
-    linkId: z.number().optional(),
+    linkId: z.number().optional().nullable(),
 }).optional();
 
 export const ItemFormSchema = z.object({
