@@ -1,4 +1,7 @@
 # CIT
+v0.1.2
+- Edit page is now a modal on the item table page
+
 v0.1.1
 - Items can now have tags associated with them
 
