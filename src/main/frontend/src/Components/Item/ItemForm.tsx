@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { ItemCreationDTO, LinkDTO, ItemFormSchema, ItemFormSchemaType } from '../../Types/Item';
 import TagInput from '../Tag/TagInput';
 
-export default function ItemForm(){
-    const location = useLocation();
-    const navigate = useNavigate();
-    
-    const itemCreationDTO: ItemCreationDTO = location.state?.response;
+type ItemFromProp = {
+    itemCreationDTO?: ItemCreationDTO;
+    reference?: any;
+};
 
+export default function ItemForm({ itemCreationDTO, reference }: ItemFromProp){
     const {
         register,
         handleSubmit,
@@ -21,10 +20,7 @@ export default function ItemForm(){
         reset,
     } = useForm<ItemFormSchemaType>({
         defaultValues: itemCreationDTO
-        ? {
-            item: itemCreationDTO.item,
-            links: itemCreationDTO.links,
-        } : {
+        ? itemCreationDTO : {
             item: {},
             links: [{quantity: 1}],
         },
@@ -45,7 +41,7 @@ export default function ItemForm(){
         if(itemCreationDTO){
             // Edit 
             await axios.patch(`/api/item/edit`, data);
-            navigate(-1); // Go to the previous page
+            reset();
         } else {
             // Create
             await axios.post(`/api/item/create`, data);
@@ -83,10 +79,16 @@ export default function ItemForm(){
         };
     }, [watchLinks]);
 
+    useEffect( () => {
+        if(itemCreationDTO){
+            reset(itemCreationDTO);
+        }
+    }, [itemCreationDTO]);
+
     return (
         <div className='d-flex justify-content-center align-items-center'>
             <form className='w-75 p-3' onSubmit={handleSubmit(onSubmit, (errors => {
-                console.log("Validation Errors: ", errors);
+                console.error("Validation Errors: ", errors);
             }))}>
                 <div className='mb-3'>
                     <label htmlFor='nameInput' className='form-label'>Name</label>
@@ -109,7 +111,6 @@ export default function ItemForm(){
                 <table id="linkTable" className="table table-secondary table-hover table-striped">
                     <thead>
                         <tr>
-                            <th scope="col"></th>
                             <th scope="col">Scanner ID</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Remove</th>
@@ -118,7 +119,6 @@ export default function ItemForm(){
                     <tbody id="linkTableBody" className="link">
                         {fields.map((link, index) => (
                             <tr key={link.id} data-key={link.id}>
-                                <th>{index + 1}</th>
                                 <td>
                                     <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={link.scannerId} />
                                 </td>
@@ -126,7 +126,7 @@ export default function ItemForm(){
                                     <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />
                                 </td>
                                 <td>
-                                    <button type='button' className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId)}></button>
+                                    <button type='button' className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId ? link.linkId : undefined)}></button>
                                 </td>
                                 {errors.links && errors.links[index] && (
                                     <p>{errors.links[index]?.message}</p>
@@ -136,7 +136,7 @@ export default function ItemForm(){
                     </tbody>
                 </table>
 
-                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{itemCreationDTO ? 'Update' : 'Create'}</button>
+                <button type="submit" className="btn btn-primary" disabled={ isSubmitting } ref={ reference } style={{ display: reference ? 'none' : ''}}> Create </button>
             </form>
         </div>
     );

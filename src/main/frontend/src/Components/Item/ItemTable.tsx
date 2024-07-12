@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import PaginationComponent from '../General/Pagination';
 import ConfirmationModal from '../General/ConfirmationModal';
+import EditModal from '../General/EditModal';
 import SearchComponent from '../General/SearchComponent';
 import TagBadge from '../Tag/TagBadge';
 
@@ -15,24 +16,23 @@ function ItemTable(){
     const [itemData, setItemData] = useState<ItemDTO[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [deleteId, setDeleteId] = useState<number>(-1);
-
-    const navigate = useNavigate();
+    const [editData, setEditData] = useState<ItemCreationDTO | undefined>(undefined);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try{
-                const url = `/api/item?page=${currentPage}&search=${searchTerm}`;
-                const response = await axios.get<ItemResponse>(url);
-
-                setItemData(response.data.content);
-                setTotalPages(response.data.totalPages);
-            } catch (error){
-                console.log('Request failed: ', error);
-            }
-        };
-
         fetchData();
     }, [currentPage, searchTerm]);
+
+    const fetchData = async () => {
+        try{
+            const url = `/api/item?page=${currentPage}&search=${searchTerm}`;
+            const response = await axios.get<ItemResponse>(url);
+
+            setItemData(response.data.content);
+            setTotalPages(response.data.totalPages);
+        } catch (error){
+            console.error('Request failed: ', error);
+        }
+    };
 
     const handleDelete = async () => {
         try{
@@ -47,7 +47,7 @@ function ItemTable(){
         try{
             const response = (await axios.get<ItemCreationDTO>(`/api/item/edit?itemId=${itemId}`)).data;
 
-            navigate('/item/form', {state: { response }});
+            setEditData(response);
         } catch (error){
             console.error('Error fetching item: ', error);
         }
@@ -56,7 +56,8 @@ function ItemTable(){
     return(
         <div>
             <SearchComponent onSearch={setSearchTerm} />
-            <ConfirmationModal onDelete={handleDelete} />
+            <ConfirmationModal onDelete={handleDelete} />\
+            <EditModal data={ editData } onDataUpdate={ fetchData } />
 
             <table className="table table-secondary table-hover">
                 <thead>
@@ -86,7 +87,7 @@ function ItemTable(){
                             </td>
                             <td>
                                 <div className='btn-group'>
-                                    <button type="button" className="btn btn-info btn-sm" onClick={() => handleEdit(itemDTO.item.id)}>Edit</button>
+                                    <button type="button" className="btn btn-info btn-sm" onClick={() => handleEdit(itemDTO.item.id)} data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                                     <button type="button" onClick={() => setDeleteId(itemDTO.item.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
                                 </div>
                             </td>
