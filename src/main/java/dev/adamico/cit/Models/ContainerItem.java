@@ -27,6 +27,6 @@ public class ContainerItem {
     @JsonBackReference("itemReference")
     private Item item;
 
-    @JoinColumn(name = "quantity", nullable = false)
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 }
