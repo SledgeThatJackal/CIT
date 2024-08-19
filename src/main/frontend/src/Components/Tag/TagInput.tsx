@@ -78,7 +78,6 @@ const TagInput = ({ control, name }: TagInputProps) => {
     return (
         <div>
             <div className='mb-3'>
-                <label htmlFor='tagInput' className='form-label'>Tags</label>
                 <div className='input-group'>
                     <input onChange={ (event) => setNewTagName(event.target.value) } type='text' value={ newTagName } id='tagInput' className='form-control w-75 dropdown-toggle dropdown-toggle-split' data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent" />
                     <div className='dropdown-menu' aria-labeled='tagInput'>
