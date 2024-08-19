@@ -6,7 +6,7 @@ import PaginationComponent from '../General/Pagination';
 import ConfirmationModal from '../General/ConfirmationModal';
 import EditModal from '../General/EditModal';
 import SearchComponent from '../General/SearchComponent';
-import TagBadge from '../Tag/TagBadge';
+import ReadRow from '../General/ReadRow';
 
 import { ItemResponse, ItemDTO, ItemCreationDTO } from '../../Types/Item';
 
@@ -55,8 +55,8 @@ function ItemTable(){
 
     return(
         <div>
-            <SearchComponent onSearch={setSearchTerm} />
-            <ConfirmationModal onDelete={handleDelete} />\
+            <SearchComponent onSearch={ setSearchTerm } />
+            <ConfirmationModal onDelete={ handleDelete } />\
             <EditModal data={ editData } onDataUpdate={ fetchData } />
 
             <table className="table table-secondary table-hover">
@@ -71,54 +71,7 @@ function ItemTable(){
                 </thead>
                 <tbody className="table-group-divider">
                     {itemData.map((itemDTO, index) => (
-                        <React.Fragment>
-                            <tr key={`item-${index}`} data-bs-toggle="collapse" data-bs-target={`#containers-${itemDTO.item.id}`} aria-expanded={false} aria-controls={`containers-${itemDTO.item.id}`}>
-                            <th scope="row">{itemDTO.item.id}</th>
-                            <td>{itemDTO.item.name}</td>
-                            <td>{itemDTO.item.description}</td>
-                            <td>
-                                {itemDTO.item.tags && itemDTO.item.tags.length > 0 && (
-                                    <>
-                                        {itemDTO.item.tags.map((tag, tagIndex) => (
-                                            <TagBadge key={`tag-${index}-${tagIndex}`} tag={ tag } />
-                                        ))}
-                                    </>
-                                )}
-                            </td>
-                            <td>
-                                <div className='btn-group'>
-                                    <button type="button" className="btn btn-info btn-sm" onClick={() => handleEdit(itemDTO.item.id)} data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                                    <button type="button" onClick={() => setDeleteId(itemDTO.item.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        {itemDTO.containers.length > 0 && (
-                            <tr>
-                                <td colSpan={5} className="collapse" id={`containers-${itemDTO.item.id}`}>
-                                    <table className="table table-info table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">id</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Description</th>
-                                                <th scope="col">Scanner ID</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {itemDTO.containers.map((container, containerIndex) => (
-                                                <tr key={`container-${index}-${containerIndex}`}>
-                                                    <th scope="row">{container.id}</th>
-                                                    <td>{container.name}</td>
-                                                    <td>{container.description}</td>
-                                                    <td>{container.scannerId}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        )}
-                        </React.Fragment>
+                        <ReadRow itemDTO={ itemDTO } index={ index } onDelete={ setDeleteId } onEdit={ handleEdit } />
                     ))}
                 </tbody>
             </table>
