@@ -15,9 +15,8 @@ const ReadRow = ( { itemDTO, index, onDelete, onEdit }: ReadRowProps ) => {
 
     return (
         <>
-            <tr key={`item-${index}`} data-bs-toggle="collapse" data-bs-target={`#containers-${itemDTO.item.id}`} aria-expanded={false} aria-controls={`containers-${itemDTO.item.id}`}>
-                <th scope="row">{itemDTO.item.id}</th>
-                <td>{itemDTO.item.name}</td>
+            <tr key={`item-${index}`} className='table-secondary' data-bs-toggle="collapse" data-bs-target={`#containers-${itemDTO.item.id}`} aria-expanded={false} aria-controls={`containers-${itemDTO.item.id}`}>
+                <th scope="row">{itemDTO.item.name}</th>
                 <td>{itemDTO.item.description}</td>
                 <td>
                     {itemDTO.item.tags && itemDTO.item.tags.length > 0 && (
@@ -38,9 +37,9 @@ const ReadRow = ( { itemDTO, index, onDelete, onEdit }: ReadRowProps ) => {
             </tr>
 
             {itemDTO.containers.length > 0 && (
-                <tr>
+                <tr className='table-secondary'>
                     <td colSpan={5} className='collapse' id={`containers-${itemDTO.item.id}`}>
-                        <ContainerRow containers={ itemDTO.containers } index={ index } />
+                        <ContainerRow containers={ itemDTO.containers } index={ index } containerItems={itemDTO.item.containerItems} />
                     </td>
                 </tr>
             )}

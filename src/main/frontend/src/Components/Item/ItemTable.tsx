@@ -29,6 +29,7 @@ function ItemTable(){
 
     useEffect(() => {
         fetchData();
+        setEditId(-1);
     }, [currentPage, searchTerm]);
 
     const fetchData = async () => {
@@ -88,8 +89,7 @@ function ItemTable(){
                 <form onSubmit={ methods.handleSubmit(onSubmit) }>
                     <table className="table table-secondary table-hover">
                         <thead>
-                            <tr>
-                                <th scope="col">id</th>
+                            <tr className='table-secondary'>
                                 <th scope="col">Name</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Tag(s)</th>

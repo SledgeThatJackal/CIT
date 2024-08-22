@@ -14,7 +14,6 @@ type EditRowProps = {
 const EditRow = ({ itemCreationDTO, onSubmit, handleDelete, cancelEdit }: EditRowProps) => {
     const {
         register,
-        handleSubmit,
         formState: {errors, isSubmitting},
         control,
         reset,
@@ -61,9 +60,7 @@ const EditRow = ({ itemCreationDTO, onSubmit, handleDelete, cancelEdit }: EditRo
 
     return (
         <>
-            <tr key={`item-edit-${itemCreationDTO?.item.id}`}>
-                <td></td>
-
+            <tr key={`item-edit-${itemCreationDTO?.item.id}`} className='table-primary'>
                 <td>
                     <input {...register("item.name")} type="text" id="nameInput" className="form-control" placeholder="Item Name" autoFocus />
                     {errors.item?.name && (
@@ -84,18 +81,18 @@ const EditRow = ({ itemCreationDTO, onSubmit, handleDelete, cancelEdit }: EditRo
                 
                 <td>
                     <div className='btn-group'>
-                        <button type="submit" className="btn btn-primary" disabled={ isSubmitting }> Save </button>
+                        <button type="submit" className="btn btn-primary btn-sm" disabled={ isSubmitting }> Save </button>
                         <button type='button' className="btn btn-danger btn-sm" onClick={ () => cancelEdit(-1) }>Discard</button>
                     </div>
                 </td>
             </tr>
 
-            <tr>
+            <tr className='table-primary'>
                 <td colSpan={5}>
-                    <table id="linkTable" className="table table-secondary table-hover table-striped">
+                    <table id="linkTable" className="table table-info table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">Scanner ID</th>
+                                <th scope="col">Container ID</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Remove</th>
                             </tr>
@@ -104,7 +101,7 @@ const EditRow = ({ itemCreationDTO, onSubmit, handleDelete, cancelEdit }: EditRo
                             {fields.map((link, index) => (
                                 <tr key={link.id} data-key={link.id}>
                                     <td>
-                                        <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={link.scannerId} />
+                                        <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={link.scannerId} disabled={ link.scannerId !== '' }/>
                                     </td>
                                     <td>
                                         <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />

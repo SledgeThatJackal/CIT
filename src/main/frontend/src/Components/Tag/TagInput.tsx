@@ -104,7 +104,7 @@ const TagInput = ({ control, name }: TagInputProps) => {
                     <input type='color' className='form-control form-control-color' id='colorInput' value={ color } onChange={ (event) => setColor(event.target.value) } />
                     <button onClick={ () => addTag() } type='button' className='btn btn-warning'>Add</button>
                 </div>
-                <div className='form-text text-info'>{tagError}</div>
+                <div className='form-text text-danger'>{tagError}</div>
             </div>
 
             {fields.map((tag, index) => (

@@ -35,7 +35,6 @@ public class ContainerItemService {
 
     public void createContainerItemLink(List<LinkDTO> links, Item item){
         links.forEach(link -> {
-            System.out.println(link);
             if(!link.getScannerId().isEmpty()){
                 createContainerItemLink(link, item);
             }
@@ -73,7 +72,9 @@ public class ContainerItemService {
     public void changeQuantityAmount(List<LinkDTO> links, Item item){
         for(LinkDTO link : links){
             if(link.getLinkId() == null){
-                createContainerItemLink(link, item);
+                if(!link.getScannerId().isEmpty()) {
+                    createContainerItemLink(link, item);
+                }
             } else {
                 containerItemRepository.updateQuantityById(link.getQuantity(), link.getLinkId());
             }
