@@ -92,4 +92,9 @@ public class ItemController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting item: " + e.getMessage());
         }
     }
+
+    @GetMapping("/all")
+    public List<Item> getAllItems() {
+        return itemService.getAllItemsWithContainersAndQuantities();
+    }
 }

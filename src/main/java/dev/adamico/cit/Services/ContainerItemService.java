@@ -85,11 +85,11 @@ public class ContainerItemService {
         return containerItemRepository.findContainersByItemId(itemId);
     }
 
-    public Page<ItemDTO> findPaginatedItemsWithContainers(int page, int size, String search){
+    public Page<ItemDTO> findPaginatedItemsWithContainers(int page, int size, String search) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Item> itemPage;
 
-        if(search.isEmpty()){
+        if (search.isEmpty()) {
             itemPage = itemRepository.findAll(pageable);
         } else {
             itemPage = itemRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search, search, pageable);
@@ -97,7 +97,7 @@ public class ContainerItemService {
 
         List<ItemDTO> itemDTOS = new ArrayList<>();
 
-        for(Item item: itemPage){
+        for (Item item : itemPage) {
             Set<Container> containers = containerItemRepository.findContainersByItemId(item.getId());
             ItemDTO itemDTO = new ItemDTO(item, containers);
 

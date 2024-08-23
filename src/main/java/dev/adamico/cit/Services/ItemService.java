@@ -27,4 +27,8 @@ public class ItemService {
     public void deleteItem(Long id){
         itemRepository.deleteById(id);
     }
+
+    public List<Item> getAllItemsWithContainersAndQuantities() {
+        return itemRepository.findAllItemsWithContainersAndQuantities();
+    }
 }

@@ -1,6 +1,6 @@
 package dev.adamico.cit.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,14 +19,14 @@ public class ContainerItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "container_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference("containerReference")
+    @JsonIgnoreProperties("containerItems")
     private Container container;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference("itemReference")
+    @JsonIgnoreProperties("containerItems")
     private Item item;
 
-    @JoinColumn(name = "quantity", nullable = false)
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 }

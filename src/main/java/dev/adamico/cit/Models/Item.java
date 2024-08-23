@@ -1,6 +1,6 @@
 package dev.adamico.cit.Models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class Item {
     private String description;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("itemReference")
+    @JsonIgnoreProperties("item")
     private Set<ContainerItem> containerItems;
 
     @ManyToMany
