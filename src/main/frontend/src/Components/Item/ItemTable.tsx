@@ -45,9 +45,10 @@ function ItemTable(){
     };
 
     const onSubmit = async (data: ItemFormSchemaType) => {
-        axios.patch(`/api/item/edit`, data);
+        await axios.patch(`/api/item/edit`, data);
 
         setEditId(-1); // sets the value to -1 here, so the currently edited row is no longer in edit mode
+        fetchData();
     };
 
     const handleDelete = async () => {
@@ -81,13 +82,13 @@ function ItemTable(){
     };
 
     return(
-        <div>
+        <div className='container-fluid'>
             <SearchComponent onSearch={ setSearchTerm } />
             <ConfirmationModal onDelete={ handleDelete } />
 
             <FormProvider {...methods}>
                 <form onSubmit={ methods.handleSubmit(onSubmit) }>
-                    <table className="table table-secondary table-hover">
+                    <table className="table table-secondary table-hover mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>
                         <thead>
                             <tr className='table-secondary'>
                                 <th scope="col">Name</th>
