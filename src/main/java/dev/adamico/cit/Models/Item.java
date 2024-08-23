@@ -1,6 +1,8 @@
 package dev.adamico.cit.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+import dev.adamico.cit.Views;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +17,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonView(Views.Exclusive.class)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,6 +27,7 @@ public class Item {
     private String description;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView(Views.Inclusive.class)
     @JsonIgnoreProperties("item")
     private Set<ContainerItem> containerItems;
 
@@ -33,5 +37,6 @@ public class Item {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @JsonView(Views.Exclusive.class)
     private Set<Tag> tags;
 }
