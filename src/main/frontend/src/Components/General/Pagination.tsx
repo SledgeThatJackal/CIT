@@ -11,23 +11,21 @@ const PaginationComponent = ({currentPage, totalPages, onPageChange}: pagination
     const sequence = generate(currentPage, totalPages, 3, 2);
 
     return (
-        <div>
-            <ul className="pagination">
-                <li className="page-item">
-                    <button className={`page-link ${currentPage === 0 ? 'disabled' : ''}`} onClick={() => onPageChange(currentPage - 1)}>Previous</button>
-                </li>
+        <ul className="pagination justify-content-start">
+            <li className="page-item">
+                <button className={`page-link ${currentPage === 0 ? 'disabled' : ''}`} onClick={() => onPageChange(currentPage - 1)}>Previous</button>
+            </li>
 
-                {sequence.map((value, index) => (
-                    <li className="page-item">
-                        <button key={`page-${index}`} onClick={value === '...' ? undefined : () => onPageChange(index)} className={`page-link ${currentPage === index ? 'active' : ''}`}>{value}</button>
-                    </li>
-                ))}
-
+            {sequence.map((value, index) => (
                 <li className="page-item">
-                    <button className={`page-link ${currentPage === (totalPages - 1) ? 'disabled' : ''}`} onClick={() => onPageChange(currentPage + 1)}>Next</button>
+                    <button key={`page-${index}`} onClick={value === '...' ? undefined : () => onPageChange(index)} className={`page-link ${currentPage === index ? 'active' : ''}`}>{value}</button>
                 </li>
-            </ul>
-        </div>
+            ))}
+
+            <li className="page-item">
+                <button className={`page-link ${currentPage === (totalPages - 1) ? 'disabled' : ''}`} onClick={() => onPageChange(currentPage + 1)}>Next</button>
+            </li>
+        </ul>
     );
 };
 

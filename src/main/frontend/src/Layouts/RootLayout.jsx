@@ -5,11 +5,11 @@ const RootLayout = () => {
     return (
         <>
             <header>
-                <nav className="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
-                    <div className="container-fluid">
+                <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+                    <div className="container-fluid d-flex justify-content-start">
                         <NavLink to="/" className="navbar-brand text-light">Home</NavLink>
-                        <NavLink to="/container" className="nav-link text-light">Container</NavLink>
-                        <NavLink to="/item" className="nav-link text-light">Item</NavLink>
+                        <NavLink to="/container" className="nav-link text-light ms-3">Container</NavLink>
+                        <NavLink to="/item" className="nav-link text-light ms-3">Item</NavLink>
                     </div>
                 </nav>
             </header>
