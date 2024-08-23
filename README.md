@@ -1,4 +1,7 @@
 # CIT
+v0.1.3
+- Made inline editing instead of using a modal
+
 v0.1.2
 - Edit page is now a modal on the item table page
 
