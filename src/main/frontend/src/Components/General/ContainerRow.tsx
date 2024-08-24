@@ -4,12 +4,11 @@ import { Container } from '../../Types/Container';
 import { ContainerItem } from "../../Types/ContainerItem";
 
 type ContainerRowProps = {
-    containers: Container[];
+    containerItems: ContainerItem[];
     index: number;
-    containerItems?: ContainerItem[];
 };
 
-const ContainerRow = ( { containers, index, containerItems }: ContainerRowProps) => {
+const ContainerRow = ( { containerItems, index }: ContainerRowProps) => {
 
     return (
         <>
@@ -24,12 +23,12 @@ const ContainerRow = ( { containers, index, containerItems }: ContainerRowProps)
                 </thead>
                 
                 <tbody>
-                    {containers.map((container, containerIndex) => (
+                    {containerItems.map((containerItem, containerIndex) => (
                         <tr key={`container-${index}-${containerIndex}`}>
-                            <th scope="row">{container.name}</th>
-                            <td>{container.description}</td>
-                            <td>{container.scannerId}</td>
-                            <td>{containerItems?.[containerIndex]?.quantity}</td> {/* This doesn't work! The values do not correspond to the correct container. FIX! */}
+                            <th scope="row">{containerItem.container?.name}</th>
+                            <td>{containerItem.container?.description}</td>
+                            <td>{containerItem.container?.scannerId}</td>
+                            <td>{containerItem.quantity}</td>
                         </tr>
                     ))}
                 </tbody>

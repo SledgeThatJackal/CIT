@@ -11,12 +11,12 @@ import SearchComponent from '../General/SearchComponent';
 import ReadRow from '../General/ReadRow';
 import EditRow from '../General/EditRow';
 
-import { ItemResponse, ItemDTO, ItemCreationDTO, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
+import { ItemResponse, Item, ItemCreationDTO, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
-    const [itemData, setItemData] = useState<ItemDTO[]>([]);
+    const [itemData, setItemData] = useState<Item[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [deleteId, setDeleteId] = useState<number>(-1);
     const [editId, setEditId] = useState<number | undefined>(undefined);
@@ -54,7 +54,7 @@ function ItemTable(){
     const handleDelete = async () => {
         try{
             await axios.delete(`/api/item/delete?id=${deleteId}`);
-            setItemData(itemData.filter(itemDTO => itemDTO.item.id !== deleteId));
+            setItemData(itemData.filter(item => item.id !== deleteId));
         } catch (error){
             console.error('Error deleteing entry: ', error);
         }
@@ -98,12 +98,12 @@ function ItemTable(){
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">
-                            {itemData.map((itemDTO, index) => (
+                            {itemData.map((item, index) => (
                                 <React.Fragment>
-                                    { editId === itemDTO.item.id ? (
+                                    { editId === item.id ? (
                                         <EditRow key='editRow' itemCreationDTO={ itemCreationDTO } onSubmit={ onSubmit } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
                                     ) : (
-                                        <ReadRow key='readRow' itemDTO={ itemDTO } index={ index } onDelete={ setDeleteId } onEdit={ handleEdit } />
+                                        <ReadRow key='readRow' item={ item } index={ index } onDelete={ setDeleteId } onEdit={ handleEdit } />
                                     )}
                                 </React.Fragment>
                             ))}

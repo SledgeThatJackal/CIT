@@ -19,18 +19,19 @@ public class ContainerItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "container_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties("containerItems")
     @JsonView(Views.Inclusive.class)
     private Container container;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties("containerItems")
     @JsonView(Views.Inclusive.class)
     private Item item;
 
     @Column(name = "quantity", nullable = false)
+    @JsonView(Views.Inclusive.class)
     private Integer quantity;
 }

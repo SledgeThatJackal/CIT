@@ -12,13 +12,8 @@ export type Item = {
 };
 
 export type ItemResponse = {
-    content: ItemDTO[];
+    content: Item[];
     totalPages: number;
-};
-
-export type ItemDTO = {
-    item: Item;
-    containers: Container[];
 };
 
 export type LinkDTO = {

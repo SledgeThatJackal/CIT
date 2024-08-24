@@ -1,6 +1,5 @@
 package dev.adamico.cit.Services;
 
-import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.ContainerItem;
@@ -11,13 +10,12 @@ import dev.adamico.cit.Repositories.ContainerRepository;
 import dev.adamico.cit.Repositories.ItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ContainerItemService {
@@ -85,25 +83,26 @@ public class ContainerItemService {
         return containerItemRepository.findContainersByItemId(itemId);
     }
 
-    public Page<ItemDTO> findPaginatedItemsWithContainers(int page, int size, String search) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Item> itemPage;
-
-        if (search.isEmpty()) {
-            itemPage = itemRepository.findAll(pageable);
-        } else {
-            itemPage = itemRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search, search, pageable);
-        }
-
-        List<ItemDTO> itemDTOS = new ArrayList<>();
-
-        for (Item item : itemPage) {
-            Set<Container> containers = containerItemRepository.findContainersByItemId(item.getId());
-            ItemDTO itemDTO = new ItemDTO(item, containers);
-
-            itemDTOS.add(itemDTO);
-        }
-
-        return new PageImpl<>(itemDTOS, pageable, itemPage.getTotalElements());
-    }
+//    public Page<ContainerItem> findPaginatedItemsWithContainers(int page, int size, String search) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<ContainerItem> itemPage;
+//
+//        if (search.isEmpty()) {
+//            itemPage = itemRepository.findAll(pageable);
+//        } else {
+//            itemPage = containerItemRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search, search, pageable);
+//        }
+//
+////        List<ItemDTO> itemDTOS = new ArrayList<>();
+////
+////        for (Item item : itemPage) {
+////            Set<Container> containers = containerItemRepository.findContainersByItemId(item.getId());
+////            ItemDTO itemDTO = new ItemDTO(item, containers);
+////
+////            itemDTOS.add(itemDTO);
+////        }
+//
+////        return new PageImpl<>(itemDTOS, pageable, itemPage.getTotalElements());
+//        return itemPage;
+//    }
 }

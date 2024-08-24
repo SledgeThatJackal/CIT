@@ -12,6 +12,20 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
+@NamedEntityGraph(
+        name = "graph.Item",
+        attributeNodes= {
+                @NamedAttributeNode(value = "containerItems", subgraph = "containerItemSubgraph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "containerItemSubgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("quantity"),
+                                @NamedAttributeNode("container")
+                        }
+                )
+        })
 @Table(name = "item_table")
 @Getter
 @Setter
