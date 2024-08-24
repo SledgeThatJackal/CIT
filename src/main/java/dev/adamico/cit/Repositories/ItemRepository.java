@@ -14,11 +14,6 @@ import java.util.Set;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
-//    Page<Item> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description, Pageable pageable);
-
-//    @Query("SELECT i FROM Item i LEFT JOIN FETCH i.containerItems ci LEFT JOIN FETCH ci.container")
-//    Page<Item> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description, Pageable pageable);
-
     @EntityGraph(value="graph.Item", type = EntityGraph.EntityGraphType.FETCH)
     List<Item> findByIdIn(Set<Long> ids);
 
