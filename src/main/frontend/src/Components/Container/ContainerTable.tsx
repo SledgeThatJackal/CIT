@@ -22,7 +22,10 @@ function ContainerTable(){
                 const response = await axios.get<ContainerResponse>(url);
 
                 setContainerData(response.data.content);
-                setTotalPages(response.data.totalPages);
+
+                if(containerData.length > 0){
+                    setTotalPages(response.data.totalPages);
+                }
             } catch (error){
                 console.log('Request failed: ', error);
             }

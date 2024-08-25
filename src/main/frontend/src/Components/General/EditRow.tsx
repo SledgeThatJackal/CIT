@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
 
-import { ItemCreationDTO, LinkDTO, ItemFormSchemaType } from '../../Types/Item';
+import { ItemDTO, LinkDTO, ItemFormSchemaType } from '../../Types/Item';
 import TagInput from '../Tag/TagInput';
 
 type EditRowProps = {
-    itemCreationDTO?: ItemCreationDTO;
+    itemDTO?: ItemDTO;
     onSubmit: (data: ItemFormSchemaType) => Promise<void>;
     handleDelete: (index: number, id?: number) => Promise<boolean>;
     cancelEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
-const EditRow = ({ itemCreationDTO, onSubmit, handleDelete, cancelEdit }: EditRowProps) => {
+const EditRow = ({ itemDTO, onSubmit, handleDelete, cancelEdit }: EditRowProps) => {
     const {
         register,
         formState: {errors, isSubmitting},
@@ -44,12 +44,16 @@ const EditRow = ({ itemCreationDTO, onSubmit, handleDelete, cancelEdit }: EditRo
     }, [watchLinks]);
 
     useEffect(() => {
-        reset(itemCreationDTO);
-    }, [itemCreationDTO, reset]);
+        reset(itemDTO);
+        append({scannerId: '', quantity: 1});
+    }, [itemDTO, reset]);
 
     const onDelete = async (index: number, id?: number) => {
         if(id === undefined){
-            remove(index);
+            if(watchLinks.length > 1){
+                remove(index);
+            }
+
             return;
         }
 
@@ -60,7 +64,7 @@ const EditRow = ({ itemCreationDTO, onSubmit, handleDelete, cancelEdit }: EditRo
 
     return (
         <>
-            <tr key={`item-edit-${itemCreationDTO?.item.id}`} className='table-primary'>
+            <tr key={`item-edit-${itemDTO?.item.id}`} className='table-primary'>
                 <td>
                     <input {...register("item.name")} type="text" id="nameInput" className="form-control" placeholder="Item Name" autoFocus />
                     {errors.item?.name && (
@@ -101,7 +105,7 @@ const EditRow = ({ itemCreationDTO, onSubmit, handleDelete, cancelEdit }: EditRo
                             {fields.map((link, index) => (
                                 <tr key={link.id} data-key={link.id}>
                                     <td>
-                                        <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={link.scannerId} disabled={ link.scannerId !== '' }/>
+                                        <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={ link.scannerId } disabled={ link.linkId !== undefined }/>
                                     </td>
                                     <td>
                                         <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />

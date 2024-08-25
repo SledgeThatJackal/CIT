@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LinkDTO {
-    private String scannerId;
-    private Integer quantity;
     private Long linkId;
+    private Integer quantity;
+    private String name;
+    private String scannerId;
 }

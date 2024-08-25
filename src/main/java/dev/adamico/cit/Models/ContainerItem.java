@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "containeritem_table")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonView(Views.Inclusive.class)
 public class ContainerItem {
     @Id
     @Column(name = "id")
@@ -22,16 +23,13 @@ public class ContainerItem {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "container_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties("containerItems")
-    @JsonView(Views.Inclusive.class)
     private Container container;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties("containerItems")
-    @JsonView(Views.Inclusive.class)
     private Item item;
 
     @Column(name = "quantity", nullable = false)
-    @JsonView(Views.Inclusive.class)
     private Integer quantity;
 }

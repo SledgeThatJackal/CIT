@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.adamico.cit.DTOs.ItemCreationDTO;
+import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
@@ -51,24 +52,31 @@ public class ItemController {
     }
 
     @GetMapping("/edit")
-
-    public ItemCreationDTO getEditItem(@RequestParam Long itemId){
+    @JsonView(Views.Exclusive.class)
+    public String getEditItem(@RequestParam Long itemId) throws JsonProcessingException {
         Item item = itemService.findItemById(itemId);
-        List<LinkDTO> links = containerItemService.findContainerItemLink(itemId);
+        List<LinkDTO> links = containerItemService.findAllAssociatedContainersBasedOnItemId(itemId);
 
-        return new ItemCreationDTO(item, links);
+        ItemDTO itemDTO = new ItemDTO(item, links);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        return mapper.writeValueAsString(itemDTO);
     }
 
     @PatchMapping("/edit")
-    public void updateItem(@RequestBody ItemCreationDTO itemCreationDTO){
-        Item updatedItem = itemCreationDTO.getItem();
+    public void updateItem(@RequestBody ItemDTO itemDTO){
+        Item updatedItem = itemDTO.getItem();
+        System.out.println(updatedItem.getContainerItems());
         Item item = itemService.findItemById(updatedItem.getId());
 
         updatedItem.setContainerItems(item.getContainerItems());
 
-        updatedItem = itemService.saveItem(updatedItem);
+        System.out.println(updatedItem.getContainerItems());
 
-        containerItemService.changeQuantityAmount(itemCreationDTO.getLinks(), updatedItem);
+        updatedItem = itemService.saveItem(itemDTO.getItem());
+
+        containerItemService.changeQuantityAmount(itemDTO.getLinks(), updatedItem);
     }
 
     @PostMapping("/create")

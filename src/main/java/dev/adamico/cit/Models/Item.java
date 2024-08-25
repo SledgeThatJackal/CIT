@@ -21,6 +21,7 @@ import java.util.Set;
                 @NamedSubgraph(
                         name = "containerItemSubgraph",
                         attributeNodes = {
+                                @NamedAttributeNode("id"),
                                 @NamedAttributeNode("quantity"),
                                 @NamedAttributeNode("container")
                         }

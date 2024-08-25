@@ -6,7 +6,7 @@ export type Container = {
     name: string;
     description?: string;
     scannerId: string;
-    parentContainer?: number;
+    parentContainer?: string;
     containerItems?: ContainerItem[];
 };
 
@@ -15,7 +15,7 @@ export const ContainerSchema = z.object({
     name: z.string(),
     description: z.string().optional(),
     scannerId: z.string(),
-    parentContainer: z.number().optional(),
+    parentContainer: z.string().optional(),
     containerItems: z.array(ContainerItemSchema).optional(),
 });
 

@@ -27,7 +27,7 @@ public class Container {
     private String description;
     private String scannerId;
 
-    private Long parentContainer;
+    private String parentContainer;
 
     @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Views.Inclusive.class)

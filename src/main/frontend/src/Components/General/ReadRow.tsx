@@ -36,7 +36,7 @@ const ReadRow = ( { item, index, onDelete, onEdit }: ReadRowProps ) => {
                 </td>
             </tr>
 
-            {item?.containerItems && (
+            {item?.containerItems && item.containerItems.length > 0 && (
                 <tr className='table-secondary'>
                     <td colSpan={5} className='collapse' id={`containers-${item.id}`}>
                         <ContainerRow containerItems={ item.containerItems } index={ index } />

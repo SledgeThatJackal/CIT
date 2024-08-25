@@ -17,12 +17,13 @@ export type ItemResponse = {
 };
 
 export type LinkDTO = {
-    scannerId: string;
-    quantity: number;
     linkId?: number;
+    quantity: number;
+    name: string;
+    scannerId: string;
 };
 
-export type ItemCreationDTO = {
+export type ItemDTO = {
     item: Item;
     links: LinkDTO[];
 };

@@ -9,7 +9,7 @@ const ContainerFormSchema = z.object({
     id: z.number().optional(),
     name: z.string(),
     description: z.string().optional(),
-    parentContainer: z.number().optional(),
+    parentContainer: z.string().optional(),
     scannerId: z.string(),
 });
 
@@ -71,7 +71,7 @@ export default function ContainerForm(){
 
                 <div>
                     <label htmlFor='parentConatainerInput' className='form-label'>Parent Container ID</label>
-                    <input {...register("parentContainer", {valueAsNumber: true})} id='parentConatainerInput' type="number" className="form-control" placeholder="Parent Container ID" />
+                    <input {...register("parentContainer")} id='parentConatainerInput' type="text" className="form-control" placeholder="Parent Container ID" />
                     {errors.parentContainer && (
                         <p>{`${errors.parentContainer.message}`}</p>
                     )}
