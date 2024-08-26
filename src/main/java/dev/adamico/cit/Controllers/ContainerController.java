@@ -28,6 +28,11 @@ public class ContainerController {
         return containerService.findContainerById(id);
     }
 
+    @PostMapping("/create")
+    public void createContainer(@RequestBody Container container){
+        containerService.saveContainer(container);
+    }
+
     @PatchMapping("/edit")
     public Container updateContainer(@RequestBody Container container){
         Set<ContainerItem> containerItems = containerService.findContainerById(container.getId()).getContainerItems();

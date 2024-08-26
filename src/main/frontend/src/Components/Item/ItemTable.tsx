@@ -11,16 +11,16 @@ import SearchComponent from '../General/SearchComponent';
 import ReadRow from '../General/ReadRow';
 import EditRow from '../General/EditRow';
 
-import { ItemResponse, ItemDTO, ItemCreationDTO, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
+import { ItemResponse, Item, ItemDTO, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
-    const [itemData, setItemData] = useState<ItemDTO[]>([]);
+    const [itemData, setItemData] = useState<Item[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [deleteId, setDeleteId] = useState<number>(-1);
     const [editId, setEditId] = useState<number | undefined>(undefined);
-    const [itemCreationDTO, setItemCreationDTO] = useState<ItemCreationDTO>();
+    const [itemDTO, setItemDTO] = useState<ItemDTO>();
 
     const methods = useForm<ItemFormSchemaType>({
         defaultValues: {},
@@ -38,7 +38,11 @@ function ItemTable(){
             const response = await axios.get<ItemResponse>(url);
 
             setItemData(response.data.content);
-            setTotalPages(response.data.totalPages);
+
+            if(itemData.length > 0){
+                setTotalPages(response.data.totalPages);
+            }
+
         } catch (error){
             console.error('Request failed: ', error);
         }
@@ -54,7 +58,7 @@ function ItemTable(){
     const handleDelete = async () => {
         try{
             await axios.delete(`/api/item/delete?id=${deleteId}`);
-            setItemData(itemData.filter(itemDTO => itemDTO.item.id !== deleteId));
+            setItemData(itemData.filter(item => item.id !== deleteId));
         } catch (error){
             console.error('Error deleteing entry: ', error);
         }
@@ -72,9 +76,9 @@ function ItemTable(){
 
     const handleEdit = async (itemId: number) => {
         try{
-            const response = (await axios.get<ItemCreationDTO>(`/api/item/edit?itemId=${itemId}`)).data;
+            const response = (await axios.get<ItemDTO>(`/api/item/edit?itemId=${itemId}`)).data;
 
-            setItemCreationDTO(response);
+            setItemDTO(response);
             setEditId(response.item.id);
         } catch (error){
             console.error('Error fetching item: ', error);
@@ -97,13 +101,14 @@ function ItemTable(){
                                 <th scope="col"><NavLink to="/item/form" className="btn btn-primary btn-sm" role="button">Create</NavLink></th>
                             </tr>
                         </thead>
+                        
                         <tbody className="table-group-divider">
-                            {itemData.map((itemDTO, index) => (
+                            {itemData.length > 0 && itemData.map((item, index) => (
                                 <React.Fragment>
-                                    { editId === itemDTO.item.id ? (
-                                        <EditRow key='editRow' itemCreationDTO={ itemCreationDTO } onSubmit={ onSubmit } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
+                                    { editId === item.id ? (
+                                        <EditRow key='editRow' itemDTO={ itemDTO } onSubmit={ onSubmit } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
                                     ) : (
-                                        <ReadRow key='readRow' itemDTO={ itemDTO } index={ index } onDelete={ setDeleteId } onEdit={ handleEdit } />
+                                        <ReadRow key='readRow' item={ item } index={ index } onDelete={ setDeleteId } onEdit={ handleEdit } />
                                     )}
                                 </React.Fragment>
                             ))}

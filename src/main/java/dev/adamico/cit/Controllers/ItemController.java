@@ -1,5 +1,8 @@
 package dev.adamico.cit.Controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.adamico.cit.DTOs.ItemCreationDTO;
 import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
@@ -9,9 +12,11 @@ import dev.adamico.cit.Services.ContainerItemService;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Services.ItemService;
 import dev.adamico.cit.Services.TagService;
+import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,30 +38,45 @@ public class ItemController {
     private ContainerItemService containerItemService;
 
     @GetMapping
-    public Page<ItemDTO> getItemPage(@RequestParam(defaultValue = "0") int page,
+    @JsonView(Views.Inclusive.class)
+    public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
-                                     @RequestParam(defaultValue = "") String search){
-        return containerItemService.findPaginatedItemsWithContainers(page, size, search);
+                                     @RequestParam(defaultValue = "") String search) throws JsonProcessingException {
+
+        Page<Item> itemPage = itemService.searchItems(page, size, search);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(itemPage);
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonString); // I did this because it just wouldn't serialize my data at all.
     }
 
     @GetMapping("/edit")
-    public ItemCreationDTO getEditItem(@RequestParam Long itemId){
+    @JsonView(Views.Exclusive.class)
+    public String getEditItem(@RequestParam Long itemId) throws JsonProcessingException {
         Item item = itemService.findItemById(itemId);
-        List<LinkDTO> links = containerItemService.findContainerItemLink(itemId);
+        List<LinkDTO> links = containerItemService.findAllAssociatedContainersBasedOnItemId(itemId);
 
-        return new ItemCreationDTO(item, links);
+        ItemDTO itemDTO = new ItemDTO(item, links);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        return mapper.writeValueAsString(itemDTO);
     }
 
     @PatchMapping("/edit")
-    public void updateItem(@RequestBody ItemCreationDTO itemCreationDTO){
-        Item updatedItem = itemCreationDTO.getItem();
+    public void updateItem(@RequestBody ItemDTO itemDTO){
+        Item updatedItem = itemDTO.getItem();
+        System.out.println(updatedItem.getContainerItems());
         Item item = itemService.findItemById(updatedItem.getId());
 
         updatedItem.setContainerItems(item.getContainerItems());
 
-        updatedItem = itemService.saveItem(updatedItem);
+        System.out.println(updatedItem.getContainerItems());
 
-        containerItemService.changeQuantityAmount(itemCreationDTO.getLinks(), updatedItem);
+        updatedItem = itemService.saveItem(itemDTO.getItem());
+
+        containerItemService.changeQuantityAmount(itemDTO.getLinks(), updatedItem);
     }
 
     @PostMapping("/create")

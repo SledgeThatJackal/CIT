@@ -1,27 +1,27 @@
 import React from "react";
 
-import { ItemDTO } from '../../Types/Item';
+import { Item } from '../../Types/Item';
 import TagBadge from '../Tag/TagBadge';
 import ContainerRow from './ContainerRow';
 
 type ReadRowProps = {
-    itemDTO: ItemDTO;
+    item: Item;
     index: number;
     onDelete: React.Dispatch<React.SetStateAction<number>>;
     onEdit: any;
 };
 
-const ReadRow = ( { itemDTO, index, onDelete, onEdit }: ReadRowProps ) => {
+const ReadRow = ( { item, index, onDelete, onEdit }: ReadRowProps ) => {
 
     return (
         <>
-            <tr key={`item-${index}`} className='table-secondary' data-bs-toggle="collapse" data-bs-target={`#containers-${itemDTO.item.id}`} aria-expanded={false} aria-controls={`containers-${itemDTO.item.id}`}>
-                <th scope="row">{itemDTO.item.name}</th>
-                <td>{itemDTO.item.description}</td>
+            <tr key={`item-${index}`} className='table-secondary' data-bs-toggle="collapse" data-bs-target={`#containers-${item.id}`} aria-expanded={false} aria-controls={`containers-${item.id}`}>
+                <th scope="row">{item.name}</th>
+                <td>{item.description}</td>
                 <td>
-                    {itemDTO.item.tags && itemDTO.item.tags.length > 0 && (
+                    {item.tags && item.tags.length > 0 && (
                         <>
-                            {itemDTO.item.tags.map((tag, tagIndex) => (
+                            {item.tags.map((tag, tagIndex) => (
                                 <TagBadge key={`tag-${index}-${tagIndex}`} tag={ tag } />
                             ))}
                         </>
@@ -30,16 +30,16 @@ const ReadRow = ( { itemDTO, index, onDelete, onEdit }: ReadRowProps ) => {
 
                 <td>
                     <div className='btn-group'>
-                        <button type="button" className="btn btn-info btn-sm" onClick={() => onEdit(itemDTO.item.id) }>Edit</button>
-                        <button type="button" onClick={() => onDelete(itemDTO.item.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
+                        <button type="button" className="btn btn-info btn-sm" onClick={() => onEdit(item.id) }>Edit</button>
+                        <button type="button" onClick={() => onDelete(item.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
                     </div>
                 </td>
             </tr>
 
-            {itemDTO.containers.length > 0 && (
+            {item?.containerItems && item.containerItems.length > 0 && (
                 <tr className='table-secondary'>
-                    <td colSpan={5} className='collapse' id={`containers-${itemDTO.item.id}`}>
-                        <ContainerRow containers={ itemDTO.containers } index={ index } containerItems={itemDTO.item.containerItems} />
+                    <td colSpan={5} className='collapse' id={`containers-${item.id}`}>
+                        <ContainerRow containerItems={ item.containerItems } index={ index } />
                     </td>
                 </tr>
             )}

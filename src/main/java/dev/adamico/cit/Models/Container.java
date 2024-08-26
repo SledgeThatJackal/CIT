@@ -1,6 +1,8 @@
 package dev.adamico.cit.Models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+import dev.adamico.cit.Views;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +17,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonView(Views.Exclusive.class)
 public class Container {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,9 +27,10 @@ public class Container {
     private String description;
     private String scannerId;
 
-    private Long parentContainer;
+    private String parentContainer;
 
     @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("containerReference")
+    @JsonView(Views.Inclusive.class)
+    @JsonIgnoreProperties("container")
     private Set<ContainerItem> containerItems;
 }

@@ -1,6 +1,5 @@
 package dev.adamico.cit.Services;
 
-import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.ContainerItem;
@@ -9,15 +8,12 @@ import dev.adamico.cit.Repositories.ContainerItemJdbcRepository;
 import dev.adamico.cit.Repositories.ContainerItemRepository;
 import dev.adamico.cit.Repositories.ContainerRepository;
 import dev.adamico.cit.Repositories.ItemRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContainerItemService {
@@ -49,21 +45,6 @@ public class ContainerItemService {
         });
     }
 
-    public List<LinkDTO> findContainerItemLink(Long itemId){
-        Set<ContainerItem> containerItems = containerItemRepository.findByItemId(itemId);
-        List<LinkDTO> links = new ArrayList<>();
-
-        containerItems.forEach((containerItem -> {
-            links.add(new LinkDTO(containerItem.getContainer().getScannerId(), containerItem.getQuantity(), containerItem.getId()));
-        }));
-
-        if(links.isEmpty()){
-            links.add(new LinkDTO("", 1, null));
-        }
-
-        return links;
-    }
-
     public void removeContainerItemLink(Long containerItemId){
         containerItemRepository.deleteById(containerItemId);
     }
@@ -72,7 +53,7 @@ public class ContainerItemService {
     public void changeQuantityAmount(List<LinkDTO> links, Item item){
         for(LinkDTO link : links){
             if(link.getLinkId() == null){
-                if(!link.getScannerId().isEmpty()) {
+                if(!link.getScannerId().isEmpty()){
                     createContainerItemLink(link, item);
                 }
             } else {
@@ -81,29 +62,7 @@ public class ContainerItemService {
         }
     }
 
-    public Set<Container> findAllAssociatedContainersBasedOnItemId(Long itemId){
+    public List<LinkDTO> findAllAssociatedContainersBasedOnItemId(Long itemId){
         return containerItemRepository.findContainersByItemId(itemId);
-    }
-
-    public Page<ItemDTO> findPaginatedItemsWithContainers(int page, int size, String search){
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Item> itemPage;
-
-        if(search.isEmpty()){
-            itemPage = itemRepository.findAll(pageable);
-        } else {
-            itemPage = itemRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search, search, pageable);
-        }
-
-        List<ItemDTO> itemDTOS = new ArrayList<>();
-
-        for(Item item: itemPage){
-            Set<Container> containers = containerItemRepository.findContainersByItemId(item.getId());
-            ItemDTO itemDTO = new ItemDTO(item, containers);
-
-            itemDTOS.add(itemDTO);
-        }
-
-        return new PageImpl<>(itemDTOS, pageable, itemPage.getTotalElements());
     }
 }

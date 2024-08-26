@@ -12,22 +12,18 @@ export type Item = {
 };
 
 export type ItemResponse = {
-    content: ItemDTO[];
+    content: Item[];
     totalPages: number;
 };
 
-export type ItemDTO = {
-    item: Item;
-    containers: Container[];
-};
-
 export type LinkDTO = {
-    scannerId: string;
-    quantity: number;
     linkId?: number;
+    quantity: number;
+    name: string;
+    scannerId: string;
 };
 
-export type ItemCreationDTO = {
+export type ItemDTO = {
     item: Item;
     links: LinkDTO[];
 };

@@ -3,15 +3,15 @@ import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from 'axios';
 
-import { ItemCreationDTO, LinkDTO, ItemFormSchema, ItemFormSchemaType } from '../../Types/Item';
+import { ItemDTO, LinkDTO, ItemFormSchema, ItemFormSchemaType } from '../../Types/Item';
 import TagInput from '../Tag/TagInput';
 
 type ItemFromProp = {
-    itemCreationDTO?: ItemCreationDTO;
+    itemDTO?: ItemDTO;
     reference?: any;
 };
 
-export default function ItemForm({ itemCreationDTO, reference }: ItemFromProp){
+export default function ItemForm({ itemDTO, reference }: ItemFromProp){
     const {
         register,
         handleSubmit,
@@ -19,8 +19,8 @@ export default function ItemForm({ itemCreationDTO, reference }: ItemFromProp){
         control,
         reset,
     } = useForm<ItemFormSchemaType>({
-        defaultValues: itemCreationDTO
-        ? itemCreationDTO : {
+        defaultValues: itemDTO
+        ? itemDTO : {
             item: {},
             links: [{quantity: 1}],
         },
@@ -38,7 +38,7 @@ export default function ItemForm({ itemCreationDTO, reference }: ItemFromProp){
     }) as LinkDTO[];
 
     const onSubmit = async (data: ItemFormSchemaType) => {    
-        if(itemCreationDTO){
+        if(itemDTO){
             // Edit 
             await axios.patch(`/api/item/edit`, data);
             reset();
@@ -80,10 +80,10 @@ export default function ItemForm({ itemCreationDTO, reference }: ItemFromProp){
     }, [watchLinks]);
 
     useEffect( () => {
-        if(itemCreationDTO){
-            reset(itemCreationDTO);
+        if(itemDTO){
+            reset(itemDTO);
         }
-    }, [itemCreationDTO]);
+    }, [itemDTO]);
 
     return (
         <div className='d-flex justify-content-center align-items-center'>
