@@ -26,4 +26,11 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>("An unexpected error occurred when generating the export file.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleExceptions(Exception ex){
+        logger.error(ex.getMessage());
+
+        return new ResponseEntity<>("An inteneral server error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
