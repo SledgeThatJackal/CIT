@@ -1333,3 +1333,280 @@ java.io.FileNotFoundException: file [C:\Users\aland\OneDrive\Documents\CIT\cit_e
 2024-09-10T16:18:16.278-04:00  INFO 59556 --- [cit] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2024-09-10T16:18:16.283-04:00  INFO 59556 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2024-09-10T16:18:16.285-04:00  INFO 59556 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-09-10T17:04:11.119-04:00  INFO 76360 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Starting CitApplication using Java 17.0.9 with PID 76360 (C:\Users\aland\OneDrive\Documents\CIT\target\classes started by aland in C:\Users\aland\OneDrive\Documents\CIT)
+2024-09-10T17:04:11.122-04:00  INFO 76360 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : No active profile set, falling back to 1 default profile: "default"
+2024-09-10T17:04:11.181-04:00  INFO 76360 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-09-10T17:04:11.181-04:00  INFO 76360 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-09-10T17:04:12.006-04:00  INFO 76360 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-09-10T17:04:12.106-04:00  INFO 76360 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 85 ms. Found 4 JPA repository interfaces.
+2024-09-10T17:04:13.007-04:00  INFO 76360 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-09-10T17:04:13.024-04:00  INFO 76360 --- [cit] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-09-10T17:04:13.025-04:00  INFO 76360 --- [cit] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-09-10T17:04:13.088-04:00  INFO 76360 --- [cit] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-09-10T17:04:13.089-04:00  INFO 76360 --- [cit] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1907 ms
+2024-09-10T17:04:13.362-04:00  INFO 76360 --- [cit] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-09-10T17:04:13.441-04:00  INFO 76360 --- [cit] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-09-10T17:04:13.475-04:00  INFO 76360 --- [cit] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-09-10T17:04:13.687-04:00  INFO 76360 --- [cit] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-09-10T17:04:13.713-04:00  INFO 76360 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-09-10T17:04:13.867-04:00  INFO 76360 --- [cit] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6e74304f
+2024-09-10T17:04:13.869-04:00  INFO 76360 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-09-10T17:04:14.805-04:00  INFO 76360 --- [cit] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-09-10T17:04:14.927-04:00  INFO 76360 --- [cit] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-09-10T17:04:15.238-04:00  INFO 76360 --- [cit] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-09-10T17:04:15.975-04:00  WARN 76360 --- [cit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-09-10T17:04:16.014-04:00  INFO 76360 --- [cit] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-09-10T17:04:16.115-04:00 DEBUG 76360 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 18 mappings in 'requestMappingHandlerMapping'
+2024-09-10T17:04:16.128-04:00 DEBUG 76360 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/, /{x:[\w\-]+}, /{x:^(?!api$).*$}/{y:[\w\-]+}] in 'viewControllerHandlerMapping'
+2024-09-10T17:04:16.272-04:00 DEBUG 76360 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-09-10T17:04:16.359-04:00 DEBUG 76360 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-09-10T17:04:16.415-04:00 DEBUG 76360 --- [cit] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-09-10T17:04:16.579-04:00  INFO 76360 --- [cit] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-09-10T17:04:16.654-04:00  INFO 76360 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-09-10T17:04:16.669-04:00  INFO 76360 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Started CitApplication in 6.064 seconds (process running for 6.592)
+2024-09-10T17:04:21.278-04:00  INFO 76360 --- [cit] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-09-10T17:04:21.278-04:00  INFO 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-09-10T17:04:21.278-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2024-09-10T17:04:21.279-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2024-09-10T17:04:21.279-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2024-09-10T17:04:21.280-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@42589c20
+2024-09-10T17:04:21.280-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@3c665707
+2024-09-10T17:04:21.280-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-09-10T17:04:21.280-04:00  INFO 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-09-10T17:04:21.286-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/exim/export", parameters={}
+2024-09-10T17:04:21.294-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.EximController#exportData()
+2024-09-10T17:04:21.330-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Found 'Content-Type:application/json' in response
+2024-09-10T17:04:21.331-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [file [C:\Users\aland\OneDrive\Documents\CIT\cit_export.json]]
+2024-09-10T17:04:21.335-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:03.433-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/container?page=0", parameters={masked}
+2024-09-10T17:05:03.433-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.ContainerController#getContainerPage(int, int)
+2024-09-10T17:05:03.549-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-3] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2024-09-10T17:05:03.550-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-3] m.m.a.RequestResponseBodyMethodProcessor : Writing [Page 1 of 1 containing dev.adamico.cit.Models.Container instances]
+2024-09-10T17:05:03.585-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.455-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/", parameters={}
+2024-09-10T17:05:14.459-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ParameterizableViewController [view="forward:/index.html"]
+2024-09-10T17:05:14.466-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.w.s.v.ContentNegotiatingViewResolver : Selected 'text/html' given [text/html, application/xhtml+xml, image/avif, image/webp, image/apng, application/xml;q=0.9, */*;q=0.8, application/signed-exchange;v=b3;q=0.7]
+2024-09-10T17:05:14.467-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.w.servlet.view.InternalResourceView  : View name 'forward:', model {}
+2024-09-10T17:05:14.469-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.w.servlet.view.InternalResourceView  : Forwarding to [/index.html]
+2024-09-10T17:05:14.473-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : "FORWARD" dispatch for GET "/index.html", parameters={}
+2024-09-10T17:05:14.475-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.482-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Exiting from "FORWARD" dispatch, status 200
+2024-09-10T17:05:14.482-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.486-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/vendor-7fc2cac8.8fd596704a8bb0c0760d.js", parameters={}
+2024-09-10T17:05:14.487-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/vendor-6c2eee85.dde892708675aec4f5ab.js", parameters={}
+2024-09-10T17:05:14.487-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.488-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.490-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.491-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.492-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/vendor-5e58aee3.78a1a95a34bc68540d18.js", parameters={}
+2024-09-10T17:05:14.493-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.495-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/vendor-e57b79e8.51fd89bc9e270a7ae50c.js", parameters={}
+2024-09-10T17:05:14.495-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/vendor-d2eb5610.415c97f09eb89417478d.js", parameters={}
+2024-09-10T17:05:14.496-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.496-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-8] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.496-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-9] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.498-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.498-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.500-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/vendor-2594363e.f3f58a35cdec818e20d0.js", parameters={}
+2024-09-10T17:05:14.500-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/vendor-fa3805ec.aefe4df0904109de3f49.js", parameters={}
+2024-09-10T17:05:14.500-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/vendor-e5bca7e4.f6737100d80204209b57.js", parameters={}
+2024-09-10T17:05:14.501-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.501-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.501-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-10] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.504-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.504-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.504-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.512-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/vendor-27545368.8d09af06db52b0af0307.js", parameters={}
+2024-09-10T17:05:14.513-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.515-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/vendor-57936d4c.edcb4fe2bfabbf04a536.js", parameters={}
+2024-09-10T17:05:14.515-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.516-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.518-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:14.521-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/main.94200e4845f4edc8a27a.js", parameters={}
+2024-09-10T17:05:14.522-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:05:14.525-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:05:18.856-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/exim/export", parameters={}
+2024-09-10T17:05:18.857-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.EximController#exportData()
+2024-09-10T17:05:26.539-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/exim/export", parameters={}
+2024-09-10T17:05:26.539-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.EximController#exportData()
+2024-09-10T17:05:48.884-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler dev.adamico.cit.Exceptions.GlobalExceptionHandler#handleSqlException(SQLException)
+2024-09-10T17:05:48.884-04:00 ERROR 76360 --- [cit] [http-nio-8080-exec-6] o.s.w.bind.annotation.ExceptionHandler   : SQL Exception occurred: java.util.concurrent.ExecutionException: java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2024-09-10T17:05:48.885-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json]
+2024-09-10T17:05:48.885-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["A problem arose with the database. Pleas try again later"]
+2024-09-10T17:05:48.886-04:00  WARN 76360 --- [cit] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.sql.SQLException: java.util.concurrent.ExecutionException: java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30015ms.]
+2024-09-10T17:05:48.886-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2024-09-10T17:05:56.555-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler dev.adamico.cit.Exceptions.GlobalExceptionHandler#handleSqlException(SQLException)
+2024-09-10T17:05:56.555-04:00 ERROR 76360 --- [cit] [http-nio-8080-exec-1] o.s.w.bind.annotation.ExceptionHandler   : SQL Exception occurred: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2024-09-10T17:05:56.555-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'text/plain', given [*/*] and supported [text/plain, */*, application/json, application/*+json]
+2024-09-10T17:05:56.556-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["A problem arose with the database. Pleas try again later"]
+2024-09-10T17:05:56.556-04:00  WARN 76360 --- [cit] [http-nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30015ms.]
+2024-09-10T17:05:56.556-04:00 DEBUG 76360 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2024-09-10T17:05:56.962-04:00  INFO 76360 --- [cit] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-09-10T17:05:56.965-04:00  INFO 76360 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-09-10T17:05:56.967-04:00  INFO 76360 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-09-10T17:06:07.399-04:00  INFO 66176 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Starting CitApplication using Java 17.0.9 with PID 66176 (C:\Users\aland\OneDrive\Documents\CIT\target\classes started by aland in C:\Users\aland\OneDrive\Documents\CIT)
+2024-09-10T17:06:07.402-04:00  INFO 66176 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : No active profile set, falling back to 1 default profile: "default"
+2024-09-10T17:06:07.479-04:00  INFO 66176 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-09-10T17:06:07.479-04:00  INFO 66176 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-09-10T17:06:08.357-04:00  INFO 66176 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-09-10T17:06:08.451-04:00  INFO 66176 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 78 ms. Found 4 JPA repository interfaces.
+2024-09-10T17:06:09.319-04:00  INFO 66176 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-09-10T17:06:09.346-04:00  INFO 66176 --- [cit] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-09-10T17:06:09.346-04:00  INFO 66176 --- [cit] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-09-10T17:06:09.429-04:00  INFO 66176 --- [cit] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-09-10T17:06:09.430-04:00  INFO 66176 --- [cit] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1950 ms
+2024-09-10T17:06:09.725-04:00  INFO 66176 --- [cit] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-09-10T17:06:09.826-04:00  INFO 66176 --- [cit] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-09-10T17:06:09.891-04:00  INFO 66176 --- [cit] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-09-10T17:06:10.177-04:00  INFO 66176 --- [cit] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-09-10T17:06:10.206-04:00  INFO 66176 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-09-10T17:06:10.385-04:00  INFO 66176 --- [cit] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@22303211
+2024-09-10T17:06:10.386-04:00  INFO 66176 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-09-10T17:06:11.443-04:00  INFO 66176 --- [cit] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-09-10T17:06:11.523-04:00  INFO 66176 --- [cit] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-09-10T17:06:11.915-04:00  INFO 66176 --- [cit] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-09-10T17:06:12.709-04:00  WARN 66176 --- [cit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-09-10T17:06:12.761-04:00  INFO 66176 --- [cit] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-09-10T17:06:12.877-04:00 DEBUG 66176 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 18 mappings in 'requestMappingHandlerMapping'
+2024-09-10T17:06:12.895-04:00 DEBUG 66176 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/, /{x:[\w\-]+}, /{x:^(?!api$).*$}/{y:[\w\-]+}] in 'viewControllerHandlerMapping'
+2024-09-10T17:06:13.010-04:00 DEBUG 66176 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-09-10T17:06:13.070-04:00 DEBUG 66176 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-09-10T17:06:13.141-04:00 DEBUG 66176 --- [cit] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-09-10T17:06:13.318-04:00  INFO 66176 --- [cit] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-09-10T17:06:13.395-04:00  INFO 66176 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-09-10T17:06:13.413-04:00  INFO 66176 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Started CitApplication in 6.527 seconds (process running for 7.051)
+2024-09-10T17:06:20.911-04:00  INFO 66176 --- [cit] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-09-10T17:06:20.911-04:00  INFO 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-09-10T17:06:20.912-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2024-09-10T17:06:20.912-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2024-09-10T17:06:20.912-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2024-09-10T17:06:20.912-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@1826cc7b
+2024-09-10T17:06:20.913-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@438514ca
+2024-09-10T17:06:20.913-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-09-10T17:06:20.913-04:00  INFO 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-09-10T17:06:20.920-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/", parameters={}
+2024-09-10T17:06:20.925-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ParameterizableViewController [view="forward:/index.html"]
+2024-09-10T17:06:20.936-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.w.s.v.ContentNegotiatingViewResolver : Selected 'text/html' given [text/html, application/xhtml+xml, image/avif, image/webp, image/apng, application/xml;q=0.9, */*;q=0.8, application/signed-exchange;v=b3;q=0.7]
+2024-09-10T17:06:20.936-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.w.servlet.view.InternalResourceView  : View name 'forward:', model {}
+2024-09-10T17:06:20.938-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.w.servlet.view.InternalResourceView  : Forwarding to [/index.html]
+2024-09-10T17:06:20.941-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : "FORWARD" dispatch for GET "/index.html", parameters={}
+2024-09-10T17:06:20.943-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:06:20.953-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Exiting from "FORWARD" dispatch, status 200
+2024-09-10T17:06:20.954-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:06:20.965-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/main.94200e4845f4edc8a27a.js", parameters={}
+2024-09-10T17:06:20.966-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-10T17:06:20.968-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:06:23.254-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/exim/export", parameters={}
+2024-09-10T17:06:23.255-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.EximController#exportData()
+2024-09-10T17:06:23.287-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Found 'Content-Type:application/json' in response
+2024-09-10T17:06:23.288-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [file [C:\Users\aland\OneDrive\Documents\CIT\cit_export.json]]
+2024-09-10T17:06:23.290-04:00 DEBUG 66176 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:13:15.971-04:00  INFO 66176 --- [cit] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-09-10T17:13:15.974-04:00  INFO 66176 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-09-10T17:13:15.976-04:00  INFO 66176 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-09-10T17:13:20.210-04:00  INFO 51064 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Starting CitApplication using Java 17.0.9 with PID 51064 (C:\Users\aland\OneDrive\Documents\CIT\target\classes started by aland in C:\Users\aland\OneDrive\Documents\CIT)
+2024-09-10T17:13:20.212-04:00  INFO 51064 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : No active profile set, falling back to 1 default profile: "default"
+2024-09-10T17:13:20.259-04:00  INFO 51064 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-09-10T17:13:20.259-04:00  INFO 51064 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-09-10T17:13:20.972-04:00  INFO 51064 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-09-10T17:13:21.058-04:00  INFO 51064 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 70 ms. Found 4 JPA repository interfaces.
+2024-09-10T17:13:21.836-04:00  INFO 51064 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-09-10T17:13:21.857-04:00  INFO 51064 --- [cit] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-09-10T17:13:21.858-04:00  INFO 51064 --- [cit] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-09-10T17:13:21.918-04:00  INFO 51064 --- [cit] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-09-10T17:13:21.919-04:00  INFO 51064 --- [cit] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1657 ms
+2024-09-10T17:13:22.199-04:00  INFO 51064 --- [cit] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-09-10T17:13:22.283-04:00  INFO 51064 --- [cit] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-09-10T17:13:22.340-04:00  INFO 51064 --- [cit] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-09-10T17:13:22.575-04:00  INFO 51064 --- [cit] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-09-10T17:13:22.602-04:00  INFO 51064 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-09-10T17:13:22.753-04:00  INFO 51064 --- [cit] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1d442b0f
+2024-09-10T17:13:22.755-04:00  INFO 51064 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-09-10T17:13:23.710-04:00  INFO 51064 --- [cit] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-09-10T17:13:23.774-04:00  INFO 51064 --- [cit] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-09-10T17:13:24.107-04:00  INFO 51064 --- [cit] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-09-10T17:13:24.859-04:00  WARN 51064 --- [cit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-09-10T17:13:24.897-04:00  INFO 51064 --- [cit] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-09-10T17:13:25.004-04:00 DEBUG 51064 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 18 mappings in 'requestMappingHandlerMapping'
+2024-09-10T17:13:25.017-04:00 DEBUG 51064 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/, /{x:[\w\-]+}, /{x:^(?!api$).*$}/{y:[\w\-]+}] in 'viewControllerHandlerMapping'
+2024-09-10T17:13:25.126-04:00 DEBUG 51064 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-09-10T17:13:25.187-04:00 DEBUG 51064 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-09-10T17:13:25.268-04:00 DEBUG 51064 --- [cit] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-09-10T17:13:25.419-04:00  INFO 51064 --- [cit] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-09-10T17:13:25.461-04:00  INFO 51064 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-09-10T17:13:25.472-04:00  INFO 51064 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Started CitApplication in 5.651 seconds (process running for 6.077)
+2024-09-10T17:25:09.083-04:00  INFO 51064 --- [cit] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-09-10T17:25:09.084-04:00  INFO 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-09-10T17:25:09.084-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2024-09-10T17:25:09.084-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2024-09-10T17:25:09.084-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2024-09-10T17:25:09.085-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@eb4dd94
+2024-09-10T17:25:09.085-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@657c6ca1
+2024-09-10T17:25:09.085-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-09-10T17:25:09.086-04:00  INFO 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-09-10T17:25:09.094-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/exim/export", parameters={}
+2024-09-10T17:25:09.102-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.EximController#exportData()
+2024-09-10T17:25:09.141-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Found 'Content-Type:application/json' in response
+2024-09-10T17:25:09.142-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [file [C:\Users\aland\OneDrive\Documents\CIT\cit_export.json]]
+2024-09-10T17:25:09.146-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:25:09.624-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/api/item?page=0&search=", parameters={masked}
+2024-09-10T17:25:09.625-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.ItemController#getItemPage(int, int, String)
+2024-09-10T17:25:09.799-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Found 'Content-Type:application/json' in response
+2024-09-10T17:25:09.800-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["{"content":[{"id":1,"name":"Test Item 1","description":"This is the first test item","containerItems (truncated)..."]
+2024-09-10T17:25:09.803-04:00 DEBUG 51064 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:25:37.995-04:00  INFO 51064 --- [cit] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-09-10T17:25:37.998-04:00  INFO 51064 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-09-10T17:25:38.000-04:00  INFO 51064 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-09-10T17:25:42.026-04:00  INFO 31644 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Starting CitApplication using Java 17.0.9 with PID 31644 (C:\Users\aland\OneDrive\Documents\CIT\target\classes started by aland in C:\Users\aland\OneDrive\Documents\CIT)
+2024-09-10T17:25:42.028-04:00  INFO 31644 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : No active profile set, falling back to 1 default profile: "default"
+2024-09-10T17:25:42.080-04:00  INFO 31644 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-09-10T17:25:42.080-04:00  INFO 31644 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-09-10T17:25:42.857-04:00  INFO 31644 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-09-10T17:25:42.952-04:00  INFO 31644 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 77 ms. Found 4 JPA repository interfaces.
+2024-09-10T17:25:43.875-04:00  INFO 31644 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-09-10T17:25:43.895-04:00  INFO 31644 --- [cit] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-09-10T17:25:43.895-04:00  INFO 31644 --- [cit] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-09-10T17:25:43.988-04:00  INFO 31644 --- [cit] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-09-10T17:25:43.989-04:00  INFO 31644 --- [cit] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1908 ms
+2024-09-10T17:25:44.320-04:00  INFO 31644 --- [cit] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-09-10T17:25:44.429-04:00  INFO 31644 --- [cit] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-09-10T17:25:44.492-04:00  INFO 31644 --- [cit] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-09-10T17:25:44.707-04:00  INFO 31644 --- [cit] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-09-10T17:25:44.731-04:00  INFO 31644 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-09-10T17:25:44.883-04:00  INFO 31644 --- [cit] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@22303211
+2024-09-10T17:25:44.885-04:00  INFO 31644 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-09-10T17:25:45.868-04:00  INFO 31644 --- [cit] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-09-10T17:25:45.937-04:00  INFO 31644 --- [cit] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-09-10T17:25:46.242-04:00  INFO 31644 --- [cit] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-09-10T17:25:47.005-04:00  WARN 31644 --- [cit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-09-10T17:25:47.042-04:00  INFO 31644 --- [cit] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-09-10T17:25:47.187-04:00 DEBUG 31644 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 18 mappings in 'requestMappingHandlerMapping'
+2024-09-10T17:25:47.200-04:00 DEBUG 31644 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/, /{x:[\w\-]+}, /{x:^(?!api$).*$}/{y:[\w\-]+}] in 'viewControllerHandlerMapping'
+2024-09-10T17:25:47.311-04:00 DEBUG 31644 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-09-10T17:25:47.367-04:00 DEBUG 31644 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-09-10T17:25:47.413-04:00 DEBUG 31644 --- [cit] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-09-10T17:25:47.576-04:00  INFO 31644 --- [cit] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-09-10T17:25:47.620-04:00  INFO 31644 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-09-10T17:25:47.633-04:00  INFO 31644 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Started CitApplication in 6.02 seconds (process running for 6.497)
+2024-09-10T17:25:52.297-04:00  INFO 31644 --- [cit] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-09-10T17:25:52.297-04:00  INFO 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-09-10T17:25:52.297-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2024-09-10T17:25:52.297-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2024-09-10T17:25:52.297-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2024-09-10T17:25:52.298-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@1826cc7b
+2024-09-10T17:25:52.298-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@438514ca
+2024-09-10T17:25:52.298-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-09-10T17:25:52.299-04:00  INFO 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-09-10T17:25:52.305-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/api/exim/export", parameters={}
+2024-09-10T17:25:52.313-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.EximController#exportData()
+2024-09-10T17:25:53.320-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/item?page=0&search=", parameters={masked}
+2024-09-10T17:25:53.320-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.ItemController#getItemPage(int, int, String)
+2024-09-10T17:25:53.478-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Found 'Content-Type:application/json' in response
+2024-09-10T17:25:53.479-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["{"content":[{"id":1,"name":"Test Item 1","description":"This is the first test item","containerItems (truncated)..."]
+2024-09-10T17:25:53.484-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:26:02.350-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Found 'Content-Type:application/json' in response
+2024-09-10T17:26:02.350-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [file [C:\Users\aland\OneDrive\Documents\CIT\cit_export.json]]
+2024-09-10T17:26:02.351-04:00 DEBUG 31644 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-10T17:38:07.234-04:00  INFO 31644 --- [cit] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-09-10T17:38:07.237-04:00  INFO 31644 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-09-10T17:38:07.239-04:00  INFO 31644 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

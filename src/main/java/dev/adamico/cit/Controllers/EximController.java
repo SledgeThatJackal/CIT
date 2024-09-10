@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/exim")
-public class EximController { // EX port IM port
+public class EximController { // EXport IMport
     @Autowired
     ItemService itemService;
 
@@ -31,7 +31,7 @@ public class EximController { // EX port IM port
 
     @GetMapping("/export")
     public ResponseEntity<Resource> exportData() throws Exception {
-        Resource resource = eximService.exportDataBase();
+        Resource resource = eximService.exportDatabase();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

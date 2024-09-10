@@ -11,12 +11,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.sql.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
 
 @Service
 public class EximService {
@@ -26,7 +29,7 @@ public class EximService {
 
     private static final Logger logger = LoggerFactory.getLogger(EximService.class);
 
-    public Resource exportDataBase() throws Exception {
+    public Resource exportDatabase() throws Exception {
         DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
         ResultSet tables = metaData.getTables(null, null, null, new String[]{"TABLE"});
 
@@ -34,55 +37,33 @@ public class EximService {
 
         logger.debug("Starting Database Export");
 
-        // Creating a new thread since this exports all data in the database
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Void> future = executor.submit(() -> {
-            try(FileOutputStream fos = new FileOutputStream(output);
-                OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-                JsonGenerator generator = new JsonFactory().createGenerator(writer)){
+        try(FileOutputStream fos = new FileOutputStream(output);
+            OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+            JsonGenerator generator = new JsonFactory().createGenerator(writer)) {
 
-                generator.writeStartObject();
+            generator.writeStartObject();
 
-                while(tables.next()){
-                    String tableName = tables.getString("TABLE_NAME");
-                    logger.debug("Starting on table: " + tableName);
+            while (tables.next()) {
+                String tableName = tables.getString("TABLE_NAME");
+                logger.debug("Starting on table: " + tableName);
 
 
-                    generator.writeFieldName(tableName);
-                    generator.writeStartArray();
+                generator.writeFieldName(tableName);
+                generator.writeStartArray();
 
-                    try(Statement stmt = dataSource.getConnection().createStatement();
-                        ResultSet tableData = stmt.executeQuery("SELECT * FROM " + tableName)){
+                try (Statement stmt = dataSource.getConnection().createStatement();
+                     ResultSet tableData = stmt.executeQuery("SELECT * FROM " + tableName)) {
 
-                        streamJsonArray(tableData, generator);
-                    }
-
-                    generator.writeEndArray();
+                    streamJsonArray(tableData, generator);
                 }
 
-                generator.writeEndObject();
-                generator.flush();
-            } catch(FileNotFoundException | SQLException e){
-                throw e;
+                generator.writeEndArray();
             }
 
-            return null;
-        });
-
-        try{
-            future.get();
+            generator.writeEndObject();
+            generator.flush();
         } catch(Exception ex){
-            Throwable cause = ex.getCause();
-
-            if(cause instanceof FileNotFoundException){
-                throw new GeneralExportException("The JSON File was not found on server", ex);
-            }
-
-            if(cause instanceof SQLException){
-                throw new SQLException(ex);
-            }
-
-            throw new Exception(ex);
+            throw new GeneralExportException("Location: EximService | Exception Type: " + ex.getClass(), ex);
         }
 
         return new FileSystemResource(output);
