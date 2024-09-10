@@ -75,7 +75,7 @@ public class EximService {
             Throwable cause = ex.getCause();
 
             if(cause instanceof FileNotFoundException){
-                throw new GeneralExportException("JSON File not found on server", ex);
+                throw new GeneralExportException("The JSON File was not found on server", ex);
             }
 
             if(cause instanceof SQLException){
