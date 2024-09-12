@@ -1,22 +1,26 @@
 import React, { useEffect } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
+import axios from 'axios';
 
-import { ItemDTO, LinkDTO, ItemFormSchemaType } from '../../Types/Item';
+import { ItemDTO, LinkDTO, ItemFormSchemaType, LinkSchema } from '../../Types/Item';
+
 import TagInput from '../Tag/TagInput';
 
 type EditRowProps = {
     itemDTO?: ItemDTO;
-    onSubmit: (data: ItemFormSchemaType) => Promise<void>;
     handleDelete: (index: number, id?: number) => Promise<boolean>;
     cancelEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
-const EditRow = ({ itemDTO, onSubmit, handleDelete, cancelEdit }: EditRowProps) => {
+const EditRow = ({ itemDTO, handleDelete, cancelEdit }: EditRowProps) => {
     const {
         register,
         formState: {errors, isSubmitting},
         control,
+        setFocus,
         reset,
+        trigger,
+        setError
     } = useFormContext<ItemFormSchemaType>();
 
     const { fields, append, remove} = useFieldArray({
@@ -34,7 +38,8 @@ const EditRow = ({ itemDTO, onSubmit, handleDelete, cancelEdit }: EditRowProps) 
             append({scannerId: '', quantity: 1});
 
             setTimeout(() => {
-                document.getElementById(`linkId-${watchLinks.length - 1}`)?.focus(); 
+                trigger("links");
+                setFocus(`links.${watchLinks.length - 1}.scannerId`); 
             }, 0);
         };
     
@@ -45,7 +50,9 @@ const EditRow = ({ itemDTO, onSubmit, handleDelete, cancelEdit }: EditRowProps) 
 
     useEffect(() => {
         reset(itemDTO);
+
         append({scannerId: '', quantity: 1});
+        trigger("links");
     }, [itemDTO, reset]);
 
     const onDelete = async (index: number, id?: number) => {
@@ -103,9 +110,24 @@ const EditRow = ({ itemDTO, onSubmit, handleDelete, cancelEdit }: EditRowProps) 
                         </thead>
                         <tbody id="linkTableBody" className="link">
                             {fields.map((link, index) => (
-                                <tr key={link.id} data-key={link.id}>
+                                <tr key={`link-${link.id}`} data-key={`link-${link.id}`}>
                                     <td>
-                                        <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={ link.scannerId } disabled={ link.linkId !== undefined }/>
+                                        <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={ link.scannerId } disabled={ link.linkId !== undefined } onBlur={ async (event) => {
+                                            const scannerId = event.target.value;
+
+                                            if(scannerId){
+                                                const response = await axios.get(`/api/container/check?scannerId=${scannerId}`);
+
+                                                if(response.status === 202){
+                                                    setError(`links.${index}.scannerId`, {message: "Container ID does not exist"});
+                                                }
+                                            }
+                                        }} />
+                                        {errors.links?.[index]?.scannerId && (
+                                            <li className='list-group-item text-danger'>
+                                                {`${errors.links[index].scannerId.message}`}
+                                            </li>
+                                        )}
                                     </td>
                                     <td>
                                         <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />

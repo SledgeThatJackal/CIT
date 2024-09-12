@@ -1,14 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import PaginationComponent from '../General/Pagination';
-import ConfirmationModal from '../General/ConfirmationModal';
+
 import SearchComponent from '../General/SearchComponent';
 import ReadRow from '../General/ReadRow';
-import EditRow from '../General/EditRow';
+
+const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
+const EditRow = lazy(() => import("../General/EditRow"));
 
 import { ItemResponse, Item, ItemDTO, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
 
@@ -23,6 +25,7 @@ function ItemTable(){
 
     const methods = useForm<ItemFormSchemaType>({
         defaultValues: {},
+        mode: "onChange",
         resolver: zodResolver(ItemFormSchema),
     });
 
@@ -90,7 +93,7 @@ function ItemTable(){
             <ConfirmationModal onDelete={ handleDelete } />
 
             <FormProvider {...methods}>
-                <form onSubmit={ methods.handleSubmit(onSubmit) }>
+                <form onSubmit={ methods.handleSubmit( onSubmit ) }>
                     <table className="table table-secondary table-hover mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>
                         <thead>
                             <tr className='table-secondary'>
@@ -105,7 +108,7 @@ function ItemTable(){
                             {itemData.length > 0 && itemData.map((item, index) => (
                                 <React.Fragment>
                                     { editId === item.id ? (
-                                        <EditRow key='editRow' itemDTO={ itemDTO } onSubmit={ onSubmit } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
+                                        <EditRow key='editRow' itemDTO={ itemDTO } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
                                     ) : (
                                         <ReadRow key='readRow' item={ item } index={ index } onDelete={ setDeleteId } onEdit={ handleEdit } />
                                     )}

@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/item")
@@ -65,14 +66,11 @@ public class ItemController {
     }
 
     @PatchMapping("/edit")
-    public void updateItem(@RequestBody ItemDTO itemDTO){
+    public void updateItem(@RequestBody ItemDTO itemDTO) throws NoSuchElementException {
         Item updatedItem = itemDTO.getItem();
-        System.out.println(updatedItem.getContainerItems());
         Item item = itemService.findItemById(updatedItem.getId());
 
         updatedItem.setContainerItems(item.getContainerItems());
-
-        System.out.println(updatedItem.getContainerItems());
 
         updatedItem = itemService.saveItem(itemDTO.getItem());
 
