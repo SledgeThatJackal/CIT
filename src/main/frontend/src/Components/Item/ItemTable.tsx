@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { zodResolver } from "@hookform/resolvers/zod";
 
-
 import PaginationComponent from '../General/Pagination';
 import ConfirmationModal from '../General/ConfirmationModal';
 import SearchComponent from '../General/SearchComponent';

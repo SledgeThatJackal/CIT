@@ -37,3 +37,9 @@ build/
 
 ### Docker Image ###
 **/*.tar
+
+### Log Files ###
+.log
+
+### Export Files ###
+cit_export.json
