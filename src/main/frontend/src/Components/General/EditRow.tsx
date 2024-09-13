@@ -92,7 +92,7 @@ const EditRow = ({ itemDTO, handleDelete, cancelEdit }: EditRowProps) => {
                 
                 <td>
                     <div className='btn-group'>
-                        <button type="submit" className="btn btn-info btn-sm" disabled={ isSubmitting }> Save </button>
+                        <button type="submit" className="btn btn-info btn-sm" disabled={ isSubmitting || Object.keys(errors).length > 0 }> Save </button>
                         <button type='button' className="btn btn-danger btn-sm" onClick={ () => cancelEdit(-1) }>Discard</button>
                     </div>
                 </td>
