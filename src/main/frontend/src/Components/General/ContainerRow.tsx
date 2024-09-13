@@ -1,6 +1,5 @@
 import React from "react";
 
-import { Container } from '../../Types/Container';
 import { ContainerItem } from "../../Types/ContainerItem";
 
 type ContainerRowProps = {

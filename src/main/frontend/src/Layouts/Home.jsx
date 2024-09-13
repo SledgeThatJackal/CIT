@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 
 import DatabaseExportButton from '../Components/General/DatabaseExportButton';
 
