@@ -1844,3 +1844,141 @@
 2024-09-17T12:38:05.076-04:00  INFO 38616 --- [cit] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2024-09-17T12:38:05.080-04:00  INFO 38616 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2024-09-17T12:38:05.083-04:00  INFO 38616 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-09-17T16:42:21.443-04:00  INFO 41844 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Starting CitApplication using Java 17.0.9 with PID 41844 (C:\Users\aland\OneDrive\Documents\CIT\target\classes started by aland in C:\Users\aland\OneDrive\Documents\CIT)
+2024-09-17T16:42:21.446-04:00  INFO 41844 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : No active profile set, falling back to 1 default profile: "default"
+2024-09-17T16:42:21.504-04:00  INFO 41844 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-09-17T16:42:21.504-04:00  INFO 41844 --- [cit] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-09-17T16:42:22.262-04:00  INFO 41844 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-09-17T16:42:22.373-04:00  INFO 41844 --- [cit] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96 ms. Found 4 JPA repository interfaces.
+2024-09-17T16:42:23.184-04:00  INFO 41844 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-09-17T16:42:23.200-04:00  INFO 41844 --- [cit] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-09-17T16:42:23.200-04:00  INFO 41844 --- [cit] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-09-17T16:42:23.264-04:00  INFO 41844 --- [cit] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-09-17T16:42:23.265-04:00  INFO 41844 --- [cit] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1759 ms
+2024-09-17T16:42:23.543-04:00  INFO 41844 --- [cit] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-09-17T16:42:23.688-04:00  INFO 41844 --- [cit] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-09-17T16:42:23.740-04:00  INFO 41844 --- [cit] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-09-17T16:42:23.971-04:00  INFO 41844 --- [cit] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-09-17T16:42:23.999-04:00  INFO 41844 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-09-17T16:42:24.158-04:00  INFO 41844 --- [cit] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2dd1d475
+2024-09-17T16:42:24.160-04:00  INFO 41844 --- [cit] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-09-17T16:42:25.103-04:00  INFO 41844 --- [cit] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-09-17T16:42:25.250-04:00  INFO 41844 --- [cit] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-09-17T16:42:25.617-04:00  INFO 41844 --- [cit] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-09-17T16:42:26.406-04:00  WARN 41844 --- [cit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-09-17T16:42:26.437-04:00  INFO 41844 --- [cit] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-09-17T16:42:26.527-04:00 DEBUG 41844 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 19 mappings in 'requestMappingHandlerMapping'
+2024-09-17T16:42:26.538-04:00 DEBUG 41844 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/, /{x:[\w\-]+}, /{x:^(?!api$).*$}/{y:[\w\-]+}] in 'viewControllerHandlerMapping'
+2024-09-17T16:42:26.640-04:00 DEBUG 41844 --- [cit] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-09-17T16:42:26.703-04:00 DEBUG 41844 --- [cit] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-09-17T16:42:26.756-04:00 DEBUG 41844 --- [cit] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-09-17T16:42:26.913-04:00  INFO 41844 --- [cit] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-09-17T16:42:26.968-04:00  INFO 41844 --- [cit] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-09-17T16:42:26.982-04:00  INFO 41844 --- [cit] [restartedMain] dev.adamico.cit.CitApplication           : Started CitApplication in 5.978 seconds (process running for 6.571)
+2024-09-17T16:42:27.620-04:00  INFO 41844 --- [cit] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-09-17T16:42:27.620-04:00  INFO 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-09-17T16:42:27.620-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2024-09-17T16:42:27.620-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2024-09-17T16:42:27.620-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2024-09-17T16:42:27.621-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@2f83adce
+2024-09-17T16:42:27.621-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@18b3d8dd
+2024-09-17T16:42:27.622-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-09-17T16:42:27.622-04:00  INFO 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-09-17T16:42:27.629-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/", parameters={}
+2024-09-17T16:42:27.635-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ParameterizableViewController [view="forward:/index.html"]
+2024-09-17T16:42:27.647-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.w.s.v.ContentNegotiatingViewResolver : Selected 'text/html' given [text/html, application/xhtml+xml, image/avif, image/webp, image/apng, application/xml;q=0.9, */*;q=0.8, application/signed-exchange;v=b3;q=0.7]
+2024-09-17T16:42:27.647-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.w.servlet.view.InternalResourceView  : View name 'forward:', model {}
+2024-09-17T16:42:27.649-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.w.servlet.view.InternalResourceView  : Forwarding to [/index.html]
+2024-09-17T16:42:27.654-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : "FORWARD" dispatch for GET "/index.html", parameters={}
+2024-09-17T16:42:27.656-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.667-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Exiting from "FORWARD" dispatch, status 200
+2024-09-17T16:42:27.668-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.677-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/vendor-7fc2cac8.69f64b1cdc6b04dcdfbc.js", parameters={}
+2024-09-17T16:42:27.678-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.681-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.682-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/vendor-5927e8f1.4833c163f5d98bac31b7.js", parameters={}
+2024-09-17T16:42:27.682-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/vendor-5e58aee3.78a1a95a34bc68540d18.js", parameters={}
+2024-09-17T16:42:27.683-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.683-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/vendor-e57b79e8.51fd89bc9e270a7ae50c.js", parameters={}
+2024-09-17T16:42:27.683-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/vendor-6c2eee85.dde892708675aec4f5ab.js", parameters={}
+2024-09-17T16:42:27.683-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/vendor-d2eb5610.3cb5366123c6dbc865b3.js", parameters={}
+2024-09-17T16:42:27.683-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.683-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/vendor-2594363e.f3f58a35cdec818e20d0.js", parameters={}
+2024-09-17T16:42:27.683-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-6] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.683-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.684-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.684-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-8] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.685-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.686-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.686-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.687-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.688-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.689-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.690-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/vendor-e5bca7e4.f23c82d4d1890cf6f85b.js", parameters={}
+2024-09-17T16:42:27.690-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/vendor-fa3805ec.aefe4df0904109de3f49.js", parameters={}
+2024-09-17T16:42:27.691-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/vendor-57936d4c.0f1518c0b1ab8c7ff8fd.js", parameters={}
+2024-09-17T16:42:27.691-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-9] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.691-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/vendor-27545368.eafbf44c82e0b92d5688.js", parameters={}
+2024-09-17T16:42:27.691-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-10] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.691-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.691-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/main.9b267de666da5698de8f.js", parameters={}
+2024-09-17T16:42:27.691-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.692-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.694-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.694-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.694-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.694-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.695-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.753-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/favicon.ico", parameters={}
+2024-09-17T16:42:27.753-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/b7bcc075b395c14ce8c2.woff2?dd67030699838ea613ee6dbda90effa6", parameters={masked}
+2024-09-17T16:42:27.754-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.754-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-6] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:27.754-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2024-09-17T16:42:27.758-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler dev.adamico.cit.Exceptions.GlobalExceptionHandler#handleExceptions(Exception)
+2024-09-17T16:42:27.758-04:00 ERROR 41844 --- [cit] [http-nio-8080-exec-5] o.s.w.bind.annotation.ExceptionHandler   : No static resource favicon.ico.
+2024-09-17T16:42:27.764-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:27.766-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'image/avif', given [image/avif, image/webp, image/apng, image/svg+xml, image/*, */*;q=0.8] and supported [text/plain, */*, application/json, application/*+json]
+2024-09-17T16:42:27.767-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["An internal server error occurred."]
+2024-09-17T16:42:27.769-04:00  WARN 41844 --- [cit] [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2024-09-17T16:42:27.769-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2024-09-17T16:42:29.663-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/209.4f8d6839d8b63795dc19.js", parameters={}
+2024-09-17T16:42:29.663-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/common.1b3723901fcf7edf9b14.js", parameters={}
+2024-09-17T16:42:29.664-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-8] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:29.664-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:29.666-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/favicon.ico", parameters={}
+2024-09-17T16:42:29.666-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:29.666-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:29.667-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:29.668-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2024-09-17T16:42:29.668-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler dev.adamico.cit.Exceptions.GlobalExceptionHandler#handleExceptions(Exception)
+2024-09-17T16:42:29.668-04:00 ERROR 41844 --- [cit] [http-nio-8080-exec-4] o.s.w.bind.annotation.ExceptionHandler   : No static resource favicon.ico.
+2024-09-17T16:42:29.669-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'image/avif', given [image/avif, image/webp, image/apng, image/svg+xml, image/*, */*;q=0.8] and supported [text/plain, */*, application/json, application/*+json]
+2024-09-17T16:42:29.669-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["An internal server error occurred."]
+2024-09-17T16:42:29.669-04:00  WARN 41844 --- [cit] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2024-09-17T16:42:29.669-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2024-09-17T16:42:29.684-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/api/item?page=0&search=", parameters={masked}
+2024-09-17T16:42:29.685-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.ItemController#getItemPage(int, int, String)
+2024-09-17T16:42:29.864-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Found 'Content-Type:application/json' in response
+2024-09-17T16:42:29.864-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["{"content":[{"id":1,"name":"Test Item 1","description":"This is the first test item","containerItems (truncated)..."]
+2024-09-17T16:42:29.865-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:31.213-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/api/item/edit?itemId=1", parameters={masked}
+2024-09-17T16:42:31.214-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.ItemController#getEditItem(Long)
+2024-09-17T16:42:31.261-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-10] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [application/json, text/plain, */*] and supported [text/plain, */*, application/json, application/*+json]
+2024-09-17T16:42:31.261-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-10] m.m.a.RequestResponseBodyMethodProcessor : Writing ["{"item":{"id":1,"name":"Test Item 1","description":"This is the first test item","containerItems":[{ (truncated)..."]
+2024-09-17T16:42:31.262-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:31.265-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/931.c50384e0335d0733f81d.js", parameters={}
+2024-09-17T16:42:31.266-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-9] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [static/]]
+2024-09-17T16:42:31.268-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:31.283-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/tags", parameters={}
+2024-09-17T16:42:31.284-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.TagController#getTags()
+2024-09-17T16:42:31.292-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2024-09-17T16:42:31.292-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Writing [[dev.adamico.cit.Models.Tag@42b7383a, dev.adamico.cit.Models.Tag@4cf2eca4]]
+2024-09-17T16:42:31.299-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:42:31.303-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/tags", parameters={}
+2024-09-17T16:42:31.303-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to dev.adamico.cit.Controllers.TagController#getTags()
+2024-09-17T16:42:31.308-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2024-09-17T16:42:31.308-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] m.m.a.RequestResponseBodyMethodProcessor : Writing [[dev.adamico.cit.Models.Tag@3203819f, dev.adamico.cit.Models.Tag@9f86cdd]]
+2024-09-17T16:42:31.309-04:00 DEBUG 41844 --- [cit] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-09-17T16:43:01.130-04:00  INFO 41844 --- [cit] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-09-17T16:43:01.133-04:00  INFO 41844 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-09-17T16:43:01.135-04:00  INFO 41844 --- [cit] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
