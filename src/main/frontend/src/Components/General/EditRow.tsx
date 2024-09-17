@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
 import axios from 'axios';
 
-import { ItemDTO, LinkDTO, ItemFormSchemaType, LinkSchema } from '../../Types/Item';
+import { ItemDTO, LinkDTO, ItemFormSchemaType } from '../../Types/Item';
 
 import TagInput from '../Tag/TagInput';
+import ComboBox from './ComboBox';
 
 type EditRowProps = {
     itemDTO?: ItemDTO;
@@ -144,6 +145,7 @@ const EditRow = ({ itemDTO, handleDelete, cancelEdit }: EditRowProps) => {
                     </table>
                 </td>
             </tr>
+            <ComboBox />
         </>
     )
 };
