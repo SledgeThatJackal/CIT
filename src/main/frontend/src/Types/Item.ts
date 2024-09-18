@@ -1,5 +1,5 @@
 import { ContainerItem, ContainerItemSchema } from './ContainerItem';
-import { Container } from './Container';
+import { ContainerDTO } from './Container';
 import { Tag, TagSchema } from './Tag';
 import { z } from 'zod';
 
@@ -26,6 +26,11 @@ export type LinkDTO = {
 export type ItemDTO = {
     item: Item;
     links: LinkDTO[];
+};
+
+export type EditData = {
+    itemDTO: ItemDTO;
+    containerDTOs?: ContainerDTO[];
 };
 
 export const ItemSchema = z.object({

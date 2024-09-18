@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
-import axios from 'axios';
 
 import { ItemDTO, LinkDTO, ItemFormSchemaType } from '../../Types/Item';
+import { ContainerDTO } from '../../Types/Container';
 
 import TagInput from '../Tag/TagInput';
 import ComboBox from './ComboBox';
 
 type EditRowProps = {
     itemDTO?: ItemDTO;
+    containerDTOs?: ContainerDTO[];
     handleDelete: (index: number, id?: number) => Promise<boolean>;
     cancelEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
-const EditRow = ({ itemDTO, handleDelete, cancelEdit }: EditRowProps) => {
+const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowProps) => {
     const {
         register,
         formState: {errors, isSubmitting},
@@ -70,6 +71,18 @@ const EditRow = ({ itemDTO, handleDelete, cancelEdit }: EditRowProps) => {
         }
     };
 
+    // <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={ link.scannerId } disabled={ link.linkId !== undefined } onBlur={ async (event) => {
+    //     const scannerId = event.target.value;
+
+    //     if(scannerId){
+    //         const response = await axios.get(`/api/container/check?scannerId=${scannerId}`);
+
+    //         if(response.status === 202){
+    //             setError(`links.${index}.scannerId`, {message: "Container ID does not exist"});
+    //         }
+    //     }
+    // }} />
+
     return (
         <>
             <tr key={`item-edit-${itemDTO?.item.id}`} className='table-primary'>
@@ -113,17 +126,9 @@ const EditRow = ({ itemDTO, handleDelete, cancelEdit }: EditRowProps) => {
                             {fields.map((link, index) => (
                                 <tr key={`link-${link.id}`} data-key={`link-${link.id}`}>
                                     <td>
-                                        <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={ link.scannerId } disabled={ link.linkId !== undefined } onBlur={ async (event) => {
-                                            const scannerId = event.target.value;
-
-                                            if(scannerId){
-                                                const response = await axios.get(`/api/container/check?scannerId=${scannerId}`);
-
-                                                if(response.status === 202){
-                                                    setError(`links.${index}.scannerId`, {message: "Container ID does not exist"});
-                                                }
-                                            }
-                                        }} />
+                                        {containerDTOs && (
+                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } register={ register } setError={ setError } index={ index } link={ link } />
+                                        )}
                                         {errors.links?.[index]?.scannerId && (
                                             <li className='list-group-item text-danger'>
                                                 {`${errors.links[index].scannerId.message}`}
@@ -131,7 +136,7 @@ const EditRow = ({ itemDTO, handleDelete, cancelEdit }: EditRowProps) => {
                                         )}
                                     </td>
                                     <td>
-                                        <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={link.quantity} />
+                                        <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={ link.quantity } />
                                     </td>
                                     <td>
                                         <button type='button' className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId ? link.linkId : undefined)}></button>
@@ -145,7 +150,6 @@ const EditRow = ({ itemDTO, handleDelete, cancelEdit }: EditRowProps) => {
                     </table>
                 </td>
             </tr>
-            <ComboBox />
         </>
     )
 };

@@ -37,7 +37,6 @@ const TagInput = ({ control, name }: TagInputProps) => {
             }
         };
 
-        fetchTags();
     }, [fields]);
 
     const addTag = async (tag ?: Tag) => {

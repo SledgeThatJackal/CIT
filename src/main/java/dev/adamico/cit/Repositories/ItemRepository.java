@@ -17,7 +17,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @EntityGraph(value="graph.Item", type = EntityGraph.EntityGraphType.FETCH)
     List<Item> findByIdIn(Set<Long> ids);
 
-    @Query("SELECT i.id FROM Item i WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(i.description) LIKE LOWER(CONCAT('%', :description, '%'))")
+    @Query("SELECT i.id FROM Item i WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(i.description) LIKE LOWER(CONCAT('%', :description, '%')) ORDER BY id ASC")
     Page<Long> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(@Param("name") String name, @Param("description") String description, Pageable pageable);
 
 }

@@ -10,6 +10,11 @@ export type Container = {
     containerItems?: ContainerItem[];
 };
 
+export type ContainerDTO = {
+    name: string;
+    scannerId: string
+};
+
 export const ContainerSchema = z.object({
     id: z.number(),
     name: z.string(),

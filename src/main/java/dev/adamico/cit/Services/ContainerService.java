@@ -1,5 +1,6 @@
 package dev.adamico.cit.Services;
 
+import dev.adamico.cit.DTOs.ContainerDTO;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Repositories.ContainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ public class ContainerService {
         Pageable pageable = PageRequest.of(page, size);
 
         return containerRepository.findAll(pageable);
+    }
+
+    public List<ContainerDTO> findAllScannerIdsAndNames(){
+        return containerRepository.findAllScannerIdsAndNames();
     }
 
     public Container findContainerById(Long id){

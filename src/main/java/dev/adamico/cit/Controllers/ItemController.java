@@ -3,6 +3,8 @@ package dev.adamico.cit.Controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import dev.adamico.cit.DTOs.ContainerDTO;
 import dev.adamico.cit.DTOs.ItemCreationDTO;
 import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
@@ -59,10 +61,16 @@ public class ItemController {
         List<LinkDTO> links = containerItemService.findAllAssociatedContainersBasedOnItemId(itemId);
 
         ItemDTO itemDTO = new ItemDTO(item, links);
+        List<ContainerDTO> containerDTOs = containerService.findAllScannerIdsAndNames();
 
         ObjectMapper mapper = new ObjectMapper();
 
-        return mapper.writeValueAsString(itemDTO);
+        ObjectNode objectNode = mapper.createObjectNode();
+
+        objectNode.set("itemDTO", mapper.valueToTree(itemDTO));
+        objectNode.set("containerDTOs", mapper.valueToTree(containerDTOs));
+
+        return mapper.writeValueAsString(objectNode);
     }
 
     @PatchMapping("/edit")
