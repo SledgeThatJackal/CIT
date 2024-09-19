@@ -22,7 +22,8 @@ const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowPr
         setFocus,
         reset,
         trigger,
-        setError
+        setError,
+        setValue
     } = useFormContext<ItemFormSchemaType>();
 
     const { fields, append, remove} = useFieldArray({
@@ -71,18 +72,6 @@ const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowPr
         }
     };
 
-    // <input {...register(`links.${index}.scannerId`)} id={`linkId-${index}`} className="form-control" defaultValue={ link.scannerId } disabled={ link.linkId !== undefined } onBlur={ async (event) => {
-    //     const scannerId = event.target.value;
-
-    //     if(scannerId){
-    //         const response = await axios.get(`/api/container/check?scannerId=${scannerId}`);
-
-    //         if(response.status === 202){
-    //             setError(`links.${index}.scannerId`, {message: "Container ID does not exist"});
-    //         }
-    //     }
-    // }} />
-
     return (
         <>
             <tr key={`item-edit-${itemDTO?.item.id}`} className='table-primary'>
@@ -127,7 +116,7 @@ const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowPr
                                 <tr key={`link-${link.id}`} data-key={`link-${link.id}`}>
                                     <td>
                                         {containerDTOs && (
-                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } register={ register } setError={ setError } index={ index } link={ link } />
+                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } register={ register } setError={ setError } index={ index } link={ link } setValue={ setValue } setFocus={ setFocus }/>
                                         )}
                                         {errors.links?.[index]?.scannerId && (
                                             <li className='list-group-item text-danger'>

@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import React, { useRef } from 'react';
 
 import { ContainerDTO } from '../../Types/Container';
+import { UseFormRegister } from 'react-hook-form';
 
 type ComboBoxProps = {
     containerDTOs?: ContainerDTO[];
@@ -13,24 +13,30 @@ type ComboBoxProps = {
         scannerId?: string | undefined;
         linkId?: number | null | undefined;
     } & Record<"id", string>;
+    setValue: any;
+    setFocus: any;
 };
 
-const ComboBox = ({ containerDTOs, register, setError, index, link }: ComboBoxProps) => {
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const [inputValue, setInputValue] = useState<string | undefined>(undefined);
+const ComboBox = ({ containerDTOs, register, setError, index, link, setValue, setFocus }: ComboBoxProps) => {
 
     const handleClick = () => {
-        inputRef.current?.focus();
+        setFocus(`links.${index}.scannerId`);
     };
 
     const handleDropdownClick = (value: string) => {
-        setInputValue(value);
-        handleClick();
+        setValue(`links.${index}.scannerId`, value);
     };
 
     return (
         <div className="input-group">
-            <input {...register(`links.${index}.scannerId`)} id={ `linkId-${index}` } className="form-control dropdown-toggle" defaultValue={ link.scannerId } disabled={ link.linkId !== undefined } data-bs-toggle="dropdown" aria-expanded="false" ref={ inputRef } value={ inputValue } onBlur= {
+            <input {...register(`links.${index}.scannerId`)} id={ `linkId-${index}` } className="form-control dropdown-toggle" defaultValue={ link.scannerId } disabled={ link.linkId !== undefined } data-bs-toggle="dropdown" aria-expanded="false" 
+            onChange= { 
+                (event) => {
+                    setValue(`links.${index}.scannerId`, event.target.value.trim())
+                }
+            }
+
+            onBlur= {
                 (event) => {
                     const scannerId = event.target.value.trim();
 
