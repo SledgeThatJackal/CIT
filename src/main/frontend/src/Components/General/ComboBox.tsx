@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { useController, FieldValues, Control, UseFormSetValue, UseFormSetFocus, UseFormSetError, UseFormClearErrors } from 'react-hook-form';
-import { Dropdown } from 'bootstrap';
+import { useController, FieldValues, Control, UseFormSetValue, UseFormSetFocus, UseFormSetError, UseFormClearErrors, FieldErrors } from 'react-hook-form';
+import { Dropdown, Overlay, Tooltip } from 'react-bootstrap';
 
 import { ContainerDTO } from '../../Types/Container';
 import { LinkDTO } from '../../Types/Item';
@@ -9,13 +9,14 @@ type InputControllerProps ={
     fieldName: string;
     control: Control<FieldValues, any>
     initialValue?: string;
-    toggleDropdown: () => void;
+    hasLinkId: boolean;
     checkIfContainerExists: (scannerId: string) => boolean;
     setError: UseFormSetError<any>;
     clearErrors: UseFormClearErrors<any>;
+    showError: () => void;
 };
 
-const Input = ({fieldName, control, initialValue, toggleDropdown, checkIfContainerExists, setError, clearErrors }: InputControllerProps) => {
+const Input = ({fieldName, control, initialValue, hasLinkId, checkIfContainerExists, setError, clearErrors, showError }: InputControllerProps) => {
     const {
         field,
         fieldState: { error }
@@ -24,8 +25,8 @@ const Input = ({fieldName, control, initialValue, toggleDropdown, checkIfContain
         control,
         defaultValue: initialValue || ''
     });
+
     
-    const [value, setValue] = useState(String(field.value) || "");
 
     return (
         <>
@@ -33,28 +34,20 @@ const Input = ({fieldName, control, initialValue, toggleDropdown, checkIfContain
                 {...field}
                 className="form-control"
                 onChange={(e) => {
-                    setValue(e.target.value.trim());
                     field.onChange && field.onChange(e);
                 }}
-                onFocus={() => toggleDropdown()}
                 onBlur={() => {
                     field.onBlur();
-                    if(checkIfContainerExists(value)){
+                    if(checkIfContainerExists(field.value)){
                         clearErrors(field.name);
                     } else {
                         setError(field.name, {message: 'Container ID does not exist'});
+                        showError();
                     }
                 }}
-                value={ value }
-                disabled={ initialValue !== '' }
+                value={ field.value }
+                disabled={ hasLinkId }
             />
-            {error && (
-                <div className="flex-nowrap">
-                    <li className='list-group-item text-danger'>
-                        {`${error.message}`}
-                    </li>
-                </div>
-            )}
         </>
     )
 };
@@ -68,6 +61,7 @@ type ComboBoxProps = {
         linkId?: number | null | undefined;
     } & Record<"id", string>;
     control: Control<any>;
+    errors: any;
     setValue: UseFormSetValue<any>;
     setFocus: UseFormSetFocus<any>;
     setError: UseFormSetError<any>;
@@ -75,47 +69,44 @@ type ComboBoxProps = {
     watchLinks: LinkDTO[];
 };
 
-const ComboBox = ({ containerDTOs, index, link, control, setValue, setFocus, setError, clearErrors, watchLinks }: ComboBoxProps) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+const ComboBox = ({ containerDTOs, index, link, control, errors, setValue, setError, clearErrors, watchLinks }: ComboBoxProps) => {
+    const [showDropdown, setShowDropdown] = useState(false);
+    const handleToggle = (isShown: boolean) => setShowDropdown(isShown); 
 
-    const handleClick = () => {
-        setFocus(`links.${index}.scannerId`);
-    };
+    const [showError, setShowError] = useState(false);
+    const target = useRef(null);
 
     const handleDropdownClick = (value: string) => {
         setValue(`links.${index}.scannerId`, value);
     };
 
     const checkIfContainerExists = (scannerId: string): boolean => {
-        console.log('I got here!');
-        toggleDropdown();
-        console.log(watchLinks[index]);
-
-        return scannerId.length > 0 && Boolean(containerDTOs?.some(container => container.scannerId === scannerId));
-    };
-
-    const toggleDropdown = () => {
-        // const dropdownRef = inputRef.current;
-
-        // if(dropdownRef){
-        //     const dropdown = new Dropdown(dropdownRef);
-
-        //     dropdown.toggle();
-        // }
-        console.log('focus');
+        return scannerId.length >= 0 && Boolean(containerDTOs?.some(container => container.scannerId === scannerId));
     };
 
     return (
-        <>
-            <div className="input-group">
-                <Input fieldName={ `links.${index}.scannerId` } control={ control } initialValue={ link.scannerId } toggleDropdown={ toggleDropdown } checkIfContainerExists={ checkIfContainerExists } setError={ setError } clearErrors={ clearErrors } />
-                <ul className="dropdown-menu dropdown-menu-end w-100" style={{maxHeight: "200px", overflowY: "auto"}}> 
-                    {containerDTOs && containerDTOs.map((containerDTO) => (
-                        <li key={ `container-dropdown-${containerDTO.scannerId}` }><a className="dropdown-item" onClick={ () => handleDropdownClick(containerDTO.scannerId) }>{containerDTO.scannerId + ` (` + containerDTO.name + `)`}</a></li>
+        <div className="input-group" ref={ target }>
+            <Input fieldName={ `links.${index}.scannerId` } control={ control } initialValue={ link.scannerId } hasLinkId={ link.linkId !== undefined } checkIfContainerExists={ checkIfContainerExists } setError={ setError } clearErrors={ clearErrors } showError={ () => setShowError(!showError) } />
+            <Dropdown show={ showDropdown } onToggle={ handleToggle }>
+                <Dropdown.Toggle>
+                </Dropdown.Toggle>
+                <Dropdown.Menu style={{maxHeight: "200px", overflowY: "auto"}} >
+                    {containerDTOs && containerDTOs.map((containerDTO, index) => (
+                        <Dropdown.Item key={`DropDownMenu-${index}`} onClick={ () => handleDropdownClick(containerDTO.scannerId) }> {containerDTO.scannerId + ` (` + containerDTO.name + `)`} </Dropdown.Item>
                     ))}
-                </ul>
-            </div>
-        </>
+                </Dropdown.Menu>
+            </Dropdown>
+
+            {errors.links?.[index]?.scannerId && (
+                <Overlay target={ target.current } show={ showError } placement="right">
+                    {(props) => (
+                        <Tooltip id="overlay-error" {...props}>
+                            {`${errors.links[index].scannerId.message}`}
+                        </Tooltip>
+                    )}
+                </Overlay>
+            )}
+        </div>
     );
 };
 

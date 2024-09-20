@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
 
 import { ItemDTO, LinkDTO, ItemFormSchemaType } from '../../Types/Item';
@@ -6,6 +6,7 @@ import { ContainerDTO } from '../../Types/Container';
 
 import TagInput from '../Tag/TagInput';
 import ComboBox from './ComboBox';
+import { Toast } from 'react-bootstrap';
 
 type EditRowProps = {
     itemDTO?: ItemDTO;
@@ -27,6 +28,10 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
         setValue,
         clearErrors
     } = useFormContext<ItemFormSchemaType>();
+
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const toggleToast = () => setShowToast(!showToast);
 
     const { fields, append, remove} = useFieldArray({
         control, 
@@ -89,7 +94,8 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
                 setupDelete(() => onDelete(index, element.linkId ? element.linkId : undefined), `If you do this, the item quantity in Container: ${element.scannerId} will be less than one. Do you want to delete this link or cancel the operation?`);
             } else {
                 setValue(`links.${elementIndex}.quantity`, sum);
-                console.log(oldSum); // Temp way to see the old value
+                setToastMessage(`Containter ID: ${element.scannerId}, New Quantity: ${sum}, Old Quantity: ${oldSum}`);
+                toggleToast();
             }
 
             remove(index);
@@ -140,7 +146,7 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
                                 <tr key={`link-${link.id}`} data-key={`link-${link.id}`}>
                                     <td>
                                         {containerDTOs && (
-                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } control={ control } setError={ setError } clearErrors={ clearErrors } index={ index } link={ link } setValue={ setValue } setFocus={ setFocus } watchLinks={ watchLinks }/>
+                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } control={ control } errors={ errors } setError={ setError } clearErrors={ clearErrors } index={ index } link={ link } setValue={ setValue } setFocus={ setFocus } watchLinks={ watchLinks }/>
                                         )}
                                     </td>
                                     <td>
@@ -165,6 +171,15 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
                     </table>
                 </td>
             </tr>
+
+            <Toast show={ showToast } onClose={ toggleToast }>
+                <Toast.Header>
+                    <strong className="me-auto">Combined</strong>
+                </Toast.Header>
+                <Toast.Body>
+                    { toastMessage }
+                </Toast.Body>
+            </Toast>
         </>
     )
 };
