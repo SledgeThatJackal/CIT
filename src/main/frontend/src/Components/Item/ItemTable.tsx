@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from 'react';
+import React, { useState, useEffect, lazy, useRef } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
@@ -13,6 +13,7 @@ const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
 const EditRow = lazy(() => import("../General/EditRow"));
 
 import { ItemResponse, Item, EditData, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
+import { RefMethod } from '../../Types/General';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
@@ -22,6 +23,11 @@ function ItemTable(){
     const [deleteId, setDeleteId] = useState<number>(-1);
     const [editId, setEditId] = useState<number | undefined>(undefined);
     const [editData, setEditData] = useState<EditData>();
+
+    const [message, setMessage] = useState<string | undefined>(undefined);
+    const [action, setAction] = useState<() => Promise<void>>();
+
+    const modalRef = useRef<RefMethod>(null);
 
     const methods = useForm<ItemFormSchemaType>({
         defaultValues: {},
@@ -68,6 +74,8 @@ function ItemTable(){
     const handleLinkDelete = async (index: number, id?: number) => {
         try{
             await axios.delete(`/api/link?id=${id}`);
+
+            fetchData();
             return true;
         } catch (error) {
             console.error('Error deleting link: ', error);
@@ -86,12 +94,21 @@ function ItemTable(){
         }
     };
 
+    const setupDelete = (action: () => Promise<void>, message: string) => {
+        setAction(() => action);
+        setMessage(message);
+
+        if(modalRef.current){
+            modalRef.current.showModal();
+        }
+    };
+
     return(
         <div className='container-fluid'>
             <SearchComponent onSearch={ setSearchTerm } />
-            <ConfirmationModal onDelete={ handleDelete } />
+            <ConfirmationModal onDelete={ action } message={ message } ref={ modalRef } />
 
-            <FormProvider {...methods}>
+            <FormProvider { ...methods }>
                 <form onSubmit={ methods.handleSubmit( onSubmit ) }>
                     <table className="table table-secondary table-hover mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>
                         <thead>
@@ -107,9 +124,9 @@ function ItemTable(){
                             {itemData.length > 0 && itemData.map((item, index) => (
                                 <React.Fragment>
                                     { editId === item.id ? (
-                                        <EditRow key='editRow' itemDTO={ editData?.itemDTO } containerDTOs={ editData?.containerDTOs } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
+                                        <EditRow key='editRow' itemDTO={ editData?.itemDTO } containerDTOs={ editData?.containerDTOs } setupDelete={ setupDelete } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
                                     ) : (
-                                        <ReadRow key='readRow' item={ item } index={ index } onDelete={ setDeleteId } onEdit={ handleEdit } />
+                                        <ReadRow key='readRow' item={ item } index={ index } onDelete={ (id) => { setDeleteId(id); setupDelete( handleDelete, "Are you sure you want to delete this item?"); } } onEdit={ handleEdit } />
                                     )}
                                 </React.Fragment>
                             ))}

@@ -10,11 +10,12 @@ import ComboBox from './ComboBox';
 type EditRowProps = {
     itemDTO?: ItemDTO;
     containerDTOs?: ContainerDTO[];
+    setupDelete: (action: () => Promise<void>, message: string) => void;
     handleDelete: (index: number, id?: number) => Promise<boolean>;
     cancelEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
-const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowProps) => {
+const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit }: EditRowProps) => {
     const {
         register,
         formState: {errors, isSubmitting},
@@ -23,7 +24,7 @@ const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowPr
         reset,
         trigger,
         setError,
-        setValue
+        setValue,
     } = useFormContext<ItemFormSchemaType>();
 
     const { fields, append, remove} = useFieldArray({
@@ -41,7 +42,7 @@ const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowPr
             append({scannerId: '', quantity: 1});
 
             setTimeout(() => {
-                trigger("links");
+                trigger("links"); 
                 setFocus(`links.${watchLinks.length - 1}.scannerId`); 
             }, 0);
         };
@@ -72,9 +73,31 @@ const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowPr
         }
     };
 
+    const checkForDuplicate = (scannerId: string, index: number) => {
+        const values = watchLinks;
+
+        const element = values.find(link => { return (link?.linkId && (link?.scannerId?.trim() === scannerId.trim())); });
+
+        if(element){
+            const elementIndex = values.findIndex(link => link === element);
+
+            const oldSum = element.quantity; // I am saving this to display to the user
+            const sum = (oldSum || 1) + watchLinks[index].quantity;
+
+            if(sum < 1){
+                setupDelete(() => onDelete(index, element.linkId ? element.linkId : undefined), `If you do this, the item quantity in Container: ${element.scannerId} will be less than one. Do you want to delete this link or cancel the operation?`);
+            } else {
+                setValue(`links.${elementIndex}.quantity`, sum);
+                console.log(oldSum); // Temp way to see the old value
+            }
+
+            remove(index);
+        }
+    };
+
     return (
         <>
-            <tr key={`item-edit-${itemDTO?.item.id}`} className='table-primary'>
+            <tr key={`item-edit-${itemDTO?.item.id}`} className='table-primary w-100'>
                 <td>
                     <input {...register("item.name")} type="text" id="nameInput" className="form-control" placeholder="Item Name" autoFocus />
                     {errors.item?.name && (
@@ -102,7 +125,7 @@ const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowPr
             </tr>
 
             <tr className='table-primary'>
-                <td colSpan={5}>
+                <td colSpan={6}>
                     <table id="linkTable" className="table table-info table-striped">
                         <thead>
                             <tr>
@@ -116,16 +139,18 @@ const EditRow = ({ itemDTO, containerDTOs, handleDelete, cancelEdit }: EditRowPr
                                 <tr key={`link-${link.id}`} data-key={`link-${link.id}`}>
                                     <td>
                                         {containerDTOs && (
-                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } register={ register } setError={ setError } index={ index } link={ link } setValue={ setValue } setFocus={ setFocus }/>
-                                        )}
-                                        {errors.links?.[index]?.scannerId && (
-                                            <li className='list-group-item text-danger'>
-                                                {`${errors.links[index].scannerId.message}`}
-                                            </li>
+                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } watchLinks={ watchLinks } register={ register } setError={ setError } index={ index } errors={ errors } link={ link } setValue={ setValue } setFocus={ setFocus }/>
                                         )}
                                     </td>
                                     <td>
-                                        <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" defaultValue={ link.quantity } />
+                                        <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" value={ watchLinks[index]?.quantity || 1 } min={-Infinity}
+                                        onBlur={
+                                            () => {
+                                                if(watchLinks[index].scannerId && link.linkId === undefined){
+                                                    checkForDuplicate(watchLinks[index].scannerId, index);
+                                                }
+                                            }
+                                        } />
                                     </td>
                                     <td>
                                         <button type='button' className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId ? link.linkId : undefined)}></button>

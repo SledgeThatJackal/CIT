@@ -43,7 +43,7 @@ export const ItemSchema = z.object({
 
 export const LinkSchema = z.object({
     scannerId: z.string().optional(),
-    quantity: z.number().positive({message: 'Quantity must be positive'}).optional(),
+    quantity: z.number().optional(),
     linkId: z.number().optional().nullable(),
 }).optional();
 

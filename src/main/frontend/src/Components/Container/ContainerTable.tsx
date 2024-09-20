@@ -86,7 +86,7 @@ function ContainerTable(){
             </table>
             
             <PaginationComponent currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-            <ConfirmationModal onDelete={handleDelete} />
+            <ConfirmationModal onDelete={ handleDelete } message={ "Are you sure you want to delete this container?" } ref={ undefined } />
         </div>
     );
 }
