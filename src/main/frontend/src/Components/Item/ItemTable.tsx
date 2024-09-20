@@ -27,7 +27,11 @@ function ItemTable(){
     const [message, setMessage] = useState<string | undefined>(undefined);
     const [action, setAction] = useState<() => Promise<void>>();
 
-    const modalRef = useRef<RefMethod>(null);
+    // Modal Controls
+    const [show, setShow] = useState(false);
+
+    const handleOpen = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     const methods = useForm<ItemFormSchemaType>({
         defaultValues: {},
@@ -98,15 +102,13 @@ function ItemTable(){
         setAction(() => action);
         setMessage(message);
 
-        if(modalRef.current){
-            modalRef.current.showModal();
-        }
+        handleOpen();
     };
 
     return(
         <div className='container-fluid'>
             <SearchComponent onSearch={ setSearchTerm } />
-            <ConfirmationModal onDelete={ action } message={ message } ref={ modalRef } />
+            <ConfirmationModal show={ show } handleClose={ handleClose } onDelete={ action } message={ message } />
 
             <FormProvider { ...methods }>
                 <form onSubmit={ methods.handleSubmit( onSubmit ) }>

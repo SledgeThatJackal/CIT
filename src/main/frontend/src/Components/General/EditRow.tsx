@@ -25,6 +25,7 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
         trigger,
         setError,
         setValue,
+        clearErrors
     } = useFormContext<ItemFormSchemaType>();
 
     const { fields, append, remove} = useFieldArray({
@@ -139,11 +140,11 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
                                 <tr key={`link-${link.id}`} data-key={`link-${link.id}`}>
                                     <td>
                                         {containerDTOs && (
-                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } watchLinks={ watchLinks } register={ register } setError={ setError } index={ index } errors={ errors } link={ link } setValue={ setValue } setFocus={ setFocus }/>
+                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } control={ control } setError={ setError } clearErrors={ clearErrors } index={ index } link={ link } setValue={ setValue } setFocus={ setFocus } watchLinks={ watchLinks }/>
                                         )}
                                     </td>
                                     <td>
-                                        <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" value={ watchLinks[index]?.quantity || 1 } min={-Infinity}
+                                        <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" min={-Infinity}
                                         onBlur={
                                             () => {
                                                 if(watchLinks[index].scannerId && link.linkId === undefined){
