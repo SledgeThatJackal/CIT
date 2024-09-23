@@ -3,7 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Table, Container } from 'react-bootstrap';
+import { Table, Container, Accordion } from 'react-bootstrap';
 
 import PaginationComponent from '../General/Pagination';
 
@@ -122,17 +122,17 @@ function ItemTable(){
                             </tr>
                         </thead>
                         
-                        <tbody className="table-group-divider">
-                            {itemData.length > 0 && itemData.map((item, index) => (
-                                <React.Fragment>
-                                    { editId === item.id ? (
-                                        <EditRow key='editRow' itemDTO={ editData?.itemDTO } containerDTOs={ editData?.containerDTOs } setupDelete={ setupDelete } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
-                                    ) : (
-                                        <ReadRow key='readRow' item={ item } index={ index } onDelete={ (id) => { setDeleteId(id); setupDelete( handleDelete, "Are you sure you want to delete this item?"); } } onEdit={ handleEdit } />
-                                    )}
-                                </React.Fragment>
-                            ))}
-                        </tbody>
+                        <Accordion as="tbody" className="table-group-divider">
+                                {itemData.length > 0 && itemData.map((item, index) => (
+                                    <React.Fragment>
+                                        { editId === item.id ? (
+                                            <EditRow key='editRow' itemDTO={ editData?.itemDTO } containerDTOs={ editData?.containerDTOs } setupDelete={ setupDelete } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
+                                        ) : (
+                                            <ReadRow key='readRow' item={ item } index={ index } onDelete={ (id) => { setDeleteId(id); setupDelete( handleDelete, "Are you sure you want to delete this item?"); } } onEdit={ handleEdit } />
+                                        )}
+                                    </React.Fragment>
+                                ))}
+                        </Accordion>
                     </Table>
                 </form>
             </FormProvider>

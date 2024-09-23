@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
-import { Stack, Toast, Button } from 'react-bootstrap';
+import { Stack, Toast, Button, CloseButton } from 'react-bootstrap';
 
 import { ItemDTO, LinkDTO, ItemFormSchemaType } from '../../Types/Item';
 import { ContainerDTO } from '../../Types/Container';
@@ -161,7 +161,7 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
                                         } />
                                     </td>
                                     <td>
-                                        <button type='button' className="btn-close" aria-label="Close" onClick={() => onDelete(index, link.linkId ? link.linkId : undefined)}></button>
+                                        <CloseButton onClick={() => onDelete(index, link.linkId ? link.linkId : undefined)} />
                                     </td>
                                     {errors.links && errors.links[index] && (
                                         <p>{errors.links[index]?.message}</p>

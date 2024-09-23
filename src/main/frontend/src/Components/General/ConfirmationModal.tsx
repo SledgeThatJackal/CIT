@@ -1,7 +1,6 @@
-import React, { forwardRef, useRef, useImperativeHandle, useState } from 'react';
+import React from 'react';
 
 import { Modal, Button } from 'react-bootstrap';
-import { RefMethod } from '../../Types/General';
 
 type ConfirmationModalProp = {
     show: boolean;
