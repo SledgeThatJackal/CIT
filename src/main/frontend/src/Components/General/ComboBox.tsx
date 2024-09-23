@@ -26,8 +26,6 @@ const Input = ({fieldName, control, initialValue, hasLinkId, checkIfContainerExi
         defaultValue: initialValue || ''
     });
 
-    
-
     return (
         <>
             <input 

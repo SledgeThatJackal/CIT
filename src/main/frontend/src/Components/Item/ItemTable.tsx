@@ -3,6 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Table, Container } from 'react-bootstrap';
 
 import PaginationComponent from '../General/Pagination';
 
@@ -13,7 +14,6 @@ const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
 const EditRow = lazy(() => import("../General/EditRow"));
 
 import { ItemResponse, Item, EditData, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
-import { RefMethod } from '../../Types/General';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
@@ -106,13 +106,13 @@ function ItemTable(){
     };
 
     return(
-        <div className='container-fluid'>
+        <Container fluid>
             <SearchComponent onSearch={ setSearchTerm } />
             <ConfirmationModal show={ show } handleClose={ handleClose } onDelete={ action } message={ message } />
 
             <FormProvider { ...methods }>
                 <form onSubmit={ methods.handleSubmit( onSubmit ) }>
-                    <table className="table table-secondary table-hover mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>
+                    <Table hover bordered variant="secondary" className="mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>
                         <thead>
                             <tr className='table-secondary'>
                                 <th scope="col">Name</th>
@@ -133,12 +133,12 @@ function ItemTable(){
                                 </React.Fragment>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
                 </form>
             </FormProvider>
 
             <PaginationComponent currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-        </div>
+        </Container>
     );
 }
 

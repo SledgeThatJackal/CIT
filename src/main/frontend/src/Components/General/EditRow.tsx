@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext, useFieldArray, useWatch } from 'react-hook-form';
+import { Stack, Toast, Button } from 'react-bootstrap';
 
 import { ItemDTO, LinkDTO, ItemFormSchemaType } from '../../Types/Item';
 import { ContainerDTO } from '../../Types/Container';
 
 import TagInput from '../Tag/TagInput';
 import ComboBox from './ComboBox';
-import { Toast } from 'react-bootstrap';
 
 type EditRowProps = {
     itemDTO?: ItemDTO;
@@ -124,10 +124,11 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
                 </td>
                 
                 <td>
-                    <div className='btn-group'>
-                        <button type="submit" className="btn btn-info btn-sm" disabled={ isSubmitting || Object.keys(errors).length > 0 }> Save </button>
-                        <button type='button' className="btn btn-danger btn-sm" onClick={ () => cancelEdit(-1) }>Discard</button>
-                    </div>
+                    <Stack direction="horizontal" gap={ 3 }>
+                        <Button type="submit" variant="success" size="sm" disabled={ isSubmitting || Object.keys(errors).length > 0 }>Save</Button>
+                        <div className="vr" />
+                        <Button type="button" variant="outline-danger" size="sm" onClick={ () => cancelEdit(-1) }>Discard</Button>
+                    </Stack>
                 </td>
             </tr>
 
