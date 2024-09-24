@@ -12,6 +12,8 @@ const ItemTable = lazy(() => import('./Components/Item/ItemTable.tsx'));
 const ItemForm = lazy(() => import('./Components/Item/ItemForm.tsx'));
 
 const SettingsPage = lazy(() => import('./Components/Settings/SettingsPage.tsx'));
+const TagSettings = lazy(() => import('./Components/Settings/TagSettings.tsx'));
+const TypeSettings = lazy(() => import('./Components/Settings/TypeSettings.tsx'));
 
 const SuspenseLayout = () => (
     <Suspense fallback={<>Loading...</>}>
@@ -35,8 +37,10 @@ export const router = createBrowserRouter([
                 {path: "form", element: <ItemForm />},
             ]},
         {path: "settings",
+            element: <SettingsPage />,
             children: [
-                {index: true, element: <SettingsPage />},
+                {path: "tags", element: <TagSettings />},
+                {path: "types", element: <TypeSettings />}
         ]}
      ]
     }
