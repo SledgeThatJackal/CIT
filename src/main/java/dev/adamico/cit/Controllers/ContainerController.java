@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @RestController
@@ -26,6 +27,11 @@ public class ContainerController {
     @GetMapping("/edit")
     public Container getContainer(@RequestParam Long id){
         return containerService.findContainerById(id);
+    }
+
+    @GetMapping("/check")
+    public void checkIfContainerExists(@RequestParam String scannerId) throws NoSuchElementException {
+        containerService.findIfContainerExists(scannerId);
     }
 
     @PostMapping("/create")

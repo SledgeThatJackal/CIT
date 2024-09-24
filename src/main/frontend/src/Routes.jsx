@@ -1,20 +1,24 @@
-import React from 'react';
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
 
 import RootLayout from './Layouts/RootLayout.jsx';
 
 import Home from './Layouts/Home.jsx';
 
-const ContainerTable = React.lazy(() => import('./Components/Container/ContainerTable.tsx'));
-const ContainerForm = React.lazy(() => import('./Components/Container/ContainerForm.tsx'));
+const ContainerTable = lazy(() => import('./Components/Container/ContainerTable.tsx'));
+const ContainerForm = lazy(() => import('./Components/Container/ContainerForm.tsx'));
 
-const ItemTable = React.lazy(() => import('./Components/Item/ItemTable.tsx'));
-const ItemForm = React.lazy(() => import('./Components/Item/ItemForm.tsx'));
+const ItemTable = lazy(() => import('./Components/Item/ItemTable.tsx'));
+const ItemForm = lazy(() => import('./Components/Item/ItemForm.tsx'));
+
+const SettingsPage = lazy(() => import('./Components/Settings/SettingsPage.tsx'));
+const TagSettings = lazy(() => import('./Components/Settings/TagSettings.tsx'));
+const TypeSettings = lazy(() => import('./Components/Settings/TypeSettings.tsx'));
 
 const SuspenseLayout = () => (
-    <React.Suspense fallback={<>...</>}>
+    <Suspense fallback={<>Loading...</>}>
         <RootLayout />
-    </React.Suspense>
+    </Suspense>
 );
 
 export const router = createBrowserRouter([
@@ -23,15 +27,21 @@ export const router = createBrowserRouter([
      children: [
         {index: true, element: <Home />},
         {path: "container", 
-         children: [
-            {index: true, element: <ContainerTable />},
-            {path: "form", element: <ContainerForm />}
+            children: [
+                {index: true, element: <ContainerTable />},
+                {path: "form", element: <ContainerForm />}
         ]},
         {path: "item",
-         children: [
+            children: [
                 {index: true, element: <ItemTable />},
                 {path: "form", element: <ItemForm />},
-            ]}
+            ]},
+        {path: "settings",
+            element: <SettingsPage />,
+            children: [
+                {path: "tags", element: <TagSettings />},
+                {path: "types", element: <TypeSettings />}
+        ]}
      ]
     }
 ]);

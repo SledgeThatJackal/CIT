@@ -1,5 +1,6 @@
 package dev.adamico.cit.Services;
 
+import dev.adamico.cit.DTOs.ContainerDTO;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Repositories.ContainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ContainerService {
@@ -23,6 +25,10 @@ public class ContainerService {
         Pageable pageable = PageRequest.of(page, size);
 
         return containerRepository.findAll(pageable);
+    }
+
+    public List<ContainerDTO> findAllScannerIdsAndNames(){
+        return containerRepository.findAllScannerIdsAndNames();
     }
 
     public Container findContainerById(Long id){
@@ -43,5 +49,11 @@ public class ContainerService {
 
     public void deleteContainer(Long id){
         containerRepository.deleteById(id);
+    }
+
+    public void findIfContainerExists(String scannerId) throws NoSuchElementException{
+        if(containerRepository.findByScannerId(scannerId).isEmpty()){
+            throw new NoSuchElementException("Container ID does not exist");
+        }
     }
 }

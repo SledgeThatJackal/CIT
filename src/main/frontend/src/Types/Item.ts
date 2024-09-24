@@ -1,5 +1,5 @@
 import { ContainerItem, ContainerItemSchema } from './ContainerItem';
-import { Container } from './Container';
+import { ContainerDTO } from './Container';
 import { Tag, TagSchema } from './Tag';
 import { z } from 'zod';
 
@@ -28,6 +28,11 @@ export type ItemDTO = {
     links: LinkDTO[];
 };
 
+export type EditData = {
+    itemDTO: ItemDTO;
+    containerDTOs?: ContainerDTO[];
+};
+
 export const ItemSchema = z.object({
     id: z.number().optional(),
     name: z.string({message: 'The Item name is required'}),
@@ -38,7 +43,7 @@ export const ItemSchema = z.object({
 
 export const LinkSchema = z.object({
     scannerId: z.string().optional(),
-    quantity: z.number().positive({message: 'Quantity must be positive'}).optional(),
+    quantity: z.number().optional(),
     linkId: z.number().optional().nullable(),
 }).optional();
 

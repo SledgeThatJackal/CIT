@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -37,11 +38,13 @@ public class ContainerItemService {
         });
     }
 
-    public void createContainerItemLink(LinkDTO link, Item item){
+    public void createContainerItemLink(LinkDTO link, Item item) throws NoSuchElementException {
         Optional<Container> optionalContainer = containerRepository.findByScannerId(link.getScannerId());
 
-        optionalContainer.ifPresent(container -> {
+        optionalContainer.ifPresentOrElse(container -> {
             containerItemRepository.save(new ContainerItem(null, container, item, link.getQuantity()));
+        }, () -> {
+            throw new NoSuchElementException("Scanner ID: " + link.getScannerId() + " does not exist");
         });
     }
 
@@ -50,7 +53,7 @@ public class ContainerItemService {
     }
 
     @Transactional
-    public void changeQuantityAmount(List<LinkDTO> links, Item item){
+    public void changeQuantityAmount(List<LinkDTO> links, Item item) throws NoSuchElementException{
         for(LinkDTO link : links){
             if(link.getLinkId() == null){
                 if(!link.getScannerId().isEmpty()){

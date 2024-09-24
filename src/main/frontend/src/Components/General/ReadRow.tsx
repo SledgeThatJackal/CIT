@@ -1,4 +1,5 @@
 import React from "react";
+import { Accordion, Button, ButtonGroup } from 'react-bootstrap';
 
 import { Item } from '../../Types/Item';
 import TagBadge from '../Tag/TagBadge';
@@ -12,36 +13,32 @@ type ReadRowProps = {
 };
 
 const ReadRow = ( { item, index, onDelete, onEdit }: ReadRowProps ) => {
-
     return (
         <>
-            <tr key={`item-${index}`} className='table-secondary' data-bs-toggle="collapse" data-bs-target={`#containers-${item.id}`} aria-expanded={false} aria-controls={`containers-${item.id}`}>
+            <tr key={ `item-${index}` } className='table-secondary' id={ `item-${index}` } data-bs-toggle="collapse" data-bs-target={ `#ContainerRow-${index}` }>
                 <th scope="row">{item.name}</th>
                 <td>{item.description}</td>
                 <td>
                     {item.tags && item.tags.length > 0 && (
                         <>
                             {item.tags.map((tag, tagIndex) => (
-                                <TagBadge key={`tag-${index}-${tagIndex}`} tag={ tag } />
+                                <TagBadge key={ `tag-${index}-${tagIndex}`} tag={ tag } />
                             ))}
                         </>
                     )}
                 </td>
 
                 <td>
-                    <div className='btn-group'>
-                        <button type="button" className="btn btn-info btn-sm" onClick={() => onEdit(item.id) }>Edit</button>
-                        <button type="button" onClick={() => onDelete(item.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
-                    </div>
+                    <ButtonGroup aria-label="Component Functionality">
+                        <Button variant="info" size="sm" onClick={() => onEdit(item.id) }>Edit</Button>
+                        <Button variant="danger" size="sm" onClick={() => onDelete(item.id)}>Delete</Button>
+                    </ButtonGroup>
                 </td>
             </tr>
-
             {item?.containerItems && item.containerItems.length > 0 && (
-                <tr className='table-secondary'>
-                    <td colSpan={5} className='collapse' id={`containers-${item.id}`}>
-                        <ContainerRow containerItems={ item.containerItems } index={ index } />
-                    </td>
-                </tr>
+                <Accordion.Collapse as="tr" eventKey={`${index}`} id={`ContainerRow-${index}`}>
+                    <ContainerRow containerItems={ item.containerItems } index={ index } />
+                </Accordion.Collapse>
             )}
         </>
     )

@@ -1,6 +1,6 @@
 import React from "react";
+import { Table } from 'react-bootstrap';
 
-import { Container } from '../../Types/Container';
 import { ContainerItem } from "../../Types/ContainerItem";
 
 type ContainerRowProps = {
@@ -9,10 +9,9 @@ type ContainerRowProps = {
 };
 
 const ContainerRow = ( { containerItems, index }: ContainerRowProps) => {
-
     return (
-        <>
-            <table className="table table-info table-hover table-striped">
+        <td colSpan={5}>
+            <Table hover striped bordered variant="info" style={{borderRadius: '8px', overflow: 'hidden'}}>
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
@@ -32,8 +31,8 @@ const ContainerRow = ( { containerItems, index }: ContainerRowProps) => {
                         </tr>
                     ))}
                 </tbody>
-            </table>
-        </>
+            </Table>
+        </td>
     )
 };
 

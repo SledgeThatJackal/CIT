@@ -37,7 +37,6 @@ const TagInput = ({ control, name }: TagInputProps) => {
             }
         };
 
-        fetchTags();
     }, [fields]);
 
     const addTag = async (tag ?: Tag) => {
@@ -80,7 +79,7 @@ const TagInput = ({ control, name }: TagInputProps) => {
             <div className='mb-3'>
                 <div className='input-group'>
                     <input onChange={ (event) => setNewTagName(event.target.value) } type='text' value={ newTagName } id='tagInput' className='form-control w-75 dropdown-toggle dropdown-toggle-split' data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent" />
-                    <div className='dropdown-menu' aria-labeled='tagInput'>
+                    <div className='dropdown-menu w-100' aria-labeled='tagInput'>
                         {tags.length > 0 && tags.filter(tag => {
                             const term = newTagName.toLowerCase();
                             const tagName = tag.tag.toLowerCase();

@@ -1,16 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, lazy, useRef } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Table, Container, Accordion } from 'react-bootstrap';
 
 import PaginationComponent from '../General/Pagination';
-import ConfirmationModal from '../General/ConfirmationModal';
+
 import SearchComponent from '../General/SearchComponent';
 import ReadRow from '../General/ReadRow';
-import EditRow from '../General/EditRow';
 
-import { ItemResponse, Item, ItemDTO, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
+const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
+const EditRow = lazy(() => import("../General/EditRow"));
+
+import { ItemResponse, Item, EditData, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
@@ -19,7 +22,16 @@ function ItemTable(){
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [deleteId, setDeleteId] = useState<number>(-1);
     const [editId, setEditId] = useState<number | undefined>(undefined);
-    const [itemDTO, setItemDTO] = useState<ItemDTO>();
+    const [editData, setEditData] = useState<EditData>();
+
+    const [message, setMessage] = useState<string | undefined>(undefined);
+    const [action, setAction] = useState<() => Promise<void>>();
+
+    // Modal Controls
+    const [show, setShow] = useState(false);
+
+    const handleOpen = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     const methods = useForm<ItemFormSchemaType>({
         defaultValues: {},
@@ -66,6 +78,8 @@ function ItemTable(){
     const handleLinkDelete = async (index: number, id?: number) => {
         try{
             await axios.delete(`/api/link?id=${id}`);
+
+            fetchData();
             return true;
         } catch (error) {
             console.error('Error deleting link: ', error);
@@ -75,23 +89,30 @@ function ItemTable(){
 
     const handleEdit = async (itemId: number) => {
         try{
-            const response = (await axios.get<ItemDTO>(`/api/item/edit?itemId=${itemId}`)).data;
+            const response = (await axios.get<EditData>(`/api/item/edit?itemId=${itemId}`)).data;;
 
-            setItemDTO(response);
-            setEditId(response.item.id);
+            setEditData(response);
+            setEditId(response.itemDTO.item.id);
         } catch (error){
             console.error('Error fetching item: ', error);
         }
     };
 
-    return(
-        <div className='container-fluid'>
-            <SearchComponent onSearch={ setSearchTerm } />
-            <ConfirmationModal onDelete={ handleDelete } />
+    const setupDelete = (action: () => Promise<void>, message: string) => {
+        setAction(() => action);
+        setMessage(message);
 
-            <FormProvider {...methods}>
-                <form onSubmit={ methods.handleSubmit(onSubmit) }>
-                    <table className="table table-secondary table-hover mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>
+        handleOpen();
+    };
+
+    return(
+        <Container fluid>
+            <SearchComponent onSearch={ setSearchTerm } />
+            <ConfirmationModal show={ show } handleClose={ handleClose } onDelete={ action } message={ message } />
+
+            <FormProvider { ...methods }>
+                <form onSubmit={ methods.handleSubmit( onSubmit ) }>
+                    <Table hover bordered variant="secondary" className="mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>
                         <thead>
                             <tr className='table-secondary'>
                                 <th scope="col">Name</th>
@@ -101,23 +122,23 @@ function ItemTable(){
                             </tr>
                         </thead>
                         
-                        <tbody className="table-group-divider">
-                            {itemData.length > 0 && itemData.map((item, index) => (
-                                <React.Fragment>
-                                    { editId === item.id ? (
-                                        <EditRow key='editRow' itemDTO={ itemDTO } onSubmit={ onSubmit } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
-                                    ) : (
-                                        <ReadRow key='readRow' item={ item } index={ index } onDelete={ setDeleteId } onEdit={ handleEdit } />
-                                    )}
-                                </React.Fragment>
-                            ))}
-                        </tbody>
-                    </table>
+                        <Accordion as="tbody" className="table-group-divider">
+                                {itemData.length > 0 && itemData.map((item, index) => (
+                                    <React.Fragment>
+                                        { editId === item.id ? (
+                                            <EditRow key='editRow' itemDTO={ editData?.itemDTO } containerDTOs={ editData?.containerDTOs } setupDelete={ setupDelete } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
+                                        ) : (
+                                            <ReadRow key='readRow' item={ item } index={ index } onDelete={ (id) => { setDeleteId(id); setupDelete( handleDelete, "Are you sure you want to delete this item?"); } } onEdit={ handleEdit } />
+                                        )}
+                                    </React.Fragment>
+                                ))}
+                        </Accordion>
+                    </Table>
                 </form>
             </FormProvider>
 
             <PaginationComponent currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-        </div>
+        </Container>
     );
 }
 

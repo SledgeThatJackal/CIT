@@ -1,5 +1,15 @@
 /**
  * @license React
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * @license React
  * react.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -9,7 +19,7 @@
  */
 
 /**
- * React Router DOM v6.23.1
+ * React Router DOM v6.26.2
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -20,7 +30,7 @@
  */
 
 /**
- * React Router v6.23.1
+ * React Router v6.26.2
  *
  * Copyright (c) Remix Software Inc.
  *

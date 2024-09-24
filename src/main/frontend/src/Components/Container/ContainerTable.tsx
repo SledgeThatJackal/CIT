@@ -13,6 +13,12 @@ function ContainerTable(){
     const [containerData, setContainerData] = useState<Container[]>([]);
     const [deleteId, setDeleteId] = useState<number>(-1);
 
+    // Modal Controls
+    const [show, setShow] = useState(false);
+
+    const handleOpen = () => setShow(true);
+    const handleClose = () => setShow(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -77,7 +83,7 @@ function ContainerTable(){
                             <td>
                                 <div className='btn-group'>
                                     <button type="button" className="btn btn-info btn-sm" onClick={() => handleEdit(container.id)}>Edit</button>
-                                    <button type="button" onClick={() => setDeleteId(container.id)} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
+                                    <button type="button" onClick={() => {setDeleteId(container.id); handleOpen();}} className="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">Delete</button>
                                 </div>
                             </td>
                         </tr>
@@ -86,7 +92,7 @@ function ContainerTable(){
             </table>
             
             <PaginationComponent currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-            <ConfirmationModal onDelete={handleDelete} />
+            <ConfirmationModal show={ show } handleClose={ handleClose } onDelete={ handleDelete } message={ "Are you sure you want to delete this container?" } />
         </div>
     );
 }
