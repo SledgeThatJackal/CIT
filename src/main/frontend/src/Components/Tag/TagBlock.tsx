@@ -10,7 +10,7 @@ type TagBlockProps = {
 };
 
 const TagBlock = ({ control, name, onDelete }: TagBlockProps) => {
-    const { field, fieldState } = useController({
+    const { field } = useController({
         control,
         name
     });
