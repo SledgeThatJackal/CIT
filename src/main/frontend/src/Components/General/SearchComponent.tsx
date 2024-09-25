@@ -1,4 +1,6 @@
 import React from 'react';
+import { Container, InputGroup, FormControl } from 'react-bootstrap';
+
 import '../../Styles/Search.css';
 
 type searchComponentProp = {
@@ -6,16 +8,12 @@ type searchComponentProp = {
 };
 
 const SearchComponent = ({ onSearch }: searchComponentProp) => {
-    const handleInputChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        onSearch(e.target.value);
-    };
-
     return (
-        <div className="container mt-5">
-            <div className="input-group mb-3">
-                <input type="text" className="form-control" aria-label="Search" id="searchInput" placeholder="Search" onChange={ handleInputChange }/>
-            </div>
-        </div>
+        <Container className="mt-5">
+            <InputGroup className="mb-3">
+                <FormControl type="text" aria-label="Search" id="searchInput" placeholder="Search..." onChange={ (e) => onSearch(e.target.value) } />
+            </InputGroup>
+        </Container>
     );
 };
 
