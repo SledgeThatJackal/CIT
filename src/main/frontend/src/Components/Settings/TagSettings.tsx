@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Container, Row, Col, FormControl, InputGroup } from 'react-bootstrap';
+import { Button, Container, Row, Col, FormControl, InputGroup, Form } from 'react-bootstrap';
 
 import { Tag } from '../../Types/Tag';
 import TagBadge from '../Tag/TagBadge';
@@ -40,13 +40,13 @@ function TagSettings(){
                     </Col>
                 </Row>
                 <Row className="border border-dark p-3 rounded-top bg-success">
-                    <p>Total Tags: { tags.length || 0 }</p>
+                    Total Tags: { tags.length || 0 }
                 </Row>
                 {tags.length > 0 && tags.map((tag, index) => (
                     <Row key={`tagRow-${index}`} className="border border-dark bg-primary pt-3 pb-3">
-                        <Col className="d-flex me-auto">
+                        <Col className="d-flex align-items-center me-auto">
                             <TagBadge tag={ tag } />
-                            <p className="align-self-center">: description</p>
+                            : { tag.description }
                         </Col>
                         <Col>
                         <InputGroup>
