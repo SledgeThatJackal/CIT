@@ -78,16 +78,19 @@ function TagSettings(){
                         <FormControl type="text" aria-label="Search" id="searchInput" placeholder="Search..." onChange={ onSearch }></FormControl>
                     </Col>
                     <Col>
-                        <Button variant="success">Create</Button>
+                        <Button variant="success" onClick={ () => setShowCreate(true) }>Create</Button>
                     </Col>
                 </Row>
+                {showCreate && (
+                    <TagForm />
+                )}
                 <Row className="border border-dark p-3 rounded-top bg-success">
                     Total Tags: { tags.length || 0 }
                 </Row>
                 {tags.length > 0 && tags.map((tag, index) => (
                     <React.Fragment>
                         { editId === tag.id ? (
-                            <TagForm />
+                            <TagForm tag={ tag } />
                         ) : (
                             <TagRead index={ index } tag={ tag } setDeleteTag={ setDeleteTag } handleOpen={ handleOpen } setEditId={ setEditId } />
                         )}
