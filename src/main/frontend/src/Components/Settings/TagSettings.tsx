@@ -3,10 +3,24 @@ import axios from 'axios';
 import { Button, Container, Row, Col, FormControl, InputGroup, Form } from 'react-bootstrap';
 
 import { Tag } from '../../Types/Tag';
-import TagBadge from '../Tag/TagBadge';
+import ConfirmationModal from '../General/ConfirmationModal';
+import TagRead from './TagRead';
+import TagForm from './TagForm';
 
 function TagSettings(){
     const [tags, setTags] = useState<Tag[]>([]);
+    
+    // Modal
+    const [show, setShow] = useState<boolean>(false);
+    const handleOpen = () => setShow(true);
+    const handleClose = () => setShow(false);
+    const [deleteTag, setDeleteTag] = useState<Tag>();
+
+    // Creation Area
+    const [showCreate, setShowCreate] = useState<boolean>(false);
+
+    // Edit Area
+    const [editId, setEditId] = useState<number>(-1);
 
     const fetchData = async () => {
         try{
@@ -26,8 +40,36 @@ function TagSettings(){
 
     };
 
+    const onCreate = async (data: any) => {
+        await axios.post(`/api/tags/create`, data);
+
+        if(showCreate){
+            // reset
+        } else {
+            setShowCreate(false);
+        }
+    };
+
+    const onEdit = async (data: any) => {
+        await axios.patch(`/api/tags/edit`, data);
+
+        setEditId(-1);
+        fetchData();
+    };
+
+    const handleDelete = async () => {
+        try{
+            await axios.delete(`/api/tags/delete?id=${deleteTag?.id}`);
+
+            setTags(tags.filter(tag => tag !== deleteTag));
+        } catch(error){
+            console.error("Error deleting tag: ", error);
+        }
+    };
+
     return (
         <React.Fragment>
+            <ConfirmationModal show={ show } handleClose={ handleClose } onDelete={ handleDelete } message={ "Are you sure you want to delete this tag?" } />
             <h2>Tags</h2>
             <hr className="my-4" />
             <Container fluid>
@@ -43,18 +85,13 @@ function TagSettings(){
                     Total Tags: { tags.length || 0 }
                 </Row>
                 {tags.length > 0 && tags.map((tag, index) => (
-                    <Row key={`tagRow-${index}`} className="border border-dark bg-primary pt-3 pb-3">
-                        <Col className="d-flex align-items-center me-auto">
-                            <TagBadge tag={ tag } />
-                            : { tag.description }
-                        </Col>
-                        <Col>
-                        <InputGroup>
-                            <Button type="button" variant="info">Edit</Button>
-                            <Button type="button" variant="danger">Delete</Button>
-                        </InputGroup>
-                        </Col>
-                    </Row>
+                    <React.Fragment>
+                        { editId === tag.id ? (
+                            <TagForm />
+                        ) : (
+                            <TagRead index={ index } tag={ tag } setDeleteTag={ setDeleteTag } handleOpen={ handleOpen } setEditId={ setEditId } />
+                        )}
+                    </React.Fragment>
                 ))}
             </Container>
         </React.Fragment>
