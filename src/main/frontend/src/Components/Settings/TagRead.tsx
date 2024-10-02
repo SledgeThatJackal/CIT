@@ -19,16 +19,16 @@ const TagRead = ({ index, tag, setDeleteTag, handleOpen, setEditId }: TagReadPro
     };
 
     return (
-        <Row key={`tagRow-${index}`} className="border border-dark bg-primary pt-3 pb-3">
+        <Row key={`tagRow-${index}`} className="text-light pt-3 pb-3" style={{ background: "#4B555F", borderTop: "3px solid #7B8895", borderBottom: "3px solid #7B8895" }}>
             <Col className="d-flex align-items-center me-auto">
                 <TagBadge tag={ tag } />
                 : { tag.description }
             </Col>
             <Col>
-            <InputGroup>
-                <Button type="button" variant="info" onClick={ () => setEditId(tag.id)}>Edit</Button>
-                <Button type="button" variant="danger" onClick={ setupDelete }>Delete</Button>
-            </InputGroup>
+                <InputGroup className="d-flex justify-content-end">
+                    <Button type="button" variant="info" onClick={ () => setEditId(tag.id)}>Edit</Button>
+                    <Button type="button" variant="danger" onClick={ setupDelete }>Delete</Button>
+                </InputGroup>
             </Col>
         </Row>
     );
