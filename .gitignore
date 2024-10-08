@@ -41,6 +41,7 @@ build/
 
 ### Log Files ###
 .log
+.gz
 
 ### Export Files ###
 cit_export.json
