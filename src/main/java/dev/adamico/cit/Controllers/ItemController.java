@@ -42,6 +42,12 @@ public class ItemController {
 
     @GetMapping
     @JsonView(Views.Inclusive.class)
+    public List<Item> getItems(){
+        return itemService.findAllItems();
+    }
+
+    @GetMapping("/c")
+    @JsonView(Views.Inclusive.class)
     public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
                                      @RequestParam(defaultValue = "") String search) throws JsonProcessingException {

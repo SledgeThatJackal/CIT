@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, useRef } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
@@ -9,6 +9,8 @@ import PaginationComponent from '../General/Pagination';
 
 import SearchComponent from '../General/SearchComponent';
 import ReadRow from '../General/ReadRow';
+
+import TItemTable from '../TanStack/ItemTable';
 
 const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
 const EditRow = lazy(() => import("../General/EditRow"));
@@ -45,7 +47,7 @@ function ItemTable(){
 
     const fetchData = async () => {
         try{
-            const url = `/api/item?page=${currentPage}&search=${searchTerm}`;
+            const url = `/api/item/c?page=${currentPage}&search=${searchTerm}`;
             const response = await axios.get<ItemResponse>(url);
 
             setItemData(response.data.content);
@@ -143,6 +145,9 @@ function ItemTable(){
             {itemData.length !== 0 && (
                 <PaginationComponent currentPage={ currentPage } totalPages={ totalPages } onPageChange={ setCurrentPage } />
             )}
+
+            <TItemTable />
+
         </Container>
     );
 }
