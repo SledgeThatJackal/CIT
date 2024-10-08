@@ -50,9 +50,7 @@ function ItemTable(){
 
             setItemData(response.data.content);
 
-            if(itemData.length > 0){
-                setTotalPages(response.data.totalPages);
-            }
+            setTotalPages(response.data.totalPages > 0 ? response.data.totalPages : 1);
 
         } catch (error){
             console.error('Request failed: ', error);
@@ -123,21 +121,28 @@ function ItemTable(){
                         </thead>
                         
                         <Accordion as="tbody" className="table-group-divider">
-                                {itemData.length > 0 && itemData.map((item, index) => (
-                                    <React.Fragment>
-                                        { editId === item.id ? (
-                                            <EditRow key='editRow' itemDTO={ editData?.itemDTO } containerDTOs={ editData?.containerDTOs } setupDelete={ setupDelete } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
-                                        ) : (
-                                            <ReadRow key='readRow' item={ item } index={ index } onDelete={ (id) => { setDeleteId(id); setupDelete( handleDelete, "Are you sure you want to delete this item?"); } } onEdit={ handleEdit } />
-                                        )}
-                                    </React.Fragment>
-                                ))}
+                                {itemData.length > 0 ? 
+                                    itemData.map((item, index) => (
+                                        <React.Fragment>
+                                            { editId === item.id ? (
+                                                <EditRow key='editRow' itemDTO={ editData?.itemDTO } containerDTOs={ editData?.containerDTOs } setupDelete={ setupDelete } handleDelete={ handleLinkDelete } cancelEdit={ setEditId } />
+                                            ) : (
+                                                <ReadRow key='readRow' item={ item } index={ index } onDelete={ (id) => { setDeleteId(id); setupDelete( handleDelete, "Are you sure you want to delete this item?"); } } onEdit={ handleEdit } />
+                                            )}
+                                        </React.Fragment>
+                                )) : (
+                                    <div>
+                                        No items match the requested search term ({searchTerm})
+                                    </div>
+                                )}
                         </Accordion>
                     </Table>
                 </form>
             </FormProvider>
 
-            <PaginationComponent currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+            {itemData.length !== 0 && (
+                <PaginationComponent currentPage={ currentPage } totalPages={ totalPages } onPageChange={ setCurrentPage } />
+            )}
         </Container>
     );
 }

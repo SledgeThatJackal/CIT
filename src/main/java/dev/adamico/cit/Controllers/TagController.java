@@ -23,6 +23,11 @@ public class TagController {
         return tagService.createTag(tag);
     }
 
+    @PatchMapping("/edit")
+    public Tag editTag(@RequestBody Tag tag){
+        return tagService.createTag(tag);
+    }
+
     @DeleteMapping("/delete")
     public void deleteTag(@RequestParam Long id){
         tagService.deleteTag(id);

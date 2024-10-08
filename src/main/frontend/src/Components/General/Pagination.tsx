@@ -27,7 +27,7 @@ const PaginationComponent = ({currentPage, totalPages, onPageChange}: pagination
             ))}
             
             <Pagination.Next disabled={ currentPage === (totalPages - 1) } />
-            <Pagination.Last onClick={() => onPageChange(totalPages - 1)} />
+            <Pagination.Last onClick={ () => onPageChange(totalPages - 1) } />
         </Pagination>
     );
 };
