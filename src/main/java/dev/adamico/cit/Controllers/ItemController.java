@@ -8,6 +8,7 @@ import dev.adamico.cit.DTOs.ContainerDTO;
 import dev.adamico.cit.DTOs.ItemCreationDTO;
 import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
+import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ContainerItemService;
@@ -39,6 +40,12 @@ public class ItemController {
 
     @Autowired
     private ContainerItemService containerItemService;
+
+    @GetMapping("/c")
+    @JsonView(Views.Inclusive.class)
+    public List<Item> getItems(){
+        return itemService.findAllItems();
+    }
 
     @GetMapping
     @JsonView(Views.Inclusive.class)
@@ -83,6 +90,18 @@ public class ItemController {
         updatedItem = itemService.saveItem(itemDTO.getItem());
 
         containerItemService.changeQuantityAmount(itemDTO.getLinks(), updatedItem);
+    }
+
+    @PatchMapping("/edit/test")
+    @JsonView(Views.Inclusive.class)
+    public void updateItem(@RequestBody Item item) {
+        if(item.getContainerItems() != null){
+            for(ContainerItem containerItem : item.getContainerItems()){
+                containerItem.setItem(item);
+            }
+        }
+
+        itemService.saveItem(item);
     }
 
     @PostMapping("/create")

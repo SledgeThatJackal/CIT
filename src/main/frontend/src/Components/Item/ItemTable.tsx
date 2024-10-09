@@ -10,15 +10,19 @@ import PaginationComponent from '../General/Pagination';
 import SearchComponent from '../General/SearchComponent';
 import ReadRow from '../General/ReadRow';
 
+import TItemTable from '../DataGrid/ItemTable';
+
 const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
 const EditRow = lazy(() => import("../General/EditRow"));
 
 import { ItemResponse, Item, EditData, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
+import { Tag } from '../../Types/Tag';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [itemData, setItemData] = useState<Item[]>([]);
+    const [tags, setTags] = useState<Tag[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [deleteId, setDeleteId] = useState<number>(-1);
     const [editId, setEditId] = useState<number | undefined>(undefined);
@@ -52,6 +56,8 @@ function ItemTable(){
 
             setTotalPages(response.data.totalPages > 0 ? response.data.totalPages : 1);
 
+            const responseTags = (await axios.get<Tag[]>('/api/tags')).data;
+            setTags(responseTags);
         } catch (error){
             console.error('Request failed: ', error);
         }
@@ -142,6 +148,10 @@ function ItemTable(){
 
             {itemData.length !== 0 && (
                 <PaginationComponent currentPage={ currentPage } totalPages={ totalPages } onPageChange={ setCurrentPage } />
+            )}
+
+            {tags.length > 0 && (
+                <TItemTable tags={ tags } />
             )}
         </Container>
     );
