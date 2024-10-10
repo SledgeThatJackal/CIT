@@ -151,7 +151,7 @@ function ItemTable(){
             )}
 
             {tags.length > 0 && (
-                <TItemTable tags={ tags } />
+                <TItemTable tags={ tags } onDelete={ (id) => { setDeleteId(id); setupDelete( handleDelete, "Are you sure you want to delete this item?"); } } />
             )}
         </Container>
     );
