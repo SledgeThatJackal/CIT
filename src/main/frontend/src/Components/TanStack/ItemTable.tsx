@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Container } from 'react-bootstrap';
 import { getCoreRowModel, useReactTable, flexRender } from '@tanstack/react-table';
+import axios from 'axios';
 
 import { useTableData } from "./useTableData";
 
@@ -8,22 +9,47 @@ import { Item } from '../../Types/Item';
 
 
 function TItemTable(){
-    const { columns, data } = useTableData();
+    const { columns, initialData } = useTableData();
     
-    // const [data, setData] = useState<Item[]>(tableData);
+    const [data, setData] = useState<Item[]>(initialData);
+
+    const updateData = (rowIndex: number, columnID: string, value: any) => {
+        setData(old => {
+            const updatedTable = [...old];
+            updatedTable[rowIndex] = {
+                ...updatedTable[rowIndex],
+                [columnID]: value
+            };
+
+            updateDatabase(updatedTable[rowIndex]);
+            
+            return updatedTable;
+        });
+    };
+
+    const updateDatabase = async (updatedItem: Item) => {
+        try{
+            await axios.patch(`/api/item/edit/test`, updatedItem);
+        } catch (error) {
+            console.error("Failed Request: ", error);
+        }
+    };
 
     const table = useReactTable<Item>({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         meta: {
-            // updateData: (rowIndex: number, columnId: string, value: string) => 
-            //     setData(prev => prev.map((row, index) => 
-            //         index === rowIndex ? {...prev[rowIndex], [columnId]: value} : row
-            //     )),
-            // getItemId: (rowIndex: number) => {return data.at(rowIndex)?.id}
+            updateData,
+            getItemId: (index: number) => {
+                return data[index].id;
+            }
         }
     });
+
+    useEffect(() => {
+        setData(initialData);
+    }, [initialData]);
 
     return (
         <Table hover bordered variant="secondary" className="mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>

@@ -8,14 +8,14 @@ import EditCell from './EditCell';
 const columnHelper = createColumnHelper<Item>();
 
 export const useTableData = () => {
-    const [data, setData] = useState<Item[]>([]);
+    const [initialData, setInitialData] = useState<Item[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try{
                 const response = (await axios.get<Item[]>("/api/item")).data;
 
-                setData(response);
+                setInitialData(response);
             } catch (error) {
                 console.error("Request Failed: ", error);
             }
@@ -37,5 +37,5 @@ export const useTableData = () => {
         }),
     ], []);
     
-    return { columns, data };
+    return { columns, initialData };
 };
