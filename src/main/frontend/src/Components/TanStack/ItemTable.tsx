@@ -52,7 +52,7 @@ function TItemTable(){
     }, [initialData]);
 
     return (
-        <Table hover bordered variant="secondary" className="mx-auto" style={{borderRadius: '8px', overflow: 'hidden'}}>
+        <Table hover bordered variant="secondary" className="mx-auto" style={{ borderRadius: '8px', overflow: 'hidden', maxHeight: "65vh" }}>
             <thead>
                 {table.getHeaderGroups().map(headerGroup => {
                         return <tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {

@@ -3,7 +3,8 @@ import axios from 'axios';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { Item } from '../../Types/Item';
-import EditCell from './EditCell';
+import EditCell from './CustomCells/EditCell';
+import TagCell from './CustomCells/TagCell';
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -34,6 +35,11 @@ export const useTableData = () => {
             id: "description",
             header: "Description",
             cell: EditCell,
+        }),
+        columnHelper.accessor("tags", {
+            id: "tags",
+            header: "Tag(s)",
+            cell: TagCell
         }),
     ], []);
     

@@ -16,6 +16,7 @@ const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
 const EditRow = lazy(() => import("../General/EditRow"));
 
 import { ItemResponse, Item, EditData, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
+import { TagProvider } from '../../Data/TagProvider';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
@@ -146,10 +147,12 @@ function ItemTable(){
                 <PaginationComponent currentPage={ currentPage } totalPages={ totalPages } onPageChange={ setCurrentPage } />
             )}
 
-            <TItemTable />
+            <TagProvider>
+                <TItemTable />
+            </TagProvider>
 
         </Container>
     );
-}
+};
 
 export default ItemTable;

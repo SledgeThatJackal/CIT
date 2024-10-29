@@ -31,16 +31,31 @@ function TagSettings(){
 
     const fetchData = async () => {
         try{
-            const response = await axios.get<Tag[]>(`/api/tags`);
+            const response = (await axios.get<Tag[]>(`/api/tags`)).data;
 
-            setTags(response.data);
+            setTags(response);
+            sessionStorage.setItem("tags", JSON.stringify(response));
         } catch (error) {
             console.error('Request failed: ', error);
         }
     };
 
+    const getTags = () => {
+        try{
+            const tags = sessionStorage.getItem("tags");
+
+            if(tags){
+                setTags(JSON.parse(tags));
+            } else {
+                fetchData();
+            }
+        } catch (error) {
+            console.log('Request failed: ', error);
+        }
+    };
+
     useEffect(() => {
-        fetchData();
+        getTags();
     }, []);
 
     useEffect(() => {
@@ -66,7 +81,10 @@ function TagSettings(){
         try{
             await axios.delete(`/api/tags/delete?id=${deleteTag?.id}`);
 
-            setTags(tags.filter(tag => tag !== deleteTag));
+            const updatedTags = tags.filter(tag => tag !== deleteTag);
+
+            setTags(updatedTags);
+            sessionStorage.setItem("tags", JSON.stringify(updatedTags));
         } catch(error){
             console.error("Error deleting tag: ", error);
         }
