@@ -1,36 +1,23 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 
 import { Tag } from '../Types/Tag';
+import { useTags } from '../Services/queries';
 
 const DataContext = createContext<Tag[]>([]);
 
 export const TagProvider = ({ children }: any) => {
-    const [tags, setTags] = useState<Tag[]>([]);
+    const tagsQuery = useTags();
 
-    useEffect(() => {
-        const fetchTags = async () => {
-            try{
-                const tags = sessionStorage.getItem("tags");
+    if(tagsQuery.isPending){
+        return null;
+    }
 
-                if(tags){
-                    setTags(JSON.parse(tags));
-                } else {
-                    const response = (await axios.get<Tag[]>('/api/tags')).data;
-                       
-                    setTags(response);
-                    sessionStorage.setItem("tags", JSON.stringify(response));
-                }
-            } catch (error){
-                console.log('Request failed: ', error);
-            }
-        };
-
-        fetchTags();
-    }, []);
+    if(tagsQuery.isError){
+        return null;
+    }
 
     return (
-        <DataContext.Provider value={ tags }>
+        <DataContext.Provider value={ tagsQuery.data }>
             {children}
         </DataContext.Provider>
     );

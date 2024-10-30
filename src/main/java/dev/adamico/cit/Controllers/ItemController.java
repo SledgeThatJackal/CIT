@@ -47,6 +47,12 @@ public class ItemController {
         return itemService.findAllItems();
     }
 
+    @GetMapping("id")
+    @JsonView(Views.Inclusive.class)
+    public Item getItem(@RequestParam long id){
+        return itemService.findItemById(id);
+    }
+
     @GetMapping("/c")
     @JsonView(Views.Inclusive.class)
     public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
@@ -92,7 +98,7 @@ public class ItemController {
         containerItemService.changeQuantityAmount(itemDTO.getLinks(), updatedItem);
     }
 
-    @PatchMapping("/edit/test")
+    @PutMapping("/edit")
     @JsonView(Views.Inclusive.class)
     public void updateItem(@RequestBody Item item) {
         if(item.getContainerItems() != null){

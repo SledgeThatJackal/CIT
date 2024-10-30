@@ -1,29 +1,16 @@
-import { useMemo, useState, useEffect } from 'react';
-import axios from 'axios';
+import { useMemo } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { Item } from '../../Types/Item';
 import EditCell from './CustomCells/EditCell';
 import TagCell from './CustomCells/TagCell';
+import { useItems } from '../../Services/queries';
+import DeleteCell from './CustomCells/DeleteCell';
 
 const columnHelper = createColumnHelper<Item>();
 
 export const useTableData = () => {
-    const [initialData, setInitialData] = useState<Item[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try{
-                const response = (await axios.get<Item[]>("/api/item")).data;
-
-                setInitialData(response);
-            } catch (error) {
-                console.error("Request Failed: ", error);
-            }
-        }
-
-        fetchData();
-    }, [])
+    const itemsQuery = useItems().data;
     
     const columns = useMemo(() => [
         columnHelper.accessor("name", {
@@ -41,7 +28,12 @@ export const useTableData = () => {
             header: "Tag(s)",
             cell: TagCell
         }),
+        columnHelper.accessor("id", {
+            id: "id",
+            header: "Action(s)",
+            cell: DeleteCell
+        })
     ], []);
     
-    return { columns, initialData };
+    return { columns, itemsQuery };
 };

@@ -5,7 +5,7 @@ import { Modal, Button } from 'react-bootstrap';
 type ConfirmationModalProp = {
     show: boolean;
     handleClose: () => void
-    onDelete?: () => Promise<void>;
+    onDelete?: () => void;
     message?: string;
 };
 
@@ -26,9 +26,7 @@ const ConfirmationModal = (props: ConfirmationModalProp) => {
                 </Button>
 
                 <Button variant="danger" onClick={ () => {
-                    if(onDelete){
-                        onDelete();
-                    }
+                    onDelete && onDelete();
 
                     handleClose();
                 } }>

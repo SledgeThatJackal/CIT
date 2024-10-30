@@ -9,6 +9,7 @@ import { Row, Col, Form, Button, Stack, FloatingLabel } from 'react-bootstrap';
 import TagBadge from '../Tag/TagBadge';
 
 import { Tag } from '../../Types/Tag';
+import { useCreateTag, useUpdateItem, useUpdateTag } from '../../Services/mutations';
 
 type TagFormProps = {
     tag?: Tag;
@@ -29,6 +30,9 @@ type TagSchemaType = z.infer<typeof TagSchema>;
 
 const TagForm = ({ tag, onEdit, closeEdit, onCreate, closeCreate }: TagFormProps) => {
     const [exampleTag, setExampleTag] = useState<Tag>(tag || {id: -1, tag: "Example Name", color: "#00AAFF", description:"Example Description"});
+
+    const createTagMutation = useCreateTag();
+    const updateTagMutation = useUpdateTag();
 
     const {
         register,
@@ -56,11 +60,11 @@ const TagForm = ({ tag, onEdit, closeEdit, onCreate, closeCreate }: TagFormProps
     const onSubmit = async (data: TagSchemaType) => {
         try{
             if(tag){
-                await axios.patch(`/api/tags/edit`, data);
+                updateTagMutation.mutate(data as Tag);
                 
                 onEdit && onEdit();
             } else {
-                await axios.post(`/api/tags/create`, data);
+                createTagMutation.mutate(data as Tag);
 
                 reset({id: undefined, tag: "", color: "#00AAFF", description: ""});
                 onCreate && onCreate();

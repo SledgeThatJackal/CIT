@@ -7,14 +7,14 @@ import { Tag } from '../../Types/Tag';
 type TagReadProps = {
     index: number;
     tag: Tag;
-    setDeleteTag: React.Dispatch<React.SetStateAction<Tag | undefined>>;
+    setDeleteTagId: React.Dispatch<React.SetStateAction<number>>;
     handleOpen: () => void;
     setEditId: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const TagRead = ({ index, tag, setDeleteTag, handleOpen, setEditId }: TagReadProps) => {
+const TagRead = ({ index, tag, setDeleteTagId, handleOpen, setEditId }: TagReadProps) => {
     const setupDelete = () => {
-        setDeleteTag(tag);
+        setDeleteTagId(tag.id);
         handleOpen();
     };
 
