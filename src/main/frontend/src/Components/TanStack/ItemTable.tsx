@@ -9,7 +9,6 @@ import { Item } from '../../Types/Item';
 import { useCreateItem, useDeleteItem, useUpdateItem } from '../../Services/mutations';
 import ConfirmationModal from '../General/ConfirmationModal';
 
-
 function TItemTable(){
     const { columns, itemsQuery } = useTableData();
     

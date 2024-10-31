@@ -17,6 +17,7 @@ const EditRow = lazy(() => import("../General/EditRow"));
 
 import { ItemResponse, Item, EditData, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
 import { TagProvider } from '../../Data/TagProvider';
+import CreateBox from '../General/CreateBox';
 
 function ItemTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
@@ -109,6 +110,7 @@ function ItemTable(){
     return(
         <Container fluid>
             <SearchComponent onSearch={ setSearchTerm } />
+            <CreateBox />
             <ConfirmationModal show={ show } handleClose={ handleClose } onDelete={ action } message={ message } />
 
             <FormProvider { ...methods }>
@@ -150,7 +152,6 @@ function ItemTable(){
             <TagProvider>
                 <TItemTable />
             </TagProvider>
-
         </Container>
     );
 };
