@@ -6,13 +6,13 @@ import TagBlock from './TagBlock';
 import TagBadge from './TagBadge';
 
 import { Tag } from '../../Types/Tag';
-import { ItemFormSchemaType } from '../../Types/Item';
+import { ItemSchemaType } from '../../Types/Item';
 import { Button, Dropdown, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 
 
 type TagInputProps = {
-    control: Control<ItemFormSchemaType>;
-    name: 'item.tags';
+    control: Control<ItemSchemaType>;
+    name: 'tags';
 };
 
 const TagInput = ({ control, name }: TagInputProps) => {
@@ -130,7 +130,7 @@ const TagInput = ({ control, name }: TagInputProps) => {
             </div>
 
             {fields.map((tag, index) => (
-                <TagBlock key={`tag-${tag.key}`} control={ control } name={`item.tags.${index}`} onDelete={ () => removeTag(index) } />
+                <TagBlock key={`tag-${tag.key}`} control={ control } name={`tags.${index}`} onDelete={ () => removeTag(index) } />
             ))}
         </div>
     );

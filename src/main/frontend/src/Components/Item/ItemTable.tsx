@@ -10,7 +10,7 @@ import PaginationComponent from '../General/Pagination';
 import SearchComponent from '../General/SearchComponent';
 import ReadRow from '../General/ReadRow';
 
-import TItemTable from '../TanStack/ItemTable';
+import TItemTable from '../DataGrid/ItemTable';
 
 const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
 const EditRow = lazy(() => import("../General/EditRow"));

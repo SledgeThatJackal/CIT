@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, Col, Container, FloatingLabel, Form, Row, Stack } from 'react-bootstrap';
 
-import { useForm } from 'react-hook-form';
-import { ItemFormSchema, ItemFormSchemaType } from '../../Types/Item';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { ItemFormSchema, ItemFormSchemaType, ItemSchemaType } from '../../Types/Item';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateItem } from '../../Services/mutations';
 import TagInput from '../Tag/TagInput';
+import ContainerSection from '../DataGrid/ContainerSection';
 
 const CreateBox = () => {
     const createItemMutation = useCreateItem();
@@ -16,13 +17,17 @@ const CreateBox = () => {
         formState: { errors, isSubmitting},
         control,
         reset,
-        setFocus
-    } = useForm<ItemFormSchemaType>({
+        trigger,
+        setFocus,
+        setValue,
+        setError,
+        clearErrors
+    } = useForm<ItemSchemaType>({
         defaultValues: {},
         // resolver: zodResolver(ItemFormSchema)
     });
 
-    const onSubmit = async (data: ItemFormSchemaType) => {
+    const onSubmit = async (data: ItemSchemaType) => {
         console.log(data);
     };
 
@@ -32,18 +37,18 @@ const CreateBox = () => {
                 <Row>
                     <Form.Group as={ Col } controlId="itemName">
                         <FloatingLabel controlId="floatingName" label="Name">
-                            <Form.Control {...register("item.name")} type="text" autoFocus={ true } />
+                            <Form.Control {...register("name")} type="text" autoFocus={ true } />
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">
-                            {errors.item?.name?.message}
+                            {errors.name?.message}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group as={ Col } controlId="itemDesc">
                         <FloatingLabel controlId="floatingDesc" label="Description">
-                            <Form.Control {...register("item.description")} type="text"/>
+                            <Form.Control {...register("description")} type="text"/>
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">
-                            {errors.item?.description?.message}
+                            {errors.description?.message}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Col md="2" as={ Stack } direction="horizontal" gap={ 2 }>
@@ -54,12 +59,12 @@ const CreateBox = () => {
                 </Row>
                 <Row className="pt-3">
                     <Col>
-                        <TagInput control={ control } name="item.tags" />
+                        <TagInput control={ control } name="tags" />
                     </Col>
                 </Row>
                 <Row className="pt-3">
                     <Col>
-                        Container Table
+                        <ContainerSection control={ control } register={ register } errors={ errors } trigger={ trigger } setValue={ setValue } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors } />
                     </Col>
                     <Col>
                         Type will go here

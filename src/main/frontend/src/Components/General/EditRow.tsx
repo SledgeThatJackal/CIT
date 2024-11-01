@@ -120,7 +120,7 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
                 </td>
 
                 <td>
-                    <TagInput control={ control } name='item.tags' />
+                    {/* <TagInput control={ control } name='item.tags' /> */}
                 </td>
                 
                 <td>
@@ -146,9 +146,9 @@ const EditRow = ({ itemDTO, containerDTOs, setupDelete, handleDelete, cancelEdit
                             {fields.map((link, index) => (
                                 <tr key={`link-${link.id}`} data-key={`link-${link.id}`}>
                                     <td>
-                                        {containerDTOs && (
-                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } control={ control } errors={ errors } setError={ setError } clearErrors={ clearErrors } index={ index } link={ link } setValue={ setValue } setFocus={ setFocus } watchLinks={ watchLinks }/>
-                                        )}
+                                        {/* {containerDTOs && (
+                                            <ComboBox key={`link-combobox-${link.id}`} containerDTOs={ containerDTOs } control={ control } errors={ errors } setError={ setError } clearErrors={ clearErrors } index={ index } link={ link } setValue={ setValue } setFocus={ setFocus } />
+                                        )} */}
                                     </td>
                                     <td>
                                         <input {...register(`links.${index}.quantity`, {valueAsNumber: true})} className="form-control" min={-Infinity}

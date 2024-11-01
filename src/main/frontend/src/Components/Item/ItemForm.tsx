@@ -107,7 +107,7 @@ export default function ItemForm({ itemDTO, reference }: ItemFromProp){
                     )}
                 </div>
 
-                <TagInput control={ control } name='item.tags' />
+                {/* <TagInput control={ control } name='item.tags' /> */}
 
                 <table id="linkTable" className="table table-secondary table-hover table-striped">
                     <thead>

@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { Item } from '../Types/Item';
 import { Tag, TagSchemaType } from '../Types/Tag';
+import { Container } from '../Types/Container';
 
 // Items
 
@@ -28,7 +29,9 @@ export const deleteItem = async (id: number) => {
 };
 
 // Containers
-
+export const getContainers = async () => {
+    return (await axios.get<Container[]>(`/api/container`)).data;
+};
 
 // Tags
 

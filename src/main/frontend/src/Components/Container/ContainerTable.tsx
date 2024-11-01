@@ -24,7 +24,7 @@ function ContainerTable(){
     useEffect(() => {
         const fetchData = async () => {
             try{
-                const url = `/api/container?page=${currentPage}`;
+                const url = `/api/container/page?page=${currentPage}`;
                 const response = await axios.get<ContainerResponse>(url);
 
                 setContainerData(response.data.content);

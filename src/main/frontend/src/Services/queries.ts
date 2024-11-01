@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getItem, getItems, getTags } from "./api";
+import { getContainers, getItem, getItems, getTags } from "./api";
 
 // Items
 export function useItem(id: number){
@@ -17,7 +17,12 @@ export function useItems(){
 };
 
 // Containers
-
+export function useContainers(){
+    return useQuery({
+        queryKey: ['containers'],
+        queryFn: getContainers
+    });
+};
 
 // Tags
 export function useTags(){

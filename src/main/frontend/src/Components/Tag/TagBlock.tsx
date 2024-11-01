@@ -1,11 +1,11 @@
 import React from 'react';
 import { useController, Control } from 'react-hook-form';
 
-import { ItemFormSchemaType } from '../../Types/Item';
+import { ItemFormSchemaType, ItemSchemaType } from '../../Types/Item';
 
 type TagBlockProps = {
-    control: Control<ItemFormSchemaType>;
-    name: `item.tags.${number}`;
+    control: Control<ItemSchemaType>;
+    name: `tags.${number}`;
     onDelete: () => Promise<void>;
 };
 

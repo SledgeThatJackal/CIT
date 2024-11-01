@@ -53,3 +53,5 @@ export const ItemFormSchema = z.object({
 });
 
 export type ItemFormSchemaType = z.infer<typeof ItemFormSchema>;
+
+export type ItemSchemaType = z.infer<typeof ItemSchema>;
