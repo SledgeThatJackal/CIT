@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Col, Container, FloatingLabel, Form, Row, Stack } from 'react-bootstrap';
 
 import { useFieldArray, useForm } from 'react-hook-form';
-import { ItemFormSchema, ItemFormSchemaType, ItemSchemaType } from '../../Types/Item';
+import { ItemFormSchema, ItemFormSchemaType, ItemSchema, ItemSchemaType } from '../../Types/Item';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateItem } from '../../Services/mutations';
 import TagInput from '../Tag/TagInput';
@@ -19,12 +19,11 @@ const CreateBox = () => {
         reset,
         trigger,
         setFocus,
-        setValue,
         setError,
         clearErrors
     } = useForm<ItemSchemaType>({
-        defaultValues: {},
-        // resolver: zodResolver(ItemFormSchema)
+        defaultValues: {id: undefined},
+        // resolver: zodResolver(ItemSchema)
     });
 
     const onSubmit = async (data: ItemSchemaType) => {
@@ -64,7 +63,7 @@ const CreateBox = () => {
                 </Row>
                 <Row className="pt-3">
                     <Col>
-                        <ContainerSection control={ control } register={ register } errors={ errors } trigger={ trigger } setValue={ setValue } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors } />
+                        <ContainerSection control={ control } register={ register } errors={ errors } trigger={ trigger } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors } />
                     </Col>
                     <Col>
                         Type will go here

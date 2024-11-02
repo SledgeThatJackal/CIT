@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Table } from 'react-bootstrap';
+import { CloseButton, Form, Table } from 'react-bootstrap';
 import { Control, FieldErrors, useFieldArray, UseFormClearErrors, UseFormRegister, UseFormSetError, UseFormSetFocus, UseFormSetValue, UseFormTrigger, useWatch } from 'react-hook-form';
 import { ItemSchemaType } from '../../Types/Item';
 import ComboBox from '../General/ComboBox';
@@ -10,14 +10,13 @@ type ContainerSectionProps = {
     register: UseFormRegister<ItemSchemaType>;
     errors: FieldErrors<ItemSchemaType>;
     trigger: UseFormTrigger<ItemSchemaType>;
-    setValue: UseFormSetValue<ItemSchemaType>;
     setFocus: UseFormSetFocus<ItemSchemaType>;
     setError: UseFormSetError<ItemSchemaType>;
     clearErrors: UseFormClearErrors<ItemSchemaType>;
 };
 
-const ContainerSection = ({ control, register, errors, trigger, setValue, setFocus, setError, clearErrors }: ContainerSectionProps) => {
-    const { fields, append, remove } = useFieldArray({
+const ContainerSection = ({ control, register, errors, trigger, setFocus, setError, clearErrors }: ContainerSectionProps) => {
+    const { fields, append, remove, update } = useFieldArray({
         control,
         name: 'containerItems'
     });
@@ -28,8 +27,8 @@ const ContainerSection = ({ control, register, errors, trigger, setValue, setFoc
     }) as ContainerItem[];
 
     useEffect(() => {
-        if(watchContainerItems?.[watchContainerItems.length - 1]?.container?.scannerId){
-            append({id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, }, quantity: 1});
+        if(watchContainerItems?.length === 0 || watchContainerItems?.[watchContainerItems.length - 1]?.container?.scannerId){
+            append({ id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, }, quantity: 1 });
 
             setTimeout(() => {
                 trigger("containerItems");
@@ -43,10 +42,8 @@ const ContainerSection = ({ control, register, errors, trigger, setValue, setFoc
     }, [watchContainerItems]);
 
     useEffect(() => {
-        append({id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, }, quantity: 1});
+        append({ id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, parentContainer: ""}, quantity: 1 });
     }, []);
-
-    console.log(fields);
 
     return (
         <Table>
@@ -68,15 +65,18 @@ const ContainerSection = ({ control, register, errors, trigger, setValue, setFoc
             </thead>
             <tbody>
                 {fields && fields.map((field, index) => (
-                    <tr>
+                    <tr key={`CIFields-${index}`}>
                         <th>
-                            {field.container.name}
+                            {field.container?.name}
                         </th>
                         <td>
-                            <ComboBox index={ index } field={ field } control={ control } errors={ errors } trigger={ trigger } setValue={ setValue } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors }  />
+                            <ComboBox index={ index } field={ field } control={ control } errors={ errors } update={ update } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors }  />
                         </td>
                         <td>
                             <Form.Control {...register(`containerItems.${index}.quantity`)} />
+                        </td>
+                        <td>
+                            <CloseButton onClick={ () => remove(index) } />
                         </td>
                     </tr>
                 ))}

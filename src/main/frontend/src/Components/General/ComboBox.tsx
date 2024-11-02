@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { useController, FieldValues, Control, UseFormSetValue, UseFormSetFocus, UseFormSetError, UseFormClearErrors, FieldErrors, FieldArrayWithId, UseFormTrigger } from 'react-hook-form';
+import { useController, FieldValues, Control, UseFormSetFocus, UseFormSetError, UseFormClearErrors, FieldErrors, FieldArrayWithId, UseFormTrigger, UseFieldArrayUpdate } from 'react-hook-form';
 import { Dropdown, Overlay, Tooltip } from 'react-bootstrap';
 
-import { Container, ContainerDTO } from '../../Types/Container';
-import { ItemSchemaType, LinkDTO } from '../../Types/Item';
+import { Container } from '../../Types/Container';
+import { ItemSchemaType } from '../../Types/Item';
 import { useContainers } from '../../Services/queries';
-import { ContainerItem } from '../../Types/ContainerItem';
 
 type InputControllerProps ={
     fieldName: string;
@@ -55,14 +54,13 @@ type ComboBoxProps = {
     field: FieldArrayWithId<ItemSchemaType, "containerItems", "id">;
     control: Control<any>;
     errors: FieldErrors<ItemSchemaType>;
-    trigger: UseFormTrigger<ItemSchemaType>;
-    setValue: UseFormSetValue<ItemSchemaType>;
+    update: UseFieldArrayUpdate<ItemSchemaType>;
     setFocus: UseFormSetFocus<ItemSchemaType>;
     setError: UseFormSetError<ItemSchemaType>;
     clearErrors: UseFormClearErrors<ItemSchemaType>;
 };
 
-const ComboBox = ({ index, field, control, errors, trigger, setValue, setError, clearErrors }: ComboBoxProps) => {
+const ComboBox = ({ index, field, control, errors, update, setError, clearErrors }: ComboBoxProps) => {
     const containerQuery = useContainers().data;
 
     const [showDropdown, setShowDropdown] = useState(false);
@@ -72,8 +70,8 @@ const ComboBox = ({ index, field, control, errors, trigger, setValue, setError, 
     const target = useRef(null);
 
     const handleDropdownClick = (value: Container) => {
-        setValue(`containerItems.${index}.container`, value);
-        trigger(`containerItems.${index}.container`);
+        const updatedItem = {...field, container: value};
+        update(index, updatedItem);
     };
 
     const checkIfContainerExists = (scannerId: string): boolean => {
@@ -88,7 +86,7 @@ const ComboBox = ({ index, field, control, errors, trigger, setValue, setError, 
     };
 
     return (
-        <div className="input-group" ref={ target }>
+        <div key={`Combobox-${index}`} className="input-group" ref={ target }>
             <Input fieldName={ `containerItems.${index}.container.scannerId` } control={ control } checkIfContainerExists={ checkIfContainerExists } setError={ setError } clearErrors={ clearErrors } showError={ () => setShowError(!showError) } />
             <Dropdown show={ showDropdown } onToggle={ handleToggle }>
                 <Dropdown.Toggle>
