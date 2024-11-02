@@ -24,7 +24,7 @@ const TagBlock = ({ control, name, onDelete }: TagBlockProps) => {
     const darkerColor = `#${colorValue.toString(16).padStart(6, '0')}`;
 
     return (
-        <div className='d-inline-flex badge rounded-pill align-items-center' style={{
+        <div key={`TagBlock-${field.value.id}`} className='d-inline-flex badge rounded-pill align-items-center' style={{
             backgroundColor: field.value.color,
             border: `3px solid ${darkerColor}`,
             marginRight: 3,

@@ -12,10 +12,9 @@ import { Button, Dropdown, FloatingLabel, Form, InputGroup } from 'react-bootstr
 
 type TagInputProps = {
     control: Control<ItemSchemaType>;
-    name: 'tags';
 };
 
-const TagInput = ({ control, name }: TagInputProps) => {
+const TagInput = ({ control }: TagInputProps) => {
     const [color, setColor] = useState<string>('#FF0000');
     const [newTagName, setNewTagName] = useState<string>('');
     const [newTagDescription, setNewTagDescription] = useState<string>('');
@@ -28,8 +27,7 @@ const TagInput = ({ control, name }: TagInputProps) => {
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name,
-        keyName: 'key',
+        name: 'tags',
     });
 
     useEffect(() => {
@@ -39,7 +37,7 @@ const TagInput = ({ control, name }: TagInputProps) => {
 
                 setTags(response);
             } catch (error){
-                console.log('Request failed: ', error);
+                console.error('Request failed: ', error);
             }
         };
 
@@ -56,20 +54,17 @@ const TagInput = ({ control, name }: TagInputProps) => {
 
     const addTag = async (tag ?: Tag) => {
         var newTag: Tag;
-        console.log('Add Tag');
 
         if(tag){
             newTag = tag;
         } else {
             try{
-                console.log('Try');
                 if(newTagName.length === 0){
                     setTagError('The tag must have a value');
                     return;
                 }
     
                 newTag = (await axios.post(`/api/tags/create`, {id: undefined, tag: newTagName, color: color, description: newTagDescription})).data;
-                console.log('newTag');
             } catch (error){
                 console.error(error);
                 return;
@@ -129,8 +124,8 @@ const TagInput = ({ control, name }: TagInputProps) => {
                 <div className='form-text text-danger'>{tagError}</div>
             </div>
 
-            {fields.map((tag, index) => (
-                <TagBlock key={`tag-${tag.key}`} control={ control } name={`tags.${index}`} onDelete={ () => removeTag(index) } />
+            {fields.map((field, index) => (
+                <TagBlock key={`tag-${field.id}`} control={ control } name={`tags.${index}`} onDelete={ () => removeTag(index) } />
             ))}
         </div>
     );

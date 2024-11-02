@@ -8,7 +8,12 @@ import { useCreateItem } from '../../Services/mutations';
 import TagInput from '../Tag/TagInput';
 import ContainerSection from '../DataGrid/ContainerSection';
 
-const CreateBox = () => {
+type CreateBoxProps = {
+    closeCreate: () => void
+
+};
+
+const CreateBox = ({ closeCreate }: CreateBoxProps) => {
     const createItemMutation = useCreateItem();
 
     const {
@@ -22,12 +27,15 @@ const CreateBox = () => {
         setError,
         clearErrors
     } = useForm<ItemSchemaType>({
-        defaultValues: {id: undefined},
-        // resolver: zodResolver(ItemSchema)
+        defaultValues: {id: undefined, containerItems: [{ id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, parentContainer: undefined}, quantity: 1 }], tags: []},
+        resolver: zodResolver(ItemSchema)
     });
 
     const onSubmit = async (data: ItemSchemaType) => {
-        console.log(data);
+        const item: ItemSchemaType = {...data, containerItems: data.containerItems?.slice(0, -1)};
+
+        createItemMutation.mutate(item);
+        reset();
     };
 
     return(
@@ -53,12 +61,12 @@ const CreateBox = () => {
                     <Col md="2" as={ Stack } direction="horizontal" gap={ 2 }>
                         <div className="vr" />
                         <Button type="submit" variant="success" disabled={ isSubmitting }>Create</Button>
-                        <Button type="button" variant="outline-danger" >Cancel</Button>
+                        <Button type="button" variant="outline-danger" onClick={ closeCreate }>Cancel</Button>
                     </Col>
                 </Row>
                 <Row className="pt-3">
                     <Col>
-                        <TagInput control={ control } name="tags" />
+                        <TagInput control={ control } />
                     </Col>
                 </Row>
                 <Row className="pt-3">

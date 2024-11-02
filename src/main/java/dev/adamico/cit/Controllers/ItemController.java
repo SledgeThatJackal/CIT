@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.adamico.cit.DTOs.ContainerDTO;
-import dev.adamico.cit.DTOs.ItemCreationDTO;
 import dev.adamico.cit.DTOs.ItemDTO;
 import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.ContainerItem;
@@ -111,10 +110,14 @@ public class ItemController {
     }
 
     @PostMapping("/create")
-    public void createItem(@RequestBody ItemCreationDTO itemCreationDTO){
-        Item item = itemService.saveItem(itemCreationDTO.getItem());
+    public void createItem(@RequestBody Item item){
+        if(item.getContainerItems() != null){
+            for(ContainerItem containerItem : item.getContainerItems()){
+                containerItem.setItem(item);
+            }
+        }
 
-        containerItemService.createContainerItemLink(itemCreationDTO.getLinks(), item);
+        itemService.saveItem(item);
     }
 
     @DeleteMapping("/delete-tag")

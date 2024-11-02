@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createItem, createTag, deleteItem, deleteTag, updateItem, updateTag } from "./api";
-import { Item } from "../Types/Item";
+import { Item, ItemSchemaType } from "../Types/Item";
 import { Tag, TagSchemaType } from "../Types/Tag";
 
 
@@ -9,7 +9,7 @@ export function useCreateItem(){
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (data: Item) => createItem(data),
+        mutationFn: (data: ItemSchemaType) => createItem(data),
 
         onSettled: async(_, error) => {
             if(error){

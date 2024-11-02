@@ -28,7 +28,7 @@ const ContainerSection = ({ control, register, errors, trigger, setFocus, setErr
 
     useEffect(() => {
         if(watchContainerItems?.length === 0 || watchContainerItems?.[watchContainerItems.length - 1]?.container?.scannerId){
-            append({ id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, }, quantity: 1 });
+            append({ id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, parentContainer: undefined}, quantity: Number(1) });
 
             setTimeout(() => {
                 trigger("containerItems");
@@ -40,10 +40,6 @@ const ContainerSection = ({ control, register, errors, trigger, setFocus, setErr
             remove(watchContainerItems.length - 1);
         }
     }, [watchContainerItems]);
-
-    useEffect(() => {
-        append({ id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, parentContainer: ""}, quantity: 1 });
-    }, []);
 
     return (
         <Table>
@@ -65,7 +61,7 @@ const ContainerSection = ({ control, register, errors, trigger, setFocus, setErr
             </thead>
             <tbody>
                 {fields && fields.map((field, index) => (
-                    <tr key={`CIFields-${index}`}>
+                    <tr key={`CIFields-${field.id}`}>
                         <th>
                             {field.container?.name}
                         </th>
@@ -73,7 +69,7 @@ const ContainerSection = ({ control, register, errors, trigger, setFocus, setErr
                             <ComboBox index={ index } field={ field } control={ control } errors={ errors } update={ update } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors }  />
                         </td>
                         <td>
-                            <Form.Control {...register(`containerItems.${index}.quantity`)} />
+                            <Form.Control {...register(`containerItems.${index}.quantity`, {valueAsNumber: true})} type="number" />
                         </td>
                         <td>
                             <CloseButton onClick={ () => remove(index) } />

@@ -3,7 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Table, Container, Accordion } from 'react-bootstrap';
+import { Table, Container, Accordion, Button } from 'react-bootstrap';
 
 import PaginationComponent from '../General/Pagination';
 
@@ -30,6 +30,10 @@ function ItemTable(){
 
     const [message, setMessage] = useState<string | undefined>(undefined);
     const [action, setAction] = useState<() => Promise<void>>();
+
+    const [showCreate, setShowCreate] = useState<boolean>(false);
+    const toggleCreate =() => setShowCreate(!showCreate);
+    const closeCreate = () => setShowCreate(false);
 
     // Modal Controls
     const [show, setShow] = useState(false);
@@ -109,8 +113,10 @@ function ItemTable(){
 
     return(
         <Container fluid>
-            <SearchComponent onSearch={ setSearchTerm } />
-            <CreateBox />
+            <SearchComponent onSearch={ setSearchTerm } toggleCreate={ toggleCreate } />
+            {showCreate && (
+                <CreateBox closeCreate={ closeCreate } />
+            )}
             <ConfirmationModal show={ show } handleClose={ handleClose } onDelete={ action } message={ message } />
 
             <FormProvider { ...methods }>

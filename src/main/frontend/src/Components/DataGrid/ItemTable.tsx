@@ -12,7 +12,6 @@ import ConfirmationModal from '../General/ConfirmationModal';
 function TItemTable(){
     const { columns, itemsQuery } = useTableData();
     
-    const createItemMutation = useCreateItem();
     const updateItemMutation = useUpdateItem();
     const deleteItemMutation = useDeleteItem();
     

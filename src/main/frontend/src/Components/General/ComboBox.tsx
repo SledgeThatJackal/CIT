@@ -70,7 +70,7 @@ const ComboBox = ({ index, field, control, errors, update, setError, clearErrors
     const target = useRef(null);
 
     const handleDropdownClick = (value: Container) => {
-        const updatedItem = {...field, container: value};
+        const updatedItem = {...field, id: undefined, container: value};
         update(index, updatedItem);
     };
 
@@ -87,7 +87,7 @@ const ComboBox = ({ index, field, control, errors, update, setError, clearErrors
 
     return (
         <div key={`Combobox-${index}`} className="input-group" ref={ target }>
-            <Input fieldName={ `containerItems.${index}.container.scannerId` } control={ control } checkIfContainerExists={ checkIfContainerExists } setError={ setError } clearErrors={ clearErrors } showError={ () => setShowError(!showError) } />
+            <Input key={`InputObject-${index}`} fieldName={ `containerItems.${index}.container.scannerId` } control={ control } checkIfContainerExists={ checkIfContainerExists } setError={ setError } clearErrors={ clearErrors } showError={ () => setShowError(!showError) } />
             <Dropdown show={ showDropdown } onToggle={ handleToggle }>
                 <Dropdown.Toggle>
                 </Dropdown.Toggle>

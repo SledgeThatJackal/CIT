@@ -20,5 +20,5 @@ const ContainerSchema = z.object({
 export const ContainerItemSchema = z.object({
     id: z.number().optional(),
     container: ContainerSchema.optional(),
-    quantity: z.number().optional(),
+    quantity: z.number(),
 });
