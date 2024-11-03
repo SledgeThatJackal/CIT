@@ -40,8 +40,8 @@ build/
 **/*.tar
 
 ### Log Files ###
-.log
-.gz
+*.log
+*.gz
 
 ### Export Files ###
 cit_export.json
