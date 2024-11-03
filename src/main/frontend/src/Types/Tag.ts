@@ -7,6 +7,13 @@ export type Tag = {
     description: string;
 };
 
+export type TagCreate = {
+    id?: number;
+    tag: string;
+    color: string;
+    description: string;
+};
+
 export const TagSchema = z.object({
     id: z.number(),
     tag: z.string({message: 'A tag is required'}),

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { Item, ItemSchemaType } from '../Types/Item';
-import { Tag, TagSchemaType } from '../Types/Tag';
+import { Tag, TagCreate } from '../Types/Tag';
 import { Container } from '../Types/Container';
 
 // Items
@@ -33,6 +33,22 @@ export const getContainers = async () => {
     return (await axios.get<Container[]>(`/api/container`)).data;
 };
 
+// Links
+    // Query
+
+    // Mutate
+export const createLink = async (itemId: number, containerId: number, quantity: number) => {
+    await axios.post(`/api/link?itemId=${itemId}&containerId=${containerId}&quantity=${quantity}`);
+};
+
+export const updateQuantity = async (quantity: number, id: number) => {
+    await axios.put(`/api/link?quantity=${quantity}&id=${id}`);
+};
+
+export const deleteLink = async (id: number) => {
+    await axios.delete(`/api/link?id=${id}`);
+};
+
 // Tags
 
     //Query
@@ -41,12 +57,12 @@ export const getTags = async () => {
 };
 
     // Mutate
-export const createTag = async (data: Tag) => {
-    return axios.post(`/api/tags/create`, data);
+export const createTag = async (data: TagCreate) => {
+    return await axios.post(`/api/tags/create`, data);
 };
 
 export const updateTag = async (data: Tag) => {
-    return axios.put(`/api/tags/edit`, data);
+    await axios.put(`/api/tags/edit`, data);
 };
 
 export const deleteTag = async(id: number) => {

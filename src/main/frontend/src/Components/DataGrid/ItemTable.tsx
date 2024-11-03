@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { getCoreRowModel, useReactTable, flexRender } from '@tanstack/react-table';
-import axios from 'axios';
 
 import { useTableData } from "./useTableData";
 
 import { Item } from '../../Types/Item';
-import { useCreateItem, useDeleteItem, useUpdateItem } from '../../Services/mutations';
+import { useDeleteItem, useUpdateItem } from '../../Services/mutations';
 import ConfirmationModal from '../General/ConfirmationModal';
+import ContainerTable from './ContainerRow/ContainerTable';
+import { ContainerItem } from '../../Types/ContainerItem';
 
 function TItemTable(){
     const { columns, itemsQuery } = useTableData();
@@ -42,6 +43,7 @@ function TItemTable(){
     const table = useReactTable<Item>({
         data,
         columns,
+        getRowCanExpand: (row) => (row.getValue("containerItems") as ContainerItem[]).length > 0,
         getCoreRowModel: getCoreRowModel(),
         meta: {
             updateData,
@@ -71,9 +73,22 @@ function TItemTable(){
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.map(row => {
-                        return <tr key={ `row-${row.id}` }>{row.getVisibleCells().map(cell => {
-                            return <td key={ `cell-${cell.id}` }>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                        })}</tr>
+                        return(
+                            <Fragment>
+                                <tr key={ `row-${row.id}` }>
+                                    {row.getVisibleCells().map(cell => {
+                                        return <td key={ `cell-${cell.id}` }>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                                    })}
+                                </tr>
+                                {row.getIsExpanded() && (
+                                    <tr key={`subRow-${row.id}`}>
+                                        <td colSpan={row.getVisibleCells().length}>
+                                            <ContainerTable value={ row.getValue("containerItems") } itemId={ row.getValue("id")} />
+                                        </td>
+                                    </tr>
+                                )}
+                            </Fragment>
+                        )
                     })}
                 </tbody>
                 {/* <tfoot>

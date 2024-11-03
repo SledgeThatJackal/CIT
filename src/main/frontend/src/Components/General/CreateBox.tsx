@@ -44,7 +44,7 @@ const CreateBox = ({ closeCreate }: CreateBoxProps) => {
                 <Row>
                     <Form.Group as={ Col } controlId="itemName">
                         <FloatingLabel controlId="floatingName" label="Name">
-                            <Form.Control {...register("name")} type="text" autoFocus={ true } />
+                            <Form.Control {...register("name")} type="text" autoFocus={ true } required/>
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">
                             {errors.name?.message}

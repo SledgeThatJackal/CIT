@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createItem, createTag, deleteItem, deleteTag, updateItem, updateTag } from "./api";
+import { createItem, createLink, createTag, deleteItem, deleteLink, deleteTag, updateItem, updateQuantity, updateTag } from "./api";
 import { Item, ItemSchemaType } from "../Types/Item";
-import { Tag, TagSchemaType } from "../Types/Tag";
+import { Tag, TagCreate, TagSchemaType } from "../Types/Tag";
 
 
 // Items
@@ -57,12 +57,72 @@ export function useDeleteItem(){
 // Containers
 
 
+// Links
+type createLinkParams = {
+    itemId: number;
+    containerId: number;
+    quantity: number
+};
+
+export function useCreateLink(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({itemId, containerId, quantity}: createLinkParams) => createLink(itemId, containerId, quantity),
+        
+        onSettled: async (_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["items"] });
+            }
+        }
+    });
+}
+
+type quantityParams = {
+    quantity: number;
+    id: number;
+};
+
+export function useUpdateQuantity(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({quantity, id}: quantityParams) => updateQuantity(quantity, id),
+        
+        onSettled: async (_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["items"] });
+            }
+        }
+    });
+};
+
+export function useDeleteLink(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: number) => deleteLink(id),
+
+        onSettled: async (_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["items"] });
+            }
+        }
+    });
+};
+
 // Tags
 export function useCreateTag(){
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (data: Tag) => createTag(data),
+        mutationFn: (data: TagCreate) => {return createTag(data)},
 
         onSettled: async (_, error) => {
             if(error){

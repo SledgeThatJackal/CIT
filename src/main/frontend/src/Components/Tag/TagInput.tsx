@@ -8,6 +8,8 @@ import TagBadge from './TagBadge';
 import { Tag } from '../../Types/Tag';
 import { ItemSchemaType } from '../../Types/Item';
 import { Button, Dropdown, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
+import { useCreateTag } from '../../Services/mutations';
+import { useTags } from '../../Services/queries';
 
 
 type TagInputProps = {
@@ -19,31 +21,18 @@ const TagInput = ({ control }: TagInputProps) => {
     const [newTagName, setNewTagName] = useState<string>('');
     const [newTagDescription, setNewTagDescription] = useState<string>('');
     const [tagError, setTagError] = useState<string>('');
-    const [tags, setTags] = useState<Tag[]>([]);
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
     const tagRef = useRef<HTMLInputElement>(null);
     const [tagInputHeight, setTagInputHeight] = useState<number>(0);
 
+    const tagQuery = useTags().data;
+    const createTagMutation = useCreateTag();
+
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'tags',
     });
-
-    useEffect(() => {
-        const fetchTags = async () => {
-            try{
-                const response = (await axios.get<Tag[]>('/api/tags')).data;
-
-                setTags(response);
-            } catch (error){
-                console.error('Request failed: ', error);
-            }
-        };
-
-        fetchTags();
-
-    }, [fields]);
 
     useEffect(() => {
         if(tagRef.current){
@@ -63,8 +52,8 @@ const TagInput = ({ control }: TagInputProps) => {
                     setTagError('The tag must have a value');
                     return;
                 }
-    
-                newTag = (await axios.post(`/api/tags/create`, {id: undefined, tag: newTagName, color: color, description: newTagDescription})).data;
+
+                newTag = (await createTagMutation.mutateAsync({id: undefined, tag: newTagName, color: color, description: newTagDescription})).data;
             } catch (error){
                 console.error(error);
                 return;
@@ -95,7 +84,7 @@ const TagInput = ({ control }: TagInputProps) => {
                         </FloatingLabel>
 
                         <Dropdown.Menu className="w-100" style={{ marginTop: `${tagInputHeight}px`}}>
-                            {tags.length > 0 ? tags.filter(tag => {
+                            {tagQuery && tagQuery.length > 0 ? tagQuery.filter(tag => {
                                 const term = newTagName.toLowerCase();
                                 const tagName = tag.tag.toLowerCase();
 
