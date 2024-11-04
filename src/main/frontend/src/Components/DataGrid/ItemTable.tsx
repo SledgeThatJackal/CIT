@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Container, Table } from 'react-bootstrap';
-import { getCoreRowModel, useReactTable, flexRender } from '@tanstack/react-table';
+import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, PaginationState } from '@tanstack/react-table';
 
 import { useTableData } from "./useTableData";
 
@@ -9,6 +9,7 @@ import { useDeleteItem, useUpdateItem } from '../../Services/mutations';
 import ConfirmationModal from '../General/ConfirmationModal';
 import ContainerTable from './ContainerRow/ContainerTable';
 import { ContainerItem } from '../../Types/ContainerItem';
+import PaginationControl from './PaginationControl';
 
 function TItemTable(){
     const { columns, itemsQuery } = useTableData();
@@ -24,6 +25,11 @@ function TItemTable(){
     const handleClose = () => setShowModal(false);
 
     const [deleteId, setDeleteId] = useState<number>(-1);
+
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10
+    });
 
     const updateData = (rowIndex: number, columnID: string, value: any) => {
         const updatedItem = {...data[rowIndex], [columnID]: value};
@@ -45,12 +51,17 @@ function TItemTable(){
         columns,
         getRowCanExpand: (row) => (row.getValue("containerItems") as ContainerItem[]).length > 0,
         getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        onPaginationChange: setPagination,
         meta: {
             updateData,
             setupDelete,
             getItemId: (index: number) => {
                 return data[index].id;
             }
+        },
+        state: {
+            pagination
         }
     });
 
@@ -90,6 +101,7 @@ function TItemTable(){
                             </Fragment>
                         )
                     })}
+                    
                 </tbody>
                 {/* <tfoot>
                     {table.getFooterGroups().map(footerGroup => {
@@ -100,6 +112,9 @@ function TItemTable(){
                     )}
                 </tfoot> */}
             </Table>
+            {table.getPageCount() > 0 && (
+                <PaginationControl table={ table } />
+            )}
             <ConfirmationModal show={ showModal } handleClose={ handleClose } onDelete={ removeData } message={ "Are you sure you want to delete this item?" } />
         </Container>
     );
