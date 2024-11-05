@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Container, Form, Table } from 'react-bootstrap';
+import { Button, Container, Form, Stack, Table } from 'react-bootstrap';
 import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, PaginationState, getSortedRowModel, getFilteredRowModel, Column } from '@tanstack/react-table';
 
 import { useTableData } from "./useTableData";
@@ -12,6 +12,7 @@ import PaginationControl from '../PaginationControl';
 import { useDebounce } from '../../../Hooks/useDebounce';
 import '../../../Styles/ItemTable.css';
 import { MemoizedTableBody, TableBody } from './TableBody';
+import CreateBox from './CreateBox';
 
 const Input = ({ column }: { column: Column<any, unknown>}) => {
     const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -44,6 +45,10 @@ function ItemTable(){
     const handleClose = () => setShowModal(false);
 
     const [deleteId, setDeleteId] = useState<number>(-1);
+
+    // Create
+    const [showCreate, setShowCreate] = useState<boolean>(false);
+    const closeCreate = () => setShowCreate(false);
 
     // Pagination
     const [pagination, setPagination] = useState<PaginationState>({
@@ -121,6 +126,10 @@ function ItemTable(){
 
     return (
         <Container className="pt-2" fluid>
+            {showCreate && (
+                <CreateBox closeCreate={ closeCreate } />
+            )}
+
             <div >
                 <Table hover bordered variant="secondary" className="m-0" style={{ ...columnSize, borderRadius: '8px', overflow: 'hidden' }}>
                     <thead>
@@ -166,7 +175,12 @@ function ItemTable(){
             </div>
             <br />
             {table.getPageCount() > 0 && (
-                <PaginationControl table={ table } />
+                <Stack direction="horizontal" gap={ 3 }>
+                    <PaginationControl table={ table } />
+                    {!showCreate && (
+                        <Button variant="success" onClick={ () => setShowCreate(true) }>Create</Button>
+                    )}
+                </Stack>
             )}
             <ConfirmationModal show={ showModal } handleClose={ handleClose } onDelete={ removeData } message={ "Are you sure you want to delete this item?" } />
         </Container>
