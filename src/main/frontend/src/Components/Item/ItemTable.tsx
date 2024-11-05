@@ -16,7 +16,7 @@ const ConfirmationModal = lazy(() => import("../General/ConfirmationModal"));
 const EditRow = lazy(() => import("../General/EditRow"));
 
 import { ItemResponse, Item, EditData, ItemFormSchemaType, ItemFormSchema } from '../../Types/Item';
-import { TagProvider } from '../../Data/TagProvider';
+import { TagProvider } from '../../Hooks/TagProvider';
 import CreateBox from '../General/CreateBox';
 
 function ItemTable(){

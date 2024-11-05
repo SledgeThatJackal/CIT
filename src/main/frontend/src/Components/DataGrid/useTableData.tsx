@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper, Row } from '@tanstack/react-table';
 
 import { Item } from '../../Types/Item';
 import EditCell from './CustomCells/EditCell';
@@ -8,6 +8,7 @@ import { useItems } from '../../Services/queries';
 import DeleteCell from './CustomCells/DeleteCell';
 import { Button } from 'react-bootstrap';
 import React from 'react';
+import { Tag } from '../../Types/Tag';
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -28,12 +29,18 @@ export const useTableData = () => {
         columnHelper.accessor("tags", {
             id: "tags",
             header: "Tag(s)",
-            cell: TagCell
+            cell: TagCell,
+            enableSorting: false,
+            filterFn: (row: Row<Item>, columnId:string, filterValue: string) => {
+                return (row.getValue(columnId) as Tag[]).some(tag => tag.tag.toLowerCase().includes(filterValue.toLowerCase()));
+            }
         }),
         columnHelper.accessor("id", {
             id: "id",
             header: "Action(s)",
-            cell: DeleteCell
+            cell: DeleteCell,
+            enableSorting: false,
+            enableColumnFilter: false,
         }),
         columnHelper.accessor("containerItems", {
             id: "containerItems",
@@ -44,7 +51,9 @@ export const useTableData = () => {
                         {row.getIsExpanded() ? '▲' : '▼'}
                     </Button> 
                 ) : null
-            }
+            },
+            enableSorting: false,
+            enableColumnFilter: false,
         }),
     ], []);
     

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Container, Table } from 'react-bootstrap';
-import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, PaginationState } from '@tanstack/react-table';
+import { Container, Form, Table } from 'react-bootstrap';
+import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, PaginationState, getSortedRowModel, getFilteredRowModel, Column } from '@tanstack/react-table';
 
 import { useTableData } from "./useTableData";
 
@@ -10,6 +10,25 @@ import ConfirmationModal from '../General/ConfirmationModal';
 import ContainerTable from './ContainerRow/ContainerTable';
 import { ContainerItem } from '../../Types/ContainerItem';
 import PaginationControl from './PaginationControl';
+import { useDebounce } from '../../Hooks/useDebounce';
+import '../../Styles/Sort.css';
+
+const Input = ({ column }: { column: Column<any, unknown>}) => {
+    const filterValue: string = (column.getFilterValue() ?? "") as string;
+    const [value, setValue] = useState<string>(filterValue);
+
+    const request = useDebounce(() => {
+        column.setFilterValue(value);
+    });
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(event.target.value)
+
+        request();
+    };
+
+    return <Form.Control className="w-50" size="sm" type="text" onChange={ onChange } value={ value } placeholder="Search..." />
+};
 
 function TItemTable(){
     const { columns, itemsQuery } = useTableData();
@@ -53,6 +72,8 @@ function TItemTable(){
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination,
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
         meta: {
             updateData,
             setupDelete,
@@ -77,7 +98,24 @@ function TItemTable(){
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => {
                             return <tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
-                                return <th key={ `header-${header.id}` } colSpan={ header.colSpan }>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</th>
+                                return <th key={ `header-${header.id}` } colSpan={ header.colSpan }>
+                                            {header.isPlaceholder ? null : (
+                                                <>
+                                                    <div className={ header.column.getCanSort() ? "sortDiv" : "" } 
+                                                         onClick={ header.column.getToggleSortingHandler() } 
+                                                         title={ header.column.getCanSort() ? header.column.getNextSortingOrder() === "asc" ? "Ascending" : header.column.getNextSortingOrder() === "desc" ? "Descending" : "Clear" : undefined }>
+                                                            {flexRender(header.column.columnDef.header, header.getContext())} {{asc: " ▲", desc: " ▼"}[header.column.getIsSorted() as string] ?? null}
+                                                    </div>
+                                                    {header.column.getCanFilter() ? (
+                                                        <div>
+                                                            <Input column={ header.column } />
+                                                        </div>
+                                                    ) : (
+                                                        null
+                                                    )}
+                                                </>
+                                            )}
+                                        </th>
                             })}</tr>
                         }
                     )}

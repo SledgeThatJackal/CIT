@@ -5,7 +5,11 @@ import TagBadge from '../../Tag/TagBadge';
 
 import { Tag } from '../../../Types/Tag';
 import { createPortal } from 'react-dom';
-import { useData } from '../../../Data/TagProvider';
+import { useData } from '../../../Hooks/TagProvider';
+
+const tagStringCompare = (tag1: Tag, tag2: Tag) => {
+    return tag1.tag.localeCompare(tag2.tag);
+};
 
 const TagCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
     const initialValue = getValue();
@@ -16,7 +20,6 @@ const TagCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
         handleResize();
         setShow(!show);
     };
-    const toggleClose = () => setShow(false);
 
     const targetRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0, x: 0, y: 0});
@@ -58,7 +61,7 @@ const TagCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
 
     return(
         <div ref={ targetRef }>
-            {value && value.length > 0 && value.map((tag) => (
+            {value && value.length > 0 && value.sort((a, b) => tagStringCompare(a, b)).map((tag) => (
                 <TagBadge tag={ tag } key={ `tag-${tag.id}` } />
             ))}
             <Dropdown className="d-inline-flex" show={ show } onToggle={ dropdownToggle } >
@@ -99,7 +102,7 @@ const TagMenu = ({ currentTags, addTag, removeTag }: TagMenuProps) => {
             <Dropdown.Header>
                 <Form.Control type="text" value={ search } onChange={ e => setSearch(e.target.value) } placeholder="Search" />
             </Dropdown.Header>
-            {filteredTags.length > 0 ? filteredTags.map((tag, index) => {
+            {filteredTags.length > 0 ? filteredTags.sort((a, b) => tagStringCompare(a, b)).map((tag, index) => {
                 const tagExists = checkIfTagExists(tag);
 
                 return (
