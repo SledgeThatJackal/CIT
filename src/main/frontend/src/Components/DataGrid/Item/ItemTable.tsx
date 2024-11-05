@@ -1,16 +1,16 @@
-import React, { useState, useEffect, Fragment, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Container, Form, Table } from 'react-bootstrap';
 import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, PaginationState, getSortedRowModel, getFilteredRowModel, Column } from '@tanstack/react-table';
 
 import { useTableData } from "./useTableData";
 
-import { Item } from '../../Types/Item';
-import { useDeleteItem, useUpdateItem } from '../../Services/mutations';
-import ConfirmationModal from '../General/ConfirmationModal';
-import { ContainerItem } from '../../Types/ContainerItem';
-import PaginationControl from './PaginationControl';
-import { useDebounce } from '../../Hooks/useDebounce';
-import '../../Styles/ItemTable.css';
+import { Item } from '../../../Types/Item';
+import { useDeleteItem, useUpdateItem } from '../../../Services/mutations';
+import ConfirmationModal from '../../General/ConfirmationModal';
+import { ContainerItem } from '../../../Types/ContainerItem';
+import PaginationControl from '../PaginationControl';
+import { useDebounce } from '../../../Hooks/useDebounce';
+import '../../../Styles/ItemTable.css';
 import { MemoizedTableBody, TableBody } from './TableBody';
 
 const Input = ({ column }: { column: Column<any, unknown>}) => {
@@ -30,7 +30,7 @@ const Input = ({ column }: { column: Column<any, unknown>}) => {
     return <Form.Control size="sm" type="text" onChange={ onChange } value={ value } placeholder="Search..." />
 };
 
-function TItemTable(){
+function ItemTable(){
     const { columns, itemsQuery } = useTableData();
     
     const updateItemMutation = useUpdateItem();
@@ -120,7 +120,7 @@ function TItemTable(){
     }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
 
     return (
-        <Container fluid>
+        <Container className="pt-2" fluid>
             <div >
                 <Table hover bordered variant="secondary" className="m-0" style={{ ...columnSize, borderRadius: '8px', overflow: 'hidden' }}>
                     <thead>
@@ -173,4 +173,4 @@ function TItemTable(){
     );
 };
 
-export default TItemTable;
+export default ItemTable;

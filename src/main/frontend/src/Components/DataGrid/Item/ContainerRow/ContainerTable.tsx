@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useCITableData } from './useCITableData';
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { ContainerItem } from '../../../Types/ContainerItem';
+import { ContainerItem } from '../../../../Types/ContainerItem';
 import { Container, Table } from 'react-bootstrap';
-import { useDeleteLink, useUpdateQuantity } from '../../../Services/mutations';
+import { useDeleteLink, useUpdateQuantity } from '../../../../Services/mutations';
 import AddLink from './AddLink';
 
 type ContainerTableProps = {

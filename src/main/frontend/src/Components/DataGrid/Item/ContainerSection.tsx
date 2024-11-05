@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { CloseButton, Form, Table } from 'react-bootstrap';
 import { Control, FieldErrors, useFieldArray, UseFormClearErrors, UseFormRegister, UseFormSetError, UseFormSetFocus, UseFormSetValue, UseFormTrigger, useWatch } from 'react-hook-form';
-import { ItemSchemaType } from '../../Types/Item';
-import ComboBox from '../General/ComboBox';
-import { ContainerItem } from '../../Types/ContainerItem';
+import { ItemSchemaType } from '../../../Types/Item';
+import ComboBox from '../../General/ComboBox';
+import { ContainerItem } from '../../../Types/ContainerItem';
 
 type ContainerSectionProps = {
     control: Control<ItemSchemaType>;

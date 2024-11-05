@@ -1,12 +1,12 @@
 import React from 'react';
-import { Button, Col, Container, FloatingLabel, Form, Row, Stack } from 'react-bootstrap';
 
-import { useFieldArray, useForm } from 'react-hook-form';
-import { ItemFormSchema, ItemFormSchemaType, ItemSchema, ItemSchemaType } from '../../Types/Item';
+import { Button, Col, Container, FloatingLabel, Form, Row, Stack } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
+import { ItemSchema, ItemSchemaType } from '../../../Types/Item';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateItem } from '../../Services/mutations';
-import TagInput from '../Tag/TagInput';
-import ContainerSection from '../DataGrid/ContainerSection';
+import { useCreateItem } from '../../../Services/mutations';
+import TagInput from '../../Tag/TagInput';
+import ContainerSection from './ContainerSection';
 
 type CreateBoxProps = {
     closeCreate: () => void

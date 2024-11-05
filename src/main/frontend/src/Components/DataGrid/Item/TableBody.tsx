@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import { Item } from "../../Types/Item";
+import { Item } from "../../../Types/Item";
 import { flexRender, Table } from "@tanstack/react-table";
-import ContainerTable from "./ContainerRow/ContainerTable";
+import ContainerTable from ".././Item/ContainerRow/ContainerTable";
 
 type TableBodyProps = {
     table: Table<Item>
@@ -15,7 +15,7 @@ export const TableBody = ({ table }: TableBodyProps) => {
                     <Fragment>
                         <tr key={ `row-${row.id}` }>
                             {row.getVisibleCells().map(cell => {
-                                return <td key={ `cell-${cell.id}` } style={{ width: `calc(var(--col-${cell.column.id}-size) * 1px)` }}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                                return <td key={ `cell-${cell.id}` } className="align-middle" style={{ width: `calc(var(--col-${cell.column.id}-size) * 1px)` }}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                             })}
                         </tr>
                         {row.getIsExpanded() && (

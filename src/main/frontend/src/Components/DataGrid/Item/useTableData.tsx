@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import { createColumnHelper, Row } from '@tanstack/react-table';
 
-import { Item } from '../../Types/Item';
-import EditCell from './CustomCells/EditCell';
-import TagCell from './CustomCells/TagCell';
-import { useItems } from '../../Services/queries';
-import DeleteCell from './CustomCells/DeleteCell';
+import { Item } from '../../../Types/Item';
+import EditCell from '../CustomCells/EditCell';
+import TagCell from '../CustomCells/TagCell';
+import { useItems } from '../../../Services/queries';
+import DeleteCell from '../CustomCells/DeleteCell';
 import { Button } from 'react-bootstrap';
 import React from 'react';
-import { Tag } from '../../Types/Tag';
+import { Tag } from '../../../Types/Tag';
 
 const columnHelper = createColumnHelper<Item>();
 

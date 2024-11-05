@@ -1,9 +1,9 @@
 import React from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { ContainerItem } from '../../../Types/ContainerItem';
-import EditCell from '../CustomCells/EditCell';
-import RemoveCell from '../CustomCells/RemoveCell';
+import { ContainerItem } from '../../../../Types/ContainerItem';
+import EditCell from '../../CustomCells/EditCell';
+import RemoveCell from '../../CustomCells/RemoveCell';
 
 const columnHelper = createColumnHelper<ContainerItem>();
 
