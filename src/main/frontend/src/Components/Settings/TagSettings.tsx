@@ -6,15 +6,18 @@ import { Tag } from '../../Types/Tag';
 import ConfirmationModal from '../General/ConfirmationModal';
 import TagRead from './TagRead';
 import TagForm from './TagForm';
+import { useTags } from '../../Services/queries';
+import { useDeleteTag } from '../../Services/mutations';
 
 function TagSettings(){
-    const [tags, setTags] = useState<Tag[]>([]);
+    const tagsQuery = useTags();
+    const deleteTagMutations = useDeleteTag();
     
     // Modal
     const [show, setShow] = useState<boolean>(false);
     const handleOpen = () => setShow(true);
     const handleClose = () => setShow(false);
-    const [deleteTag, setDeleteTag] = useState<Tag>();
+    const [deleteTagId, setDeleteTagId] = useState<number>(-1);
 
     // Creation Area
     const [showCreate, setShowCreate] = useState<boolean>(false);
@@ -29,47 +32,24 @@ function TagSettings(){
     const [search, setSearch] = useState<string>("");
     const [filteredTags, setFilteredTags] = useState<Tag[]>([]);
 
-    const fetchData = async () => {
-        try{
-            const response = await axios.get<Tag[]>(`/api/tags`);
-
-            setTags(response.data);
-        } catch (error) {
-            console.error('Request failed: ', error);
-        }
-    };
-
     useEffect(() => {
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        if(tags){
-            setFilteredTags(tags.filter(tag => tag.tag.toLowerCase().includes(search.toLowerCase())));
+        if(tagsQuery.data){
+            setFilteredTags(tagsQuery.data.filter(tag => tag.tag.toLowerCase().includes(search.toLowerCase())));
         }
-    }, [tags, search]);
+    }, [tagsQuery.data, search]);
 
     const onCreate = () => {
         if(!bulkCreating){
             closeCreate();
         }
-
-        fetchData();
     };
 
     const onEdit = () => {
         closeEdit();
-        fetchData();
     };
 
-    const handleDelete = async () => {
-        try{
-            await axios.delete(`/api/tags/delete?id=${deleteTag?.id}`);
-
-            setTags(tags.filter(tag => tag !== deleteTag));
-        } catch(error){
-            console.error("Error deleting tag: ", error);
-        }
+    const handleDelete = () => {
+        deleteTagMutations.mutate(deleteTagId);
     };
 
     return (
@@ -97,14 +77,14 @@ function TagSettings(){
             </Container>
             <Container fluid className="rounded bg-dark text-white mt-3 w-75 overflow-auto" style={{ height: "65vh", border: "3px solid #7B8895" }}>
                 <Row className="p-3">
-                    Tags: { filteredTags.length || 0 } out of { tags.length || 0 }
+                    Tags: { filteredTags.length || 0 } out of { tagsQuery.data?.length || 0 }
                 </Row>
-                {filteredTags.length > 0 ? filteredTags.map((tag, index) => (
+                {filteredTags.length > 0 ? filteredTags.sort().map((tag, index) => (
                     <React.Fragment>
                         { editId === tag.id ? (
                             <TagForm tag={ tag } onEdit={ onEdit } closeEdit={ closeEdit } />
                         ) : (
-                            <TagRead index={ index } tag={ tag } setDeleteTag={ setDeleteTag } handleOpen={ handleOpen } setEditId={ setEditId } />
+                            <TagRead index={ index } tag={ tag } setDeleteTagId={ setDeleteTagId } handleOpen={ handleOpen } setEditId={ setEditId } />
                         )}
                     </React.Fragment>
                 )) : (

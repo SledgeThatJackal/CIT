@@ -23,7 +23,7 @@ public class TagController {
         return tagService.createTag(tag);
     }
 
-    @PatchMapping("/edit")
+    @PutMapping("/edit")
     public Tag editTag(@RequestBody Tag tag){
         return tagService.createTag(tag);
     }

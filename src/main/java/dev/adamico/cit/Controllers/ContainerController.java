@@ -1,14 +1,17 @@
 package dev.adamico.cit.Controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Services.ContainerService;
+import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -19,6 +22,12 @@ public class ContainerController {
     private ContainerService containerService;
 
     @GetMapping
+    @JsonView(Views.Exclusive.class)
+    public List<Container> getContainers(){
+        return containerService.findAllContainers();
+    }
+
+    @GetMapping("/page")
     public Page<Container> getContainerPage(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size){
         return containerService.findAllPaginatedContainers(page, size);

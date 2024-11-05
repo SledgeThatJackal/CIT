@@ -3,10 +3,7 @@ package dev.adamico.cit.Services;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +15,8 @@ public class ItemService {
     ItemRepository itemRepository;
 
     public List<Item> findAllItems(){
-        return itemRepository.findAll();
+        return itemRepository.findAll(Sort.by("id"));
+
     }
 
     public Item findItemById(Long id){

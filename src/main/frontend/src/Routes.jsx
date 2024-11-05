@@ -8,8 +8,7 @@ import Home from './Layouts/Home.jsx';
 const ContainerTable = lazy(() => import('./Components/Container/ContainerTable.tsx'));
 const ContainerForm = lazy(() => import('./Components/Container/ContainerForm.tsx'));
 
-const ItemTable = lazy(() => import('./Components/Item/ItemTable.tsx'));
-const ItemForm = lazy(() => import('./Components/Item/ItemForm.tsx'));
+const Item = lazy(() => import('./Components/DataGrid/Item/ItemComponent.tsx'));
 
 const SettingsPage = lazy(() => import('./Components/Settings/SettingsPage.tsx'));
 const TagSettings = lazy(() => import('./Components/Settings/TagSettings.tsx'));
@@ -33,8 +32,7 @@ export const router = createBrowserRouter([
         ]},
         {path: "item",
             children: [
-                {index: true, element: <ItemTable />},
-                {path: "form", element: <ItemForm />},
+                {index: true, element: <Item />},
             ]},
         {path: "settings",
             element: <SettingsPage />,

@@ -1,0 +1,21 @@
+.sortDiv {
+    cursor: pointer;
+    user-select: none;
+}
+
+.resizer {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    right: 0;
+    width: 2px;
+    opacity: 0;
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+  }
+
+.isResizing{
+    opacity: 1;
+    background-color: black;
+}

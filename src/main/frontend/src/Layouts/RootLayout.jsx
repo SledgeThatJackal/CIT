@@ -16,12 +16,10 @@ const RootLayout = () => {
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-nav-bar">
                             <Nav className="me-auto" variant="pills" activeKey={ activeKey }>
-                                <Nav.Link as={ NavLink } to="/" eventKey="home" className="navbar-link text-light" onClick={() => setActiveKey("home")}>Home</Nav.Link>
-                                <Nav.Link as={ NavLink } to="/container" eventKey="container" className="nav-link text-light" onClick={() => setActiveKey("container")}>Container</Nav.Link>
-                                <Nav.Link as={ NavLink } to="/item" eventKey="item" className="nav-link text-light" onClick={() => setActiveKey("item")}>Item</Nav.Link>
-                            </Nav>
-                            <Nav>
-                                <Nav.Link as={ NavLink } to="/settings" className="nav-link"><i className='bi bi-gear' style={{ fontSize: '24px', color: 'white' }} onClick={ () => setActiveKey("") }></i></Nav.Link>
+                                <Nav.Link as={ NavLink } to="/" eventKey="home" className="navbar-link" onClick={() => setActiveKey("home")}>Home</Nav.Link>
+                                <Nav.Link as={ NavLink } to="/container" eventKey="container" className="nav-link" onClick={() => setActiveKey("container")}>Container</Nav.Link>
+                                <Nav.Link as={ NavLink } to="/item" eventKey="item" className="nav-link" onClick={() => setActiveKey("item")}>Item</Nav.Link>
+                                <Nav.Link as={ NavLink } to="/settings" eventKey="settings" className="nav-link" onClick={ () => setActiveKey("settings") }>Settings</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

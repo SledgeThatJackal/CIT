@@ -7,6 +7,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '..', 'resources', 'static'),
         filename: '[name].[contenthash].js',
+        publicPath: "/",
         clean: true
     },
     optimization: {

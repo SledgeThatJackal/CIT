@@ -6,46 +6,33 @@ import TagBlock from './TagBlock';
 import TagBadge from './TagBadge';
 
 import { Tag } from '../../Types/Tag';
-import { ItemFormSchemaType } from '../../Types/Item';
+import { ItemSchemaType } from '../../Types/Item';
 import { Button, Dropdown, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
+import { useCreateTag } from '../../Services/mutations';
+import { useTags } from '../../Services/queries';
 
 
 type TagInputProps = {
-    control: Control<ItemFormSchemaType>;
-    name: 'item.tags';
+    control: Control<ItemSchemaType>;
 };
 
-const TagInput = ({ control, name }: TagInputProps) => {
+const TagInput = ({ control }: TagInputProps) => {
     const [color, setColor] = useState<string>('#FF0000');
     const [newTagName, setNewTagName] = useState<string>('');
     const [newTagDescription, setNewTagDescription] = useState<string>('');
     const [tagError, setTagError] = useState<string>('');
-    const [tags, setTags] = useState<Tag[]>([]);
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
     const tagRef = useRef<HTMLInputElement>(null);
     const [tagInputHeight, setTagInputHeight] = useState<number>(0);
 
+    const tagQuery = useTags().data;
+    const createTagMutation = useCreateTag();
+
     const { fields, append, remove } = useFieldArray({
         control,
-        name,
-        keyName: 'key',
+        name: 'tags',
     });
-
-    useEffect(() => {
-        const fetchTags = async () => {
-            try{
-                const response = (await axios.get<Tag[]>('/api/tags')).data;
-
-                setTags(response);
-            } catch (error){
-                console.log('Request failed: ', error);
-            }
-        };
-
-        fetchTags();
-
-    }, [fields]);
 
     useEffect(() => {
         if(tagRef.current){
@@ -56,20 +43,17 @@ const TagInput = ({ control, name }: TagInputProps) => {
 
     const addTag = async (tag ?: Tag) => {
         var newTag: Tag;
-        console.log('Add Tag');
 
         if(tag){
             newTag = tag;
         } else {
             try{
-                console.log('Try');
                 if(newTagName.length === 0){
                     setTagError('The tag must have a value');
                     return;
                 }
-    
-                newTag = (await axios.post(`/api/tags/create`, {id: undefined, tag: newTagName, color: color, description: newTagDescription})).data;
-                console.log('newTag');
+
+                newTag = (await createTagMutation.mutateAsync({id: undefined, tag: newTagName, color: color, description: newTagDescription})).data;
             } catch (error){
                 console.error(error);
                 return;
@@ -100,7 +84,7 @@ const TagInput = ({ control, name }: TagInputProps) => {
                         </FloatingLabel>
 
                         <Dropdown.Menu className="w-100" style={{ marginTop: `${tagInputHeight}px`}}>
-                            {tags.length > 0 ? tags.filter(tag => {
+                            {tagQuery && tagQuery.length > 0 ? tagQuery.filter(tag => {
                                 const term = newTagName.toLowerCase();
                                 const tagName = tag.tag.toLowerCase();
 
@@ -129,8 +113,8 @@ const TagInput = ({ control, name }: TagInputProps) => {
                 <div className='form-text text-danger'>{tagError}</div>
             </div>
 
-            {fields.map((tag, index) => (
-                <TagBlock key={`tag-${tag.key}`} control={ control } name={`item.tags.${index}`} onDelete={ () => removeTag(index) } />
+            {fields.map((field, index) => (
+                <TagBlock key={`tag-${field.id}`} control={ control } name={`tags.${index}`} onDelete={ () => removeTag(index) } />
             ))}
         </div>
     );

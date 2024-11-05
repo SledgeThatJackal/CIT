@@ -1,11 +1,11 @@
 import React from 'react';
 import { useController, Control } from 'react-hook-form';
 
-import { ItemFormSchemaType } from '../../Types/Item';
+import { ItemFormSchemaType, ItemSchemaType } from '../../Types/Item';
 
 type TagBlockProps = {
-    control: Control<ItemFormSchemaType>;
-    name: `item.tags.${number}`;
+    control: Control<ItemSchemaType>;
+    name: `tags.${number}`;
     onDelete: () => Promise<void>;
 };
 
@@ -24,7 +24,7 @@ const TagBlock = ({ control, name, onDelete }: TagBlockProps) => {
     const darkerColor = `#${colorValue.toString(16).padStart(6, '0')}`;
 
     return (
-        <div className='d-inline-flex badge rounded-pill align-items-center' style={{
+        <div key={`TagBlock-${field.value.id}`} className='d-inline-flex badge rounded-pill align-items-center' style={{
             backgroundColor: field.value.color,
             border: `3px solid ${darkerColor}`,
             marginRight: 3,
