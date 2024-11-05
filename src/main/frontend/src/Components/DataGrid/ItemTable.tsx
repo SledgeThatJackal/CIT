@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
+import React, { useState, useEffect, Fragment, useRef, useMemo } from 'react';
 import { Container, Form, Table } from 'react-bootstrap';
 import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, PaginationState, getSortedRowModel, getFilteredRowModel, Column } from '@tanstack/react-table';
 
@@ -7,11 +7,11 @@ import { useTableData } from "./useTableData";
 import { Item } from '../../Types/Item';
 import { useDeleteItem, useUpdateItem } from '../../Services/mutations';
 import ConfirmationModal from '../General/ConfirmationModal';
-import ContainerTable from './ContainerRow/ContainerTable';
 import { ContainerItem } from '../../Types/ContainerItem';
 import PaginationControl from './PaginationControl';
 import { useDebounce } from '../../Hooks/useDebounce';
-import '../../Styles/Sort.css';
+import '../../Styles/ItemTable.css';
+import { MemoizedTableBody, TableBody } from './TableBody';
 
 const Input = ({ column }: { column: Column<any, unknown>}) => {
     const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -45,6 +45,7 @@ function TItemTable(){
 
     const [deleteId, setDeleteId] = useState<number>(-1);
 
+    // Pagination
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10
@@ -74,12 +75,17 @@ function TItemTable(){
     const table = useReactTable<Item>({
         data,
         columns,
+        defaultColumn:{
+            minSize: 50,
+            maxSize: 1500,
+        },
         getRowCanExpand: (row) => (row.getValue("containerItems") as ContainerItem[]).length > 0,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination,
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
+        columnResizeMode: "onChange",
         meta: {
             updateData,
             setupDelete,
@@ -100,64 +106,65 @@ function TItemTable(){
         }
     }, [itemsQuery]);
 
+    const columnSize = useMemo(() => {
+        const headers = table.getFlatHeaders();
+        const sizes: { [key: string]: number } = {};
+
+        for(let i = 0; i < headers.length; i++){
+            const header = headers[i]!;
+            sizes[`--header-${header.id}-size`] = header.getSize();
+            sizes[`--col-${header.column.id}-size`] = header.column.getSize();
+        }
+
+        return sizes;
+    }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
+
     return (
         <Container fluid>
-            <Table hover bordered variant="secondary" className="mx-auto" style={{ borderRadius: '8px', overflow: 'hidden', maxHeight: "65vh" }}>
-                <thead>
-                    {table.getHeaderGroups().map(headerGroup => {
-                            return <tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
-                                return <th key={ `header-${header.id}` } colSpan={ header.colSpan }>
-                                            {header.isPlaceholder ? null : (
-                                                <>
-                                                    <div className={ header.column.getCanSort() ? "sortDiv" : "" } 
-                                                         onClick={ header.column.getToggleSortingHandler() } 
-                                                         title={ header.column.getCanSort() ? header.column.getNextSortingOrder() === "asc" ? "Ascending" : header.column.getNextSortingOrder() === "desc" ? "Descending" : "Clear" : undefined }>
-                                                            {flexRender(header.column.columnDef.header, header.getContext())} {{asc: " ▲", desc: " ▼"}[header.column.getIsSorted() as string] ?? null}
-                                                    </div>
-                                                    {header.column.getCanFilter() ? (
-                                                        <div>
-                                                            <Input column={ header.column } />
+            <div >
+                <Table hover bordered variant="secondary" className="m-0" style={{ ...columnSize, borderRadius: '8px', overflow: 'hidden' }}>
+                    <thead>
+                        {table.getHeaderGroups().map(headerGroup => {
+                                return <tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
+                                    return <th key={ `header-${header.id}` } colSpan={ header.colSpan } style={{ width: `calc(var(--header-${header?.id}-size) * 1px)`, position: "relative" }}>
+                                                {header.isPlaceholder ? null : (
+                                                    <>
+                                                        <div className={ header.column.getCanSort() ? "sortDiv" : "" } 
+                                                            onClick={ header.column.getToggleSortingHandler() } 
+                                                            title={ header.column.getCanSort() ? header.column.getNextSortingOrder() === "asc" ? "Ascending" : header.column.getNextSortingOrder() === "desc" ? "Descending" : "Clear" : undefined }>
+                                                                {flexRender(header.column.columnDef.header, header.getContext())} {{asc: " ▲", desc: " ▼"}[header.column.getIsSorted() as string] ?? null}
+                                                                <div onDoubleClick={ () => header.column.resetSize() } onMouseDown={ header.getResizeHandler() } onTouchStart={ header.getResizeHandler() } className={`${header.column.getCanResize() ? "resizer" : "" } ${header.column.getIsResizing() ? "isResizing" : ""}`} />
                                                         </div>
-                                                    ) : (
-                                                        null
-                                                    )}
-                                                </>
-                                            )}
-                                        </th>
-                            })}</tr>
-                        }
+                                                        {header.column.getCanFilter() ? (
+                                                            <div>
+                                                                <Input column={ header.column } />
+                                                            </div>
+                                                        ) : (
+                                                            null
+                                                        )}
+                                                    </>
+                                                )}
+                                            </th>
+                                })} </tr>
+                            }
+                        )}
+                    </thead>
+                    {table.getState().columnSizingInfo.isResizingColumn ? (
+                        <MemoizedTableBody table={ table } />
+                    ) : (
+                        <TableBody table={ table } />
                     )}
-                </thead>
-                <tbody>
-                    {table.getRowModel().rows.map(row => {
-                        return(
-                            <Fragment>
-                                <tr key={ `row-${row.id}` }>
-                                    {row.getVisibleCells().map(cell => {
-                                        return <td key={ `cell-${cell.id}` }>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                                    })}
-                                </tr>
-                                {row.getIsExpanded() && (
-                                    <tr key={`subRow-${row.id}`}>
-                                        <td colSpan={row.getVisibleCells().length}>
-                                            <ContainerTable value={ row.getValue("containerItems") } itemId={ row.getValue("id")} />
-                                        </td>
-                                    </tr>
-                                )}
-                            </Fragment>
-                        )
-                    })}
-                    
-                </tbody>
-                {/* <tfoot>
-                    {table.getFooterGroups().map(footerGroup => {
-                            return <tr key={ `tableFooter-${footerGroup.id}` }>{footerGroup.headers.map(footer => {
-                                return <td key={ `footer-${footer.id}` }>{footer.isPlaceholder ? null : flexRender(footer.column.columnDef.header, footer.getContext())}</td>
-                            })}</tr>
-                        }
-                    )}
-                </tfoot> */}
-            </Table>
+                    {/* <tfoot>
+                        {table.getFooterGroups().map(footerGroup => {
+                                return <tr key={ `tableFooter-${footerGroup.id}` }>{footerGroup.headers.map(footer => {
+                                    return <td key={ `footer-${footer.id}` }>{footer.isPlaceholder ? null : flexRender(footer.column.columnDef.header, footer.getContext())}</td>
+                                })}</tr>
+                            }
+                        )}
+                    </tfoot> */}
+                </Table>
+            </div>
+            <br />
             {table.getPageCount() > 0 && (
                 <PaginationControl table={ table } />
             )}

@@ -57,7 +57,7 @@ const AddLink = ({ itemId }: AddLinkProps) => {
                 </tr>
             )}
             {!show && (
-                <Button className="mt-2" onClick={ () => setShow(true)}>Add</Button>
+                <Button variant="success" className="mt-2" onClick={ () => setShow(true)}>Add</Button>
             )}
         </>
     );

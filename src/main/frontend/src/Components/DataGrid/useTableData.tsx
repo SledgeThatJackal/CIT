@@ -19,17 +19,23 @@ export const useTableData = () => {
         columnHelper.accessor("name", {
             id: "name",
             header: "Name",
+            size: 500,
+            enableResizing: true,
             cell: EditCell,
         }),
         columnHelper.accessor("description", {
             id: "description",
             header: "Description",
+            size: 500,
+            enableResizing: true,
             cell: EditCell,
         }),
         columnHelper.accessor("tags", {
             id: "tags",
             header: "Tag(s)",
+            size: 500,
             cell: TagCell,
+            enableResizing: true,
             enableSorting: false,
             filterFn: (row: Row<Item>, columnId:string, filterValue: string) => {
                 return (row.getValue(columnId) as Tag[]).some(tag => tag.tag.toLowerCase().includes(filterValue.toLowerCase()));
@@ -38,13 +44,16 @@ export const useTableData = () => {
         columnHelper.accessor("id", {
             id: "id",
             header: "Action(s)",
+            size: 50,
             cell: DeleteCell,
+            enableResizing: false,
             enableSorting: false,
             enableColumnFilter: false,
         }),
         columnHelper.accessor("containerItems", {
             id: "containerItems",
             header: () => null,
+            size: 50,
             cell: ({ row }) => {
                 return row.getCanExpand() ? (
                     <Button {...{onClick: row.getToggleExpandedHandler()}}>
@@ -52,6 +61,7 @@ export const useTableData = () => {
                     </Button> 
                 ) : null
             },
+            enableResizing: false,
             enableSorting: false,
             enableColumnFilter: false,
         }),
