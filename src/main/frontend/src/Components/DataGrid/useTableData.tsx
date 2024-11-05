@@ -47,7 +47,7 @@ export const useTableData = () => {
             header: () => null,
             cell: ({ row }) => {
                 return row.getCanExpand() ? (
-                    <Button size="sm" {...{onClick: row.getToggleExpandedHandler()}}>
+                    <Button {...{onClick: row.getToggleExpandedHandler()}}>
                         {row.getIsExpanded() ? '▲' : '▼'}
                     </Button> 
                 ) : null

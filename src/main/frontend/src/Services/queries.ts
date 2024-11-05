@@ -12,7 +12,8 @@ export function useItem(id: number){
 export function useItems(){
     return useQuery({
         queryKey: ['items'],
-        queryFn: getItems
+        queryFn: getItems,
+        staleTime: 1000 * 60 * 10,
     });
 };
 
@@ -20,7 +21,8 @@ export function useItems(){
 export function useContainers(){
     return useQuery({
         queryKey: ['containers'],
-        queryFn: getContainers
+        queryFn: getContainers,
+        staleTime: 1000 * 60 * 10,
     });
 };
 
@@ -28,7 +30,8 @@ export function useContainers(){
 export function useTags(){
     return useQuery({
         queryKey: ['tags'],
-        queryFn: getTags
+        queryFn: getTags,
+        staleTime: 1000 * 60 * 10,
     });
 };
 

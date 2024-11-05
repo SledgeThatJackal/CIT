@@ -7,7 +7,7 @@ const DeleteCell = ({ getValue, table }: any) => {
     };
 
     return(
-        <Button variant="danger" size="sm" onClick={ handleDelete }>
+        <Button variant="danger" onClick={ handleDelete }>
             <i className="bi bi-trash"></i>
         </Button>
     );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 import { Container, Form, Table } from 'react-bootstrap';
 import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, PaginationState, getSortedRowModel, getFilteredRowModel, Column } from '@tanstack/react-table';
 
@@ -27,7 +27,7 @@ const Input = ({ column }: { column: Column<any, unknown>}) => {
         request();
     };
 
-    return <Form.Control className="w-50" size="sm" type="text" onChange={ onChange } value={ value } placeholder="Search..." />
+    return <Form.Control size="sm" type="text" onChange={ onChange } value={ value } placeholder="Search..." />
 };
 
 function TItemTable(){
@@ -50,13 +50,19 @@ function TItemTable(){
         pageSize: 10
     });
 
+    const pageResetRef = useRef<boolean>(false);
+
     const updateData = (rowIndex: number, columnID: string, value: any) => {
+        pageResetRef.current = true; // Disable page from changing
+
         const updatedItem = {...data[rowIndex], [columnID]: value};
 
         updateItemMutation.mutate({...updatedItem});
     };
 
     const removeData = () => {
+        pageResetRef.current = true; // Disable page from changing
+
         deleteItemMutation.mutate(deleteId);
     };
 
@@ -89,6 +95,8 @@ function TItemTable(){
     useEffect(() => {
         if(itemsQuery){
             setData(itemsQuery);
+
+            pageResetRef.current = false; // Re-enable page reset
         }
     }, [itemsQuery]);
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Dropdown, Form } from 'react-bootstrap';
+import { Dropdown, Form, Stack } from 'react-bootstrap';
 
 import TagBadge from '../../Tag/TagBadge';
 
@@ -60,18 +60,18 @@ const TagCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
     };
 
     return(
-        <div ref={ targetRef }>
+        <Stack direction="horizontal" gap={ 1 } ref={ targetRef }>
             {value && value.length > 0 && value.sort((a, b) => tagStringCompare(a, b)).map((tag) => (
                 <TagBadge tag={ tag } key={ `tag-${tag.id}` } />
             ))}
-            <Dropdown className="d-inline-flex" show={ show } onToggle={ dropdownToggle } >
+            <Dropdown className="d-inline-flex ms-auto" show={ show } onToggle={ dropdownToggle }>
                 <Dropdown.Toggle className="ms-auto" variant='secondary'><i className='bi bi-gear' style={{ fontSize: '14px' }}></i></Dropdown.Toggle>
                 
                 <Dropdown.Menu as={ CustomMenu } show={ show } dimensions={ dimensions }>
                     <TagMenu currentTags={ value } addTag={ addTag } removeTag={ removeTag } />
                 </Dropdown.Menu>
             </Dropdown>
-        </div>
+        </Stack>
     );
 };
 
