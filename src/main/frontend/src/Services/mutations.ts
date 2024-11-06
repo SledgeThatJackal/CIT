@@ -209,7 +209,7 @@ export function useDeleteTag(){
                 console.error(error);
             } else {
                 await queryClient.invalidateQueries({ queryKey: ["tags"] });
-                await queryClient.invalidateQueries({ queryKey: ["items"] });
+                await queryClient.refetchQueries({ queryKey: ["items"] });
             }
         }
     });
