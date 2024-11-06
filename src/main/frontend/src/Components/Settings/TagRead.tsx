@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row, Col, InputGroup, Button } from 'react-bootstrap';
 
-import TagBadge from '../Tag/TagBadge';
-import { Tag } from '../../Types/Tag';
+import TagBadge from '../tag/TagBadge';
+import { Tag } from '../../cit_types/Tag';
 
 type TagReadProps = {
     index: number;

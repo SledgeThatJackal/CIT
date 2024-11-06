@@ -13,7 +13,7 @@ export const useDebounce = (callback: any) => {
             ref.current?.();
         };
 
-        return debounce(funct, 1000);
+        return debounce(funct, 500);
     }, []);
 
     return debouncedCallback;

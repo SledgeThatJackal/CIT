@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createItem, createLink, createTag, deleteItem, deleteLink, deleteTag, updateItem, updateQuantity, updateTag } from "./api";
-import { Item, ItemSchemaType } from "../Types/Item";
-import { Tag, TagCreate, TagSchemaType } from "../Types/Tag";
+import { Item, ItemSchemaType } from "../cit_types/Item";
+import { Tag, TagCreate, TagSchemaType } from "../cit_types/Tag";
 
 
 // Items
@@ -25,7 +25,7 @@ export function useUpdateItem(){
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (data: Item) => updateItem(data),
+        mutationFn: (data: ItemSchemaType) => updateItem(data),
         
         onSettled: async(_, error) => {
             if(error){

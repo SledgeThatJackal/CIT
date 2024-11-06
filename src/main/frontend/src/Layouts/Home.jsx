@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DatabaseExportButton from '../Components/General/DatabaseExportButton';
+import DatabaseExportButton from '../components/general/DatabaseExportButton';
 
 function Home(){
     return(
