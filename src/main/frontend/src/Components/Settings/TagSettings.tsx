@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Button, Container, Row, Col, FormControl, Form, Stack } from 'react-bootstrap';
 
-import { Tag } from '../../Types/Tag';
-import ConfirmationModal from '../General/ConfirmationModal';
+import { Tag } from '../../cit_types/Tag';
+import ConfirmationModal from '../general/ConfirmationModal';
 import TagRead from './TagRead';
 import TagForm from './TagForm';
-import { useTags } from '../../Services/queries';
-import { useDeleteTag } from '../../Services/mutations';
+import { useTags } from '../../services/queries';
+import { useDeleteTag } from '../../services/mutations';
 
 function TagSettings(){
     const tagsQuery = useTags();

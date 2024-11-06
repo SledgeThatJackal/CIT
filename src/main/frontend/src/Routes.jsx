@@ -1,18 +1,18 @@
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-import RootLayout from './Layouts/RootLayout.jsx';
+import RootLayout from './layouts/RootLayout.jsx';
 
-import Home from './Layouts/Home.jsx';
+import Home from './layouts/Home.jsx';
 
-const ContainerTable = lazy(() => import('./Components/Container/ContainerTable.tsx'));
-const ContainerForm = lazy(() => import('./Components/Container/ContainerForm.tsx'));
+const ContainerTable = lazy(() => import('./components/container/ContainerTable.tsx'));
+const ContainerForm = lazy(() => import('./components/container/ContainerForm.tsx'));
 
-const Item = lazy(() => import('./Components/DataGrid/Item/ItemComponent.tsx'));
+const Item = lazy(() => import('./components/data_grid/item/ItemComponent.tsx'));
 
-const SettingsPage = lazy(() => import('./Components/Settings/SettingsPage.tsx'));
-const TagSettings = lazy(() => import('./Components/Settings/TagSettings.tsx'));
-const TypeSettings = lazy(() => import('./Components/Settings/TypeSettings.tsx'));
+const SettingsPage = lazy(() => import('./components/settings/SettingsPage.tsx'));
+const TagSettings = lazy(() => import('./components/settings/TagSettings.tsx'));
+const TypeSettings = lazy(() => import('./components/settings/TypeSettings.tsx'));
 
 const SuspenseLayout = () => (
     <Suspense fallback={<>Loading...</>}>
