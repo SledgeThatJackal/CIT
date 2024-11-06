@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Button, Col, Container, FloatingLabel, Form, Row, Stack } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { ItemSchema, ItemSchemaType } from '../../../Types/Item';
+import { ItemSchema, ItemSchemaType } from '../../../cit_types/Item';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateItem } from '../../../Services/mutations';
-import TagInput from '../../Tag/TagInput';
+import { useCreateItem } from '../../../services/mutations';
+import TagInput from '../../tag/TagInput';
 import ContainerSection from './ContainerSection';
 
 type CreateBoxProps = {
@@ -22,10 +22,10 @@ const CreateBox = ({ closeCreate }: CreateBoxProps) => {
         formState: { errors, isSubmitting},
         control,
         reset,
-        trigger,
         setFocus,
         setError,
-        clearErrors
+        clearErrors,
+        getValues
     } = useForm<ItemSchemaType>({
         defaultValues: {id: undefined, containerItems: [{ id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, parentContainer: undefined}, quantity: 1 }], tags: []},
         resolver: zodResolver(ItemSchema)
@@ -71,7 +71,7 @@ const CreateBox = ({ closeCreate }: CreateBoxProps) => {
                 </Row>
                 <Row className="pt-3">
                     <Col>
-                        <ContainerSection control={ control } register={ register } errors={ errors } trigger={ trigger } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors } />
+                        <ContainerSection control={ control } register={ register } errors={ errors } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors } getValues={ getValues } />
                     </Col>
                     <Col>
                         Type will go here

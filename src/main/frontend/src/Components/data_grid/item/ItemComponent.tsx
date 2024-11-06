@@ -1,5 +1,5 @@
 import React from "react";
-import { TagProvider } from "../../../Hooks/TagProvider";
+import { TagProvider } from "../../../hooks/TagProvider";
 import ItemTable from "./ItemTable";
 
 export default function ItemComponent(){

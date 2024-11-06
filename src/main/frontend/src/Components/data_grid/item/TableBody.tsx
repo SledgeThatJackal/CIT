@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import { Item } from "../../../Types/Item";
+import { Item } from "../../../cit_types/Item";
 import { flexRender, Table } from "@tanstack/react-table";
-import ContainerTable from ".././Item/ContainerRow/ContainerTable";
+import ContainerTable from "./container_row/ContainerTable";
 
 type TableBodyProps = {
     table: Table<Item>

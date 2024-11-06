@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 
-import { Tag } from '../Types/Tag';
-import { useTags } from '../Services/queries';
+import { Tag } from '../cit_types/Tag';
+import { useTags } from '../services/queries';
 
 const DataContext = createContext<Tag[]>([]);
 

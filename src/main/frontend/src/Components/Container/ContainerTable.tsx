@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import PaginationComponent from '../General/Pagination';
-import ConfirmationModal from '../General/ConfirmationModal';
+import PaginationComponent from '../general/Pagination';
+import ConfirmationModal from '../general/ConfirmationModal';
 
-import { Container, ContainerResponse } from '../../Types/Container';
+import { Container, ContainerResponse } from '../../cit_types/Container';
 
 function ContainerTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);

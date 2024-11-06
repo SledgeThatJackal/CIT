@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Dropdown, Form, Stack } from 'react-bootstrap';
 
-import TagBadge from '../../Tag/TagBadge';
+import TagBadge from '../../tag/TagBadge';
 
-import { Tag } from '../../../Types/Tag';
+import { Tag } from '../../../cit_types/Tag';
 import { createPortal } from 'react-dom';
-import { useData } from '../../../Hooks/TagProvider';
+import { useData } from '../../../hooks/TagProvider';
 
 const tagStringCompare = (tag1: Tag, tag2: Tag) => {
     return tag1.tag.localeCompare(tag2.tag);

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useContainers } from '../../../../Services/queries';
+import { useContainers } from '../../../../services/queries';
 
-import { Container } from '../../../../Types/Container';
-import { useCreateLink } from '../../../../Services/mutations';
+import { Container } from '../../../../cit_types/Container';
+import { useCreateLink } from '../../../../services/mutations';
 
 type AddLinkProps = {
     itemId: number;

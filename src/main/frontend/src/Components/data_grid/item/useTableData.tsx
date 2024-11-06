@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
 import { createColumnHelper, Row } from '@tanstack/react-table';
 
-import { Item } from '../../../Types/Item';
-import EditCell from '../CustomCells/EditCell';
-import TagCell from '../CustomCells/TagCell';
-import { useItems } from '../../../Services/queries';
-import DeleteCell from '../CustomCells/DeleteCell';
-import { Button } from 'react-bootstrap';
-import React from 'react';
-import { Tag } from '../../../Types/Tag';
+import { Item } from '../../../cit_types/Item';
+import EditCell from '../custom_cells/EditCell';
+import TagCell from '../custom_cells/TagCell';
+import { useItems } from '../../../services/queries';
+import DeleteCell from '../custom_cells/DeleteCell';
+import { Tag } from '../../../cit_types/Tag';
+import ActionButtons from '../custom_cells/ActionButtons';
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -43,7 +42,7 @@ export const useTableData = () => {
         }),
         columnHelper.accessor("id", {
             id: "id",
-            header: "Action(s)",
+            header: "Delete",
             size: 50,
             cell: DeleteCell,
             enableResizing: false,
@@ -54,13 +53,7 @@ export const useTableData = () => {
             id: "containerItems",
             header: () => null,
             size: 50,
-            cell: ({ row }) => {
-                return row.getCanExpand() ? (
-                    <Button {...{onClick: row.getToggleExpandedHandler()}}>
-                        {row.getIsExpanded() ? '▲' : '▼'}
-                    </Button> 
-                ) : null
-            },
+            cell: ActionButtons,
             enableResizing: false,
             enableSorting: false,
             enableColumnFilter: false,

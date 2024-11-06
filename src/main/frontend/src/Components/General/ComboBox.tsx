@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { useController, FieldValues, Control, UseFormSetFocus, UseFormSetError, UseFormClearErrors, FieldErrors, FieldArrayWithId, UseFormTrigger, UseFieldArrayUpdate } from 'react-hook-form';
+import { useController, FieldValues, Control, UseFormSetFocus, UseFormSetError, UseFormClearErrors, FieldErrors, FieldArrayWithId, UseFieldArrayUpdate, useWatch, UseFormGetValues } from 'react-hook-form';
 import { Dropdown, Overlay, Tooltip } from 'react-bootstrap';
 
-import { Container } from '../../Types/Container';
-import { ItemSchemaType } from '../../Types/Item';
-import { useContainers } from '../../Services/queries';
+import { Container } from '../../cit_types/Container';
+import { ItemSchemaType } from '../../cit_types/Item';
+import { useContainers } from '../../services/queries';
 
 type InputControllerProps ={
     fieldName: string;
@@ -44,6 +44,7 @@ const Input = ({ fieldName, control, initialValue, checkIfContainerExists, setEr
                     }
                 }}
                 value={ field.value }
+                id={ fieldName }
             />
         </>
     )
@@ -58,9 +59,10 @@ type ComboBoxProps = {
     setFocus: UseFormSetFocus<ItemSchemaType>;
     setError: UseFormSetError<ItemSchemaType>;
     clearErrors: UseFormClearErrors<ItemSchemaType>;
+    getValues: UseFormGetValues<ItemSchemaType>;
 };
 
-const ComboBox = ({ index, field, control, errors, update, setError, clearErrors }: ComboBoxProps) => {
+const ComboBox = ({ index, field, control, errors, update, setError, clearErrors, getValues }: ComboBoxProps) => {
     const containerQuery = useContainers().data;
 
     const [showDropdown, setShowDropdown] = useState(false);
@@ -68,6 +70,8 @@ const ComboBox = ({ index, field, control, errors, update, setError, clearErrors
 
     const [showError, setShowError] = useState(false);
     const target = useRef(null);
+
+    const fieldId = getValues(`containerItems.${index}.id`);
 
     const handleDropdownClick = (value: Container) => {
         const updatedItem = {...field, id: undefined, container: value};
@@ -87,16 +91,22 @@ const ComboBox = ({ index, field, control, errors, update, setError, clearErrors
 
     return (
         <div key={`Combobox-${index}`} className="input-group" ref={ target }>
-            <Input key={`InputObject-${index}`} fieldName={ `containerItems.${index}.container.scannerId` } control={ control } checkIfContainerExists={ checkIfContainerExists } setError={ setError } clearErrors={ clearErrors } showError={ () => setShowError(!showError) } />
-            <Dropdown show={ showDropdown } onToggle={ handleToggle }>
-                <Dropdown.Toggle>
-                </Dropdown.Toggle>
-                <Dropdown.Menu style={{maxHeight: "200px", overflowY: "auto"}} >
-                    {containerQuery && containerQuery.map((container, index) => (
-                        <Dropdown.Item key={`DropDownMenu-${index}`} onClick={ () => handleDropdownClick(container) }> {container.scannerId + ` (` + container.name + `)`} </Dropdown.Item>
-                    ))}
-                </Dropdown.Menu>
-            </Dropdown>
+            {fieldId ? (
+                <span>{field.container?.scannerId}</span>
+            ) : (
+                <>
+                    <Input key={`InputObject-${index}`} fieldName={ `containerItems.${index}.container.scannerId` } control={ control } checkIfContainerExists={ checkIfContainerExists } setError={ setError } clearErrors={ clearErrors } showError={ () => setShowError(!showError) } />
+                    <Dropdown show={ showDropdown } onToggle={ handleToggle }>
+                        <Dropdown.Toggle>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{maxHeight: "200px", overflowY: "auto"}} >
+                            {containerQuery && containerQuery.map((container, index) => (
+                                <Dropdown.Item key={`DropDownMenu-${index}`} onClick={ () => handleDropdownClick(container) }> {container.scannerId + ` (` + container.name + `)`} </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </>
+            )}
 
             {errors.containerItems?.[index]?.container?.scannerId && (
                 <Overlay target={ target.current } show={ showError } placement="right">

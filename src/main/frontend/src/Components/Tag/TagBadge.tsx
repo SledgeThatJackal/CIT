@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Tag } from '../../Types/Tag';
+import { Tag } from '../../cit_types/Tag';
 
 type TagProps = {
     tag: Tag,

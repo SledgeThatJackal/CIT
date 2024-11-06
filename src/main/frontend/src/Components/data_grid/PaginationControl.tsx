@@ -1,7 +1,7 @@
 import { Table } from "@tanstack/react-table";
 import React from "react";
 import { Form, InputGroup, Pagination, Stack } from 'react-bootstrap';
-import { Item } from "../../Types/Item";
+import { Item } from "../../cit_types/Item";
 import { generate } from "@bramus/pagination-sequence";
 
 type PaginationControlProps = {

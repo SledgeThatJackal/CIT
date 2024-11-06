@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import { Item, ItemSchemaType } from '../Types/Item';
-import { Tag, TagCreate } from '../Types/Tag';
-import { Container } from '../Types/Container';
+import { Item, ItemSchemaType } from '../cit_types/Item';
+import { Tag, TagCreate } from '../cit_types/Tag';
+import { Container } from '../cit_types/Container';
 
 // Items
 
@@ -20,7 +20,7 @@ export const createItem = async (data: ItemSchemaType) => {
     await axios.post(`/api/item/create`, data);
 };
 
-export const updateItem = async (data: Item) => {
+export const updateItem = async (data: ItemSchemaType) => {
     await axios.put(`/api/item/edit`, data);
 };
 

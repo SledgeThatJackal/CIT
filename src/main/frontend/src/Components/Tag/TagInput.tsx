@@ -5,11 +5,11 @@ import axios from 'axios';
 import TagBlock from './TagBlock';
 import TagBadge from './TagBadge';
 
-import { Tag } from '../../Types/Tag';
-import { ItemSchemaType } from '../../Types/Item';
+import { Tag } from '../../cit_types/Tag';
+import { ItemSchemaType } from '../../cit_types/Item';
 import { Button, Dropdown, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
-import { useCreateTag } from '../../Services/mutations';
-import { useTags } from '../../Services/queries';
+import { useCreateTag } from '../../services/mutations';
+import { useTags } from '../../services/queries';
 
 
 type TagInputProps = {

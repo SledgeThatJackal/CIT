@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import { CloseButton, Form, Table } from 'react-bootstrap';
-import { Control, FieldErrors, useFieldArray, UseFormClearErrors, UseFormRegister, UseFormSetError, UseFormSetFocus, UseFormSetValue, UseFormTrigger, useWatch } from 'react-hook-form';
-import { ItemSchemaType } from '../../../Types/Item';
-import ComboBox from '../../General/ComboBox';
-import { ContainerItem } from '../../../Types/ContainerItem';
+import { Control, FieldErrors, useFieldArray, UseFormClearErrors, UseFormGetValues, UseFormRegister, UseFormSetError, UseFormSetFocus, UseFormSetValue, UseFormTrigger, useWatch } from 'react-hook-form';
+import { ItemSchemaType } from '../../../cit_types/Item';
+import ComboBox from '../../general/ComboBox';
+import { ContainerItem } from '../../../cit_types/ContainerItem';
 
 type ContainerSectionProps = {
     control: Control<ItemSchemaType>;
     register: UseFormRegister<ItemSchemaType>;
     errors: FieldErrors<ItemSchemaType>;
-    trigger: UseFormTrigger<ItemSchemaType>;
     setFocus: UseFormSetFocus<ItemSchemaType>;
     setError: UseFormSetError<ItemSchemaType>;
     clearErrors: UseFormClearErrors<ItemSchemaType>;
+    getValues: UseFormGetValues<ItemSchemaType>
 };
 
-const ContainerSection = ({ control, register, errors, trigger, setFocus, setError, clearErrors }: ContainerSectionProps) => {
+const ContainerSection = ({ control, register, errors, setFocus, setError, clearErrors, getValues }: ContainerSectionProps) => {
     const { fields, append, remove, update } = useFieldArray({
         control,
         name: 'containerItems'
@@ -26,23 +26,25 @@ const ContainerSection = ({ control, register, errors, trigger, setFocus, setErr
         name: 'containerItems'
     }) as ContainerItem[];
 
+
     useEffect(() => {
-        if(watchContainerItems?.length === 0 || watchContainerItems?.[watchContainerItems.length - 1]?.container?.scannerId){
+        const lastRow = watchContainerItems?.[watchContainerItems.length -1]?.container?.scannerId;
+
+        if(watchContainerItems?.length === 0 || (lastRow && lastRow.length > 0)){
             append({ id: undefined, container: {id: -1, name: "", scannerId:"", description: undefined, parentContainer: undefined}, quantity: Number(1) });
 
             setTimeout(() => {
-                trigger("containerItems");
                 setFocus(`containerItems.${watchContainerItems.length - 1}.container.scannerId`);
             }, 0);
         }
 
-        if(watchContainerItems?.length > 1 && !watchContainerItems?.[watchContainerItems.length -2 ]?.container?.scannerId && !watchContainerItems?.[watchContainerItems.length -1]?.container?.scannerId){
+        if(watchContainerItems?.length > 1 && !watchContainerItems?.[watchContainerItems.length - 2]?.container?.scannerId && !lastRow){
             remove(watchContainerItems.length - 1);
-        }
-    }, [watchContainerItems]);
+        };
+    }, [watchContainerItems, remove]);
 
     return (
-        <Table>
+        <Table variant="info">
             <thead>
                 <tr>
                     <th scope="col">
@@ -66,13 +68,13 @@ const ContainerSection = ({ control, register, errors, trigger, setFocus, setErr
                             {field.container?.name}
                         </th>
                         <td>
-                            <ComboBox index={ index } field={ field } control={ control } errors={ errors } update={ update } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors }  />
+                            <ComboBox index={ index } field={ field } control={ control } errors={ errors } update={ update } setFocus={ setFocus } setError={ setError } clearErrors={ clearErrors } getValues={ getValues } />
                         </td>
                         <td>
                             <Form.Control {...register(`containerItems.${index}.quantity`, {valueAsNumber: true})} type="number" />
                         </td>
                         <td>
-                            <CloseButton onClick={ () => remove(index) } />
+                            <CloseButton onClick={ () => remove(index) } disabled={ fields.length === index } />
                         </td>
                     </tr>
                 ))}
