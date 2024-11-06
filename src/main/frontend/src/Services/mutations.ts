@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createItem, createLink, createTag, deleteItem, deleteLink, deleteTag, updateItem, updateQuantity, updateTag } from "./api";
+import { createContainer, createItem, createLink, createTag, deleteContainer, deleteItem, deleteLink, deleteTag, updateContainer, updateItem, updateQuantity, updateTag } from "./api";
 import { Item, ItemSchemaType } from "../cit_types/Item";
 import { Tag, TagCreate, TagSchemaType } from "../cit_types/Tag";
+import { ContainerType } from "../cit_types/Container";
 
 
 // Items
@@ -55,7 +56,53 @@ export function useDeleteItem(){
 };
 
 // Containers
+export function useCreateContainer(){
+    const queryClient = useQueryClient();
 
+    return useMutation({
+        mutationFn: (data: ContainerType) => createContainer(data),
+
+        onSettled: async(_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["containers"] });
+            }
+        }
+    });
+};
+
+export function useUpdateContainer(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: ContainerType) => updateContainer(data),
+        
+        onSettled: async(_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["containers"] });
+            }
+        }
+    });
+};
+
+export function useDeleteContainer(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: number) => deleteContainer(id),
+
+        onSettled: async (_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["containers"] });
+            }
+        }
+    });
+};
 
 // Links
 type createLinkParams = {
@@ -145,6 +192,7 @@ export function useUpdateTag(){
                 console.error(error);
             } else {
                 await queryClient.invalidateQueries({ queryKey: ["tags"] });
+                await queryClient.invalidateQueries({ queryKey: ["items"] });
             }
         }
     });
@@ -160,7 +208,8 @@ export function useDeleteTag(){
             if(error){
                 console.error(error);
             } else {
-                await queryClient.invalidateQueries({ queryKey: ["tags"] })
+                await queryClient.invalidateQueries({ queryKey: ["tags"] });
+                await queryClient.invalidateQueries({ queryKey: ["items"] });
             }
         }
     });

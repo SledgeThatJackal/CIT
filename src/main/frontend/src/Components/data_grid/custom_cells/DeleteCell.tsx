@@ -1,9 +1,14 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { useDeleteModalState } from '../../../state/useDeleteModalState';
 
-const DeleteCell = ({ getValue, table }: any) => {
+
+const DeleteCell = ({ getValue }: any) => {
+    const { setShowModal, setDeleteId } = useDeleteModalState();
+
     const handleDelete = () => {
-        table.options.meta?.setupDelete(getValue());
+        setShowModal(true);
+        setDeleteId(getValue());
     };
 
     return(

@@ -5,12 +5,13 @@ import axios from 'axios';
 import PaginationComponent from '../general/Pagination';
 import ConfirmationModal from '../general/ConfirmationModal';
 
-import { Container, ContainerResponse } from '../../cit_types/Container';
+import { ContainerType, ContainerResponse } from '../../cit_types/Container';
+import TContainerTable from '../data_grid/container/ContainerTable';
 
 function ContainerTable(){
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
-    const [containerData, setContainerData] = useState<Container[]>([]);
+    const [containerData, setContainerData] = useState<ContainerType[]>([]);
     const [deleteId, setDeleteId] = useState<number>(-1);
 
     // Modal Controls
@@ -51,7 +52,7 @@ function ContainerTable(){
 
     const handleEdit = async (id: number) => {
         try{
-            const response = (await axios.get<Container>(`/api/container/edit?id=${id}`)).data;
+            const response = (await axios.get<ContainerType>(`/api/container/edit?id=${id}`)).data;
 
             navigate('/container/form', {state: { response }});
         } catch (error){
@@ -93,6 +94,7 @@ function ContainerTable(){
             
             <PaginationComponent currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
             <ConfirmationModal show={ show } handleClose={ handleClose } onDelete={ handleDelete } message={ "Are you sure you want to delete this container?" } />
+            <TContainerTable />
         </div>
     );
 }

@@ -19,5 +19,4 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT i.id FROM Item i WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(i.description) LIKE LOWER(CONCAT('%', :description, '%')) ORDER BY id ASC")
     Page<Long> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(@Param("name") String name, @Param("description") String description, Pageable pageable);
-
 }

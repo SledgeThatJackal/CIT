@@ -1,10 +1,10 @@
-import { Container } from './Container';
+import { ContainerType } from './Container';
 import { Item } from './Item';
 import { z } from 'zod';
 
 export type ContainerItem = {
     id?: number;
-    container?: Container;
+    container?: ContainerType;
     item?: Item;
     quantity: number;
 };

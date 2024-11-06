@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useContainers } from '../../../../services/queries';
 
-import { Container } from '../../../../cit_types/Container';
+import { ContainerType } from '../../../../cit_types/Container';
 import { useCreateLink } from '../../../../services/mutations';
 
 type AddLinkProps = {
@@ -11,7 +11,7 @@ type AddLinkProps = {
 
 const AddLink = ({ itemId }: AddLinkProps) => {
     const containerQuery = useContainers().data;
-    const [container, setContainer] = useState<Container>();
+    const [container, setContainer] = useState<ContainerType>();
     const [quantity, setQuantity] = useState<number>(1);
     
     const [show, setShow] = useState<boolean>(false);

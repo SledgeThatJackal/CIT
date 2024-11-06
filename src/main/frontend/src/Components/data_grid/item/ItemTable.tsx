@@ -15,8 +15,9 @@ import { MemoizedTableBody, TableBody } from './TableBody';
 import CreateBox from './CreateBox';
 import LinkBox from './LinkBox';
 import { useActionState } from '../../../state/useActionState';
+import { useDeleteModalState } from '../../../state/useDeleteModalState';
 
-const Input = ({ column }: { column: Column<any, unknown>}) => {
+export const Input = ({ column }: { column: Column<any, unknown>}) => {
     const filterValue: string = (column.getFilterValue() ?? "") as string;
     const [value, setValue] = useState<string>(filterValue);
 
@@ -42,11 +43,7 @@ function ItemTable(){
     const [data, setData] = useState<Item[]>([]);
 
     // Modal
-    const [showModal, setShowModal] = useState<boolean>(false);
-    const handleOpen = () => setShowModal(true);
-    const handleClose = () => setShowModal(false);
-
-    const [deleteId, setDeleteId] = useState<number>(-1);
+    const { showModal, setShowModal, deleteId } = useDeleteModalState();
 
     // Create
     const [showCreate, setShowCreate] = useState<boolean>(false);
@@ -74,12 +71,9 @@ function ItemTable(){
     const removeData = () => {
         pageResetRef.current = true; // Disable page from changing
 
-        deleteItemMutation.mutate(deleteId);
-    };
-
-    const setupDelete = (id: number) => {
-        setDeleteId(id);
-        handleOpen();
+        if(deleteId){
+            deleteItemMutation.mutate(deleteId);
+        }
     };
 
     const table = useReactTable<Item>({
@@ -98,10 +92,9 @@ function ItemTable(){
         columnResizeMode: "onChange",
         meta: {
             updateData,
-            setupDelete,
             getItemId: (index: number) => {
                 return data[index].id;
-            }
+            },
         },
         state: {
             pagination
@@ -131,14 +124,6 @@ function ItemTable(){
 
     return (
         <Container className="pt-2" fluid>
-            {showCreate && (
-                <CreateBox closeCreate={ closeCreate } />
-            )}
-
-            {showLink && (
-                <LinkBox />
-            )}
-
             <div >
                 <Table hover bordered variant="secondary" className="m-0" style={{ ...columnSize, borderRadius: '8px', overflow: 'hidden' }}>
                     <thead>
@@ -183,15 +168,23 @@ function ItemTable(){
                 </Table>
             </div>
             <br />
-            {table.getPageCount() > 0 && (
-                <Stack direction="horizontal" gap={ 3 }>
+            <Stack direction="horizontal" gap={ 3 }>
+                {table.getPageCount() > 0 && (
                     <PaginationControl table={ table } />
-                    {!showCreate && (
-                        <Button variant="success" onClick={ () => setShowCreate(true) }>Create</Button>
-                    )}
-                </Stack>
+                )}
+                {!showCreate && (
+                    <Button variant="success" onClick={ () => setShowCreate(true) }>Create</Button>
+                )}
+            </Stack>
+
+            {showCreate && (
+                <CreateBox closeCreate={ closeCreate } />
             )}
-            <ConfirmationModal show={ showModal } handleClose={ handleClose } onDelete={ removeData } message={ "Are you sure you want to delete this item?" } />
+
+            {showLink && (
+                <LinkBox />
+            )}
+            <ConfirmationModal show={ showModal } handleClose={ () => setShowModal(false) } onDelete={ removeData } message={ "Are you sure you want to delete this item?" } />
         </Container>
     );
 };

@@ -5,7 +5,7 @@ import { Item } from "../../cit_types/Item";
 import { generate } from "@bramus/pagination-sequence";
 
 type PaginationControlProps = {
-    table: Table<Item>;
+    table: Table<any>;
 };
 
 const PaginationControl = ({ table }: PaginationControlProps) => {

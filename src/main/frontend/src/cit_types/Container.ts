@@ -1,7 +1,7 @@
 import { ContainerItem, ContainerItemSchema } from './ContainerItem';
 import { z } from 'zod';
 
-export type Container = {
+export type ContainerType = {
     id: number;
     name: string;
     description?: string;
@@ -25,6 +25,6 @@ export const ContainerSchema = z.object({
 });
 
 export type ContainerResponse = {
-    content: Container[];
+    content: ContainerType[];
     totalPages: number;
 };

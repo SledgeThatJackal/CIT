@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { Item, ItemSchemaType } from '../cit_types/Item';
 import { Tag, TagCreate } from '../cit_types/Tag';
-import { Container } from '../cit_types/Container';
+import { ContainerType } from '../cit_types/Container';
 
 // Items
 
@@ -29,8 +29,23 @@ export const deleteItem = async (id: number) => {
 };
 
 // Containers
+
+    // Query
 export const getContainers = async () => {
-    return (await axios.get<Container[]>(`/api/container`)).data;
+    return (await axios.get<ContainerType[]>(`/api/container`)).data;
+};
+
+    // Mutate
+export const createContainer = async (data: ContainerType) => {
+    await axios.post(`/api/container/create`, data);
+};
+
+export const updateContainer = async (data: ContainerType) => {
+    await axios.put(`/api/container/edit`, data);
+};
+
+export const deleteContainer = async (id: number) => {
+    await axios.delete(`/api/container/delete?id=${id}`);
 };
 
 // Links

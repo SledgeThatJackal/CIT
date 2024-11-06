@@ -2,7 +2,6 @@ package dev.adamico.cit.Controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.Container;
-import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/container")
@@ -24,6 +21,12 @@ public class ContainerController {
     @GetMapping
     @JsonView(Views.Exclusive.class)
     public List<Container> getContainers(){
+        return containerService.findAllContainers();
+    }
+
+    @GetMapping("/detail")
+    @JsonView(Views.Inclusive.class)
+    public List<Container> getDetailedContainers(){
         return containerService.findAllContainers();
     }
 
@@ -38,22 +41,14 @@ public class ContainerController {
         return containerService.findContainerById(id);
     }
 
-    @GetMapping("/check")
-    public void checkIfContainerExists(@RequestParam String scannerId) throws NoSuchElementException {
-        containerService.findIfContainerExists(scannerId);
-    }
-
     @PostMapping("/create")
     public void createContainer(@RequestBody Container container){
         containerService.saveContainer(container);
     }
 
-    @PatchMapping("/edit")
-    public Container updateContainer(@RequestBody Container container){
-        Set<ContainerItem> containerItems = containerService.findContainerById(container.getId()).getContainerItems();
-        container.setContainerItems(containerItems);
-
-        return containerService.saveContainer(container);
+    @PutMapping("/edit")
+    public void updateContainer(@RequestBody Container container){
+        containerService.saveContainer(container);
     }
 
     @DeleteMapping("/delete")
