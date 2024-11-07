@@ -16,6 +16,8 @@ import CreateBox from './CreateBox';
 import LinkBox from './LinkBox';
 import { useActionState } from '../../../state/useActionState';
 import { useDeleteModalState } from '../../../state/useDeleteModalState';
+import Canvas from '../../general/Canvas';
+import { useCanvasState } from '../../../state/useCanvasState';
 
 export const Input = ({ column }: { column: Column<any, unknown>}) => {
     const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -46,11 +48,7 @@ function ItemTable(){
     const { showModal, setShowModal, deleteId } = useDeleteModalState();
 
     // Create
-    const [showCreate, setShowCreate] = useState<boolean>(false);
-    const closeCreate = () => setShowCreate(false);
-
-    // Link
-    const showLink = useActionState((state) => state.isVisible);
+    const { openCanvas } = useCanvasState();
 
     // Pagination
     const [pagination, setPagination] = useState<PaginationState>({
@@ -172,18 +170,10 @@ function ItemTable(){
                 {table.getPageCount() > 0 && (
                     <PaginationControl table={ table } />
                 )}
-                {!showCreate && (
-                    <Button variant="success" onClick={ () => setShowCreate(true) }>Create</Button>
-                )}
+                <Button variant="success" onClick={ () => openCanvas(CreateBox, "Create") }>Create</Button>
             </Stack>
 
-            {showCreate && (
-                <CreateBox closeCreate={ closeCreate } />
-            )}
-
-            {showLink && (
-                <LinkBox />
-            )}
+            <Canvas />
             <ConfirmationModal show={ showModal } handleClose={ () => setShowModal(false) } onDelete={ removeData } message={ "Are you sure you want to delete this item?" } />
         </Container>
     );

@@ -6,11 +6,13 @@ import { Item, ItemSchema, ItemSchemaType } from '../../../cit_types/Item';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUpdateItem } from '../../../services/mutations';
 import { useActionState } from '../../../state/useActionState';
+import { useCanvasState } from '../../../state/useCanvasState';
 
 const LinkBox = () => {
     const updateItemMutation = useUpdateItem();
 
-    const { item, updateAction } = useActionState();
+    const { item, clearAction } = useActionState();
+    const { closeCanvas } = useCanvasState();
 
     const {
         register,
@@ -39,7 +41,8 @@ const LinkBox = () => {
     };
 
     const closeBox = () => {
-        updateAction(false, undefined, undefined);
+        closeCanvas()
+        clearAction();
     };
 
     return(

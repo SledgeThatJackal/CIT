@@ -2,13 +2,16 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTableData } from './useTableData';
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, PaginationState, useReactTable } from '@tanstack/react-table';
 import { ContainerType } from '../../../cit_types/Container';
-import { Container, Stack, Table } from 'react-bootstrap';
+import { Button, Container, Stack, Table } from 'react-bootstrap';
 import PaginationControl from '../PaginationControl';
 import { Input } from '../item/ItemTable';
 import { MemoizedTableBody, TableBody } from './TableBody';
 import ConfirmationModal from '../../general/ConfirmationModal';
 import { useDeleteModalState } from '../../../state/useDeleteModalState';
 import { useUpdateContainer, useDeleteContainer } from '../../../services/mutations';
+import { useCanvasState } from '../../../state/useCanvasState';
+import ContainerCreate from './ContainerCreate';
+import Canvas from '../../general/Canvas';
 
 function TContainerTable(){
     const { columns, containersQuery } = useTableData();
@@ -22,8 +25,7 @@ function TContainerTable(){
     const { showModal, setShowModal, deleteId } = useDeleteModalState();
 
     // Create
-    const [showCreate, setShowCreate] = useState<boolean>(false);
-    const closeCreate = () => setShowCreate(false);
+    const { openCanvas } = useCanvasState();
 
     // Pagination
     const [pagination, setPagination] = useState<PaginationState>({
@@ -129,11 +131,15 @@ function TContainerTable(){
                 </Table>
             </div>
             <br />
-            {table.getPageCount() > 0 && (
-                <Stack direction="horizontal" gap={ 3 }>
-                    <PaginationControl table={ table } />
-                </Stack>
-            )}
+            <Stack direction="horizontal" gap={ 3 }>
+                {table.getPageCount() > 0 && (
+                    <Stack direction="horizontal" gap={ 3 }>
+                        <PaginationControl table={ table } />
+                    </Stack>
+                )}
+                <Button variant="success" onClick={ () => openCanvas(ContainerCreate, "Create") }>Create</Button>
+            </Stack>
+            <Canvas />
             <ConfirmationModal show={ showModal } handleClose={ () => setShowModal(false) } onDelete={ removeData } message={ "Are you sure you want to delete this container?" } />
         </Container>
     );

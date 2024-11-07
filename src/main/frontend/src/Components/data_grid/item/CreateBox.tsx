@@ -6,15 +6,12 @@ import { ItemSchema, ItemSchemaType } from '../../../cit_types/Item';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateItem } from '../../../services/mutations';
 import TagInput from '../../tag/TagInput';
-import ContainerSection from './ContainerSection';
+import ContainerSection from './ContainerSection'
+import { useCanvasState } from '../../../state/useCanvasState';
 
-type CreateBoxProps = {
-    closeCreate: () => void
-
-};
-
-const CreateBox = ({ closeCreate }: CreateBoxProps) => {
+const CreateBox = () => {
     const createItemMutation = useCreateItem();
+    const { closeCanvas } = useCanvasState();
 
     const {
         register,
@@ -44,7 +41,7 @@ const CreateBox = ({ closeCreate }: CreateBoxProps) => {
                 <Row>
                     <Form.Group as={ Col } controlId="itemName">
                         <FloatingLabel controlId="floatingName" label="Name">
-                            <Form.Control {...register("name")} type="text" autoFocus={ true } required/>
+                            <Form.Control {...register("name")} type="text" autoFocus required/>
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">
                             {errors.name?.message}
@@ -61,7 +58,7 @@ const CreateBox = ({ closeCreate }: CreateBoxProps) => {
                     <Col md="2" as={ Stack } direction="horizontal" gap={ 2 }>
                         <div className="vr" />
                         <Button type="submit" variant="success" disabled={ isSubmitting }>Create</Button>
-                        <Button type="button" variant="outline-danger" onClick={ closeCreate }>Cancel</Button>
+                        <Button type="button" variant="outline-danger" onClick={ closeCanvas }>Cancel</Button>
                     </Col>
                 </Row>
                 <Row className="pt-3">

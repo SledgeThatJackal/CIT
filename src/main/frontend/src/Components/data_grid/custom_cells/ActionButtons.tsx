@@ -3,6 +3,8 @@ import React from 'react';
 import { Button, InputGroup } from 'react-bootstrap';
 import { Item } from '../../../cit_types/Item';
 import { useActionState } from '../../../state/useActionState';
+import { useCanvasState } from '../../../state/useCanvasState';
+import LinkBox from '../item/LinkBox';
 
 type ActionButtonsProps = {
     table: any;
@@ -10,16 +12,19 @@ type ActionButtonsProps = {
 };
 
 const ActionButtons = ({ row }: ActionButtonsProps) => {
-    const { isVisible, callerId, updateAction } = useActionState();
+    const { callerId, updateAction, clearAction } = useActionState();
+    const { openCanvas, closeCanvas } = useCanvasState();
 
-    const isActive = isVisible && callerId === row.getValue("id");
+    const isActive = callerId === row.getValue("id");
 
     const handleOpen = () => {
-        updateAction(true, row.original, row.getValue("id"))
+        openCanvas(LinkBox, `Editing: ${row.getValue("name")}`);
+        updateAction(row.original, row.getValue("id"));
     };
 
     const handleClose = () => {
-        updateAction(false, undefined, undefined);
+        closeCanvas();
+        clearAction();
     };
 
     return(
