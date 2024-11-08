@@ -1,7 +1,7 @@
 import React from 'react';
 import { useController, Control } from 'react-hook-form';
 
-import { ItemFormSchemaType, ItemSchemaType } from '../../cit_types/Item';
+import { ItemSchemaType } from '../../cit_types/Item';
 
 type TagBlockProps = {
     control: Control<ItemSchemaType>;

@@ -28,7 +28,7 @@ public class Tag {
     private String color;
     private String description;
 
-    @ManyToMany(mappedBy = "tags", cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "tags")
     @JsonIgnore
     private Set<Item> item;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, InputGroup, Button } from 'react-bootstrap';
+import { Row, Col, InputGroup, Button, Stack } from 'react-bootstrap';
 
 import TagBadge from '../tag/TagBadge';
 import { Tag } from '../../cit_types/Tag';
@@ -21,8 +21,10 @@ const TagRead = ({ index, tag, setDeleteTagId, handleOpen, setEditId }: TagReadP
     return (
         <Row key={`tagRow-${index}`} className="text-light pt-3 pb-3" style={{ background: "#4B555F", borderTop: "3px solid #7B8895", borderBottom: "3px solid #7B8895" }}>
             <Col className="d-flex align-items-center me-auto">
-                <TagBadge tag={ tag } />
-                : { tag.description }
+                <Stack direction="horizontal" gap={ 1 }>
+                    <TagBadge tag={ tag } /> 
+                    <div>: { tag.description }</div>
+                </Stack>
             </Col>
             <Col>
                 <InputGroup className="d-flex justify-content-end">

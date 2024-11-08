@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { CloseButton, Form, Table } from 'react-bootstrap';
 import { Control, FieldErrors, useFieldArray, UseFormClearErrors, UseFormGetValues, UseFormRegister, UseFormSetError, UseFormSetFocus, UseFormSetValue, UseFormTrigger, useWatch } from 'react-hook-form';
-import { ItemSchemaType } from '../../../cit_types/Item';
+import { ItemSchemaType, ZodContainerItemSchema } from '../../../cit_types/Item';
 import ComboBox from '../../general/ComboBox';
-import { ContainerItem } from '../../../cit_types/ContainerItem';
 
 type ContainerSectionProps = {
     control: Control<ItemSchemaType>;
@@ -24,7 +23,7 @@ const ContainerSection = ({ control, register, errors, setFocus, setError, clear
     const watchContainerItems = useWatch({
         control,
         name: 'containerItems'
-    }) as ContainerItem[];
+    }) as ZodContainerItemSchema[];
 
 
     useEffect(() => {

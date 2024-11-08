@@ -1,11 +1,11 @@
 import { Table } from "@tanstack/react-table";
 import React from "react";
 import { Form, InputGroup, Pagination, Stack } from 'react-bootstrap';
-import { Item } from "../../cit_types/Item";
 import { generate } from "@bramus/pagination-sequence";
+import { toBePartiallyChecked } from "@testing-library/jest-dom/matchers";
 
 type PaginationControlProps = {
-    table: Table<Item>;
+    table: Table<any>;
 };
 
 const PaginationControl = ({ table }: PaginationControlProps) => {
@@ -15,21 +15,21 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
     return (
         <Stack direction="horizontal" gap={ 3 }>
             <Pagination className="my-0">
-                <Pagination.First onClick={ () => table.firstPage() } disabled={ !table.getCanPreviousPage() } />
-                <Pagination.Prev onClick={ () => table.previousPage() } disabled={ !table.getCanPreviousPage() } />
+                <Pagination.First key={ `page-first` } onClick={ () => table.firstPage() } disabled={ !table.getCanPreviousPage() } />
+                <Pagination.Prev key={ `page-prev` } onClick={ () => table.previousPage() } disabled={ !table.getCanPreviousPage() } />
 
                 {sequence.map((value, index) => (
-                    <>
+                    <React.Fragment key={`page-${index}`}>
                         {value === '...' ? (
                             <Pagination.Ellipsis disabled />
                         ) : (
-                            <Pagination.Item key={`page-${index}`} onClick={ () => table.setPageIndex(index) } active={ currentPage === index} >{value}</Pagination.Item>
+                            <Pagination.Item onClick={ () => table.setPageIndex(index) } active={ currentPage === index} >{value}</Pagination.Item>
                         )}
-                    </>
+                    </React.Fragment>
                 ))}
 
-                <Pagination.Next onClick={ () => table.nextPage() } disabled={ !table.getCanNextPage() } />
-                <Pagination.Last onClick={ () => table.lastPage() } disabled={ !table.getCanNextPage() } />
+                <Pagination.Next key={ `page-next` } onClick={ () => table.nextPage() } disabled={ !table.getCanNextPage() } />
+                <Pagination.Last key={ `page-Last` } onClick={ () => table.lastPage() } disabled={ !table.getCanNextPage() } />
             </Pagination>
             <InputGroup className="w-auto">
                 <InputGroup.Text><strong>Navigate To Page:</strong></InputGroup.Text>
@@ -37,7 +37,7 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
             </InputGroup>
             <InputGroup className="w-auto">
                 <InputGroup.Text><strong>Show:</strong></InputGroup.Text>
-                <Form.Select aria-label="Page Size">
+                <Form.Select aria-label="Page Size" onChange={ e => table.setPageSize(Number(e.target.value)) } value={ table.getState().pagination.pageSize }>
                     {[10, 20, 30, 40, 50].map(size => (
                         <option key={ `size-${size}` } value={ size }>
                             {size}

@@ -28,6 +28,7 @@ export const useTableData = () => {
             size: 500,
             enableResizing: true,
             cell: EditCell,
+            sortUndefined: 1
         }),
         columnHelper.accessor("tags", {
             id: "tags",
@@ -52,7 +53,7 @@ export const useTableData = () => {
         columnHelper.accessor("containerItems", {
             id: "containerItems",
             header: () => null,
-            size: 50,
+            size: 100,
             cell: ActionButtons,
             enableResizing: false,
             enableSorting: false,

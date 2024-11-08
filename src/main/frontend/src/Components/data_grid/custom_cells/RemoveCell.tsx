@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, CloseButton } from 'react-bootstrap';
+import { CloseButton } from 'react-bootstrap';
 
 const RemoveCell = ({ getValue, table }: any) => {
     const handleDelete = () => {

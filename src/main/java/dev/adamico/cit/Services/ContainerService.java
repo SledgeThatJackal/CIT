@@ -43,8 +43,8 @@ public class ContainerService {
         return containerRepository.findByScannerId(scannerId).orElse(null);
     }
 
-    public Container saveContainer(Container container){
-        return containerRepository.save(container);
+    public void saveContainer(Container container){
+        containerRepository.save(container);
     }
 
     public void deleteContainer(Long id){

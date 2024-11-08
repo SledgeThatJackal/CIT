@@ -1,12 +1,11 @@
 import React, { lazy, Suspense } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
 
 import RootLayout from './layouts/RootLayout.jsx';
 
 import Home from './layouts/Home.jsx';
+import { createBrowserRouter } from 'react-router-dom';
 
-const ContainerTable = lazy(() => import('./components/container/ContainerTable.tsx'));
-const ContainerForm = lazy(() => import('./components/container/ContainerForm.tsx'));
+const Container = lazy(() => import('./components/data_grid/container/ContainerTable.tsx'));
 
 const Item = lazy(() => import('./components/data_grid/item/ItemComponent.tsx'));
 
@@ -27,8 +26,7 @@ export const router = createBrowserRouter([
         {index: true, element: <Home />},
         {path: "container", 
             children: [
-                {index: true, element: <ContainerTable />},
-                {path: "form", element: <ContainerForm />}
+                {index: true, element: <Container />},
         ]},
         {path: "item",
             children: [

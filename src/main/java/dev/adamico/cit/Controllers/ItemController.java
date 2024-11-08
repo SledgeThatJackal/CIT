@@ -17,7 +17,6 @@ import dev.adamico.cit.Services.TagService;
 import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,19 +41,19 @@ public class ItemController {
     private ContainerItemService containerItemService;
 
     @GetMapping
-    @JsonView(Views.Inclusive.class)
+    @JsonView(Views.InclusiveID.class)
     public List<Item> getItems(){
         return itemService.findAllItems();
     }
 
     @GetMapping("id")
-    @JsonView(Views.Inclusive.class)
+    @JsonView(Views.InclusiveID.class)
     public Item getItem(@RequestParam long id){
         return itemService.findItemById(id);
     }
 
     @GetMapping("/c")
-    @JsonView(Views.Inclusive.class)
+    @JsonView(Views.InclusiveID.class)
     public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
                                      @RequestParam(defaultValue = "") String search) throws JsonProcessingException {
@@ -68,7 +67,7 @@ public class ItemController {
     }
 
     @GetMapping("/edit")
-    @JsonView(Views.Exclusive.class)
+    @JsonView(Views.ExclusiveID.class)
     public String getEditItem(@RequestParam Long itemId) throws JsonProcessingException {
         Item item = itemService.findItemById(itemId);
         List<LinkDTO> links = containerItemService.findAllAssociatedContainersBasedOnItemId(itemId);
@@ -99,10 +98,9 @@ public class ItemController {
     }
 
     @PutMapping("/edit")
-    @JsonView(Views.Inclusive.class)
     public void updateItem(@RequestBody Item item) {
         if(item.getContainerItems() != null){
-            for(ContainerItem containerItem : item.getContainerItems()){
+            for(ContainerItem containerItem: item.getContainerItems()){
                 containerItem.setItem(item);
             }
         }

@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/container")
@@ -22,8 +20,14 @@ public class ContainerController {
     private ContainerService containerService;
 
     @GetMapping
-    @JsonView(Views.Exclusive.class)
+    @JsonView(Views.ExclusiveID.class)
     public List<Container> getContainers(){
+        return containerService.findAllContainers();
+    }
+
+    @GetMapping("/detail")
+    @JsonView(Views.InclusiveObject.class)
+    public List<Container> getDetailedContainers(){
         return containerService.findAllContainers();
     }
 
@@ -38,22 +42,52 @@ public class ContainerController {
         return containerService.findContainerById(id);
     }
 
-    @GetMapping("/check")
-    public void checkIfContainerExists(@RequestParam String scannerId) throws NoSuchElementException {
-        containerService.findIfContainerExists(scannerId);
-    }
-
     @PostMapping("/create")
-    public void createContainer(@RequestBody Container container){
+    public void createContainer(@RequestParam Long id, @RequestBody Container container){
+        Container parent = containerService.findContainerById(id);
+        if(parent != null){
+            container.addParent(parent);
+        }
+
         containerService.saveContainer(container);
     }
 
-    @PatchMapping("/edit")
-    public Container updateContainer(@RequestBody Container container){
-        Set<ContainerItem> containerItems = containerService.findContainerById(container.getId()).getContainerItems();
-        container.setContainerItems(containerItems);
+    @PutMapping("/edit")
+    public void updateContainer(@RequestBody Container container){
+        if(container.getContainerItems() != null){
+            for(ContainerItem containerItem: container.getContainerItems()){
+                containerItem.setContainer(container);
+            }
+        }
 
-        return containerService.saveContainer(container);
+        Container parentContainer = container.getParentContainer();
+        if(parentContainer != null){
+            if(parentContainer.getContainerItems() != null) {
+                for (ContainerItem containerItem : parentContainer.getContainerItems()) {
+                    containerItem.setContainer(parentContainer);
+                }
+            }
+        }
+
+        containerService.saveContainer(container);
+    }
+
+    @PutMapping("/edit-parent")
+    public void updateParentContainer(@RequestParam("id") Long id, @RequestParam(required = false) Long parentId){
+        Container container = containerService.findContainerById(id);
+        Container parentContainer = containerService.findContainerById(parentId);
+
+        if(parentContainer != null){
+            if(container.getDescendants().contains(parentContainer)){
+                throw new IllegalArgumentException("This container is already part of the parent's tree");
+            }
+
+            container.addParent(parentContainer);
+        } else {
+            container.setParentContainer(null);
+        }
+
+        containerService.saveContainer(container);
     }
 
     @DeleteMapping("/delete")

@@ -127,9 +127,9 @@ type CustomMenuProps = {
     }
 };
 
-const CustomMenu = React.forwardRef(({ show, children, dimensions }: CustomMenuProps) => {
+const CustomMenu = React.forwardRef<HTMLDivElement, CustomMenuProps>(({ show, children, dimensions }, ref) => {
     return show ? createPortal(
-        <div className="dropdown-menu show" style={{ position: 'absolute', zIndex: 1050, overflowY: "auto", height: "300px", width: `${dimensions.width}px`, left: `${dimensions.x}px`, top: `${dimensions.y + dimensions.height + 3}px` }}>
+        <div ref={ ref } className="dropdown-menu show" style={{ position: 'absolute', zIndex: 1050, overflowY: "auto", height: "300px", width: `${dimensions.width}px`, left: `${dimensions.x}px`, top: `${dimensions.y + dimensions.height + 3}px` }}>
             {children}
         </div>, document.body
     ) : null;

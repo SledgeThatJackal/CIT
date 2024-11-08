@@ -1,7 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createItem, createLink, createTag, deleteItem, deleteLink, deleteTag, updateItem, updateQuantity, updateTag } from "./api";
-import { Item, ItemSchemaType } from "../cit_types/Item";
-import { Tag, TagCreate, TagSchemaType } from "../cit_types/Tag";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createContainer, createItem, createLink, createTag, deleteContainer, deleteItem, deleteLink, deleteTag, updateContainer, updateItem, updateParentContainer, updateQuantity, updateTag } from "./api";
+import { ItemSchemaType } from "../cit_types/Item";
+import { TagCreate, TagSchemaType } from "../cit_types/Tag";
+import { ContainerType } from "../cit_types/Container";
 
 
 // Items
@@ -55,7 +56,79 @@ export function useDeleteItem(){
 };
 
 // Containers
+type ContainerProps = {
+    container: ContainerType;
+    parentContainerId?: number;
+};
 
+export function useCreateContainer(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ container, parentContainerId }: ContainerProps) => createContainer(container, parentContainerId),
+
+        onSettled: async(_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
+            }
+        }
+    });
+};
+
+export function useUpdateContainer(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: ContainerType) => updateContainer(data),
+        
+        onSettled: async(_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
+            }
+        }
+    });
+};
+
+type ParentContainerProps = {
+    id: number;
+    parentContainerId: number;
+};
+
+export function useUpdateParentContainer(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({id, parentContainerId}: ParentContainerProps) => updateParentContainer(id, parentContainerId),
+
+        onSettled: async(_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
+            }
+        },
+    });
+};
+
+export function useDeleteContainer(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: number) => deleteContainer(id),
+
+        onSettled: async (_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
+            }
+        }
+    });
+};
 
 // Links
 type createLinkParams = {
@@ -145,6 +218,7 @@ export function useUpdateTag(){
                 console.error(error);
             } else {
                 await queryClient.invalidateQueries({ queryKey: ["tags"] });
+                await queryClient.invalidateQueries({ queryKey: ["items"] });
             }
         }
     });
@@ -160,7 +234,8 @@ export function useDeleteTag(){
             if(error){
                 console.error(error);
             } else {
-                await queryClient.invalidateQueries({ queryKey: ["tags"] })
+                await queryClient.invalidateQueries({ queryKey: ["tags"] });
+                await queryClient.refetchQueries({ queryKey: ["items"] });
             }
         }
     });

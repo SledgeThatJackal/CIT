@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, Pagi
 
 import { useTableData } from "./useTableData";
 
-import { Item } from '../../../cit_types/Item';
+import { Item, ZodContainerSchema } from '../../../cit_types/Item';
 import { useDeleteItem, useUpdateItem } from '../../../services/mutations';
 import ConfirmationModal from '../../general/ConfirmationModal';
 import { ContainerItem } from '../../../cit_types/ContainerItem';
@@ -13,10 +13,11 @@ import { useDebounce } from '../../../hooks/useDebounce';
 import '../../../styles/ItemTable.css';
 import { MemoizedTableBody, TableBody } from './TableBody';
 import CreateBox from './CreateBox';
-import LinkBox from './LinkBox';
-import { useActionState } from '../../../state/useActionState';
+import { useDeleteModalState } from '../../../state/useDeleteModalState';
+import Canvas from '../../general/Canvas';
+import { useCanvasState } from '../../../state/useCanvasState';
 
-const Input = ({ column }: { column: Column<any, unknown>}) => {
+export const Input = ({ column }: { column: Column<any, unknown>}) => {
     const filterValue: string = (column.getFilterValue() ?? "") as string;
     const [value, setValue] = useState<string>(filterValue);
 
@@ -42,18 +43,10 @@ function ItemTable(){
     const [data, setData] = useState<Item[]>([]);
 
     // Modal
-    const [showModal, setShowModal] = useState<boolean>(false);
-    const handleOpen = () => setShowModal(true);
-    const handleClose = () => setShowModal(false);
-
-    const [deleteId, setDeleteId] = useState<number>(-1);
+    const { showModal, setShowModal, deleteId } = useDeleteModalState();
 
     // Create
-    const [showCreate, setShowCreate] = useState<boolean>(false);
-    const closeCreate = () => setShowCreate(false);
-
-    // Link
-    const showLink = useActionState((state) => state.isVisible);
+    const { openCanvas } = useCanvasState();
 
     // Pagination
     const [pagination, setPagination] = useState<PaginationState>({
@@ -74,12 +67,9 @@ function ItemTable(){
     const removeData = () => {
         pageResetRef.current = true; // Disable page from changing
 
-        deleteItemMutation.mutate(deleteId);
-    };
-
-    const setupDelete = (id: number) => {
-        setDeleteId(id);
-        handleOpen();
+        if(deleteId){
+            deleteItemMutation.mutate(deleteId);
+        }
     };
 
     const table = useReactTable<Item>({
@@ -89,7 +79,7 @@ function ItemTable(){
             minSize: 50,
             maxSize: 1500,
         },
-        getRowCanExpand: (row) => (row.getValue("containerItems") as ContainerItem[]).length > 0,
+        getRowCanExpand: (row) => (row.getValue("containerItems") as ZodContainerSchema[]).length > 0,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination,
@@ -98,13 +88,20 @@ function ItemTable(){
         columnResizeMode: "onChange",
         meta: {
             updateData,
-            setupDelete,
             getItemId: (index: number) => {
                 return data[index].id;
-            }
+            },
         },
         state: {
             pagination
+        },
+        initialState: {
+            sorting: [
+                {
+                    id: "name",
+                    desc: false,
+                }
+            ]
         }
     });
 
@@ -131,22 +128,14 @@ function ItemTable(){
 
     return (
         <Container className="pt-2" fluid>
-            {showCreate && (
-                <CreateBox closeCreate={ closeCreate } />
-            )}
-
-            {showLink && (
-                <LinkBox />
-            )}
-
             <div >
                 <Table hover bordered variant="secondary" className="m-0" style={{ ...columnSize, borderRadius: '8px', overflow: 'hidden' }}>
                     <thead>
                         {table.getHeaderGroups().map(headerGroup => {
-                                return <tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
-                                    return <th key={ `header-${header.id}` } colSpan={ header.colSpan } style={{ width: `calc(var(--header-${header?.id}-size) * 1px)`, position: "relative" }}>
+                                return<tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
+                                    return<th key={ `header-${header.id}` } colSpan={ header.colSpan } style={{ width: `calc(var(--header-${header?.id}-size) * 1px)`, position: "relative" }}>
                                                 {header.isPlaceholder ? null : (
-                                                    <>
+                                                    <React.Fragment key={`headerActions-${header.id}`}>
                                                         <div className={ header.column.getCanSort() ? "sortDiv" : "" } 
                                                             onClick={ header.column.getToggleSortingHandler() } 
                                                             title={ header.column.getCanSort() ? header.column.getNextSortingOrder() === "asc" ? "Ascending" : header.column.getNextSortingOrder() === "desc" ? "Descending" : "Clear" : undefined }>
@@ -160,12 +149,9 @@ function ItemTable(){
                                                         ) : (
                                                             null
                                                         )}
-                                                    </>
-                                                )}
-                                            </th>
-                                })} </tr>
-                            }
-                        )}
+                                                    </React.Fragment>
+                                        )}</th>})}
+                                    </tr>})}
                     </thead>
                     {table.getState().columnSizingInfo.isResizingColumn ? (
                         <MemoizedTableBody table={ table } />
@@ -183,15 +169,15 @@ function ItemTable(){
                 </Table>
             </div>
             <br />
-            {table.getPageCount() > 0 && (
-                <Stack direction="horizontal" gap={ 3 }>
+            <Stack direction="horizontal" gap={ 3 }>
+                {table.getPageCount() > 0 && (
                     <PaginationControl table={ table } />
-                    {!showCreate && (
-                        <Button variant="success" onClick={ () => setShowCreate(true) }>Create</Button>
-                    )}
-                </Stack>
-            )}
-            <ConfirmationModal show={ showModal } handleClose={ handleClose } onDelete={ removeData } message={ "Are you sure you want to delete this item?" } />
+                )}
+                <Button variant="success" onClick={ () => openCanvas(CreateBox, "Create") }>Create</Button>
+            </Stack>
+
+            <Canvas />
+            <ConfirmationModal show={ showModal } handleClose={ () => setShowModal(false) } onDelete={ removeData } message={ "Are you sure you want to delete this item?" } />
         </Container>
     );
 };
