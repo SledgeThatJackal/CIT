@@ -1,4 +1,15 @@
 # CIT
+v0.2.0
+- New Item and Container Tables
+  - Sorting, column filtering, and column resizing
+  - Cell-based editing
+  - Same page creating
+- New Settings Page
+  - Tags
+    - Create, Edit, and Delete Tags
+    - More options later
+  - Type (WIP)
+
 v0.1.3
 - Made inline editing instead of using a modal
 
