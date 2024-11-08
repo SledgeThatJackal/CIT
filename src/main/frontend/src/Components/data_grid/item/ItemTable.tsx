@@ -132,10 +132,10 @@ function ItemTable(){
                 <Table hover bordered variant="secondary" className="m-0" style={{ ...columnSize, borderRadius: '8px', overflow: 'hidden' }}>
                     <thead>
                         {table.getHeaderGroups().map(headerGroup => {
-                                return <tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
-                                    return <th key={ `header-${header.id}` } colSpan={ header.colSpan } style={{ width: `calc(var(--header-${header?.id}-size) * 1px)`, position: "relative" }}>
+                                return<tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
+                                    return<th key={ `header-${header.id}` } colSpan={ header.colSpan } style={{ width: `calc(var(--header-${header?.id}-size) * 1px)`, position: "relative" }}>
                                                 {header.isPlaceholder ? null : (
-                                                    <>
+                                                    <React.Fragment key={`headerActions-${header.id}`}>
                                                         <div className={ header.column.getCanSort() ? "sortDiv" : "" } 
                                                             onClick={ header.column.getToggleSortingHandler() } 
                                                             title={ header.column.getCanSort() ? header.column.getNextSortingOrder() === "asc" ? "Ascending" : header.column.getNextSortingOrder() === "desc" ? "Descending" : "Clear" : undefined }>
@@ -149,12 +149,9 @@ function ItemTable(){
                                                         ) : (
                                                             null
                                                         )}
-                                                    </>
-                                                )}
-                                            </th>
-                                })} </tr>
-                            }
-                        )}
+                                                    </React.Fragment>
+                                        )}</th>})}
+                                    </tr>})}
                     </thead>
                     {table.getState().columnSizingInfo.isResizingColumn ? (
                         <MemoizedTableBody table={ table } />

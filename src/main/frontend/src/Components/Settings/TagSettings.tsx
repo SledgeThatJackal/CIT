@@ -79,7 +79,7 @@ function TagSettings(){
                     Tags: { filteredTags.length || 0 } out of { tagsQuery.data?.length || 0 }
                 </Row>
                 {filteredTags.length > 0 ? filteredTags.sort().map((tag, index) => (
-                    <React.Fragment>
+                    <React.Fragment key={`tagRow-${tag.id}`}>
                         { editId === tag.id ? (
                             <TagForm tag={ tag } onEdit={ onEdit } closeEdit={ closeEdit } />
                         ) : (

@@ -13,7 +13,7 @@ import { useCanvasState } from '../../../state/useCanvasState';
 import ContainerCreate from './ContainerCreate';
 import Canvas from '../../general/Canvas';
 
-function TContainerTable(){
+function ContainerTable(){
     const { columns, containersQuery } = useTableData();
 
     const updateContainerMutation = useUpdateContainer();
@@ -118,14 +118,14 @@ function TContainerTable(){
         <Container className="pt-2" fluid>
             <div>
                 <Table hover bordered variant="secondary" className="m-0" style={{ ...columnSize, borderRadius: '8px', overflow: 'hidden' }}>
-                <thead>
+                    <thead>
                         {table.getHeaderGroups().map(headerGroup => {
-                                    return <tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
-                                        return <th key={ `header-${header.id}` } colSpan={ header.colSpan } style={{ width: `calc(var(--header-${header?.id}-size) * 1px)`, position: "relative" }}>
+                                    return<tr key={ `tableHeader-${headerGroup.id}` }>{headerGroup.headers.map(header => {
+                                        return<th key={ `header-${header.id}` } colSpan={ header.colSpan } style={{ width: `calc(var(--header-${header?.id}-size) * 1px)`, position: "relative" }}>
                                                     {header.isPlaceholder ? null : (
-                                                        <>
-                                                            <div className={ header.column.getCanSort() ? "sortDiv" : "" } 
-                                                                onClick={ header.column.getToggleSortingHandler() } 
+                                                        <React.Fragment key={`headerActions-${header.id}`}>
+                                                            <div className={ header.column.getCanSort() ? "sortDiv" : "" }
+                                                                onClick={ header.column.getToggleSortingHandler() }
                                                                 title={ header.column.getCanSort() ? header.column.getNextSortingOrder() === "asc" ? "Ascending" : header.column.getNextSortingOrder() === "desc" ? "Descending" : "Clear" : undefined }>
                                                                     {flexRender(header.column.columnDef.header, header.getContext())} {{asc: " ▲", desc: " ▼"}[header.column.getIsSorted() as string] ?? null}
                                                                     <div onDoubleClick={ () => header.column.resetSize() } onMouseDown={ header.getResizeHandler() } onTouchStart={ header.getResizeHandler() } className={`${header.column.getCanResize() ? "resizer" : "" } ${header.column.getIsResizing() ? "isResizing" : ""}`} />
@@ -137,13 +137,10 @@ function TContainerTable(){
                                                             ) : (
                                                                 null
                                                             )}
-                                                        </>
-                                                    )}
-                                                </th>
-                                    })} </tr>
-                                }
-                            )}
-                        </thead>
+                                                        </React.Fragment>
+                                            )}</th>})}
+                                        </tr>})}
+                    </thead>
                         {table.getState().columnSizingInfo.isResizingColumn ? (
                             <MemoizedTableBody table={ table } />
                         ) : (
@@ -166,4 +163,4 @@ function TContainerTable(){
     );
 };
 
-export default TContainerTable;
+export default ContainerTable;

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Item } from "../../../cit_types/Item";
 import { flexRender, Table } from "@tanstack/react-table";
 import ContainerTable from "./container_row/ContainerTable";
@@ -12,7 +12,7 @@ export const TableBody = ({ table }: TableBodyProps) => {
         <tbody>
             {table.getRowModel().rows.map(row => {
                 return(
-                    <Fragment>
+                    <React.Fragment key={`rowFragment-${row.id}`}>
                         <tr key={ `row-${row.id}` }>
                             {row.getVisibleCells().map(cell => {
                                 return <td key={ `cell-${cell.id}` } className="align-middle" style={{ width: `calc(var(--col-${cell.column.id}-size) * 1px)` }}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
@@ -25,7 +25,7 @@ export const TableBody = ({ table }: TableBodyProps) => {
                                 </td>
                             </tr>
                         )}
-                    </Fragment>
+                    </React.Fragment>
                 )
             })}
         </tbody>

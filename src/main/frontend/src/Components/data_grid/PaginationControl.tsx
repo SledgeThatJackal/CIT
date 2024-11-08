@@ -2,6 +2,7 @@ import { Table } from "@tanstack/react-table";
 import React from "react";
 import { Form, InputGroup, Pagination, Stack } from 'react-bootstrap';
 import { generate } from "@bramus/pagination-sequence";
+import { toBePartiallyChecked } from "@testing-library/jest-dom/matchers";
 
 type PaginationControlProps = {
     table: Table<any>;
@@ -18,13 +19,13 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
                 <Pagination.Prev key={ `page-prev` } onClick={ () => table.previousPage() } disabled={ !table.getCanPreviousPage() } />
 
                 {sequence.map((value, index) => (
-                    <>
+                    <React.Fragment key={`page-${index}`}>
                         {value === '...' ? (
                             <Pagination.Ellipsis disabled />
                         ) : (
-                            <Pagination.Item key={`page-${index}`} onClick={ () => table.setPageIndex(index) } active={ currentPage === index} >{value}</Pagination.Item>
+                            <Pagination.Item onClick={ () => table.setPageIndex(index) } active={ currentPage === index} >{value}</Pagination.Item>
                         )}
-                    </>
+                    </React.Fragment>
                 ))}
 
                 <Pagination.Next key={ `page-next` } onClick={ () => table.nextPage() } disabled={ !table.getCanNextPage() } />
@@ -36,7 +37,7 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
             </InputGroup>
             <InputGroup className="w-auto">
                 <InputGroup.Text><strong>Show:</strong></InputGroup.Text>
-                <Form.Select aria-label="Page Size">
+                <Form.Select aria-label="Page Size" onChange={ e => table.setPageSize(Number(e.target.value)) } value={ table.getState().pagination.pageSize }>
                     {[10, 20, 30, 40, 50].map(size => (
                         <option key={ `size-${size}` } value={ size }>
                             {size}

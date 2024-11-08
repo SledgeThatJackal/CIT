@@ -46,3 +46,6 @@ build/
 
 ### Export Files ###
 cit_export.json
+
+### Config ###
+.editorconfig
