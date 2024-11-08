@@ -56,11 +56,16 @@ export function useDeleteItem(){
 };
 
 // Containers
+type ContainerProps = {
+    container: ContainerType;
+    parentContainerId?: number;
+};
+
 export function useCreateContainer(){
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (data: ContainerType) => createContainer(data),
+        mutationFn: ({ container, parentContainerId }: ContainerProps) => createContainer(container, parentContainerId),
 
         onSettled: async(_, error) => {
             if(error){

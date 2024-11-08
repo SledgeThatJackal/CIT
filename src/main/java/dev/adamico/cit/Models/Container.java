@@ -32,7 +32,6 @@ public class Container {
     @ManyToOne(targetEntity = Container.class, fetch = FetchType.EAGER)
     @JsonView(Views.ExclusiveObject.class)
     @JsonIgnoreProperties("parentContainer")
-    @JsonManagedReference
     private Container parentContainer;
 
     @Column(name="parent_id", insertable = false, updatable = false)
@@ -41,7 +40,6 @@ public class Container {
 
     @OneToMany(mappedBy = "parentContainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
-    @JsonBackReference
     private Set<Container> childContainers = new HashSet<>();
 
 

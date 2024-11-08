@@ -43,7 +43,12 @@ public class ContainerController {
     }
 
     @PostMapping("/create")
-    public void createContainer(@RequestBody Container container){
+    public void createContainer(@RequestParam Long id, @RequestBody Container container){
+        Container parent = containerService.findContainerById(id);
+        if(parent != null){
+            container.addParent(parent);
+        }
+
         containerService.saveContainer(container);
     }
 

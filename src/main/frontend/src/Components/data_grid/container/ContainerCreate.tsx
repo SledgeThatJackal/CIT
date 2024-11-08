@@ -4,8 +4,10 @@ import { useCreateContainer } from '../../../services/mutations';
 import { useCanvasState } from '../../../state/useCanvasState';
 import { useForm } from 'react-hook-form';
 import { ContainerType } from '../../../cit_types/Container';
+import { useDetailedContainers } from '../../../services/queries';
 
 const ContainerCreate = () => {
+    const containerQuery = useDetailedContainers().data;
     const createContainerMutation = useCreateContainer();
     const { closeCanvas } = useCanvasState();
 
@@ -19,8 +21,11 @@ const ContainerCreate = () => {
 
     });
 
-    const onSubmit = async (data: ContainerType) => {
-        createContainerMutation.mutate(data);
+    const onSubmit = async (container: ContainerType) => {
+        const parentContainerId = Number(container.parentContainer);
+        container.parentContainer = undefined;
+
+        createContainerMutation.mutate({ container, parentContainerId });
         reset();
     };
 
@@ -54,7 +59,14 @@ const ContainerCreate = () => {
                     </Form.Group>
                     <Form.Group as={ Col } controlId="floatingParent">
                         <FloatingLabel controlId="floatingParent" label="Parent Container">
-                            
+                            <Form.Select {...register("parentContainer")}>
+                                <option key="parentCreate-none" value={ undefined }></option>
+                                {containerQuery ? containerQuery.sort((a, b) => a.name.localeCompare(b.name)).map((container) => (
+                                    <option key={`parentCreate-${container.id}`} value={ container.id} >{container.name} ({container.scannerId})</option>
+                                )) : (
+                                    <option key="parentCreate-empty" value={ undefined }>No Containers Found</option>
+                                )}
+                            </Form.Select>
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">
                             {errors.parentContainer?.message}

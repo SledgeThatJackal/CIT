@@ -44,7 +44,7 @@ const EditCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
             {isEditing ? (
                 <Form.Control type="text" value={ value } onChange={ onChange } onBlur={ onBlur } onKeyDown={ handleEnter } autoFocus />
             ) : (
-                <span onDoubleClick={ handleDoubleClick }>{value}</span>
+                <div style={{ ...(!value && { height: "20px" }) }} onDoubleClick={ handleDoubleClick }>{value}</div>
             )}
         </>
     );

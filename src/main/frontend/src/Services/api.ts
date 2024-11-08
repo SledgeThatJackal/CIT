@@ -40,8 +40,8 @@ export const getDetailedContainers = async () => {
 };
 
     // Mutate
-export const createContainer = async (data: ContainerType) => {
-    await axios.post(`/api/container/create`, data);
+export const createContainer = async (data: ContainerType, id?: number) => {
+    await axios.post(`/api/container/create?id=${id}`, data);
 };
 
 export const updateContainer = async (data: ContainerType) => {

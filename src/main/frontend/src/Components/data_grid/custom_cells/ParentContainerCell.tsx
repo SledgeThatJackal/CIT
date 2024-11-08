@@ -29,16 +29,16 @@ const ParentContainerCell = ({ getValue, row: { index }, table }: any) => {
     return(
         <>
             {isEditing ? (
-                <Form.Select onChange={ onChange } value={ initialValue }>
+                <Form.Select onChange={ onChange } onBlur={ () => setIsEditing(false) } value={ initialValue }>
                     <option value={ -1 } key={ "default-option" }></option>
-                    {containersQuery ? containersQuery.map((container, mapIndex) => (
-                        <option key={ `options-${container.id}` } value={ container.id } disabled={ container.id === table.options.meta?.getContainerId(index) }>{container.name}</option>
+                    {containersQuery ? containersQuery.sort((a, b) => a.name.localeCompare(b.name)).map((container) => (
+                        <option key={ `options-${container.id}` } value={ container.id } disabled={ container.id === table.options.meta?.getContainerId(index) }>{`${container.name} (${container.scannerId})`}</option>
                     )) : (
                         <option key={ `no-options` }>No Containers found</option>
                     )}
                 </Form.Select>
             ) : (
-                <span onDoubleClick={ () => setIsEditing(true) }>{tableValue ? tableValue.name : "N/A"}</span>
+                <div style={{ ...(!tableValue && { height: "20px" }) }} onDoubleClick={ () => setIsEditing(true) }>{tableValue && tableValue.name }</div>
             )}
         </>
     );
