@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useDetailedContainers } from '../../../services/queries';
 
-const ParentContainerCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
+const ParentContainerCell = ({ getValue, row: { index }, table }: any) => {
     const containersQuery = useDetailedContainers().data;
     const tableValue = getValue();
 
@@ -14,16 +14,14 @@ const ParentContainerCell = ({ getValue, row: { index }, column: { id }, table }
         );
     }
 
-    const initialValue = tableValue ? containersQuery.findIndex(container => container.id === tableValue.id) : -1;
+    const initialValue = tableValue ? containersQuery.find(container => container.id === tableValue.id)?.id : -1;
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const onChange = (e: any) => {
         const selectedValue = e.target.value;
 
-        const container = selectedValue < 0 ? undefined : containersQuery[selectedValue];
-
-        table.options.meta?.updateData(index, id, container);
+        table.options.meta?.updateParentContainer(index, selectedValue);
 
         setIsEditing(false);
     };
@@ -32,11 +30,11 @@ const ParentContainerCell = ({ getValue, row: { index }, column: { id }, table }
         <>
             {isEditing ? (
                 <Form.Select onChange={ onChange } value={ initialValue }>
-                    <option value={ -1 }></option>
+                    <option value={ -1 } key={ "default-option" }></option>
                     {containersQuery ? containersQuery.map((container, mapIndex) => (
-                        <option value={ mapIndex } disabled={ container.id === table.options.meta?.getContainerId(index) }>{container.name}</option>
+                        <option key={ `options-${container.id}` } value={ container.id } disabled={ container.id === table.options.meta?.getContainerId(index) }>{container.name}</option>
                     )) : (
-                        <option>No Containers found</option>
+                        <option key={ `no-options` }>No Containers found</option>
                     )}
                 </Form.Select>
             ) : (

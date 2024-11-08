@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createContainer, createItem, createLink, createTag, deleteContainer, deleteItem, deleteLink, deleteTag, updateContainer, updateItem, updateQuantity, updateTag } from "./api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createContainer, createItem, createLink, createTag, deleteContainer, deleteItem, deleteLink, deleteTag, updateContainer, updateItem, updateParentContainer, updateQuantity, updateTag } from "./api";
 import { ItemSchemaType } from "../cit_types/Item";
 import { TagCreate, TagSchemaType } from "../cit_types/Tag";
 import { ContainerType } from "../cit_types/Container";
@@ -85,6 +85,27 @@ export function useUpdateContainer(){
                 await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
             }
         }
+    });
+};
+
+type ParentContainerProps = {
+    id: number;
+    parentContainerId: number;
+};
+
+export function useUpdateParentContainer(){
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({id, parentContainerId}: ParentContainerProps) => updateParentContainer(id, parentContainerId),
+
+        onSettled: async(_, error) => {
+            if(error){
+                console.error(error);
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
+            }
+        },
     });
 };
 

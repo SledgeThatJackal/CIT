@@ -1,17 +1,15 @@
 package dev.adamico.cit.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import dev.adamico.cit.Views;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,17 +29,20 @@ public class Container {
     private String scannerId;
 
     @JoinColumn(name = "parent_id")
-    @ManyToOne(targetEntity = Container.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Container.class, fetch = FetchType.EAGER)
     @JsonView(Views.ExclusiveObject.class)
+    @JsonIgnoreProperties("parentContainer")
+    @JsonManagedReference
     private Container parentContainer;
 
     @Column(name="parent_id", insertable = false, updatable = false)
     @JsonView(Views.ExclusiveID.class)
     private Long parentContainerId;
 
-    @OneToMany(mappedBy = "parentContainer", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "parentContainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Container> childContainers = new ArrayList<>();
+    @JsonBackReference
+    private Set<Container> childContainers = new HashSet<>();
 
 
     @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -49,12 +50,30 @@ public class Container {
     @JsonIgnoreProperties("container")
     private Set<ContainerItem> containerItems;
 
+    @Transactional
     public void addParent(Container parent){
         this.parentContainer = parent;
         parent.addChild(this);
     }
 
+    @Transactional
     public void addChild(Container child){
         this.childContainers.add(child);
+    }
+
+    @JsonIgnore
+    public Set<Container> getDescendants(){
+        Set<Container> descendants = new HashSet<>();
+        addDescendantsToSet(descendants);
+
+        return descendants;
+    }
+
+    @JsonIgnore
+    private void addDescendantsToSet(Set<Container> descendants){
+        for(Container child: this.getChildContainers()){
+            descendants.add(child);
+            child.addDescendantsToSet(descendants);
+        }
     }
 }

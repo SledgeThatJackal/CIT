@@ -57,18 +57,29 @@ public class ContainerController {
 
         Container parentContainer = container.getParentContainer();
         if(parentContainer != null){
-            if(parentContainer.getContainerItems() != null){
-                for(ContainerItem containerItem: parentContainer.getContainerItems()){
+            if(parentContainer.getContainerItems() != null) {
+                for (ContainerItem containerItem : parentContainer.getContainerItems()) {
                     containerItem.setContainer(parentContainer);
                 }
             }
-
-            container.addParent(parentContainer);
         }
 
-        assert parentContainer != null;
-        if(parentContainer.getChildContainers().contains(container)){
-            throw new IllegalArgumentException("This container is already part of the parent's tree");
+        containerService.saveContainer(container);
+    }
+
+    @PutMapping("/edit-parent")
+    public void updateParentContainer(@RequestParam("id") Long id, @RequestParam(required = false) Long parentId){
+        Container container = containerService.findContainerById(id);
+        Container parentContainer = containerService.findContainerById(parentId);
+
+        if(parentContainer != null){
+            if(container.getDescendants().contains(parentContainer)){
+                throw new IllegalArgumentException("This container is already part of the parent's tree");
+            }
+
+            container.addParent(parentContainer);
+        } else {
+            container.setParentContainer(null);
         }
 
         containerService.saveContainer(container);

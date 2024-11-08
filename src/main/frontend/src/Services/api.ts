@@ -48,6 +48,10 @@ export const updateContainer = async (data: ContainerType) => {
     await axios.put(`/api/container/edit`, data);
 };
 
+export const updateParentContainer = async (id: number, parentContainerId: number) => {
+    await axios.put(`/api/container/edit-parent?id=${id}&parentId=${parentContainerId}`,);
+};
+
 export const deleteContainer = async (id: number) => {
     await axios.delete(`/api/container/delete?id=${id}`);
 };

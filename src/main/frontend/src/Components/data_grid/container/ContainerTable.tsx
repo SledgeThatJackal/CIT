@@ -8,7 +8,7 @@ import { Input } from '../item/ItemTable';
 import { MemoizedTableBody, TableBody } from './TableBody';
 import ConfirmationModal from '../../general/ConfirmationModal';
 import { useDeleteModalState } from '../../../state/useDeleteModalState';
-import { useUpdateContainer, useDeleteContainer } from '../../../services/mutations';
+import { useUpdateContainer, useDeleteContainer, useUpdateParentContainer } from '../../../services/mutations';
 import { useCanvasState } from '../../../state/useCanvasState';
 import ContainerCreate from './ContainerCreate';
 import Canvas from '../../general/Canvas';
@@ -17,6 +17,7 @@ function TContainerTable(){
     const { columns, containersQuery } = useTableData();
 
     const updateContainerMutation = useUpdateContainer();
+    const updateParentContainerMutation = useUpdateParentContainer();
     const deleteContainerMutation = useDeleteContainer();
 
     const [data, setData] = useState<ContainerType[]>([]);
@@ -41,8 +42,14 @@ function TContainerTable(){
         const updatedContainer = {...data[rowIndex], [columnID]: value};
 
         updateContainerMutation.mutate({...updatedContainer});
+    };
 
-        console.log(updatedContainer);
+    const updateParentContainer = (rowIndex: number, parentContainerId: any) => {
+        pageResetRef.current = true;
+
+        const id = data[rowIndex].id;
+        
+        updateParentContainerMutation.mutate({ id, parentContainerId });
     };
 
     const removeData = () => {
@@ -68,6 +75,7 @@ function TContainerTable(){
         columnResizeMode: "onChange",
         meta: {
             updateData,
+            updateParentContainer,
             getContainerId: (rowIndex: number) => {
                 return data[rowIndex].id;
             }
