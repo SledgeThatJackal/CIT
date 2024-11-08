@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from 'axios';
 
 import { Row, Col, Form, Button, Stack, FloatingLabel } from 'react-bootstrap';
 
 import TagBadge from '../tag/TagBadge';
 
 import { Tag } from '../../cit_types/Tag';
-import { useCreateTag, useUpdateItem, useUpdateTag } from '../../services/mutations';
+import { useCreateTag, useUpdateTag } from '../../services/mutations';
 
 type TagFormProps = {
     tag?: Tag;

@@ -1,37 +1,27 @@
-import { ContainerItem, ContainerItemSchema } from './ContainerItem';
-import { ContainerDTO } from './Container';
-import { Tag, TagSchema } from './Tag';
-import { z } from 'zod';
+import { z } from "zod";
+import { Tag, TagSchema } from "./Tag";
 
 export type Item = {
     id: number;
     name: string;
     description?: string;
-    containerItems?: ContainerItem[];
+    containerItems?: ZodContainerItemSchema[];
     tags?: Tag[];
 };
 
-export type ItemResponse = {
-    content: Item[];
-    totalPages: number;
-};
+const ContainerSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    description: z.string().optional(),
+    scannerId: z.string(),
+    parentContainer: z.number().optional()
+});
 
-export type LinkDTO = {
-    linkId?: number;
-    quantity: number;
-    name: string;
-    scannerId: string;
-};
-
-export type ItemDTO = {
-    item: Item;
-    links: LinkDTO[];
-};
-
-export type EditData = {
-    itemDTO: ItemDTO;
-    containerDTOs?: ContainerDTO[];
-};
+export const ContainerItemSchema = z.object({
+    id: z.number().optional(),
+    container: ContainerSchema.optional(),
+    quantity: z.number(),
+});
 
 export const ItemSchema = z.object({
     id: z.number().optional(),
@@ -41,17 +31,8 @@ export const ItemSchema = z.object({
     tags: z.array(TagSchema).optional(),
 });
 
-export const LinkSchema = z.object({
-    scannerId: z.string().optional(),
-    quantity: z.number().optional(),
-    linkId: z.number().optional().nullable(),
-}).optional();
-
-export const ItemFormSchema = z.object({
-    item: ItemSchema,
-    links: z.array(LinkSchema),
-});
-
-export type ItemFormSchemaType = z.infer<typeof ItemFormSchema>;
-
 export type ItemSchemaType = z.infer<typeof ItemSchema>;
+
+export type ZodContainerSchema = z.infer<typeof ContainerSchema>;
+
+export type ZodContainerItemSchema = z.infer<typeof ContainerItemSchema>;

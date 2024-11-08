@@ -41,4 +41,11 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>("An internal server error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(Exception ex){
+        logger.error(ex.getMessage());
+
+        return new ResponseEntity<>("You cannot add a parent container to it's child.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createContainer, createItem, createLink, createTag, deleteContainer, deleteItem, deleteLink, deleteTag, updateContainer, updateItem, updateQuantity, updateTag } from "./api";
-import { Item, ItemSchemaType } from "../cit_types/Item";
-import { Tag, TagCreate, TagSchemaType } from "../cit_types/Tag";
+import { ItemSchemaType } from "../cit_types/Item";
+import { TagCreate, TagSchemaType } from "../cit_types/Tag";
 import { ContainerType } from "../cit_types/Container";
 
 
@@ -66,7 +66,7 @@ export function useCreateContainer(){
             if(error){
                 console.error(error);
             } else {
-                await queryClient.invalidateQueries({ queryKey: ["containers"] });
+                await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
             }
         }
     });
@@ -82,7 +82,7 @@ export function useUpdateContainer(){
             if(error){
                 console.error(error);
             } else {
-                await queryClient.invalidateQueries({ queryKey: ["containers"] });
+                await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
             }
         }
     });
@@ -98,7 +98,7 @@ export function useDeleteContainer(){
             if(error){
                 console.error(error);
             } else {
-                await queryClient.invalidateQueries({ queryKey: ["containers"] });
+                await queryClient.invalidateQueries({ queryKey: ["detailedContainers"] });
             }
         }
     });

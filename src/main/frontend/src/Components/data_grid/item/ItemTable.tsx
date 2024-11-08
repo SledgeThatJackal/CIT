@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable, flexRender, getPaginationRowModel, Pagi
 
 import { useTableData } from "./useTableData";
 
-import { Item } from '../../../cit_types/Item';
+import { Item, ZodContainerSchema } from '../../../cit_types/Item';
 import { useDeleteItem, useUpdateItem } from '../../../services/mutations';
 import ConfirmationModal from '../../general/ConfirmationModal';
 import { ContainerItem } from '../../../cit_types/ContainerItem';
@@ -13,8 +13,6 @@ import { useDebounce } from '../../../hooks/useDebounce';
 import '../../../styles/ItemTable.css';
 import { MemoizedTableBody, TableBody } from './TableBody';
 import CreateBox from './CreateBox';
-import LinkBox from './LinkBox';
-import { useActionState } from '../../../state/useActionState';
 import { useDeleteModalState } from '../../../state/useDeleteModalState';
 import Canvas from '../../general/Canvas';
 import { useCanvasState } from '../../../state/useCanvasState';
@@ -81,7 +79,7 @@ function ItemTable(){
             minSize: 50,
             maxSize: 1500,
         },
-        getRowCanExpand: (row) => (row.getValue("containerItems") as ContainerItem[]).length > 0,
+        getRowCanExpand: (row) => (row.getValue("containerItems") as ZodContainerSchema[]).length > 0,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination,
@@ -96,6 +94,14 @@ function ItemTable(){
         },
         state: {
             pagination
+        },
+        initialState: {
+            sorting: [
+                {
+                    id: "name",
+                    desc: false,
+                }
+            ]
         }
     });
 

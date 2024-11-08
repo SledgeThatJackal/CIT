@@ -9,7 +9,7 @@ const EditCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
 
     const onChange = (e: any) => {
         setValue(e.target.value);
-    }
+    };
 
     const onBlur = async () => {
         if(!isCancelled){

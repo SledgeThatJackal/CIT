@@ -2,6 +2,7 @@ package dev.adamico.cit.Controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.Container;
+import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ public class ContainerController {
     private ContainerService containerService;
 
     @GetMapping
-    @JsonView(Views.Exclusive.class)
+    @JsonView(Views.ExclusiveID.class)
     public List<Container> getContainers(){
         return containerService.findAllContainers();
     }
 
     @GetMapping("/detail")
-    @JsonView(Views.Inclusive.class)
+    @JsonView(Views.InclusiveObject.class)
     public List<Container> getDetailedContainers(){
         return containerService.findAllContainers();
     }
@@ -48,6 +49,28 @@ public class ContainerController {
 
     @PutMapping("/edit")
     public void updateContainer(@RequestBody Container container){
+        if(container.getContainerItems() != null){
+            for(ContainerItem containerItem: container.getContainerItems()){
+                containerItem.setContainer(container);
+            }
+        }
+
+        Container parentContainer = container.getParentContainer();
+        if(parentContainer != null){
+            if(parentContainer.getContainerItems() != null){
+                for(ContainerItem containerItem: parentContainer.getContainerItems()){
+                    containerItem.setContainer(parentContainer);
+                }
+            }
+
+            container.addParent(parentContainer);
+        }
+
+        assert parentContainer != null;
+        if(parentContainer.getChildContainers().contains(container)){
+            throw new IllegalArgumentException("This container is already part of the parent's tree");
+        }
+
         containerService.saveContainer(container);
     }
 

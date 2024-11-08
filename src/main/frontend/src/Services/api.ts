@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Item, ItemSchemaType } from '../cit_types/Item';
+import { Item, ItemSchemaType, ZodContainerSchema } from '../cit_types/Item';
 import { Tag, TagCreate } from '../cit_types/Tag';
 import { ContainerType } from '../cit_types/Container';
 
@@ -32,7 +32,11 @@ export const deleteItem = async (id: number) => {
 
     // Query
 export const getContainers = async () => {
-    return (await axios.get<ContainerType[]>(`/api/container`)).data;
+    return (await axios.get<ZodContainerSchema[]>(`/api/container`)).data;
+};
+
+export const getDetailedContainers = async () => {
+    return (await axios.get<ContainerType[]>(`/api/container/detail`)).data;
 };
 
     // Mutate

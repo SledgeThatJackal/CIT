@@ -10,7 +10,7 @@ const RootLayout = () => {
     return (
         <>
             <header>
-                <Navbar justify expand="lg" bg="dark" className="border-bottom border-body" data-bs-theme="dark">
+                <Navbar expand="lg" bg="dark" className="border-bottom border-body" data-bs-theme="dark">
                     <Container fluid>
                         <Navbar.Brand as={ NavLink } to="/" className="text-light" onClick={ () => setActiveKey("home") }>CIT</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />

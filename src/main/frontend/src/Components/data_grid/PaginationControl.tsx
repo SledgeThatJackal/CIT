@@ -1,7 +1,6 @@
 import { Table } from "@tanstack/react-table";
 import React from "react";
 import { Form, InputGroup, Pagination, Stack } from 'react-bootstrap';
-import { Item } from "../../cit_types/Item";
 import { generate } from "@bramus/pagination-sequence";
 
 type PaginationControlProps = {
@@ -15,8 +14,8 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
     return (
         <Stack direction="horizontal" gap={ 3 }>
             <Pagination className="my-0">
-                <Pagination.First onClick={ () => table.firstPage() } disabled={ !table.getCanPreviousPage() } />
-                <Pagination.Prev onClick={ () => table.previousPage() } disabled={ !table.getCanPreviousPage() } />
+                <Pagination.First key={ `page-first` } onClick={ () => table.firstPage() } disabled={ !table.getCanPreviousPage() } />
+                <Pagination.Prev key={ `page-prev` } onClick={ () => table.previousPage() } disabled={ !table.getCanPreviousPage() } />
 
                 {sequence.map((value, index) => (
                     <>
@@ -28,8 +27,8 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
                     </>
                 ))}
 
-                <Pagination.Next onClick={ () => table.nextPage() } disabled={ !table.getCanNextPage() } />
-                <Pagination.Last onClick={ () => table.lastPage() } disabled={ !table.getCanNextPage() } />
+                <Pagination.Next key={ `page-next` } onClick={ () => table.nextPage() } disabled={ !table.getCanNextPage() } />
+                <Pagination.Last key={ `page-Last` } onClick={ () => table.lastPage() } disabled={ !table.getCanNextPage() } />
             </Pagination>
             <InputGroup className="w-auto">
                 <InputGroup.Text><strong>Navigate To Page:</strong></InputGroup.Text>

@@ -2,8 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useController, FieldValues, Control, UseFormSetFocus, UseFormSetError, UseFormClearErrors, FieldErrors, FieldArrayWithId, UseFieldArrayUpdate, useWatch, UseFormGetValues } from 'react-hook-form';
 import { Dropdown, Overlay, Tooltip } from 'react-bootstrap';
 
-import { ContainerType } from '../../cit_types/Container';
-import { ItemSchemaType } from '../../cit_types/Item';
+import { ItemSchemaType, ZodContainerSchema } from '../../cit_types/Item';
 import { useContainers } from '../../services/queries';
 
 type InputControllerProps ={
@@ -73,14 +72,14 @@ const ComboBox = ({ index, field, control, errors, update, setError, clearErrors
 
     const fieldId = getValues(`containerItems.${index}.id`);
 
-    const handleDropdownClick = (value: ContainerType) => {
+    const handleDropdownClick = (value: ZodContainerSchema) => {
         const updatedItem = {...field, id: undefined, container: value};
         update(index, updatedItem);
     };
 
     const checkIfContainerExists = (scannerId: string): boolean => {
         if(scannerId.length >= 0 && containerQuery?.some(container => container.scannerId === scannerId)){
-            const container: ContainerType = containerQuery?.find(container => container.scannerId === scannerId)!;
+            const container: ZodContainerSchema = containerQuery?.find(container => container.scannerId === scannerId)!;
             handleDropdownClick(container);
 
             return true;

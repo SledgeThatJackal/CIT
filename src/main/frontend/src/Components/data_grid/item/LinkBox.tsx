@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Container, Form, Stack } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import ContainerSection from './ContainerSection';
-import { Item, ItemSchema, ItemSchemaType } from '../../../cit_types/Item';
+import { ItemSchema, ItemSchemaType } from '../../../cit_types/Item';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUpdateItem } from '../../../services/mutations';
 import { useActionState } from '../../../state/useActionState';

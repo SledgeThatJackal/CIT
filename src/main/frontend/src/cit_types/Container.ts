@@ -1,30 +1,44 @@
-import { ContainerItem, ContainerItemSchema } from './ContainerItem';
-import { z } from 'zod';
+import { z } from "zod";
+import { TagSchema } from "./Tag";
 
 export type ContainerType = {
     id: number;
     name: string;
     description?: string;
     scannerId: string;
-    parentContainer?: string;
-    containerItems?: ContainerItem[];
+    parentContainer?: ContainerType;
+    containerItems?: ZodContainerItemSchema[];
 };
 
-export type ContainerDTO = {
-    name: string;
-    scannerId: string
-};
+const ItemSchema = z.object({
+    id: z.number().optional(),
+    name: z.string({message: 'The Item name is required'}),
+    description: z.string().optional(),
+    tags: z.array(TagSchema).optional(),
+});
 
-export const ContainerSchema = z.object({
+export const ContainerItemSchema = z.object({
+    id: z.number().optional(),
+    item: ItemSchema.optional(),
+    quantity: z.number(),
+});
+
+const BaseContainerSchema = z.object({
     id: z.number(),
     name: z.string(),
     description: z.string().optional(),
     scannerId: z.string(),
-    parentContainer: z.string().optional(),
     containerItems: z.array(ContainerItemSchema).optional(),
 });
 
-export type ContainerResponse = {
-    content: ContainerType[];
-    totalPages: number;
-};
+const ParentContainerSchema = z.object({
+    parentContainer: BaseContainerSchema,
+});
+
+export const ContainerSchema = BaseContainerSchema.merge(ParentContainerSchema);
+
+export type ZodContainerType = z.infer<typeof ContainerSchema>;
+
+export type ZodItemSchema = z.infer<typeof ItemSchema>;
+
+export type ZodContainerItemSchema = z.infer<typeof ContainerItemSchema>;

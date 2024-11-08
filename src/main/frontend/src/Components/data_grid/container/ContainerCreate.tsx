@@ -54,7 +54,7 @@ const ContainerCreate = () => {
                     </Form.Group>
                     <Form.Group as={ Col } controlId="floatingParent">
                         <FloatingLabel controlId="floatingParent" label="Parent Container">
-                            <Form.Control {...register("parentContainer")} type="text" />
+                            
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">
                             {errors.parentContainer?.message}

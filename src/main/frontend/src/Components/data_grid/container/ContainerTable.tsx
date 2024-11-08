@@ -38,9 +38,11 @@ function TContainerTable(){
     const updateData = (rowIndex: number, columnID: string, value: any) => {
         pageResetRef.current = true; // Disable page from changing
 
-        const updateContainer = {...data[rowIndex], [columnID]: value};
+        const updatedContainer = {...data[rowIndex], [columnID]: value};
 
-        updateContainerMutation.mutate({...updateContainer});
+        updateContainerMutation.mutate({...updatedContainer});
+
+        console.log(updatedContainer);
     };
 
     const removeData = () => {
@@ -66,9 +68,20 @@ function TContainerTable(){
         columnResizeMode: "onChange",
         meta: {
             updateData,
+            getContainerId: (rowIndex: number) => {
+                return data[rowIndex].id;
+            }
         },
         state: {
             pagination
+        },
+        initialState: {
+            sorting: [
+                {
+                    id: "name",
+                    desc: false,
+                }
+            ]
         }
     });
 

@@ -1,14 +1,15 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { ContainerType } from "../../../cit_types/Container";
-import { useContainers } from "../../../services/queries";
+import { useDetailedContainers } from "../../../services/queries";
 import { useMemo } from "react";
 import EditCell from "../custom_cells/EditCell";
 import DeleteCell from "../custom_cells/DeleteCell";
+import ParentContainerCell from "../custom_cells/ParentContainerCell";
 
 const columnHelper = createColumnHelper<ContainerType>();
 
 export const useTableData = () => {
-    const containersQuery = useContainers().data;
+    const containersQuery = useDetailedContainers().data;
 
     const columns = useMemo(() => [
         columnHelper.accessor("name", {
@@ -21,7 +22,8 @@ export const useTableData = () => {
             id: "description",
             header: "Description",
             enableResizing: true,
-            cell: EditCell
+            cell: EditCell,
+            sortUndefined: 1
         }),
         columnHelper.accessor("scannerId", {
             id: "scannerId",
@@ -33,7 +35,8 @@ export const useTableData = () => {
             id: "parentContainer",
             header: "Parent Container ID",
             enableResizing: true,
-            cell: EditCell
+            cell: ParentContainerCell,
+            sortUndefined: 1
         }),
         columnHelper.accessor("id", {
             id: "id",
