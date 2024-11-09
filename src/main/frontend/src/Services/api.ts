@@ -1,95 +1,106 @@
-import axios from 'axios';
+import axios from "axios";
 
-import { Item, ItemSchemaType, ZodContainerSchema } from '../cit_types/Item';
-import { Tag, TagCreate } from '../cit_types/Tag';
-import { ContainerType } from '../cit_types/Container';
+import { Item, ItemSchemaType, ZodContainerSchema } from "@item/schemas/Item";
+import { Tag, TagCreate } from "@schema/Tag";
+import { ContainerType } from "@container/schemas/Container";
 
 // Items
 
-    // Query
+// Query
 export const getItem = async (id: number) => {
-    return (await axios.get<Item>(`/api/item/id?id=${id}`)).data;
+  return (await axios.get<Item>(`/api/item/id?id=${id}`)).data;
 };
 
 export const getItems = async () => {
-    return (await axios.get<Item[]>("/api/item")).data;
+  return (await axios.get<Item[]>("/api/item")).data;
 };
 
-    // Mutate
+// Mutate
 export const createItem = async (data: ItemSchemaType) => {
-    await axios.post(`/api/item/create`, data);
+  await axios.post(`/api/item/create`, data);
 };
 
 export const updateItem = async (data: ItemSchemaType) => {
-    await axios.put(`/api/item/edit`, data);
+  await axios.put(`/api/item/edit`, data);
 };
 
 export const deleteItem = async (id: number) => {
-    await axios.delete(`/api/item/delete?id=${id}`);
+  await axios.delete(`/api/item/delete?id=${id}`);
 };
 
 // Containers
 
-    // Query
+// Query
 export const getContainers = async () => {
-    return (await axios.get<ZodContainerSchema[]>(`/api/container`)).data;
+  return (await axios.get<ZodContainerSchema[]>(`/api/container`)).data;
 };
 
 export const getDetailedContainers = async () => {
-    return (await axios.get<ContainerType[]>(`/api/container/detail`)).data;
+  return (await axios.get<ContainerType[]>(`/api/container/detail`)).data;
 };
 
-    // Mutate
+// Mutate
 export const createContainer = async (data: ContainerType, id?: number) => {
-    await axios.post(`/api/container/create?id=${id}`, data);
+  await axios.post(`/api/container/create?id=${id}`, data);
 };
 
 export const updateContainer = async (data: ContainerType) => {
-    await axios.put(`/api/container/edit`, data);
+  await axios.put(`/api/container/edit`, data);
 };
 
-export const updateParentContainer = async (id: number, parentContainerId: number) => {
-    await axios.put(`/api/container/edit-parent?id=${id}&parentId=${parentContainerId}`,);
+export const updateParentContainer = async (
+  id: number,
+  parentContainerId: number,
+) => {
+  await axios.put(
+    `/api/container/edit-parent?id=${id}&parentId=${parentContainerId}`,
+  );
 };
 
 export const deleteContainer = async (id: number) => {
-    await axios.delete(`/api/container/delete?id=${id}`);
+  await axios.delete(`/api/container/delete?id=${id}`);
 };
 
 // Links
-    // Query
+// Query
 
-    // Mutate
-export const createLink = async (itemId: number, containerId: number, quantity: number) => {
-    await axios.post(`/api/link?itemId=${itemId}&containerId=${containerId}&quantity=${quantity}`);
+// Mutate
+export const createLink = async (
+  itemId: number,
+  containerId: number,
+  quantity: number,
+) => {
+  await axios.post(
+    `/api/link?itemId=${itemId}&containerId=${containerId}&quantity=${quantity}`,
+  );
 };
 
 export const updateQuantity = async (quantity: number, id: number) => {
-    await axios.put(`/api/link?quantity=${quantity}&id=${id}`);
+  await axios.put(`/api/link?quantity=${quantity}&id=${id}`);
 };
 
 export const deleteLink = async (id: number) => {
-    await axios.delete(`/api/link?id=${id}`);
+  await axios.delete(`/api/link?id=${id}`);
 };
 
 // Tags
 
-    //Query
+//Query
 export const getTags = async () => {
-    return (await axios.get<Tag[]>(`/api/tags`)).data;
+  return (await axios.get<Tag[]>(`/api/tags`)).data;
 };
 
-    // Mutate
+// Mutate
 export const createTag = async (data: TagCreate) => {
-    return await axios.post(`/api/tags/create`, data);
+  return await axios.post(`/api/tags/create`, data);
 };
 
 export const updateTag = async (data: Tag) => {
-    await axios.put(`/api/tags/edit`, data);
+  await axios.put(`/api/tags/edit`, data);
 };
 
-export const deleteTag = async(id: number) => {
-    await axios.delete(`/api/tags/delete?id=${id}`);
+export const deleteTag = async (id: number) => {
+  await axios.delete(`/api/tags/delete?id=${id}`);
 };
 
 // Types

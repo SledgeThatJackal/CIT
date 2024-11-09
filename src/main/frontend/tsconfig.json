@@ -1,13 +1,26 @@
 {
-    "compilerOptions": {
-        "target": "es2017",
-        "module": "esnext",
-        "jsx": "react",
-        "strict": true,
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "esnext",
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@app/*": ["src/app/*"],
+      "@features/*": ["src/features/*"],
+      "@schema/*": ["src/schema/*"],
+      "@styles/*": ["src/styles/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@services/*": ["src/services/*"],
+      "@item/*": ["src/features/items/*"],
+      "@container/*": ["src/features/containers/*"],
+      "@settings/*": ["src/features/settings/*"]
     },
-    "include": ["src", "app.js"]
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src", "src/app/pages/app.js"]
 }
