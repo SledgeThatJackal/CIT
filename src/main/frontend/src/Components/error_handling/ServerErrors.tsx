@@ -1,10 +1,5 @@
-import React from 'react';
+import React from "react";
 
-export default function ServerErrors(){
-
-    return (
-        <>
-            
-        </>
-    );
-};
+export default function ServerErrors() {
+  return <></>;
+}
