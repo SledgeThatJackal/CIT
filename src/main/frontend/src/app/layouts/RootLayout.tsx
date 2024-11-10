@@ -1,5 +1,7 @@
+import ServerErrors from "@components/error_handling/ServerErrors";
 import React, { useState } from "react";
-import { Container, Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav, Row } from "react-bootstrap";
+import { ErrorBoundary } from "react-error-boundary";
 import { NavLink, Outlet } from "react-router-dom";
 
 const RootLayout = () => {
@@ -64,9 +66,11 @@ const RootLayout = () => {
         </Navbar>
       </header>
 
-      <main className="bg-secondary">
-        <Outlet />
-      </main>
+      <ErrorBoundary FallbackComponent={ServerErrors}>
+        <main className="bg-secondary">
+          <Outlet />
+        </main>
+      </ErrorBoundary>
     </>
   );
 };

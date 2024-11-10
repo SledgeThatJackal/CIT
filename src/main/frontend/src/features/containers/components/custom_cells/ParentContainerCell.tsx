@@ -31,7 +31,7 @@ const ParentContainerCell = ({
   };
 
   return (
-    <ErrorBoundary fallbackRender={ServerErrors}>
+    <>
       {isEditing ? (
         <Stack direction="horizontal" gap={1}>
           <Form.Select
@@ -68,7 +68,7 @@ const ParentContainerCell = ({
           {tableValue && tableValue.name}
         </div>
       )}
-    </ErrorBoundary>
+    </>
   );
 };
 

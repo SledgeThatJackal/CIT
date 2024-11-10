@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
@@ -43,9 +44,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(Exception ex){
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "You cannot make this container's parent container, it's child.")
+    public void handleIllegalArgumentException(Exception ex){
         logger.error(ex.getMessage());
-
-        return new ResponseEntity<>("You cannot add a parent container to it's child.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

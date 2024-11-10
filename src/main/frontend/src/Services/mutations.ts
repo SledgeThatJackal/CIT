@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createContainer,
   createItem,
@@ -17,6 +17,7 @@ import {
 import { ItemSchemaType } from "@item/schemas/Item";
 import { TagCreate, TagSchemaType } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
+import { useErrorBoundary } from "react-error-boundary";
 
 // Items
 export function useCreateItem() {
@@ -97,11 +98,12 @@ export function useUpdateContainer() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    retry: false,
     mutationFn: (data: ContainerType) => updateContainer(data),
 
     onSettled: async (_, error) => {
       if (error) {
-        console.error(error);
+        console.error(error.message);
       } else {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
@@ -118,10 +120,16 @@ type ParentContainerProps = {
 
 export function useUpdateParentContainer() {
   const queryClient = useQueryClient();
+  const { showBoundary } = useErrorBoundary();
 
   return useMutation({
     mutationFn: ({ id, parentContainerId }: ParentContainerProps) =>
       updateParentContainer(id, parentContainerId),
+
+    onError: (error) => {
+      console.log("Error");
+      showBoundary(error);
+    },
 
     onSettled: async (_, error) => {
       if (error) {
