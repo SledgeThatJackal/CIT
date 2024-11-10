@@ -12,14 +12,14 @@ export type Item = {
 const ContainerSchema = z.object({
   id: z.number(),
   name: z.string(),
-  description: z.string().optional(),
   scannerId: z.string(),
-  parentContainer: z.number().optional(),
 });
 
 export const ContainerItemSchema = z.object({
   id: z.number().optional(),
+  containerId: z.number().optional(),
   container: ContainerSchema.optional(),
+  item_id: z.number().optional(),
   quantity: z.number(),
 });
 

@@ -148,6 +148,8 @@ export function useDeleteContainer() {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
         });
+
+        await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
     },
   });
@@ -172,6 +174,9 @@ export function useCreateLink() {
         console.error(error);
       } else {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["detailedContainers"],
+        });
       }
     },
   });

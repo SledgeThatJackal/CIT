@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { CellContext } from "@tanstack/react-table";
 import { Form } from "react-bootstrap";
 
-const EditCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
-  const initialValue = getValue();
+const EditCell = <T, S extends string | number | undefined>({
+  getValue,
+  row: { index },
+  column: { id },
+  table,
+}: CellContext<T, S>) => {
+  const initialValue = getValue()?.toString() ?? "";
+
   const [value, setValue] = useState<string>(initialValue);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 

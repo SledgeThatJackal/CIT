@@ -6,7 +6,6 @@ import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,17 +30,6 @@ public class ContainerController {
         return containerService.findAllContainers();
     }
 
-    @GetMapping("/page")
-    public Page<Container> getContainerPage(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size){
-        return containerService.findAllPaginatedContainers(page, size);
-    }
-
-    @GetMapping("/edit")
-    public Container getContainer(@RequestParam Long id){
-        return containerService.findContainerById(id);
-    }
-
     @PostMapping("/create")
     public void createContainer(@RequestParam Long id, @RequestBody Container container){
         Container parent = containerService.findContainerById(id);
@@ -60,20 +48,11 @@ public class ContainerController {
             }
         }
 
-        Container parentContainer = container.getParentContainer();
-        if(parentContainer != null){
-            if(parentContainer.getContainerItems() != null) {
-                for (ContainerItem containerItem : parentContainer.getContainerItems()) {
-                    containerItem.setContainer(parentContainer);
-                }
-            }
-        }
-
         containerService.saveContainer(container);
     }
 
     @PutMapping("/edit-parent")
-    public void updateParentContainer(@RequestParam("id") Long id, @RequestParam(required = false) Long parentId){
+    public void updateParentContainer(@RequestParam("id") Long id, @RequestParam Long parentId){
         Container container = containerService.findContainerById(id);
         Container parentContainer = containerService.findContainerById(parentId);
 
@@ -93,6 +72,9 @@ public class ContainerController {
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteContainer(@RequestParam("id") Long id){
         try{
+            Container container = containerService.findContainerById(id);
+            container.removeChildren();
+
             containerService.deleteContainer(id);
 
             return ResponseEntity.ok().build();
