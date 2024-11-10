@@ -101,7 +101,12 @@ const ComboBox = ({
   const fieldId = getValues(`containerItems.${index}.id`);
 
   const handleDropdownClick = (value: ZodContainerSchema) => {
-    const updatedItem = { ...field, id: undefined, container: value };
+    const updatedItem = {
+      ...field,
+      id: undefined,
+      container: value,
+      containerId: value.id,
+    };
     update(index, updatedItem);
   };
 
