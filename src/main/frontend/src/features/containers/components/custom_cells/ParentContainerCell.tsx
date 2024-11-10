@@ -41,7 +41,10 @@ const ParentContainerCell = ({
             <option value={-1} key={"default-option"}></option>
             {containersQuery ? (
               containersQuery
-                .filter((container) => container.id !== tableValue?.id)
+                .filter(
+                  (container) =>
+                    container.id !== table.options.meta?.getId?.(index),
+                )
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((container) => (
                   <option
