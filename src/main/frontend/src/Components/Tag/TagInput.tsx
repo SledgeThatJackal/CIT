@@ -96,7 +96,6 @@ const TagInput = ({ control }: TagInputProps) => {
             <FloatingLabel controlId="floatingNameInput" label="Tag Name">
               <Form.Control
                 type="text"
-                id="tagInput"
                 onChange={(event) => setNewTagName(event.target.value)}
                 value={newTagName}
                 onClick={() => setShowDropdown(!showDropdown)}
@@ -140,14 +139,12 @@ const TagInput = ({ control }: TagInputProps) => {
             label="Tag Description">
             <Form.Control
               type="text"
-              id="descriptionInput"
               onChange={(event) => setNewTagDescription(event.target.value)}
               value={newTagDescription}
             />
           </FloatingLabel>
           <Form.Control
             type="color"
-            id="colorInput"
             className="form-control"
             value={color}
             onChange={(event) => setColor(event.target.value)}
