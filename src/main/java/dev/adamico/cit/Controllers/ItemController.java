@@ -3,10 +3,6 @@ package dev.adamico.cit.Controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import dev.adamico.cit.DTOs.ContainerDTO;
-import dev.adamico.cit.DTOs.ItemDTO;
-import dev.adamico.cit.DTOs.LinkDTO;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
@@ -23,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/item")
@@ -64,37 +59,6 @@ public class ItemController {
         String jsonString = mapper.writeValueAsString(itemPage);
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonString); // I did this because it just wouldn't serialize my data at all.
-    }
-
-    @GetMapping("/edit")
-    @JsonView(Views.ExclusiveID.class)
-    public String getEditItem(@RequestParam Long itemId) throws JsonProcessingException {
-        Item item = itemService.findItemById(itemId);
-        List<LinkDTO> links = containerItemService.findAllAssociatedContainersBasedOnItemId(itemId);
-
-        ItemDTO itemDTO = new ItemDTO(item, links);
-        List<ContainerDTO> containerDTOs = containerService.findAllScannerIdsAndNames();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        ObjectNode objectNode = mapper.createObjectNode();
-
-        objectNode.set("itemDTO", mapper.valueToTree(itemDTO));
-        objectNode.set("containerDTOs", mapper.valueToTree(containerDTOs));
-
-        return mapper.writeValueAsString(objectNode);
-    }
-
-    @PatchMapping("/edit")
-    public void updateItem(@RequestBody ItemDTO itemDTO) throws NoSuchElementException {
-        Item updatedItem = itemDTO.getItem();
-        Item item = itemService.findItemById(updatedItem.getId());
-
-        updatedItem.setContainerItems(item.getContainerItems());
-
-        updatedItem = itemService.saveItem(itemDTO.getItem());
-
-        containerItemService.changeQuantityAmount(itemDTO.getLinks(), updatedItem);
     }
 
     @PutMapping("/edit")
