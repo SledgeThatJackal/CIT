@@ -54,4 +54,8 @@ public class Item {
     )
     @JsonView(Views.Exclusive.class)
     private Set<Tag> tags;
+
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private Type type;
 }
