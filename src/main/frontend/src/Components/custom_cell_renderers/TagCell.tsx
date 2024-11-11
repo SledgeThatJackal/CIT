@@ -6,12 +6,18 @@ import TagBadge from "../tag/TagBadge";
 import { Tag } from "@schema/Tag";
 import { createPortal } from "react-dom";
 import { useData } from "@hooks/TagProvider";
+import { CellContext } from "@tanstack/react-table";
 
 const tagStringCompare = (tag1: Tag, tag2: Tag) => {
   return tag1.tag.localeCompare(tag2.tag);
 };
 
-const TagCell = ({ getValue, row: { index }, column: { id }, table }: any) => {
+const TagCell = <T, S extends Tag[]>({
+  getValue,
+  row: { index },
+  column: { id },
+  table,
+}: CellContext<T, S>) => {
   const initialValue = getValue();
   const [value, setValue] = useState<Tag[]>(initialValue);
 

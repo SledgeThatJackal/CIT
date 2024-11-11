@@ -56,7 +56,10 @@ function ContainerTable() {
     updateContainerMutation.mutate({ ...updatedContainer });
   };
 
-  const updateParentContainer = (rowIndex: number, parentContainerId: any) => {
+  const updateParentContainer = (
+    rowIndex: number,
+    parentContainerId: number,
+  ) => {
     pageResetRef.current = true;
 
     const id = data[rowIndex].id;
@@ -88,7 +91,7 @@ function ContainerTable() {
     meta: {
       updateData,
       updateParentContainer,
-      getContainerId: (rowIndex: number) => {
+      getId: (rowIndex: number) => {
         return data[rowIndex].id;
       },
     },

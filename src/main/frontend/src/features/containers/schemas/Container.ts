@@ -20,6 +20,8 @@ const ItemSchema = z.object({
 export const ContainerItemSchema = z.object({
   id: z.number().optional(),
   item: ItemSchema.optional(),
+  itemId: z.number().optional(),
+  containerId: z.number().optional(),
   quantity: z.number(),
 });
 

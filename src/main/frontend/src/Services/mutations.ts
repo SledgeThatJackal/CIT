@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createContainer,
   createItem,
@@ -17,18 +17,22 @@ import {
 import { ItemSchemaType } from "@item/schemas/Item";
 import { TagCreate, TagSchemaType } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
+import { useErrorState } from "@hooks/state/useErrorState";
 
 // Items
 export function useCreateItem() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: (data: ItemSchemaType) => createItem(data),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
     },
@@ -37,14 +41,17 @@ export function useCreateItem() {
 
 export function useUpdateItem() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: (data: ItemSchemaType) => updateItem(data),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
         // await queryClient.invalidateQueries({ queryKey: ["item", { id: variables.id }]})
       }
@@ -54,14 +61,17 @@ export function useUpdateItem() {
 
 export function useDeleteItem() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: (id: number) => deleteItem(id),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
     },
@@ -76,15 +86,18 @@ type ContainerProps = {
 
 export function useCreateContainer() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: ({ container, parentContainerId }: ContainerProps) =>
       createContainer(container, parentContainerId),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
         });
@@ -95,14 +108,18 @@ export function useCreateContainer() {
 
 export function useUpdateContainer() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
+    retry: false,
     mutationFn: (data: ContainerType) => updateContainer(data),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
         });
@@ -118,15 +135,18 @@ type ParentContainerProps = {
 
 export function useUpdateParentContainer() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: ({ id, parentContainerId }: ParentContainerProps) =>
       updateParentContainer(id, parentContainerId),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
         });
@@ -137,17 +157,22 @@ export function useUpdateParentContainer() {
 
 export function useDeleteContainer() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: (id: number) => deleteContainer(id),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
         });
+
+        await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
     },
   });
@@ -162,16 +187,22 @@ type createLinkParams = {
 
 export function useCreateLink() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: ({ itemId, containerId, quantity }: createLinkParams) =>
       createLink(itemId, containerId, quantity),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["detailedContainers"],
+        });
       }
     },
   });
@@ -184,15 +215,18 @@ type quantityParams = {
 
 export function useUpdateQuantity() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: ({ quantity, id }: quantityParams) =>
       updateQuantity(quantity, id),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
     },
@@ -201,14 +235,17 @@ export function useUpdateQuantity() {
 
 export function useDeleteLink() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: (id: number) => deleteLink(id),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
     },
@@ -218,16 +255,19 @@ export function useDeleteLink() {
 // Tags
 export function useCreateTag() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: (data: TagCreate) => {
       return createTag(data);
     },
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["tags"] });
       }
     },
@@ -236,14 +276,17 @@ export function useCreateTag() {
 
 export function useUpdateTag() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: (data: TagSchemaType) => updateTag(data),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["tags"] });
         await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
@@ -253,14 +296,17 @@ export function useUpdateTag() {
 
 export function useDeleteTag() {
   const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
 
   return useMutation({
     mutationFn: (id: number) => deleteTag(id),
 
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
     onSettled: async (_, error) => {
-      if (error) {
-        console.error(error);
-      } else {
+      if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["tags"] });
         await queryClient.refetchQueries({ queryKey: ["items"] });
       }

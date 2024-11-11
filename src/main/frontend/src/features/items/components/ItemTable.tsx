@@ -106,8 +106,8 @@ function ItemTable() {
     columnResizeMode: "onChange",
     meta: {
       updateData,
-      getItemId: (index: number) => {
-        return data[index].id;
+      getId: (rowIndex: number) => {
+        return data[rowIndex].id;
       },
     },
     state: {

@@ -57,8 +57,6 @@ const ContainerSection = ({
           id: -1,
           name: "",
           scannerId: "",
-          description: undefined,
-          parentContainer: undefined,
         },
         quantity: Number(1),
       });

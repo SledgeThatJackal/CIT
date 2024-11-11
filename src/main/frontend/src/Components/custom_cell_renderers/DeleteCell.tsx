@@ -1,8 +1,9 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { useDeleteModalState } from "@hooks/state/useDeleteModalState";
+import { CellContext } from "@tanstack/react-table";
 
-const DeleteCell = ({ getValue }: any) => {
+const DeleteCell = <T, S extends number>({ getValue }: CellContext<T, S>) => {
   const { setShowModal, setDeleteId } = useDeleteModalState();
 
   const handleDelete = () => {

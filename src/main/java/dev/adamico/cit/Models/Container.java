@@ -31,17 +31,11 @@ public class Container {
     @JoinColumn(name = "parent_id")
     @ManyToOne(targetEntity = Container.class, fetch = FetchType.EAGER)
     @JsonView(Views.ExclusiveObject.class)
-    @JsonIgnoreProperties("parentContainer")
     private Container parentContainer;
-
-    @Column(name="parent_id", insertable = false, updatable = false)
-    @JsonView(Views.ExclusiveID.class)
-    private Long parentContainerId;
 
     @OneToMany(mappedBy = "parentContainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Container> childContainers = new HashSet<>();
-
 
     @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Views.Inclusive.class)
@@ -72,6 +66,14 @@ public class Container {
         for(Container child: this.getChildContainers()){
             descendants.add(child);
             child.addDescendantsToSet(descendants);
+        }
+    }
+
+    @JsonIgnore
+    @Transactional
+    public void removeChildren(){
+        for(Container child : this.getChildContainers()){
+            child.setParentContainer(null);
         }
     }
 }
