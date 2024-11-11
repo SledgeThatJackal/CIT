@@ -43,47 +43,47 @@ public class TypeController {
         return itemAttributeService.findByItemId(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public void createType(@RequestBody ItemType itemType){
         typeService.saveType(itemType);
     }
 
-    @PostMapping("/attribute/type")
+    @PostMapping("/attribute/type/create")
     public void createTypeAttribute(TypeAttribute typeAttribute){
         typeAttributeService.saveTypeAttribute(typeAttribute);
     }
 
-    @PostMapping("/attribute/item")
+    @PostMapping("/attribute/item/create")
     public void createItemAttribute(ItemAttribute itemAttribute){
         itemAttributeService.saveItemAttribute(itemAttribute);
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     public void editType(@RequestBody ItemType itemType){
         typeService.saveType((itemType));
     }
 
-    @PutMapping("/attribute/type")
+    @PutMapping("/attribute/type/edit")
     public void editTypeAttribute(@RequestBody TypeAttribute typeAttribute){
         typeAttributeService.saveTypeAttribute(typeAttribute);
     }
 
-    @PutMapping("/attribute/item")
+    @PutMapping("/attribute/item/edit")
     public void editItemAttribute(@RequestBody ItemAttribute itemAttribute){
         itemAttributeService.saveItemAttribute(itemAttribute);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete")
     public void deleteType(@RequestParam("id") Long id){
         typeService.deleteType(id);
     }
 
-    @DeleteMapping("/attribute/type")
+    @DeleteMapping("/attribute/type/delete")
     public void deleteTypeAttribute(@RequestParam("id") Long id){
         typeAttributeService.deleteTypeAttribute(id);
     }
 
-    @DeleteMapping("/attribute/item")
+    @DeleteMapping("/attribute/item/delete")
     public void deleteItemAttribute(@RequestParam("id") Long id){
         itemAttributeService.deleteItemAttribute(id);
     }
