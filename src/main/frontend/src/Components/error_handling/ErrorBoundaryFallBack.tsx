@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { FallbackProps } from "react-error-boundary";
 
-export default function ServerErrors({
+export default function ErrorBoundaryFallBack({
   error,
   resetErrorBoundary,
 }: FallbackProps) {

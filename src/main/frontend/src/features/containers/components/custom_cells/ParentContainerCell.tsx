@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CloseButton, Form, Stack } from "react-bootstrap";
 import { ErrorBoundary } from "react-error-boundary";
 import { useDetailedContainers } from "@services/queries";
-import ServerErrors from "@components/error_handling/ServerErrors";
+import ServerErrors from "@components/error_handling/ErrorBoundaryFallBack";
 import { CellContext } from "@tanstack/react-table";
 import { ContainerType } from "@features/containers/schemas/Container";
 
