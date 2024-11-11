@@ -37,13 +37,8 @@ const CreateBox = () => {
       containerItems: [
         {
           id: undefined,
-          container: {
-            id: -1,
-            name: "",
-            scannerId: "",
-            description: undefined,
-            parentContainer: undefined,
-          },
+          containerId: undefined,
+          item_id: undefined,
           quantity: 1,
         },
       ],
@@ -58,6 +53,7 @@ const CreateBox = () => {
       containerItems: data.containerItems?.slice(0, -1),
     };
 
+    console.log(item);
     createItemMutation.mutate(item);
     reset();
   };
