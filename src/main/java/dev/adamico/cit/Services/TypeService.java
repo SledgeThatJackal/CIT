@@ -1,20 +1,32 @@
 package dev.adamico.cit.Services;
 
-import dev.adamico.cit.Repositories.ItemAttributeRepository;
-import dev.adamico.cit.Repositories.TypeAttributeRepository;
-import dev.adamico.cit.Repositories.TypeRepository;
+import dev.adamico.cit.Models.ItemType;
+import dev.adamico.cit.Repositories.ItemTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TypeService {
     @Autowired
-    private TypeRepository typeRepository;
+    private ItemTypeRepository itemTypeRepository;
 
-    @Autowired
-    private TypeAttributeRepository typeAttributesRepository;
+    public Optional<ItemType> findById(Long id){
+        return itemTypeRepository.findById(id);
+    }
 
-    @Autowired
-    private ItemAttributeRepository itemAttributeRepository;
+    public List<ItemType> findAll(){
+        return itemTypeRepository.findAll();
+    }
 
+    public void saveType(ItemType itemType){
+        itemTypeRepository.save(itemType);
+    }
+
+    public void deleteType(Long id){
+        itemTypeRepository.deleteById(id);
+    }
 }
+

@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonView(Views.Exclusive.class)
-public class Type {
+public class ItemType {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

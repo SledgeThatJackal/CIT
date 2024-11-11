@@ -22,7 +22,7 @@ public class TypeAttribute {
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    private Type type;
+    private ItemType itemType;
 
     private Integer displayOrder;
     private String columnTitle;

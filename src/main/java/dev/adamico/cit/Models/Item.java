@@ -57,5 +57,5 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    private Type type;
+    private ItemType itemType;
 }
