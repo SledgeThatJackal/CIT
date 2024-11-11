@@ -23,6 +23,9 @@ module.exports = merge(common, {
         secure: false,
       },
     ],
+    historyApiFallback: {
+      index: "/index.html",
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
