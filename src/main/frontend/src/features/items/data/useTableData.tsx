@@ -8,6 +8,7 @@ import { useItems } from "@services/queries";
 import DeleteCell from "@components/custom_cell_renderers/DeleteCell";
 import { Tag } from "@schema/Tag";
 import ActionButtons from "../components/custom_cells/ActionButtons";
+import TypeCell from "../components/custom_cells/TypeCell";
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -43,6 +44,12 @@ export const useTableData = () => {
             tag.tag.toLowerCase().includes(filterValue.toLowerCase()),
           );
         },
+      }),
+      columnHelper.accessor("itemType", {
+        id: "itemType",
+        header: "Type",
+        cell: TypeCell,
+        enableResizing: true,
       }),
       columnHelper.accessor("id", {
         id: "id",
