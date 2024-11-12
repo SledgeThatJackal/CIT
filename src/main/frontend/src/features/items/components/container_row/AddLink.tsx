@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useContainers } from "@services/queries";
 
 import { useCreateLink } from "@services/mutations";
-import { ZodContainerSchema } from "../../schemas/Item";
+import { ZodContainerType } from "../../schemas/Item";
 
 type AddLinkProps = {
   itemId: number;
@@ -11,7 +11,7 @@ type AddLinkProps = {
 
 const AddLink = ({ itemId }: AddLinkProps) => {
   const containerQuery = useContainers().data;
-  const [container, setContainer] = useState<ZodContainerSchema>();
+  const [container, setContainer] = useState<ZodContainerType>();
   const [quantity, setQuantity] = useState<number>(1);
 
   const [show, setShow] = useState<boolean>(false);

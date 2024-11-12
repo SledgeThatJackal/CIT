@@ -1,5 +1,6 @@
 package dev.adamico.cit.Services;
 
+import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,14 @@ public class ItemService {
         return itemRepository.findById(id).orElse(null);
     }
 
-    public Item saveItem(Item item){
-        return itemRepository.save(item);
+    public void saveItem(Item item){
+        if(item.getContainerItems() != null){
+            for(ContainerItem containerItem : item.getContainerItems()){
+                containerItem.setItem(item);
+            }
+        }
+
+        itemRepository.save(item);
     }
 
     public void deleteItem(Long id){

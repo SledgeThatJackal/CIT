@@ -3,7 +3,6 @@ package dev.adamico.cit.Controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ContainerItemService;
@@ -47,7 +46,7 @@ public class ItemController {
         return itemService.findItemById(id);
     }
 
-    @GetMapping("/c")
+    @GetMapping("/page")
     @JsonView(Views.InclusiveID.class)
     public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
@@ -63,23 +62,11 @@ public class ItemController {
 
     @PutMapping("/edit")
     public void updateItem(@RequestBody Item item) {
-        if(item.getContainerItems() != null){
-            for(ContainerItem containerItem: item.getContainerItems()){
-                containerItem.setItem(item);
-            }
-        }
-
         itemService.saveItem(item);
     }
 
     @PostMapping("/create")
     public void createItem(@RequestBody Item item){
-        if(item.getContainerItems() != null){
-            for(ContainerItem containerItem : item.getContainerItems()){
-                containerItem.setItem(item);
-            }
-        }
-
         itemService.saveItem(item);
     }
 

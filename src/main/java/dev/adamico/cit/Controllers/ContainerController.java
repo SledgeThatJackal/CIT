@@ -2,7 +2,6 @@ package dev.adamico.cit.Controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.Container;
-import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Services.ContainerService;
 import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,41 +31,17 @@ public class ContainerController {
 
     @PostMapping("/create")
     public void createContainer(@RequestParam Long id, @RequestBody Container container){
-        Container parent = containerService.findContainerById(id);
-        if(parent != null){
-            container.addParent(parent);
-        }
-
-        containerService.saveContainer(container);
+        containerService.createContainer(container, id);
     }
 
     @PutMapping("/edit")
     public void updateContainer(@RequestBody Container container){
-        if(container.getContainerItems() != null){
-            for(ContainerItem containerItem: container.getContainerItems()){
-                containerItem.setContainer(container);
-            }
-        }
-
-        containerService.saveContainer(container);
+        containerService.updateContainer(container);
     }
 
     @PutMapping("/edit-parent")
-    public void updateParentContainer(@RequestParam("id") Long id, @RequestParam Long parentId){
-        Container container = containerService.findContainerById(id);
-        Container parentContainer = containerService.findContainerById(parentId);
-
-        if(parentContainer != null){
-            if(container.getDescendants().contains(parentContainer)){
-                throw new IllegalArgumentException("This container is already part of the parent's tree");
-            }
-
-            container.addParent(parentContainer);
-        } else {
-            container.setParentContainer(null);
-        }
-
-        containerService.saveContainer(container);
+    public void updateParentContainer(@RequestParam("id") Long id, @RequestParam("parentId") Long parentId){
+        containerService.updateParentContainer(id, parentId);
     }
 
     @DeleteMapping("/delete")

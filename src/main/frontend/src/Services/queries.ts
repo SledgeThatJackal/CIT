@@ -4,6 +4,7 @@ import {
   getDetailedContainers,
   getItem,
   getItems,
+  getItemTypes,
   getTags,
 } from "./api";
 
@@ -50,3 +51,10 @@ export function useTags() {
 }
 
 // Types
+export function useItemTypes() {
+  return useQuery({
+    queryKey: ["types"],
+    queryFn: getItemTypes,
+    staleTime: 1000 * 60 * 10,
+  });
+}

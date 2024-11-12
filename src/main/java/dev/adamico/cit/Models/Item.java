@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
+@Table(name = "item_table")
 @NamedEntityGraph(
         name = "graph.Item",
         attributeNodes= {
@@ -27,7 +28,6 @@ import java.util.Set;
                         }
                 )
         })
-@Table(name = "item_table")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -56,6 +56,6 @@ public class Item {
     private Set<Tag> tags;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "itemtype_id", referencedColumnName = "id")
     private ItemType itemType;
 }

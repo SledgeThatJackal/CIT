@@ -17,7 +17,7 @@ public class TypeAttributeService {
     }
 
     public List<TypeAttribute> findByTypeId(Long id){
-        return typeAttributesRepository.findByTypeId(id);
+        return typeAttributesRepository.findByItemTypeId(id);
     }
 
     public void saveTypeAttribute(TypeAttribute typeAttribute){

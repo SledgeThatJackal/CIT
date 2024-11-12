@@ -1,8 +1,9 @@
 import axios from "axios";
 
-import { Item, ItemSchemaType, ZodContainerSchema } from "@item/schemas/Item";
+import { Item, ItemSchemaType, ZodContainerType } from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
+import { ZodItemType } from "@schema/General";
 
 // Items
 
@@ -32,7 +33,7 @@ export const deleteItem = async (id: number) => {
 
 // Query
 export const getContainers = async () => {
-  return (await axios.get<ZodContainerSchema[]>(`/api/container`)).data;
+  return (await axios.get<ZodContainerType[]>(`/api/container`)).data;
 };
 
 export const getDetailedContainers = async () => {
@@ -104,3 +105,6 @@ export const deleteTag = async (id: number) => {
 };
 
 // Types
+export const getItemTypes = async () => {
+  return (await axios.get<ZodItemType[]>(`/api/types`)).data;
+};

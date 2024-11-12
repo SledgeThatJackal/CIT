@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TypeAttributeRepository extends JpaRepository<TypeAttribute, Long> {
-    List<TypeAttribute> findByTypeId(Long id);
+    List<TypeAttribute> findByItemTypeId(Long id);
 }

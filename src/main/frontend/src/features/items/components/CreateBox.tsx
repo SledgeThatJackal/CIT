@@ -16,9 +16,13 @@ import { useCreateItem } from "@services/mutations";
 import TagInput from "@components/tag/TagInput";
 import ContainerSection from "./ContainerSection";
 import { useCanvasState } from "@hooks/state/useCanvasState";
+import TypeSection from "./TypeSection";
+import SelectComponent from "@components/general/SelectComponent";
+import { useItemTypes } from "@services/queries";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();
+  const itemTypeQuery = useItemTypes().data;
   const { closeCanvas } = useCanvasState();
 
   const {
@@ -34,6 +38,8 @@ const CreateBox = () => {
   } = useForm<ItemSchemaType>({
     defaultValues: {
       id: undefined,
+      name: undefined,
+      description: undefined,
       containerItems: [
         {
           id: undefined,
@@ -43,8 +49,12 @@ const CreateBox = () => {
         },
       ],
       tags: [],
+      itemType: {
+        id: -1,
+        name: "",
+      },
     },
-    resolver: zodResolver(ItemSchema),
+    // resolver: zodResolver(ItemSchema),
   });
 
   const onSubmit = async (data: ItemSchemaType) => {
@@ -53,7 +63,6 @@ const CreateBox = () => {
       containerItems: data.containerItems?.slice(0, -1),
     };
 
-    console.log(item);
     createItemMutation.mutate(item);
     reset();
   };
@@ -85,6 +94,16 @@ const CreateBox = () => {
               {errors.description?.message}
             </Form.Control.Feedback>
           </Form.Group>
+          <Form.Group as={Col} controlId="type">
+            <FloatingLabel controlId="floatingType" label="Type">
+              <SelectComponent
+                data={itemTypeQuery}
+                labelKey="name"
+                register={register}
+                registerKey="itemType.id"
+              />
+            </FloatingLabel>
+          </Form.Group>
           <Col md="2" as={Stack} direction="horizontal" gap={2}>
             <div className="vr" />
             <Button type="submit" variant="success" disabled={isSubmitting}>
@@ -115,7 +134,9 @@ const CreateBox = () => {
               getValues={getValues}
             />
           </Col>
-          <Col>Type will go here</Col>
+          <Col>
+            <TypeSection />
+          </Col>
         </Row>
       </Container>
     </Form>

@@ -21,11 +21,11 @@ public class ItemAttribute {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "typeattr_id")
+    @JoinColumn(name = "typeattr_id", nullable = false)
     private TypeAttribute typeAttributes;
 
     @ManyToOne
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     private String value;

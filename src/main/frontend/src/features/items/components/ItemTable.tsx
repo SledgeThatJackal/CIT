@@ -20,7 +20,7 @@ import PaginationControl from "@components/general/PaginationControl";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import { useDeleteModalState } from "@hooks/state/useDeleteModalState";
 import { useDebounce } from "@hooks/useDebounce";
-import { Item, ZodContainerSchema } from "../schemas/Item";
+import { Item, ZodContainerType } from "../schemas/Item";
 import "@item/styles/ItemTable.css";
 
 import CreateBox from "./CreateBox";
@@ -97,7 +97,7 @@ function ItemTable() {
       maxSize: 1500,
     },
     getRowCanExpand: (row) =>
-      (row.getValue("containerItems") as ZodContainerSchema[]).length > 0,
+      (row.getValue("containerItems") as ZodContainerType[]).length > 0,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
