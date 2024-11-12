@@ -21,9 +21,19 @@ public class TypeAttribute {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "itemtype_id")
     private ItemType itemType;
 
     private Integer displayOrder;
     private String columnTitle;
+
+    @Override
+    public String toString() {
+        return "TypeAttribute{" +
+                "id=" + id +
+                ", itemType=" + itemType +
+                ", displayOrder=" + displayOrder +
+                ", columnTitle='" + columnTitle + '\'' +
+                '}';
+    }
 }

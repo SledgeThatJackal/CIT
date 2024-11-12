@@ -4,6 +4,7 @@ import { Item, ItemSchemaType, ZodContainerType } from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
 import { ZodItemType } from "@schema/General";
+import { TypeAttribute } from "@schema/Types";
 
 // Items
 
@@ -63,6 +64,7 @@ export const deleteContainer = async (id: number) => {
 };
 
 // Links
+
 // Query
 
 // Mutate
@@ -107,4 +109,8 @@ export const deleteTag = async (id: number) => {
 // Types
 export const getItemTypes = async () => {
   return (await axios.get<ZodItemType[]>(`/api/types`)).data;
+};
+
+export const getTypeAttriutes = async () => {
+  return (await axios.get<TypeAttribute[]>(`/api/attribute/type`)).data;
 };

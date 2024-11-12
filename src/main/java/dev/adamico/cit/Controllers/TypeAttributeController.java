@@ -24,7 +24,7 @@ public class TypeAttributeController {
     }
 
     @PostMapping("/create")
-    public void createTypeAttribute(TypeAttribute typeAttribute){
+    public void createTypeAttribute(@RequestBody TypeAttribute typeAttribute){
         typeAttributeService.saveTypeAttribute(typeAttribute);
     }
 
