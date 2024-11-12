@@ -1,11 +1,6 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import {
-  FieldValue,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 type HasId = {
   id: number;
@@ -35,7 +30,7 @@ const SelectComponent = <T extends HasId, S extends FieldValues>({
           )
           .map((element) => (
             <option
-              key={`select-${String(element[labelKey])}-${String(element.id)}`}
+              key={`select-${String(element[labelKey])}-${element.id}`}
               value={element.id}>
               {String(element[labelKey])}
               {valueKey ? `(${String(element[valueKey])})` : ""}
