@@ -7,6 +7,7 @@ import {
   getItemTypes,
   getTags,
   getTypeAttriutes,
+  getTypeAttriutesById,
   // getTypeAttriutesById,
 } from "./api";
 import { ZodItemType } from "@schema/General";
@@ -70,22 +71,11 @@ export function useTypeAttributes() {
   });
 }
 
-// const { data: typeIds } = useQuery({
-//   queryKey: ["types"],
-//   queryFn: getItemTypes,
-//   select: (types: ZodItemType[]) => types.map((type) => type.id),
-// });
-
-// export function useTypeAttributes() {
-//   return useQueries({
-//     queries:
-//       typeIds && typeIds.length > 0
-//         ? typeIds.map((id) => {
-//             return {
-//               queryKey: ["typeattr", id],
-//               queryFn: () => getTypeAttriutesById(id),
-//             };
-//           })
-//         : [],
-//   });
-// }
+export function useTypeAttribute(id: number) {
+  return useQuery({
+    queryKey: ["typeattribute", id],
+    queryFn: () => getTypeAttriutesById(id!),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 10,
+  });
+}

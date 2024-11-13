@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   Button,
@@ -9,33 +9,32 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import { ItemSchema, ItemSchemaType } from "../schemas/Item";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
+import {
+  ItemAttribute,
+  ItemSchema,
+  ItemSchemaType,
+  TypeForm,
+} from "../schemas/Item";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateItem } from "@services/mutations";
+import { useCreateItem, useCreateItemAttribute } from "@services/mutations";
 import TagInput from "@components/tag/TagInput";
 import ContainerSection from "./ContainerSection";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import TypeSection from "./TypeSection";
-import SelectComponent from "@components/general/SelectComponent";
+import SelectComponent from "@components/Forms/SelectComponent";
 import { useItemTypes } from "@services/queries";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();
+  const createItemAttrMutation = useCreateItemAttribute();
   const itemTypeQuery = useItemTypes().data;
   const { closeCanvas } = useCanvasState();
+  const [typeId, setTypeId] = useState<number>(-1);
+  const [itemId, setItemId] = useState<number>(0);
+  const typeFormButtonRef = useRef<HTMLButtonElement>(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    control,
-    reset,
-    setFocus,
-    setError,
-    clearErrors,
-    getValues,
-  } = useForm<ItemSchemaType>({
+  const itemForm = useForm<ItemSchemaType>({
     defaultValues: {
       id: undefined,
       name: undefined,
@@ -57,89 +56,147 @@ const CreateBox = () => {
     // resolver: zodResolver(ItemSchema),
   });
 
-  const onSubmit = async (data: ItemSchemaType) => {
+  const typeForm = useForm<TypeForm>({
+    defaultValues: {
+      itemAttributes: [],
+    },
+  });
+
+  const watchTypeId = useWatch({
+    control: itemForm.control,
+    name: "itemType.id",
+  });
+
+  useEffect(() => {
+    setTypeId(watchTypeId);
+  }, [watchTypeId]);
+
+  const onSubmit = async (itemData: ItemSchemaType) => {
     const item: ItemSchemaType = {
-      ...data,
-      containerItems: data.containerItems?.slice(0, -1),
+      ...itemData,
+      containerItems: itemData.containerItems?.slice(0, -1),
     };
 
-    createItemMutation.mutate(item);
-    reset();
+    const itemTest = createItemMutation.mutateAsync(item);
+    setItemId(await itemTest);
+  };
+
+  useEffect(() => {
+    if (itemId !== 0 && typeFormButtonRef.current) {
+      typeFormButtonRef.current?.click();
+    }
+  }, [itemId]);
+
+  const onTypeSubmit = async (itemAttrData: TypeForm) => {
+    itemAttrData.itemAttributes.forEach((itemAttr) => {
+      const updatedItemAttr: ItemAttribute = {
+        ...itemAttr,
+        item: {
+          id: itemId,
+          name: "",
+        },
+      };
+
+      createItemAttrMutation.mutate(updatedItemAttr);
+    });
+
+    setItemId(0);
+    itemForm.reset();
+    typeForm.reset();
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Container
-        className={`text-light pt-3 pb-3 mb-3 rounded`}
-        style={{ background: "#4B555F", border: "3px solid #7B8895" }}>
-        <Row>
-          <Form.Group as={Col} controlId="itemName">
-            <FloatingLabel controlId="floatingName" label="Name">
-              <Form.Control
-                {...register("name")}
-                type="text"
-                autoFocus
-                required
-              />
-            </FloatingLabel>
-            <Form.Control.Feedback type="invalid">
-              {errors.name?.message}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} controlId="itemDesc">
-            <FloatingLabel controlId="floatingDesc" label="Description">
-              <Form.Control {...register("description")} type="text" />
-            </FloatingLabel>
-            <Form.Control.Feedback type="invalid">
-              {errors.description?.message}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} controlId="type">
-            <FloatingLabel controlId="floatingType" label="Type">
-              <SelectComponent
-                data={itemTypeQuery}
-                labelKey="name"
-                register={register}
-                registerKey="itemType.id"
-              />
-            </FloatingLabel>
-          </Form.Group>
-          <Col md="2" as={Stack} direction="horizontal" gap={2}>
-            <div className="vr" />
-            <Button type="submit" variant="success" disabled={isSubmitting}>
-              Create
-            </Button>
-            <Button
-              type="button"
-              variant="outline-danger"
-              onClick={closeCanvas}>
-              Cancel
-            </Button>
-          </Col>
-        </Row>
-        <Row className="pt-3">
-          <Col>
-            <TagInput control={control} />
-          </Col>
-        </Row>
-        <Row className="pt-3">
+    <Container
+      className={`text-light pt-3 pb-3 mb-3 rounded`}
+      style={{ background: "#4B555F", border: "3px solid #7B8895" }}>
+      <FormProvider {...itemForm}>
+        <Form onSubmit={itemForm.handleSubmit(onSubmit)}>
+          <Row>
+            <Form.Group as={Col} controlId="itemName">
+              <FloatingLabel controlId="floatingName" label="Name">
+                <Form.Control
+                  {...itemForm.register("name")}
+                  type="text"
+                  autoFocus
+                  required
+                />
+              </FloatingLabel>
+              <Form.Control.Feedback type="invalid">
+                {itemForm.formState.errors.name?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group as={Col} controlId="itemDesc">
+              <FloatingLabel controlId="floatingDesc" label="Description">
+                <Form.Control
+                  {...itemForm.register("description")}
+                  type="text"
+                />
+              </FloatingLabel>
+              <Form.Control.Feedback type="invalid">
+                {itemForm.formState.errors.description?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group as={Col} controlId="type">
+              <FloatingLabel controlId="floatingType" label="Type">
+                <SelectComponent
+                  data={itemTypeQuery}
+                  labelKey="name"
+                  register={itemForm.register}
+                  registerKey="itemType.id"
+                />
+              </FloatingLabel>
+            </Form.Group>
+            <Col md="2" as={Stack} direction="horizontal" gap={2}>
+              <div className="vr" />
+              <Button
+                type="submit"
+                variant="success"
+                disabled={itemForm.formState.isSubmitting}>
+                Create
+              </Button>
+              <Button
+                type="button"
+                variant="outline-danger"
+                onClick={closeCanvas}>
+                Cancel
+              </Button>
+            </Col>
+          </Row>
+          <Row className="pt-3">
+            <Col>
+              <TagInput control={itemForm.control} />
+            </Col>
+          </Row>
           <Col>
             <ContainerSection
-              control={control}
-              register={register}
-              errors={errors}
-              setFocus={setFocus}
-              setError={setError}
-              clearErrors={clearErrors}
-              getValues={getValues}
+              control={itemForm.control}
+              register={itemForm.register}
+              errors={itemForm.formState.errors}
+              setFocus={itemForm.setFocus}
+              setError={itemForm.setError}
+              clearErrors={itemForm.clearErrors}
+              getValues={itemForm.getValues}
             />
           </Col>
-          <Col>
-            <TypeSection />
-          </Col>
-        </Row>
-      </Container>
-    </Form>
+        </Form>
+      </FormProvider>
+      <Col>
+        <FormProvider {...typeForm}>
+          <Form onSubmit={typeForm.handleSubmit(onTypeSubmit)}>
+            <TypeSection
+              typeId={typeId}
+              itemAttrControl={typeForm.control}
+              itemAtrrReset={typeForm.reset}
+              registerItemAttr={typeForm.register}
+              itemAttrFormState={typeForm.formState}
+            />
+            <button
+              style={{ display: "none" }}
+              ref={typeFormButtonRef}></button>
+          </Form>
+        </FormProvider>
+      </Col>
+    </Container>
   );
 };
 

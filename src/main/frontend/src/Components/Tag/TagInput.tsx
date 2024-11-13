@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useFieldArray, Control } from "react-hook-form";
-import axios from "axios";
 
 import TagBlock from "./TagBlock";
 import TagBadge from "./TagBadge";

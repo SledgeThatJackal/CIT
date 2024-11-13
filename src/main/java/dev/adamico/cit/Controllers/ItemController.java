@@ -66,8 +66,8 @@ public class ItemController {
     }
 
     @PostMapping("/create")
-    public void createItem(@RequestBody Item item){
-        itemService.saveItem(item);
+    public Long createItem(@RequestBody Item item){
+        return itemService.saveItem(item).getId();
     }
 
     @DeleteMapping("/delete-tag")

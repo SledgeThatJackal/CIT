@@ -22,11 +22,21 @@ public class ItemAttribute {
 
     @ManyToOne
     @JoinColumn(name = "typeattr_id", nullable = false)
-    private TypeAttribute typeAttributes;
+    private TypeAttribute typeAttribute;
 
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     private String value;
+
+    @Override
+    public String toString() {
+        return "ItemAttribute{" +
+                "id=" + id +
+                ", typeAttributes=" + typeAttribute +
+                ", item=" + item +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createContainer,
   createItem,
+  createItemAttribute,
   createLink,
   createTag,
   deleteContainer,
@@ -14,7 +15,7 @@ import {
   updateQuantity,
   updateTag,
 } from "./api";
-import { ItemSchemaType } from "@item/schemas/Item";
+import { ItemAttribute, ItemSchemaType } from "@item/schemas/Item";
 import { TagCreate, TagSchemaType } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
 import { useErrorState } from "@hooks/state/useErrorState";
@@ -315,3 +316,21 @@ export function useDeleteTag() {
 }
 
 // Types
+export function useCreateItemAttribute() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: ItemAttribute) => createItemAttribute(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error) => {
+      if (!error) {
+        // set up invadliation
+      }
+    },
+  });
+}

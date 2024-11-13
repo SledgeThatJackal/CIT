@@ -19,7 +19,8 @@ public class ItemAttributeController {
     }
 
     @PostMapping("/create")
-    public void createItemAttribute(ItemAttribute itemAttribute){
+    public void createItemAttribute(@RequestBody ItemAttribute itemAttribute){
+        System.out.println(itemAttribute);
         itemAttributeService.saveItemAttribute(itemAttribute);
     }
 

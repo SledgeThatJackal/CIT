@@ -1,6 +1,11 @@
 import axios from "axios";
 
-import { Item, ItemSchemaType, ZodContainerType } from "@item/schemas/Item";
+import {
+  Item,
+  ItemAttribute,
+  ItemSchemaType,
+  ZodContainerType,
+} from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
 import { ZodItemType } from "@schema/General";
@@ -19,7 +24,7 @@ export const getItems = async () => {
 
 // Mutate
 export const createItem = async (data: ItemSchemaType) => {
-  await axios.post(`/api/item/create`, data);
+  return (await axios.post(`/api/item/create`, data)).data;
 };
 
 export const updateItem = async (data: ItemSchemaType) => {
@@ -107,10 +112,22 @@ export const deleteTag = async (id: number) => {
 };
 
 // Types
+
+// Query
 export const getItemTypes = async () => {
   return (await axios.get<ZodItemType[]>(`/api/types`)).data;
 };
 
 export const getTypeAttriutes = async () => {
   return (await axios.get<TypeAttribute[]>(`/api/attribute/type`)).data;
+};
+
+export const getTypeAttriutesById = async (id: number) => {
+  return (await axios.get<TypeAttribute[]>(`/api/attribute/type/id?id=${id}`))
+    .data;
+};
+
+// Mutate
+export const createItemAttribute = async (data: ItemAttribute) => {
+  await axios.post(`/api/attribute/item/create`, data);
 };

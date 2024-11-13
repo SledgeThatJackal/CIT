@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { Tag, TagSchema } from "@schema/Tag";
 import { ItemTypeSchema, ZodItemType } from "@schema/General";
+import { TypeAttribute } from "@schema/Types";
 
 export type Item = {
   id: number;
@@ -39,3 +40,14 @@ export type ItemSchemaType = z.infer<typeof ItemSchema>;
 export type ZodContainerType = z.infer<typeof ContainerSchema>;
 
 export type ZodContainerItemType = z.infer<typeof ContainerItemSchema>;
+
+export type ItemAttribute = {
+  id?: number;
+  typeAttribute: TypeAttribute;
+  item?: Item;
+  value: string;
+};
+
+export type TypeForm = {
+  itemAttributes: ItemAttribute[];
+};

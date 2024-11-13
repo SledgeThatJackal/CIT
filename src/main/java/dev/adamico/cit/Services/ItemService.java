@@ -24,14 +24,14 @@ public class ItemService {
         return itemRepository.findById(id).orElse(null);
     }
 
-    public void saveItem(Item item){
+    public Item saveItem(Item item){
         if(item.getContainerItems() != null){
             for(ContainerItem containerItem : item.getContainerItems()){
                 containerItem.setItem(item);
             }
         }
 
-        itemRepository.save(item);
+        return itemRepository.save(item);
     }
 
     public void deleteItem(Long id){

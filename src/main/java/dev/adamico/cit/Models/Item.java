@@ -58,4 +58,16 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "itemtype_id", referencedColumnName = "id")
     private ItemType itemType;
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", containerItems=" + containerItems +
+                ", tags=" + tags +
+                ", itemType=" + itemType +
+                '}';
+    }
 }
