@@ -1,28 +1,23 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 type HasId = {
   id: number;
 };
 
-type SelectCompoentProps<T extends HasId, S extends FieldValues> = {
+type SelectCompoentProps<T extends HasId> = {
   data?: T[];
   labelKey: keyof T;
-  valueKey?: keyof T;
-  register: UseFormRegister<S>;
-  registerKey: Path<S>;
+  setValue: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const SelectComponent = <T extends HasId, S extends FieldValues>({
+const SelectComponentR = <T extends HasId>({
   data,
   labelKey,
-  valueKey,
-  register,
-  registerKey,
-}: SelectCompoentProps<T, S>) => {
+  setValue,
+}: SelectCompoentProps<T>) => {
   return (
-    <Form.Select {...register(registerKey)}>
+    <Form.Select onChange={(e) => setValue(Number(e.target.value))}>
       {data ? (
         data
           .sort((a, b) =>
@@ -33,7 +28,6 @@ const SelectComponent = <T extends HasId, S extends FieldValues>({
               key={`select-${String(element[labelKey])}-${element.id}`}
               value={element.id}>
               {String(element[labelKey])}
-              {valueKey ? `(${String(element[valueKey])})` : ""}
             </option>
           ))
       ) : (
@@ -43,4 +37,4 @@ const SelectComponent = <T extends HasId, S extends FieldValues>({
   );
 };
 
-export default SelectComponent;
+export default SelectComponentR;

@@ -22,7 +22,7 @@ import TagInput from "@components/tag/TagInput";
 import ContainerSection from "./ContainerSection";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import TypeSection from "./TypeSection";
-import SelectComponent from "@components/Forms/SelectComponent";
+import SelectComponent from "@components/Forms/SelectComponentF";
 import { useItemTypes } from "@services/queries";
 
 const CreateBox = () => {
