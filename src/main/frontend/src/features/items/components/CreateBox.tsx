@@ -17,13 +17,14 @@ import {
   TypeForm,
 } from "../schemas/Item";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateItem, useCreateItemAttribute } from "@services/mutations";
+import { useCreateItem } from "@services/mutations";
 import TagInput from "@components/tag/TagInput";
 import ContainerSection from "./ContainerSection";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import TypeSection from "./TypeSection";
 import SelectComponent from "@components/Forms/SelectComponentF";
-import { useItemTypes } from "@services/queries";
+import { useCreateItemAttribute } from "@features/settings/services/mutation";
+import { useItemTypes } from "@features/settings/services/query";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();

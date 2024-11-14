@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createContainer,
   createItem,
-  createItemAttribute,
   createLink,
   createTag,
   deleteContainer,
@@ -310,26 +309,6 @@ export function useDeleteTag() {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["tags"] });
         await queryClient.refetchQueries({ queryKey: ["items"] });
-      }
-    },
-  });
-}
-
-// Types
-export function useCreateItemAttribute() {
-  const queryClient = useQueryClient();
-  const { displayError } = useErrorState();
-
-  return useMutation({
-    mutationFn: (data: ItemAttribute) => createItemAttribute(data),
-
-    onError: (error: any) => {
-      displayError(error.response.data.message);
-    },
-
-    onSettled: async (_, error) => {
-      if (!error) {
-        // set up invadliation
       }
     },
   });

@@ -1,4 +1,3 @@
-import { useTypeAttribute } from "@services/queries";
 import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import {
@@ -10,6 +9,7 @@ import {
 } from "react-hook-form";
 import { TypeForm } from "../schemas/Item";
 import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
+import { useTypeAttribute } from "@features/settings/services/query";
 
 type TypeSectionProps = {
   typeId: number;

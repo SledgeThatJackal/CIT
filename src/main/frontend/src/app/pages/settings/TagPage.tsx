@@ -11,13 +11,13 @@ import {
 
 import { Tag } from "@schema/Tag";
 import ConfirmationModal from "@components/general/ConfirmationModal";
-import TagRead from "@settings/components/TagRead";
-import TagForm from "@settings/components/TagForm";
-import { useTags } from "@services/queries";
+import TagRead from "@features/settings/components/Tag/TagRead";
+import TagForm from "@features/settings/components/Tag/TagForm";
 import { useDeleteTag } from "@services/mutations";
+import { useTags } from "@services/queries";
 
 function TagSettings() {
-  const tagsQuery = useTags();
+  const tagsQuery = useTags().data;
   const deleteTagMutations = useDeleteTag();
 
   // Modal
@@ -40,14 +40,14 @@ function TagSettings() {
   const [filteredTags, setFilteredTags] = useState<Tag[]>([]);
 
   useEffect(() => {
-    if (tagsQuery.data) {
+    if (tagsQuery) {
       setFilteredTags(
-        tagsQuery.data.filter((tag) =>
+        tagsQuery.filter((tag) =>
           tag.tag.toLowerCase().includes(search.toLowerCase()),
         ),
       );
     }
-  }, [tagsQuery.data, search]);
+  }, [tagsQuery, search]);
 
   const onCreate = () => {
     if (!bulkCreating) {
@@ -118,7 +118,7 @@ function TagSettings() {
         className="rounded bg-dark text-white mt-3 w-75 overflow-auto"
         style={{ height: "65vh", border: "3px solid #7B8895" }}>
         <Row className="p-3">
-          Tags: {filteredTags.length || 0} out of {tagsQuery.data?.length || 0}
+          Tags: {filteredTags.length || 0} out of {tagsQuery?.length || 0}
         </Row>
         {filteredTags.length > 0 ? (
           filteredTags

@@ -1,6 +1,15 @@
+import { useItemTypes } from "@features/settings/services/query";
+import { ZodItemType } from "@schema/General";
+import { Tag } from "@schema/Tag";
+import { useTags } from "@services/queries";
 import React from "react";
 import { Container, Row, Col, ListGroup } from "react-bootstrap";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useOutletContext } from "react-router-dom";
+
+type ContextType = {
+  itemTypesQuery: ZodItemType[];
+  tagsQuery: Tag[];
+};
 
 export default function Settings() {
   return (

@@ -11,7 +11,7 @@ type SelectCompoentProps<T extends HasId> = {
   setValue: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const SelectComponentR = <T extends HasId>({
+const SelectComponentW = <T extends HasId>({
   data,
   labelKey,
   setValue,
@@ -37,4 +37,4 @@ const SelectComponentR = <T extends HasId>({
   );
 };
 
-export default SelectComponentR;
+export default SelectComponentW;

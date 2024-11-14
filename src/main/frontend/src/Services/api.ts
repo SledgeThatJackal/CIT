@@ -110,24 +110,3 @@ export const updateTag = async (data: Tag) => {
 export const deleteTag = async (id: number) => {
   await axios.delete(`/api/tags/delete?id=${id}`);
 };
-
-// Types
-
-// Query
-export const getItemTypes = async () => {
-  return (await axios.get<ZodItemType[]>(`/api/types`)).data;
-};
-
-export const getTypeAttriutes = async () => {
-  return (await axios.get<TypeAttribute[]>(`/api/attribute/type`)).data;
-};
-
-export const getTypeAttriutesById = async (id: number) => {
-  return (await axios.get<TypeAttribute[]>(`/api/attribute/type/id?id=${id}`))
-    .data;
-};
-
-// Mutate
-export const createItemAttribute = async (data: ItemAttribute) => {
-  await axios.post(`/api/attribute/item/create`, data);
-};

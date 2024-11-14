@@ -2,6 +2,7 @@ import React from "react";
 import { Offcanvas } from "react-bootstrap";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import { useActionState } from "@item/hooks/useActionState";
+import { useEditState } from "@features/settings/hooks/state/useEditState";
 
 const Canvas = () => {
   const {
@@ -11,10 +12,12 @@ const Canvas = () => {
     closeCanvas,
   } = useCanvasState();
   const { clearAction } = useActionState();
+  const { clearProps } = useEditState();
 
   const handleClose = () => {
     closeCanvas();
     clearAction();
+    clearProps();
   };
 
   return (
