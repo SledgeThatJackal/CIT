@@ -1,15 +1,25 @@
+import { AttributeForm } from "@features/settings/schema/Type";
 import React from "react";
 import { Form } from "react-bootstrap";
 import { Path, useFormContext } from "react-hook-form";
 
 type TypeAttributeFormEditProps = {
-  path: Path<any>;
+  path: Path<AttributeForm>;
+  error?: string;
 };
 
-const TypeAttributeFormEdit = ({ path }: TypeAttributeFormEditProps) => {
-  const { register } = useFormContext();
+const TypeAttributeFormEdit = ({ path, error }: TypeAttributeFormEditProps) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<AttributeForm>();
 
-  return <Form.Control {...register(path)} />;
+  return (
+    <Form.Group>
+      <Form.Control {...register(path)} />
+      <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+    </Form.Group>
+  );
 };
 
 export default TypeAttributeFormEdit;

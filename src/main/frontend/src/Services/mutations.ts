@@ -14,7 +14,7 @@ import {
   updateQuantity,
   updateTag,
 } from "./api";
-import { ItemAttribute, ItemSchemaType } from "@item/schemas/Item";
+import { ItemSchemaType } from "@item/schemas/Item";
 import { TagCreate, TagSchemaType } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
 import { useErrorState } from "@hooks/state/useErrorState";

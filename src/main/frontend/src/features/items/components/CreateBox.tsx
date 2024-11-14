@@ -78,13 +78,13 @@ const CreateBox = () => {
       containerItems: itemData.containerItems?.slice(0, -1),
     };
 
-    const itemTest = createItemMutation.mutateAsync(item);
-    setItemId(await itemTest);
+    const idReturn = createItemMutation.mutateAsync(item);
+    setItemId(await idReturn);
   };
 
   useEffect(() => {
     if (itemId !== 0 && typeFormButtonRef.current) {
-      typeFormButtonRef.current?.click();
+      typeFormButtonRef.current.click();
     }
   }, [itemId]);
 
@@ -191,9 +191,7 @@ const CreateBox = () => {
               registerItemAttr={typeForm.register}
               itemAttrFormState={typeForm.formState}
             />
-            <button
-              style={{ display: "none" }}
-              ref={typeFormButtonRef}></button>
+            <button style={{ display: "none" }} ref={typeFormButtonRef} />
           </Form>
         </FormProvider>
       </Col>

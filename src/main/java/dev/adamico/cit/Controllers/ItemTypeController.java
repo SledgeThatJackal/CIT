@@ -19,8 +19,8 @@ public class ItemTypeController {
     }
 
     @PostMapping("/create")
-    public void createType(@RequestBody ItemType itemType){
-        itemTypeService.saveType(itemType);
+    public Long createType(@RequestBody ItemType itemType){
+        return itemTypeService.saveType(itemType);
     }
 
     @PutMapping("/edit")

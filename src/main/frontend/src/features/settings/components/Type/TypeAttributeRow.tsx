@@ -20,7 +20,7 @@ const TypeAttributeRow = <T extends TypeAttribute>({
         borderTop: "1px solid #7B8895",
         borderBottom: "1px solid #7B8895",
       }}>
-      <Col md={1} className="text-center">
+      <Col md={1} className="text-center mt-2 mb-2">
         {children[0]}
       </Col>
       <Col md={10}>{children[1]}</Col>

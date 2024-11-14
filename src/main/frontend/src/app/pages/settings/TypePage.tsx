@@ -16,7 +16,10 @@ import TypeForm from "@settings/components/Type/TypeForm";
 import { useErrorState } from "@hooks/state/useErrorState";
 import GenericModal from "@components/general/GenericModal";
 import { useModalState } from "@hooks/state/useModalState";
-import { useDeleteItemType } from "@settings/services/mutation";
+import {
+  useDeleteItemType,
+  useDeleteTypeAttribute,
+} from "@settings/services/mutation";
 import { useTypeAttribute } from "@settings/services/query";
 import { TypeProvider, useData } from "@settings/hooks/TypeProvider";
 import { AttributeForm } from "@features/settings/schema/Type";
@@ -38,6 +41,7 @@ function TypeSettingsContent() {
 
   // Mutations
   const deleteTypeMuation = useDeleteItemType();
+  const deleteAttributeMutation = useDeleteTypeAttribute();
 
   const [filteredTypes, setFilteredTypes] = useState<TypeAttribute[]>([]);
 
@@ -46,7 +50,7 @@ function TypeSettingsContent() {
   useEffect(() => {
     if (typeAttributeQuery.data) {
       const filtered = typeAttributeQuery.data.filter((el) =>
-        el.columnTitle.toLowerCase().includes(search.toLowerCase()),
+        el.columnTitle?.toLowerCase().includes(search.toLowerCase()),
       );
 
       setFilteredTypes(filtered);
@@ -71,10 +75,16 @@ function TypeSettingsContent() {
     }
   };
 
-  const handleDelete = () => {
+  const handleTypeDelete = () => {
     if (type) {
       deleteTypeMuation.mutate(type);
       setType(itemTypesQuery[0].id || -1);
+    }
+  };
+
+  const handleAttributeDelete = (id?: number) => {
+    if (id) {
+      deleteAttributeMutation.mutate(id);
     }
   };
 
@@ -121,7 +131,7 @@ function TypeSettingsContent() {
                     disabled={type === -1}
                     onClick={() =>
                       openModal(
-                        handleDelete,
+                        handleTypeDelete,
                         "Are you sure you want to delete this type?",
                       )
                     }>
@@ -163,8 +173,17 @@ function TypeSettingsContent() {
                       <TypeAttributeEditCell
                         typeText={String(fType.displayOrder)}
                       />
-                      <TypeAttributeEditCell typeText={fType.columnTitle} />
-                      <TypeAttributeDeleteCell />
+                      <TypeAttributeEditCell
+                        typeText={fType.columnTitle || ""}
+                      />
+                      <TypeAttributeDeleteCell
+                        handleDelete={() =>
+                          openModal(
+                            () => handleAttributeDelete(fType.id),
+                            "Are you sure you want to delete this attribute?",
+                          )
+                        }
+                      />
                     </TypeAttributeRow>
                   ))}
               </Container>

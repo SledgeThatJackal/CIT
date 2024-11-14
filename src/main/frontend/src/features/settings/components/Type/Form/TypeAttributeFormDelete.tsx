@@ -1,8 +1,14 @@
 import React from "react";
-import { Button, CloseButton } from "react-bootstrap";
+import { CloseButton } from "react-bootstrap";
 
-const TypeAttributeFormDelete = () => {
-  return <CloseButton />;
+type TypeAttributeFormDeleteProps = {
+  handleRemove: () => void;
+};
+
+const TypeAttributeFormDelete = ({
+  handleRemove,
+}: TypeAttributeFormDeleteProps) => {
+  return <CloseButton onClick={handleRemove} />;
 };
 
 export default TypeAttributeFormDelete;

@@ -21,8 +21,8 @@ public class ItemTypeService {
         return itemTypeRepository.findAll();
     }
 
-    public void saveType(ItemType itemType){
-        itemTypeRepository.save(itemType);
+    public Long saveType(ItemType itemType){
+        return itemTypeRepository.save(itemType).getId();
     }
 
     public void deleteType(Long id){

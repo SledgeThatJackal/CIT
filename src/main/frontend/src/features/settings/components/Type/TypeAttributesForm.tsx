@@ -1,21 +1,60 @@
 import React from "react";
-import { Row } from "react-bootstrap";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { Button, Row } from "react-bootstrap";
+import {
+  FieldArrayWithId,
+  useFieldArray,
+  useFormContext,
+} from "react-hook-form";
 import TypeAttributeRow from "./TypeAttributeRow";
 import TypeAttributeFormEdit from "./Form/TypeAttributeFormEdit";
 import TypeAttributeFormDelete from "./Form/TypeAttributeFormDelete";
 import { AttributeForm } from "@features/settings/schema/Type";
+import { useModalState } from "@hooks/state/useModalState";
+import { useDeleteTypeAttribute } from "@features/settings/services/mutation";
 
 const TypeAttributesForm = () => {
+  const deleteAttributeMutation = useDeleteTypeAttribute();
+
   const {
     control,
     formState: { errors },
+    getValues,
   } = useFormContext<AttributeForm>();
+
+  const { openModal, closeModal } = useModalState();
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "typeAttributes",
   });
+
+  const addRow = () => {
+    append({
+      id: undefined,
+      itemType: undefined,
+      displayOrder: undefined,
+      columnTitle: undefined,
+    });
+  };
+
+  const handleDelete = (id: number, index: number) => {
+    deleteAttributeMutation.mutate(id);
+    closeModal();
+    remove(index);
+  };
+
+  const deleteRow = (index: number) => {
+    const attribute = getValues(`typeAttributes.${index}.id`);
+
+    if (attribute) {
+      openModal(
+        () => handleDelete(attribute, index),
+        "Are you sure you want to delete this attribute?",
+      );
+    } else {
+      remove(index);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -25,17 +64,24 @@ const TypeAttributesForm = () => {
             <TypeAttributeFormEdit
               key={`formEditFirstCell-${field.id}`}
               path={`typeAttributes.${index}.displayOrder`}
+              error={errors.typeAttributes?.[index]?.message}
             />
             <TypeAttributeFormEdit
               key={`formEditSecondCell-${field.id}`}
-              path={`typeAttributes.${index}.name`}
+              path={`typeAttributes.${index}.columnTitle`}
             />
-            <TypeAttributeFormDelete key={`formEditThirdCell-${field.id}`} />
+            <TypeAttributeFormDelete
+              key={`formEditThirdCell-${field.id}`}
+              handleRemove={() => deleteRow(index)}
+            />
           </TypeAttributeRow>
         ))
       ) : (
         <div>No attributes found</div>
       )}
+      <Button onClick={addRow} variant="link">
+        New Row
+      </Button>
     </React.Fragment>
   );
 };

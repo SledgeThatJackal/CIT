@@ -5,7 +5,7 @@ import { ZodItemType } from "@schema/General";
 const TypeCell = <T, S extends ZodItemType>({
   getValue,
 }: CellContext<T, S>) => {
-  return <div className="text-center">{getValue().name}</div>;
+  return <div className="text-center">{getValue()?.name}</div>;
 };
 
 export default TypeCell;

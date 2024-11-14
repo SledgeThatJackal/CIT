@@ -1,7 +1,55 @@
 import { useErrorState } from "@hooks/state/useErrorState";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createItemAttribute, deleteItemType } from "./api";
+import {
+  createItemAttribute,
+  createItemType,
+  createTypeAttribute,
+  deleteItemType,
+  deleteTypeAttribute,
+} from "./api";
 import { ItemAttribute } from "@features/items/schemas/Item";
+import { TypeAttribute } from "@schema/Types";
+import { ZodItemType } from "@schema/General";
+
+export function useCreateItemType() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: ZodItemType) => createItemType(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error, data) => {
+      if (!error) {
+        await queryClient.invalidateQueries({ queryKey: ["types"] });
+      }
+    },
+  });
+}
+
+export function useCreateTypeAttribute() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: TypeAttribute) => createTypeAttribute(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error, data) => {
+      if (!error) {
+        await queryClient.invalidateQueries({
+          queryKey: ["typeattribute", data.itemType?.id],
+        });
+      }
+    },
+  });
+}
 
 export function useCreateItemAttribute() {
   const queryClient = useQueryClient();
@@ -37,6 +85,27 @@ export function useDeleteItemType() {
       if (!error) {
         console.log(id);
         await queryClient.invalidateQueries({ queryKey: ["types"] });
+      }
+    },
+  });
+}
+
+export function useDeleteTypeAttribute() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (id: number) => deleteTypeAttribute(id),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error) => {
+      if (!error) {
+        await queryClient.invalidateQueries({
+          queryKey: ["typeattribute"],
+        });
       }
     },
   });
