@@ -9,10 +9,7 @@ type TypeAttributeFormEditProps = {
 };
 
 const TypeAttributeFormEdit = ({ path, error }: TypeAttributeFormEditProps) => {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext<AttributeForm>();
+  const { register } = useFormContext<AttributeForm>();
 
   return (
     <Form.Group>

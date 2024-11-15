@@ -49,9 +49,11 @@ function TypeSettingsContent() {
 
   useEffect(() => {
     if (typeAttributeQuery.data) {
-      const filtered = typeAttributeQuery.data.filter((el) =>
-        el.columnTitle?.toLowerCase().includes(search.toLowerCase()),
-      );
+      const filtered = typeAttributeQuery.data
+        .filter((el) =>
+          el.columnTitle?.toLowerCase().includes(search.toLowerCase()),
+        )
+        .sort((a, b) => (a?.displayOrder || 0) - (b.displayOrder || 0));
 
       setFilteredTypes(filtered);
     }
@@ -171,10 +173,12 @@ function TypeSettingsContent() {
                       key={`pageTypeRow-${fType.id}`}
                       fType={fType}>
                       <TypeAttributeEditCell
-                        typeText={String(fType.displayOrder)}
+                        attributeKey="displayOrder"
+                        fType={fType}
                       />
                       <TypeAttributeEditCell
-                        typeText={fType.columnTitle || ""}
+                        attributeKey="columnTitle"
+                        fType={fType}
                       />
                       <TypeAttributeDeleteCell
                         handleDelete={() =>

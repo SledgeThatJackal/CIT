@@ -30,6 +30,10 @@ export const createItemAttribute = async (data: ItemAttribute) => {
   await axios.post(`/api/attribute/item/create`, data);
 };
 
+export const editTypeAttribute = async (data: TypeAttribute) => {
+  await axios.put(`/api/attribute/type/edit`, data);
+};
+
 export const deleteItemType = async (id: number) => {
   await axios.delete(`/api/types/delete?id=${id}`);
 };
