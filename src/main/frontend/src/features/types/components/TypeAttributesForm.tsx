@@ -44,6 +44,8 @@ const TypeAttributesForm = () => {
 
     if (attribute) {
       openModal(
+        "Delete Attribute",
+        "Delete",
         () => handleDelete(attribute, index),
         "Are you sure you want to delete this attribute?",
       );

@@ -1,4 +1,3 @@
-import { ItemAttribute } from "@item/schemas/Item";
 import { ZodItemType } from "@schema/General";
 import { TypeAttribute } from "@schema/Types";
 import axios from "axios";
@@ -24,10 +23,6 @@ export const createItemType = async (data: ZodItemType) => {
 
 export const createTypeAttribute = async (data: TypeAttribute) => {
   await axios.post(`/api/attribute/type/create`, data);
-};
-
-export const createItemAttribute = async (data: ItemAttribute) => {
-  await axios.post(`/api/attribute/item/create`, data);
 };
 
 export const editTypeAttribute = async (data: TypeAttribute) => {

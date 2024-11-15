@@ -1,40 +1,78 @@
 import { useErrorState } from "@hooks/state/useErrorState";
-import { ZodItemType } from "@schema/General";
-import { TypeAttribute } from "@schema/Types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  createItemType,
-  createTypeAttribute,
-  deleteItemType,
-  deleteTypeAttribute,
-  editTypeAttribute,
+  createItem,
+  createItemAttribute,
+  deleteItem,
+  updateItem,
+  updateItemAttribute,
 } from "./api";
+import { ItemAttribute, ItemSchemaType } from "@item/schemas/Item";
 
-export function useCreateItemType() {
+export function useCreateItem() {
   const queryClient = useQueryClient();
   const { displayError } = useErrorState();
 
   return useMutation({
-    mutationFn: (data: ZodItemType) => createItemType(data),
+    mutationFn: (data: ItemSchemaType) => createItem(data),
 
     onError: (error: any) => {
       displayError(error.response.data.message);
     },
 
-    onSettled: async (_, error, data) => {
+    onSettled: async (_, error) => {
       if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["types"] });
+        await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
     },
   });
 }
 
-export function useCreateTypeAttribute() {
+export function useCreateItemAttribute() {
   const queryClient = useQueryClient();
   const { displayError } = useErrorState();
 
   return useMutation({
-    mutationFn: (data: TypeAttribute) => createTypeAttribute(data),
+    mutationFn: (data: ItemAttribute) => createItemAttribute(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error) => {
+      if (!error) {
+        // set up invadliation
+      }
+    },
+  });
+}
+
+export function useUpdateItem() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: ItemSchemaType) => updateItem(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error) => {
+      if (!error) {
+        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        // await queryClient.invalidateQueries({ queryKey: ["item", { id: variables.id }]})
+      }
+    },
+  });
+}
+
+export function useUpdateItemAttribute() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: ItemAttribute) => updateItemAttribute(data),
 
     onError: (error: any) => {
       displayError(error.response.data.message);
@@ -43,19 +81,19 @@ export function useCreateTypeAttribute() {
     onSettled: async (_, error, data) => {
       if (!error) {
         await queryClient.invalidateQueries({
-          queryKey: ["typeattribute", data.itemType?.id],
+          queryKey: ["itemattributes", data.item?.id],
         });
       }
     },
   });
 }
 
-export function useEditTypeAttribute() {
+export function useDeleteItem() {
   const queryClient = useQueryClient();
   const { displayError } = useErrorState();
 
   return useMutation({
-    mutationFn: (data: TypeAttribute) => editTypeAttribute(data),
+    mutationFn: (id: number) => deleteItem(id),
 
     onError: (error: any) => {
       displayError(error.response.data.message);
@@ -63,47 +101,7 @@ export function useEditTypeAttribute() {
 
     onSettled: async (_, error) => {
       if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["typeattribute"] });
-      }
-    },
-  });
-}
-
-export function useDeleteItemType() {
-  const queryClient = useQueryClient();
-  const { displayError } = useErrorState();
-
-  return useMutation({
-    mutationFn: (id: number) => deleteItemType(id),
-
-    onError: (error: any) => {
-      displayError(error.response.data.message);
-    },
-
-    onSettled: async (_, error, id) => {
-      if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["types"] });
-      }
-    },
-  });
-}
-
-export function useDeleteTypeAttribute() {
-  const queryClient = useQueryClient();
-  const { displayError } = useErrorState();
-
-  return useMutation({
-    mutationFn: (id: number) => deleteTypeAttribute(id),
-
-    onError: (error: any) => {
-      displayError(error.response.data.message);
-    },
-
-    onSettled: async (_, error) => {
-      if (!error) {
-        await queryClient.invalidateQueries({
-          queryKey: ["typeattribute"],
-        });
+        await queryClient.invalidateQueries({ queryKey: ["items"] });
       }
     },
   });

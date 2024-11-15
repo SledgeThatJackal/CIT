@@ -60,7 +60,7 @@ function TypeSettingsContent() {
   }, [typeAttributeQuery.data, search, type]);
 
   const handleCreate = () => {
-    openCanvas(TypeForm, "Creating New Type");
+    openCanvas(TypeForm, "bottom", "Creating New Type");
   };
 
   const handleEdit = () => {
@@ -71,7 +71,7 @@ function TypeSettingsContent() {
 
     if (itemType) {
       setProps(itemType, typeAttributes);
-      openCanvas(TypeForm, `Editing: ${itemType.name}`);
+      openCanvas(TypeForm, "bottom", `Editing: ${itemType.name}`);
     } else {
       displayError("ItemType does not exist");
     }
@@ -133,6 +133,8 @@ function TypeSettingsContent() {
                     disabled={type === -1}
                     onClick={() =>
                       openModal(
+                        "Delete Type",
+                        "Delete",
                         handleTypeDelete,
                         "Are you sure you want to delete this type?",
                       )
@@ -183,6 +185,8 @@ function TypeSettingsContent() {
                       <TypeAttributeDeleteCell
                         handleDelete={() =>
                           openModal(
+                            "Delete Attribute",
+                            "Delete",
                             () => handleAttributeDelete(fType.id),
                             "Are you sure you want to delete this attribute?",
                           )

@@ -1,0 +1,1 @@
+ALTER TABLE itemattributes_table RENAME COLUMN item_id TO itemid;

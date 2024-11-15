@@ -7,7 +7,7 @@ import {
   UseFormRegister,
   UseFormReset,
 } from "react-hook-form";
-import { TypeForm } from "../schemas/Item";
+import { TypeForm } from "@item/schemas/Item";
 import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
 import { useTypeAttribute } from "@type/services/query";
 

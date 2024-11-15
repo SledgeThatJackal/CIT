@@ -12,13 +12,13 @@ import {
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { ItemAttribute, ItemSchemaType, TypeForm } from "../schemas/Item";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateItem } from "@services/mutations";
+import { useCreateItem } from "@item/services/mutation";
 import TagInput from "@tag/components/TagInput";
 import ContainerSection from "./ContainerSection";
 import { useCanvasState } from "@hooks/state/useCanvasState";
-import TypeSection from "./TypeSection";
+import TypeSection from "./type_area/TypeSection";
 import SelectComponent from "@components/Forms/SelectComponentF";
-import { useCreateItemAttribute } from "@type/services/mutation";
+import { useCreateItemAttribute } from "@item/services/mutation";
 import { useItemTypes } from "@type/services/query";
 
 const CreateBox = () => {

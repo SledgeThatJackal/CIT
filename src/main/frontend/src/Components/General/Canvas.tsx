@@ -8,6 +8,7 @@ const Canvas = () => {
   const {
     showCanvas,
     component: ComponentToRender,
+    placement,
     title,
     closeCanvas,
   } = useCanvasState();
@@ -25,9 +26,9 @@ const Canvas = () => {
       className="bg-dark text-white"
       show={showCanvas}
       onHide={handleClose}
-      placement="bottom"
+      placement={placement || "bottom"}
       keyboard
-      style={{ height: "50vh" }}
+      style={placement === "bottom" ? { height: "50vh" } : {}}
       scroll={true}
       backdrop={true}>
       <Offcanvas.Header closeButton closeVariant="white">

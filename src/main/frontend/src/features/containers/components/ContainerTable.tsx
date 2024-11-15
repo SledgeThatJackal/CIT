@@ -213,7 +213,7 @@ function ContainerTable() {
         )}
         <Button
           variant="success"
-          onClick={() => openCanvas(ContainerCreate, "Create")}>
+          onClick={() => openCanvas(ContainerCreate, "bottom", "Create")}>
           Create
         </Button>
       </Stack>

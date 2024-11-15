@@ -4,12 +4,13 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
 const GenericModal = () => {
-  const { showModal, message, onDelete, closeModal } = useModalState();
+  const { showModal, title, buttonLabel, message, onDelete, closeModal } =
+    useModalState();
 
   return (
     <Modal show={showModal} onHide={closeModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Delete</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>{message}</Modal.Body>
       <Modal.Footer>
@@ -24,7 +25,7 @@ const GenericModal = () => {
 
             closeModal();
           }}>
-          Delete
+          {buttonLabel}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -1,27 +1,5 @@
-import { dataTagSymbol, useQueries, useQuery } from "@tanstack/react-query";
-import {
-  getContainers,
-  getDetailedContainers,
-  getItem,
-  getItems,
-  getTags,
-} from "./api";
-
-// Items
-export function useItem(id: number) {
-  return useQuery({
-    queryKey: ["item"],
-    queryFn: () => getItem(id),
-  });
-}
-
-export function useItems() {
-  return useQuery({
-    queryKey: ["items"],
-    queryFn: getItems,
-    staleTime: 1000 * 60 * 10,
-  });
-}
+import { useQuery } from "@tanstack/react-query";
+import { getContainers, getDetailedContainers, getTags } from "./api";
 
 // Containers
 export function useContainers() {

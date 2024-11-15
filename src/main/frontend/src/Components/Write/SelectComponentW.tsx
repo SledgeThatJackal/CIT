@@ -9,15 +9,19 @@ type SelectCompoentProps<T extends HasId> = {
   data?: T[];
   labelKey: keyof T;
   setValue: React.Dispatch<React.SetStateAction<number>>;
+  onBlur?: () => void;
 };
 
 const SelectComponentW = <T extends HasId>({
   data,
   labelKey,
   setValue,
+  onBlur,
 }: SelectCompoentProps<T>) => {
   return (
-    <Form.Select onChange={(e) => setValue(Number(e.target.value))}>
+    <Form.Select
+      onChange={(e) => setValue(Number(e.target.value))}
+      onBlur={onBlur}>
       {data ? (
         data
           .sort((a, b) =>

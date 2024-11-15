@@ -13,18 +13,24 @@ import { Button, Container, Form, Stack, Table } from "react-bootstrap";
 
 import { useTableData } from "../data/useTableData";
 
-import { useDeleteItem, useUpdateItem } from "@services/mutations";
+import {
+  useDeleteItem,
+  useUpdateItem,
+  useUpdateItemAttribute,
+} from "@item/services/mutation";
 import Canvas from "@components/general/Canvas";
 import ConfirmationModal from "@components/general/ConfirmationModal";
 import PaginationControl from "@components/general/PaginationControl";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import { useDeleteModalState } from "@hooks/state/useDeleteModalState";
 import { useDebounce } from "@hooks/useDebounce";
-import { Item, ZodContainerType } from "../schemas/Item";
+import { Item, ItemAttribute, ZodContainerType } from "../schemas/Item";
 import "@item/styles/ItemTable.css";
 
 import CreateBox from "./CreateBox";
 import { MemoizedTableBody, TableBody } from "./TableBody";
+import GenericModal from "@components/general/GenericModal";
+import { useModalState } from "@hooks/state/useModalState";
 
 export const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -57,6 +63,8 @@ function ItemTable() {
   const updateItemMutation = useUpdateItem();
   const deleteItemMutation = useDeleteItem();
 
+  const updateItemAttributeMutation = useUpdateItemAttribute();
+
   const [data, setData] = useState<Item[]>([]);
 
   // Modal
@@ -79,6 +87,10 @@ function ItemTable() {
     const updatedItem = { ...data[rowIndex], [columnID]: value };
 
     updateItemMutation.mutate({ ...updatedItem });
+  };
+
+  const updateItemAttribute = (itemAttr: ItemAttribute) => {
+    updateItemAttributeMutation.mutate(itemAttr);
   };
 
   const removeData = () => {
@@ -106,6 +118,7 @@ function ItemTable() {
     columnResizeMode: "onChange",
     meta: {
       updateData,
+      updateItemAttribute,
       getId: (rowIndex: number) => {
         return data[rowIndex].id;
       },
@@ -232,7 +245,7 @@ function ItemTable() {
         {table.getPageCount() > 0 && <PaginationControl table={table} />}
         <Button
           variant="success"
-          onClick={() => openCanvas(CreateBox, "Create")}>
+          onClick={() => openCanvas(CreateBox, "bottom", "Create")}>
           Create
         </Button>
       </Stack>
@@ -244,6 +257,7 @@ function ItemTable() {
         onDelete={removeData}
         message={"Are you sure you want to delete this item?"}
       />
+      <GenericModal />
     </Container>
   );
 }

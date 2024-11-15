@@ -1,39 +1,8 @@
 import axios from "axios";
 
-import {
-  Item,
-  ItemAttribute,
-  ItemSchemaType,
-  ZodContainerType,
-} from "@item/schemas/Item";
-import { Tag, TagCreate } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
-import { ZodItemType } from "@schema/General";
-import { TypeAttribute } from "@schema/Types";
-
-// Items
-
-// Query
-export const getItem = async (id: number) => {
-  return (await axios.get<Item>(`/api/item/id?id=${id}`)).data;
-};
-
-export const getItems = async () => {
-  return (await axios.get<Item[]>("/api/item")).data;
-};
-
-// Mutate
-export const createItem = async (data: ItemSchemaType) => {
-  return (await axios.post(`/api/item/create`, data)).data;
-};
-
-export const updateItem = async (data: ItemSchemaType) => {
-  await axios.put(`/api/item/edit`, data);
-};
-
-export const deleteItem = async (id: number) => {
-  await axios.delete(`/api/item/delete?id=${id}`);
-};
+import { ZodContainerType } from "@item/schemas/Item";
+import { Tag, TagCreate } from "@schema/Tag";
 
 // Containers
 

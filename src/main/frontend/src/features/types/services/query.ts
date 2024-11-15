@@ -20,7 +20,7 @@ export function useTypeAttributes() {
 export function useTypeAttribute(id: number) {
   return useQuery({
     queryKey: ["typeattribute", id],
-    queryFn: () => getTypeAttriutesById(id!),
+    queryFn: () => getTypeAttriutesById(id),
     enabled: !!id,
     staleTime: 1000 * 60 * 10,
   });

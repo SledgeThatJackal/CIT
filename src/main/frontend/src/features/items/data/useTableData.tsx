@@ -4,7 +4,7 @@ import { createColumnHelper, Row } from "@tanstack/react-table";
 import { Item } from "@item/schemas/Item";
 import EditCell from "@components/custom_cell_renderers/EditCell";
 import TagCell from "@components/custom_cell_renderers/TagCell";
-import { useItems } from "@services/queries";
+import { useItems } from "@item/services/query";
 import DeleteCell from "@components/custom_cell_renderers/DeleteCell";
 import { Tag } from "@schema/Tag";
 import ActionButtons from "../components/custom_cells/ActionButtons";

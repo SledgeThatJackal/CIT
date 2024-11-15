@@ -25,7 +25,7 @@ public class ItemAttribute {
     private TypeAttribute typeAttribute;
 
     @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "itemid", nullable = false)
     private Item item;
 
     private String value;
