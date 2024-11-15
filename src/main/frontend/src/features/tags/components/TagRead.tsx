@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, InputGroup, Button, Stack } from "react-bootstrap";
 
-import TagBadge from "@components/tag/TagBadge";
+import TagBadge from "./TagBadge";
 import { Tag } from "@schema/Tag";
 
 type TagReadProps = {

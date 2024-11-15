@@ -2,7 +2,7 @@ import ErrorBanner from "@components/error_handling/ErrorBanner";
 import ErrorBoundaryFallBack from "@components/error_handling/ErrorBoundaryFallBack";
 import { useErrorState } from "@hooks/state/useErrorState";
 import React, { useState } from "react";
-import { Container, Navbar, Nav, Row } from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 import { ErrorBoundary } from "react-error-boundary";
 import { NavLink, Outlet } from "react-router-dom";
 
@@ -58,11 +58,19 @@ const RootLayout = () => {
                 </Nav.Link>
                 <Nav.Link
                   as={NavLink}
-                  to="/settings"
-                  eventKey="settings"
+                  to="/tag"
+                  eventKey="tag"
                   className="nav-link"
-                  onClick={() => setActiveKey("settings")}>
-                  Settings
+                  onClick={() => setActiveKey("tag")}>
+                  Tag
+                </Nav.Link>
+                <Nav.Link
+                  as={NavLink}
+                  to="/type"
+                  eventKey="type"
+                  className="nav-link"
+                  onClick={() => setActiveKey("type")}>
+                  Type
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>

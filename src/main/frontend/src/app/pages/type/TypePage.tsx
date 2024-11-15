@@ -12,21 +12,21 @@ import {
 } from "react-bootstrap";
 import Canvas from "@components/general/Canvas";
 import { useCanvasState } from "@hooks/state/useCanvasState";
-import TypeForm from "@settings/components/Type/TypeForm";
+import TypeForm from "@type/components/TypeForm";
 import { useErrorState } from "@hooks/state/useErrorState";
 import GenericModal from "@components/general/GenericModal";
 import { useModalState } from "@hooks/state/useModalState";
 import {
   useDeleteItemType,
   useDeleteTypeAttribute,
-} from "@settings/services/mutation";
-import { useTypeAttribute } from "@settings/services/query";
-import { TypeProvider, useData } from "@settings/hooks/TypeProvider";
-import { AttributeForm } from "@features/settings/schema/Type";
-import { useEditState } from "@settings/hooks/state/useEditState";
-import TypeAttributeRow from "@features/settings/components/Type/TypeAttributeRow";
-import TypeAttributeEditCell from "@features/settings/components/Type/Table/TypeAttributeEditCell";
-import TypeAttributeDeleteCell from "@features/settings/components/Type/Table/TypeAttributeDeleteCell";
+} from "@type/services/mutation";
+import { useTypeAttribute } from "@type/services/query";
+import { TypeProvider, useData } from "@type/hooks/TypeProvider";
+import { AttributeForm } from "@type/schema/Type";
+import { useEditState } from "@type/hooks/state/useEditState";
+import TypeAttributeRow from "@type/components/TypeAttributeRow";
+import TypeAttributeEditCell from "@type/components/Table/TypeAttributeEditCell";
+import TypeAttributeDeleteCell from "@type/components/Table/TypeAttributeDeleteCell";
 
 function TypeSettingsContent() {
   const itemTypesQuery = useData();

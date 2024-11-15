@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Dropdown, Form, Stack } from "react-bootstrap";
 
-import TagBadge from "../tag/TagBadge";
+import TagBadge from "@tag/components/TagBadge";
 
 import { Tag } from "@schema/Tag";
 import { createPortal } from "react-dom";

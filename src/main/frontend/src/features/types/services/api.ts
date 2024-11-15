@@ -1,4 +1,4 @@
-import { ItemAttribute } from "@features/items/schemas/Item";
+import { ItemAttribute } from "@item/schemas/Item";
 import { ZodItemType } from "@schema/General";
 import { TypeAttribute } from "@schema/Types";
 import axios from "axios";

@@ -1,6 +1,6 @@
 import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
-import { useEditState } from "@features/settings/hooks/state/useEditState";
-import { AttributeForm } from "@features/settings/schema/Type";
+import { useEditState } from "@type/hooks/state/useEditState";
+import { AttributeForm } from "@type/schema/Type";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import { ZodItemType } from "@schema/General";
 import { TypeAttribute } from "@schema/Types";
@@ -11,7 +11,7 @@ import TypeAttributesForm from "./TypeAttributesForm";
 import {
   useCreateItemType,
   useCreateTypeAttribute,
-} from "@settings/services/mutation";
+} from "@type/services/mutation";
 
 const TypeForm = () => {
   const { itemType, typeAttributes } = useEditState();

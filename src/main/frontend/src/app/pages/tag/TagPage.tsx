@@ -11,8 +11,8 @@ import {
 
 import { Tag } from "@schema/Tag";
 import ConfirmationModal from "@components/general/ConfirmationModal";
-import TagRead from "@features/settings/components/Tag/TagRead";
-import TagForm from "@features/settings/components/Tag/TagForm";
+import TagRead from "@tag/components/TagRead";
+import TagForm from "@tag/components/TagForm";
 import { useDeleteTag } from "@services/mutations";
 import { useTags } from "@services/queries";
 

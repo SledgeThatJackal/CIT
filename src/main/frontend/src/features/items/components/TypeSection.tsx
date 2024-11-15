@@ -9,7 +9,7 @@ import {
 } from "react-hook-form";
 import { TypeForm } from "../schemas/Item";
 import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
-import { useTypeAttribute } from "@features/settings/services/query";
+import { useTypeAttribute } from "@type/services/query";
 
 type TypeSectionProps = {
   typeId: number;

@@ -8,7 +8,7 @@ import {
   deleteTypeAttribute,
   editTypeAttribute,
 } from "./api";
-import { ItemAttribute } from "@features/items/schemas/Item";
+import { ItemAttribute } from "@item/schemas/Item";
 import { TypeAttribute } from "@schema/Types";
 import { ZodItemType } from "@schema/General";
 

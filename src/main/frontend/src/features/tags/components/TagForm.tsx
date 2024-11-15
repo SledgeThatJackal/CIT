@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Row, Col, Form, Button, Stack, FloatingLabel } from "react-bootstrap";
 
-import TagBadge from "@components/tag/TagBadge";
+import TagBadge from "./TagBadge";
 
 import { Tag } from "@schema/Tag";
 import { useCreateTag, useUpdateTag } from "@services/mutations";

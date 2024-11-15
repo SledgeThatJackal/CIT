@@ -1,4 +1,4 @@
-import { AttributeForm } from "@features/settings/schema/Type";
+import { AttributeForm } from "@type/schema/Type";
 import React from "react";
 import { Form } from "react-bootstrap";
 import { Path, useFormContext } from "react-hook-form";

@@ -5,7 +5,7 @@ import TagBlock from "./TagBlock";
 import TagBadge from "./TagBadge";
 
 import { Tag } from "@schema/Tag";
-import { ItemSchemaType } from "@features/items/schemas/Item";
+import { ItemSchemaType } from "@item/schemas/Item";
 import {
   Button,
   Dropdown,

@@ -7,14 +7,14 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@app/*": ["src/app/*"],
-      "@features/*": ["src/features/*"],
       "@schema/*": ["src/schema/*"],
       "@styles/*": ["src/styles/*"],
       "@hooks/*": ["src/hooks/*"],
       "@services/*": ["src/services/*"],
       "@item/*": ["src/features/items/*"],
       "@container/*": ["src/features/containers/*"],
-      "@settings/*": ["src/features/settings/*"]
+      "@tag/*": ["src/features/tags/*"],
+      "@type/*": ["src/features/types/*"]
     },
     "strict": true,
     "moduleResolution": "node",

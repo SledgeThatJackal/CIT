@@ -1,4 +1,4 @@
-import { useEditTypeAttribute } from "@features/settings/services/mutation";
+import { useEditTypeAttribute } from "@type/services/mutation";
 import { TypeAttribute } from "@schema/Types";
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";

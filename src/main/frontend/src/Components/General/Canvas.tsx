@@ -2,7 +2,7 @@ import React from "react";
 import { Offcanvas } from "react-bootstrap";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import { useActionState } from "@item/hooks/useActionState";
-import { useEditState } from "@features/settings/hooks/state/useEditState";
+import { useEditState } from "@type/hooks/state/useEditState";
 
 const Canvas = () => {
   const {

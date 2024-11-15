@@ -1,4 +1,4 @@
-import { AttributeForm } from "@features/settings/schema/Type";
+import { AttributeForm } from "@type/schema/Type";
 import { ZodItemType } from "@schema/General";
 import { create } from "zustand";
 
