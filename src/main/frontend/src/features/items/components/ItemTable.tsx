@@ -164,7 +164,7 @@ function ItemTable() {
           hover
           bordered
           variant="secondary"
-          className="m-0"
+          className="m-0 shadow"
           style={{ ...columnSize, borderRadius: "8px", overflow: "hidden" }}>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => {
@@ -245,6 +245,7 @@ function ItemTable() {
         {table.getPageCount() > 0 && <PaginationControl table={table} />}
         <Button
           variant="success"
+          className="shadow"
           onClick={() => openCanvas(CreateBox, "bottom", "Create")}>
           Create
         </Button>

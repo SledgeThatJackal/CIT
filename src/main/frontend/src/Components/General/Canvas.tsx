@@ -23,15 +23,15 @@ const Canvas = () => {
 
   return (
     <Offcanvas
-      className="bg-dark text-white"
+      className="bg-dark text-white shadow-lg"
       show={showCanvas}
       onHide={handleClose}
       placement={placement || "bottom"}
       keyboard
-      style={placement === "bottom" ? { height: "50vh" } : {}}
+      style={placement === "bottom" ? { height: "55vh" } : {}}
       scroll={true}
       backdrop={true}>
-      <Offcanvas.Header closeButton closeVariant="white">
+      <Offcanvas.Header closeButton closeVariant="white" className="shadow">
         <Offcanvas.Title>{title}</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>

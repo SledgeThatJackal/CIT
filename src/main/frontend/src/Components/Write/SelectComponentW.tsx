@@ -8,8 +8,10 @@ type HasId = {
 type SelectCompoentProps<T extends HasId> = {
   data?: T[];
   labelKey: keyof T;
-  setValue: React.Dispatch<React.SetStateAction<number>>;
+  setValue: any;
   onBlur?: () => void;
+  isDisabled?: boolean;
+  initialValue?: number;
 };
 
 const SelectComponentW = <T extends HasId>({
@@ -17,11 +19,15 @@ const SelectComponentW = <T extends HasId>({
   labelKey,
   setValue,
   onBlur,
+  isDisabled = false,
+  initialValue,
 }: SelectCompoentProps<T>) => {
   return (
     <Form.Select
       onChange={(e) => setValue(Number(e.target.value))}
-      onBlur={onBlur}>
+      onBlur={onBlur}
+      disabled={isDisabled}
+      defaultValue={initialValue}>
       {data ? (
         data
           .sort((a, b) =>

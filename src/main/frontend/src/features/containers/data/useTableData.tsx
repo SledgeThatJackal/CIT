@@ -28,7 +28,7 @@ export const useTableData = () => {
       }),
       columnHelper.accessor("scannerId", {
         id: "scannerId",
-        header: "Container ID",
+        header: "Barcode ID",
         enableResizing: true,
         cell: EditCell,
       }),

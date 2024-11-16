@@ -163,33 +163,37 @@ const CreateBox = () => {
               <TagInput control={itemForm.control} />
             </Col>
           </Row>
-          <Col>
-            <ContainerSection
-              control={itemForm.control}
-              register={itemForm.register}
-              errors={itemForm.formState.errors}
-              setFocus={itemForm.setFocus}
-              setError={itemForm.setError}
-              clearErrors={itemForm.clearErrors}
-              getValues={itemForm.getValues}
-            />
-          </Col>
+          <Row>
+            <Col>
+              <ContainerSection
+                control={itemForm.control}
+                register={itemForm.register}
+                errors={itemForm.formState.errors}
+                setFocus={itemForm.setFocus}
+                setError={itemForm.setError}
+                clearErrors={itemForm.clearErrors}
+                getValues={itemForm.getValues}
+              />
+            </Col>
+          </Row>
         </Form>
       </FormProvider>
-      <Col>
-        <FormProvider {...typeForm}>
-          <Form onSubmit={typeForm.handleSubmit(onTypeSubmit)}>
-            <TypeSection
-              typeId={typeId}
-              itemAttrControl={typeForm.control}
-              itemAtrrReset={typeForm.reset}
-              registerItemAttr={typeForm.register}
-              itemAttrFormState={typeForm.formState}
-            />
-            <button style={{ display: "none" }} ref={typeFormButtonRef} />
-          </Form>
-        </FormProvider>
-      </Col>
+      <Row>
+        <Col>
+          <FormProvider {...typeForm}>
+            <Form onSubmit={typeForm.handleSubmit(onTypeSubmit)}>
+              <TypeSection
+                typeId={typeId}
+                itemAttrControl={typeForm.control}
+                itemAtrrReset={typeForm.reset}
+                registerItemAttr={typeForm.register}
+                itemAttrFormState={typeForm.formState}
+              />
+              <button style={{ display: "none" }} ref={typeFormButtonRef} />
+            </Form>
+          </FormProvider>
+        </Col>
+      </Row>
     </Container>
   );
 };

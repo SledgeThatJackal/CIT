@@ -104,7 +104,7 @@ function TypeSettingsContent() {
         <Row>
           <Container
             fluid
-            className="rounded bg-dark text-white mt-3 w-75 overflow-auto"
+            className="rounded bg-dark text-white mt-3 w-75 overflow-auto shadow"
             style={{ height: "65vh", border: "3px solid #7B8895" }}>
             <Row className="mt-3 mb-3">
               <Col as={Stack} direction="horizontal" gap={3}>

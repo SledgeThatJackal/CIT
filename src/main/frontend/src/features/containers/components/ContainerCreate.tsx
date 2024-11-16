@@ -46,7 +46,7 @@ const ContainerCreate = () => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Container
-        className={`text-light pt-3 pb-3 mb-3 rounded`}
+        className={`text-light pt-3 pb-3 mb-3 rounded shadow`}
         style={{ background: "#4B555F", border: "3px solid #7B8895" }}>
         <Row>
           <Form.Group as={Col} controlId="containerName">
@@ -71,7 +71,7 @@ const ContainerCreate = () => {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} controlId="floatingScannerId">
-            <FloatingLabel controlId="floatingScannerId" label="Container ID">
+            <FloatingLabel controlId="floatingScannerId" label="Barcode ID">
               <Form.Control {...register("scannerId")} type="text" />
             </FloatingLabel>
             <Form.Control.Feedback type="invalid">

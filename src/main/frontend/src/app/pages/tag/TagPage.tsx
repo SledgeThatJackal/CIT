@@ -115,7 +115,7 @@ function TagSettings() {
       </Container>
       <Container
         fluid
-        className="rounded bg-dark text-white mt-3 w-75 overflow-auto"
+        className="rounded bg-dark text-white mt-3 w-75 overflow-auto shadow"
         style={{ height: "65vh", border: "3px solid #7B8895" }}>
         <Row className="p-3">
           Tags: {filteredTags.length || 0} out of {tagsQuery?.length || 0}

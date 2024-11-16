@@ -19,7 +19,7 @@ const RootLayout = () => {
         <Navbar
           expand="lg"
           bg="dark"
-          className="border-bottom border-body"
+          className="border-bottom border-body shadow-lg"
           data-bs-theme="dark">
           <Container fluid>
             <Navbar.Brand
