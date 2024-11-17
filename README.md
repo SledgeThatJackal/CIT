@@ -1,4 +1,8 @@
 # CIT
+v0.3.0
+- Create Item Types
+  - Custom fields for items based on type
+
 v0.2.0
 - New Item and Container Tables
   - Sorting, column filtering, and column resizing
