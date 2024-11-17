@@ -18,7 +18,7 @@ const TypeCell = <T, S extends ZodItemType>(context: CellContext<T, S>) => {
 
   return (
     <React.Fragment>
-      {context.getValue() ? (
+      {context.getValue().id !== -1 ? (
         <div className="d-flex justify-content-center">
           <Button variant="link" onClick={handleClick}>
             {context.getValue().name}

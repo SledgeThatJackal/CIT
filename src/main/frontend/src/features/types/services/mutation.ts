@@ -1,5 +1,4 @@
 import { useErrorState } from "@hooks/state/useErrorState";
-import { ZodItemType } from "@schema/General";
 import { TypeAttribute } from "@schema/Types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -9,21 +8,25 @@ import {
   deleteTypeAttribute,
   editTypeAttribute,
 } from "./api";
+import { TypeFormDTO } from "@type/schema/Type";
 
 export function useCreateItemType() {
   const queryClient = useQueryClient();
   const { displayError } = useErrorState();
 
   return useMutation({
-    mutationFn: (data: ZodItemType) => createItemType(data),
+    mutationFn: (data: TypeFormDTO) => createItemType(data),
 
     onError: (error: any) => {
       displayError(error.response.data.message);
     },
 
-    onSettled: async (_, error, data) => {
+    onSettled: async (response, error) => {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["types"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["typeattribute", response?.data],
+        });
       }
     },
   });

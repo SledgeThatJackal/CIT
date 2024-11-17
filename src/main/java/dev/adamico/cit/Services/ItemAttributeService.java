@@ -1,11 +1,16 @@
 package dev.adamico.cit.Services;
 
+import dev.adamico.cit.DTO.ItemFormDTO;
 import dev.adamico.cit.Models.ItemAttribute;
 import dev.adamico.cit.Repositories.ItemAttributeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class ItemAttributeService {
@@ -14,6 +19,28 @@ public class ItemAttributeService {
 
     public List<ItemAttribute> findByItemId(Long id){
         return itemAttributeRepository.findByItemId(id);
+    }
+
+    @Transactional
+    public void updateItemAttributes(Long id, Set<ItemFormDTO.Attribute> itemAttributes){
+        List<ItemAttribute> dbItemAttributes = itemAttributeRepository.findByItemId(id);
+
+        dbItemAttributes.forEach((dbItemAttribute -> {
+            Iterator<ItemFormDTO.Attribute> iterator = itemAttributes.iterator();
+
+            while(iterator.hasNext()){
+                ItemFormDTO.Attribute attribute = iterator.next();
+
+                if(Objects.equals(attribute.getTypeAttribute().getId(), dbItemAttribute.getTypeAttribute().getId())){
+                    dbItemAttribute.setValue(attribute.getValue());
+
+                    iterator.remove();
+                    break;
+                }
+            }
+        }));
+
+        itemAttributeRepository.saveAll(dbItemAttributes);
     }
 
     public void saveItemAttribute(ItemAttribute itemAttribute){

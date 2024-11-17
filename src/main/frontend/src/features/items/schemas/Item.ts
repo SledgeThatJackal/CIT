@@ -48,6 +48,14 @@ export type ItemAttribute = {
   value: string;
 };
 
-export type TypeForm = {
-  itemAttributes: ItemAttribute[];
+export type ItemAttributeData = {
+  attributes: {
+    typeAttribute: TypeAttribute;
+    value?: string;
+  }[];
+};
+
+export type ItemFormDTO = {
+  item: ItemSchemaType;
+  itemAttributes: ItemAttributeData["attributes"];
 };

@@ -1,27 +1,19 @@
 import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
 import { useEditState } from "@type/hooks/state/useEditState";
-import { AttributeForm } from "@type/schema/Type";
+import { AttributeForm, TypeFormDTO } from "@type/schema/Type";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import { ZodItemType } from "@schema/General";
-import { TypeAttribute } from "@schema/Types";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Button, Col, Container, Form, Row, Stack } from "react-bootstrap";
 import { FormProvider, useForm } from "react-hook-form";
 import TypeAttributesForm from "./TypeAttributesForm";
-import {
-  useCreateItemType,
-  useCreateTypeAttribute,
-} from "@type/services/mutation";
+import { useCreateItemType } from "@type/services/mutation";
 
 const TypeForm = () => {
   const { itemType, typeAttributes } = useEditState();
   const { closeCanvas } = useCanvasState();
 
-  const attributeButtonRef = useRef<HTMLButtonElement>(null);
-  const [typeId, setTypeId] = useState<number>(0);
-
   const createTypeMutation = useCreateItemType();
-  const createAttributeMutation = useCreateTypeAttribute();
 
   const typeForm = useForm<ZodItemType>({
     defaultValues: itemType ? itemType : {},
@@ -43,32 +35,23 @@ const TypeForm = () => {
   });
 
   const onSubmit = async (typeData: ZodItemType) => {
-    const idReturn = createTypeMutation.mutateAsync(typeData);
-    setTypeId(await idReturn);
-  };
+    const isAttributeFormValid = await attributeForm.trigger();
 
-  useEffect(() => {
-    if (typeId !== 0 && attributeButtonRef.current) {
-      attributeButtonRef.current.click();
+    if (!isAttributeFormValid) {
+      console.error("Type Attributes are invalid");
+      return;
     }
-  }, [typeId]);
 
-  const onAttributeSubmit = async (attributeData: AttributeForm) => {
-    attributeData.typeAttributes.forEach((typeAttribute) => {
-      const updatedTypeAttribute: TypeAttribute = {
-        ...typeAttribute,
-        itemType: {
-          id: typeId,
-          name: "",
-        },
-      };
+    const typeFormDTO: TypeFormDTO = {
+      itemType: typeData,
+      typeAttributes: attributeForm.getValues().typeAttributes,
+    };
 
-      createAttributeMutation.mutate(updatedTypeAttribute);
-      setTypeId(0);
-      typeForm.reset();
-      attributeForm.reset();
-      closeCanvas();
-    });
+    createTypeMutation.mutate(typeFormDTO);
+
+    typeForm.reset();
+    attributeForm.reset();
+    closeCanvas();
   };
 
   return (
@@ -90,13 +73,14 @@ const TypeForm = () => {
                 errorMessage={typeForm.formState.errors.name?.message}
               />
             </Col>
-            <Col md="3" as={Stack} direction="horizontal" gap={2}>
+            <Col md={3} as={Stack} direction="horizontal" gap={2}>
               <Button
                 type="submit"
                 size="lg"
-                variant="success"
+                className="ms-auto"
+                variant={itemType ? "info" : "success"}
                 disabled={typeForm.formState.isSubmitting}>
-                Create
+                {itemType ? "Edit" : "Create"}
               </Button>
               <Button
                 type="button"
@@ -113,9 +97,7 @@ const TypeForm = () => {
         className="rounded bg-dark text-white mt-3 overflow-auto"
         style={{ border: "3px solid #7B8895", height: "26vh" }}>
         <FormProvider {...attributeForm}>
-          <Form
-            className="mt-1 mb-1"
-            onSubmit={attributeForm.handleSubmit(onAttributeSubmit)}>
+          <Form className="mt-1 mb-1">
             <Row>
               <Col md={1} className="text-center">
                 Order
@@ -126,7 +108,6 @@ const TypeForm = () => {
               </Col>
             </Row>
             <TypeAttributesForm />
-            <button style={{ display: "none" }} ref={attributeButtonRef} />
           </Form>
         </FormProvider>
       </Container>

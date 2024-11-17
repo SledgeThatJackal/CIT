@@ -7,14 +7,14 @@ import {
   updateItem,
   updateItemAttribute,
 } from "./api";
-import { ItemAttribute, ItemSchemaType } from "@item/schemas/Item";
+import { ItemAttribute, ItemFormDTO, ItemSchemaType } from "@item/schemas/Item";
 
 export function useCreateItem() {
   const queryClient = useQueryClient();
   const { displayError } = useErrorState();
 
   return useMutation({
-    mutationFn: (data: ItemSchemaType) => createItem(data),
+    mutationFn: (data: ItemFormDTO) => createItem(data),
 
     onError: (error: any) => {
       displayError(error.response.data.message);
@@ -58,9 +58,12 @@ export function useUpdateItem() {
       displayError(error.response.data.message);
     },
 
-    onSettled: async (_, error) => {
+    onSettled: async (_, error, data) => {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["itemattributes", data.id],
+        });
         // await queryClient.invalidateQueries({ queryKey: ["item", { id: variables.id }]})
       }
     },

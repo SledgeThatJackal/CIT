@@ -7,16 +7,16 @@ import {
   UseFormRegister,
   UseFormReset,
 } from "react-hook-form";
-import { TypeForm } from "@item/schemas/Item";
+import { ItemAttributeData } from "@item/schemas/Item";
 import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
 import { useTypeAttribute } from "@type/services/query";
 
 type TypeSectionProps = {
   typeId: number;
-  itemAttrControl: Control<TypeForm>;
-  itemAtrrReset: UseFormReset<TypeForm>;
-  registerItemAttr: UseFormRegister<TypeForm>;
-  itemAttrFormState: FormState<TypeForm>;
+  itemAttrControl: Control<ItemAttributeData>;
+  itemAtrrReset: UseFormReset<ItemAttributeData>;
+  registerItemAttr: UseFormRegister<ItemAttributeData>;
+  itemAttrFormState: FormState<ItemAttributeData>;
 };
 
 const TypeSection = ({
@@ -30,20 +30,18 @@ const TypeSection = ({
 
   const { fields, append } = useFieldArray({
     control: itemAttrControl,
-    name: "itemAttributes",
+    name: "attributes",
   });
 
   useEffect(() => {
     itemAtrrReset({
-      itemAttributes: [],
+      attributes: [],
     });
 
     if (typeAttrQuery) {
       for (var i = 0; i < typeAttrQuery?.length; i++) {
         append({
-          id: undefined,
           typeAttribute: typeAttrQuery[i],
-          item: undefined,
           value: "",
         });
       }
@@ -68,10 +66,10 @@ const TypeSection = ({
               <FormFloatingLabel
                 key={`typeField-${field.id}`}
                 register={registerItemAttr}
-                path={`itemAttributes.${index}.value`}
+                path={`attributes.${index}.value`}
                 title={field.typeAttribute.columnTitle}
                 errorMessage={
-                  itemAttrFormState.errors.itemAttributes?.[index]?.message
+                  itemAttrFormState.errors.attributes?.[index]?.message
                 }
               />
             </Col>

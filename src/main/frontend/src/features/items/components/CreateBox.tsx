@@ -10,7 +10,11 @@ import {
   Stack,
 } from "react-bootstrap";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { ItemAttribute, ItemSchemaType, TypeForm } from "../schemas/Item";
+import {
+  ItemAttributeData,
+  ItemFormDTO,
+  ItemSchemaType,
+} from "../schemas/Item";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateItem } from "@item/services/mutation";
 import TagInput from "@tag/components/TagInput";
@@ -18,17 +22,13 @@ import ContainerSection from "./ContainerSection";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import TypeSection from "./type_area/TypeSection";
 import SelectComponent from "@components/Forms/SelectComponentF";
-import { useCreateItemAttribute } from "@item/services/mutation";
 import { useItemTypes } from "@type/services/query";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();
-  const createItemAttrMutation = useCreateItemAttribute();
   const itemTypeQuery = useItemTypes().data;
   const { closeCanvas } = useCanvasState();
   const [typeId, setTypeId] = useState<number>(-1);
-  const [itemId, setItemId] = useState<number>(0);
-  const typeFormButtonRef = useRef<HTMLButtonElement>(null);
 
   const itemForm = useForm<ItemSchemaType>({
     defaultValues: {
@@ -52,9 +52,9 @@ const CreateBox = () => {
     // resolver: zodResolver(ItemSchema),
   });
 
-  const typeForm = useForm<TypeForm>({
+  const typeForm = useForm<ItemAttributeData>({
     defaultValues: {
-      itemAttributes: [],
+      attributes: [],
     },
   });
 
@@ -73,32 +73,23 @@ const CreateBox = () => {
       containerItems: itemData.containerItems?.slice(0, -1),
     };
 
-    const idReturn = createItemMutation.mutateAsync(item);
-    setItemId(await idReturn);
-  };
+    const isTypeFormValid = await typeForm.trigger();
 
-  useEffect(() => {
-    if (itemId !== 0 && typeFormButtonRef.current) {
-      typeFormButtonRef.current.click();
+    if (!isTypeFormValid) {
+      console.error("Item Attributes are invalid");
+      return;
     }
-  }, [itemId]);
 
-  const onTypeSubmit = async (itemAttrData: TypeForm) => {
-    itemAttrData.itemAttributes.forEach((itemAttr) => {
-      const updatedItemAttr: ItemAttribute = {
-        ...itemAttr,
-        item: {
-          id: itemId,
-          name: "",
-        },
-      };
+    const itemFormDTO: ItemFormDTO = {
+      item: item,
+      itemAttributes: typeForm.getValues().attributes,
+    };
 
-      createItemAttrMutation.mutate(updatedItemAttr);
-    });
+    createItemMutation.mutate(itemFormDTO);
 
-    setItemId(0);
-    itemForm.reset();
     typeForm.reset();
+    itemForm.reset();
+    closeCanvas();
   };
 
   return (
@@ -143,9 +134,9 @@ const CreateBox = () => {
               </FloatingLabel>
             </Form.Group>
             <Col md="2" as={Stack} direction="horizontal" gap={2}>
-              <div className="vr" />
               <Button
                 type="submit"
+                className="ms-auto"
                 variant="success"
                 disabled={itemForm.formState.isSubmitting}>
                 Create
@@ -181,7 +172,7 @@ const CreateBox = () => {
       <Row>
         <Col>
           <FormProvider {...typeForm}>
-            <Form onSubmit={typeForm.handleSubmit(onTypeSubmit)}>
+            <Form>
               <TypeSection
                 typeId={typeId}
                 itemAttrControl={typeForm.control}
@@ -189,7 +180,6 @@ const CreateBox = () => {
                 registerItemAttr={typeForm.register}
                 itemAttrFormState={typeForm.formState}
               />
-              <button style={{ display: "none" }} ref={typeFormButtonRef} />
             </Form>
           </FormProvider>
         </Col>

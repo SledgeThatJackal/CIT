@@ -21,4 +21,12 @@ public class ItemType {
     private Long id;
 
     private String name;
+
+    @Override
+    public String toString() {
+        return "ItemType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

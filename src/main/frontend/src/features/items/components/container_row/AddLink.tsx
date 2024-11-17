@@ -62,7 +62,7 @@ const AddLink = ({ itemId }: AddLinkProps) => {
               onChange={(event) => setQuantity(Number(event.target.value))}
             />
           </td>
-          <td>
+          <td className="align-middle">
             <Button
               variant="success"
               size="sm"

@@ -3,6 +3,7 @@ package dev.adamico.cit.Controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.adamico.cit.DTO.ItemFormDTO;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ContainerItemService;
@@ -66,8 +67,8 @@ public class ItemController {
     }
 
     @PostMapping("/create")
-    public Long createItem(@RequestBody Item item){
-        return itemService.saveItem(item).getId();
+    public void createItem(@RequestBody ItemFormDTO dto){
+        itemService.createItem(dto);
     }
 
     @DeleteMapping("/delete-tag")

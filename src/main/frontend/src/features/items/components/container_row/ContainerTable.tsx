@@ -54,7 +54,7 @@ function ContainerTable({ value, itemId }: ContainerTableProps) {
         striped
         bordered
         variant="info"
-        style={{ borderRadius: "8px", overflow: "hidden" }}>
+        style={{ borderRadius: "8px" }}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => {
             return (

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION add_itemattributes()
+CREATE OR REPLACE FUNCTION add_itemattributes_item()
 RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO itemattributes_table (id, itemid, typeattr_id, "value")
@@ -12,7 +12,7 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER item_table_create_itemattributes_table
 AFTER INSERT ON item_table
 FOR EACH ROW
-EXECUTE FUNCTION add_itemattributes();
+EXECUTE FUNCTION add_itemattributes_item();
 
 CREATE OR REPLACE FUNCTION update_itemattributes()
 RETURNS TRIGGER AS $$

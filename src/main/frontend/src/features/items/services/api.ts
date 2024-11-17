@@ -1,4 +1,9 @@
-import { Item, ItemAttribute, ItemSchemaType } from "@item/schemas/Item";
+import {
+  Item,
+  ItemAttribute,
+  ItemFormDTO,
+  ItemSchemaType,
+} from "@item/schemas/Item";
 import axios from "axios";
 
 // Query
@@ -16,8 +21,8 @@ export const getItemAttributes = async (id: number) => {
 };
 
 // Mutate
-export const createItem = async (data: ItemSchemaType) => {
-  return (await axios.post(`/api/item/create`, data)).data;
+export const createItem = async (data: ItemFormDTO) => {
+  await axios.post(`/api/item/create`, data);
 };
 
 export const createItemAttribute = async (data: ItemAttribute) => {

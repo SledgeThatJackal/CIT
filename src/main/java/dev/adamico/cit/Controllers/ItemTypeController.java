@@ -1,5 +1,6 @@
 package dev.adamico.cit.Controllers;
 
+import dev.adamico.cit.DTO.TypeFormDTO;
 import dev.adamico.cit.Models.ItemType;
 import dev.adamico.cit.Services.ItemTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ public class ItemTypeController {
     }
 
     @PostMapping("/create")
-    public Long createType(@RequestBody ItemType itemType){
-        return itemTypeService.saveType(itemType);
+    public Long createType(@RequestBody TypeFormDTO typeFormDTO){
+        return itemTypeService.createType(typeFormDTO);
     }
 
     @PutMapping("/edit")
     public void editType(@RequestBody ItemType itemType){
-        itemTypeService.saveType((itemType));
+        itemTypeService.saveType(itemType);
     }
 
     @DeleteMapping("/delete")

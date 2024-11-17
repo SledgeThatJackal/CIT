@@ -1,5 +1,6 @@
 import { ZodItemType } from "@schema/General";
 import { TypeAttribute } from "@schema/Types";
+import { TypeFormDTO } from "@type/schema/Type";
 import axios from "axios";
 
 // Query
@@ -17,8 +18,8 @@ export const getTypeAttriutesById = async (id: number) => {
 };
 
 // Mutate
-export const createItemType = async (data: ZodItemType) => {
-  return (await axios.post(`/api/types/create`, data)).data;
+export const createItemType = async (data: TypeFormDTO) => {
+  return await axios.post(`/api/types/create`, data);
 };
 
 export const createTypeAttribute = async (data: TypeAttribute) => {
