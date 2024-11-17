@@ -136,7 +136,7 @@ function ContainerTable() {
           hover
           bordered
           variant="secondary"
-          className="m-0"
+          className="m-0 shadow"
           style={{ ...columnSize, borderRadius: "8px", overflow: "hidden" }}>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => {
@@ -213,7 +213,8 @@ function ContainerTable() {
         )}
         <Button
           variant="success"
-          onClick={() => openCanvas(ContainerCreate, "Create")}>
+          className="shadow"
+          onClick={() => openCanvas(ContainerCreate, "bottom", "Create")}>
           Create
         </Button>
       </Stack>

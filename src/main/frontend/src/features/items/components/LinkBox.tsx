@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import ContainerSection from "./ContainerSection";
 import { ItemSchema, ItemSchemaType } from "../schemas/Item";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useUpdateItem } from "@services/mutations";
+import { useUpdateItem } from "@item/services/mutation";
 import { useActionState } from "../hooks/useActionState";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 

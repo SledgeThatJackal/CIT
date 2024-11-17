@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
+@Table(name = "item_table")
 @NamedEntityGraph(
         name = "graph.Item",
         attributeNodes= {
@@ -27,7 +28,6 @@ import java.util.Set;
                         }
                 )
         })
-@Table(name = "item_table")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -54,4 +54,20 @@ public class Item {
     )
     @JsonView(Views.Exclusive.class)
     private Set<Tag> tags;
+
+    @ManyToOne
+    @JoinColumn(name = "itemtype_id", referencedColumnName = "id")
+    private ItemType itemType;
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", containerItems=" + containerItems +
+                ", tags=" + tags +
+                ", itemType=" + itemType +
+                '}';
+    }
 }

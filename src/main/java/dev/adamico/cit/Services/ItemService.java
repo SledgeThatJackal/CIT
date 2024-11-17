@@ -1,10 +1,13 @@
 package dev.adamico.cit.Services;
 
+import dev.adamico.cit.DTO.ItemFormDTO;
+import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -13,6 +16,9 @@ import java.util.Set;
 public class ItemService {
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    ItemAttributeService itemAttributeService;
 
     public List<Item> findAllItems(){
         return itemRepository.findAll(Sort.by("id"));
@@ -23,8 +29,29 @@ public class ItemService {
         return itemRepository.findById(id).orElse(null);
     }
 
-    public Item saveItem(Item item){
-        return itemRepository.save(item);
+    @Transactional
+    public void createItem(ItemFormDTO dto){
+        Item item = dto.getItem();
+
+        if(item.getContainerItems() != null){
+            for(ContainerItem containerItem : item.getContainerItems()){
+                containerItem.setItem(item);
+            }
+        }
+
+        Long id = itemRepository.save(item).getId();
+
+        itemAttributeService.updateItemAttributes(id, dto.getItemAttributes());
+    }
+
+    public void saveItem(Item item){
+        if(item.getContainerItems() != null){
+            for(ContainerItem containerItem : item.getContainerItems()){
+                containerItem.setItem(item);
+            }
+        }
+
+        itemRepository.save(item);
     }
 
     public void deleteItem(Long id){

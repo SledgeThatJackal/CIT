@@ -11,9 +11,8 @@ const ContainerPage = lazy(
 
 const ItemPage = lazy(() => import("../pages/item/ItemPage.tsx"));
 
-const SettingsPage = lazy(() => import("../pages/settings/SettingsPage.tsx"));
-const TagSettingsPage = lazy(() => import("../pages/settings/TagPage.tsx"));
-const TypeSettingsPage = lazy(() => import("../pages/settings/TypePage.tsx"));
+const TagSettingsPage = lazy(() => import("../pages/tag/TagPage.tsx"));
+const TypeSettingsPage = lazy(() => import("../pages/type/TypePage.tsx"));
 
 const SuspenseLayout = () => (
   <Suspense fallback={<>Loading...</>}>
@@ -33,12 +32,12 @@ export const router = createBrowserRouter([
       },
       { path: "item", children: [{ index: true, element: <ItemPage /> }] },
       {
-        path: "settings",
-        element: <SettingsPage />,
-        children: [
-          { path: "tags", element: <TagSettingsPage /> },
-          { path: "types", element: <TypeSettingsPage /> },
-        ],
+        path: "tag",
+        children: [{ index: true, element: <TagSettingsPage /> }],
+      },
+      {
+        path: "type",
+        children: [{ index: true, element: <TypeSettingsPage /> }],
       },
     ],
   },

@@ -9,8 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @Table(name = "containeritem_table")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonView(Views.Inclusive.class)

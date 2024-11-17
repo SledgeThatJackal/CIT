@@ -13,7 +13,7 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
 
   return (
     <Stack direction="horizontal" gap={3}>
-      <Pagination className="my-0">
+      <Pagination className="my-0 shadow">
         <Pagination.First
           key={`page-first`}
           onClick={() => table.firstPage()}
@@ -50,7 +50,7 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
           disabled={!table.getCanNextPage()}
         />
       </Pagination>
-      <InputGroup className="w-auto">
+      <InputGroup className="w-auto shadow">
         <InputGroup.Text>
           <strong>Navigate To Page:</strong>
         </InputGroup.Text>
@@ -66,7 +66,7 @@ const PaginationControl = ({ table }: PaginationControlProps) => {
           }
         />
       </InputGroup>
-      <InputGroup className="w-auto">
+      <InputGroup className="w-auto shadow">
         <InputGroup.Text>
           <strong>Show:</strong>
         </InputGroup.Text>

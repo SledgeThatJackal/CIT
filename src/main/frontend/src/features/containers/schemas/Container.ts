@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { TagSchema } from "../../../schema/Tag";
+import { ItemTypeSchema } from "@schema/General";
 
 export type ContainerType = {
   id: number;
@@ -15,6 +16,7 @@ const ItemSchema = z.object({
   name: z.string({ message: "The Item name is required" }),
   description: z.string().optional(),
   tags: z.array(TagSchema).optional(),
+  itemType: ItemTypeSchema.optional(),
 });
 
 export const ContainerItemSchema = z.object({

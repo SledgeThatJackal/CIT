@@ -18,7 +18,7 @@ const ActionButtons = ({ row }: ActionButtonsProps) => {
   const isActive = callerId === row.getValue("id");
 
   const handleOpen = () => {
-    openCanvas(LinkBox, `Editing: ${row.getValue("name")}`);
+    openCanvas(LinkBox, "bottom", `Editing: ${row.getValue("name")}`);
     updateAction(row.original, row.getValue("id"));
   };
 

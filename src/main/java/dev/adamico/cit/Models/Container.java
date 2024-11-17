@@ -28,7 +28,7 @@ public class Container {
     private String description;
     private String scannerId;
 
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @ManyToOne(targetEntity = Container.class, fetch = FetchType.EAGER)
     @JsonView(Views.ExclusiveObject.class)
     private Container parentContainer;

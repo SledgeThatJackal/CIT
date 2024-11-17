@@ -13,7 +13,7 @@ import {
   UseFormTrigger,
   useWatch,
 } from "react-hook-form";
-import { ItemSchemaType, ZodContainerItemSchema } from "../schemas/Item";
+import { ItemSchemaType, ZodContainerItemType } from "../schemas/Item";
 import ComboBox from "@components/general/ComboBox";
 
 type ContainerSectionProps = {
@@ -43,7 +43,7 @@ const ContainerSection = ({
   const watchContainerItems = useWatch({
     control,
     name: "containerItems",
-  }) as ZodContainerItemSchema[];
+  }) as ZodContainerItemType[];
 
   useEffect(() => {
     const lastRow =

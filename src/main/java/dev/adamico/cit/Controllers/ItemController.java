@@ -1,7 +1,9 @@
 package dev.adamico.cit.Controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import dev.adamico.cit.Models.ContainerItem;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.adamico.cit.DTO.ItemFormDTO;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ContainerItemService;
@@ -10,7 +12,9 @@ import dev.adamico.cit.Services.ItemService;
 import dev.adamico.cit.Services.TagService;
 import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,30 +43,32 @@ public class ItemController {
 
     @GetMapping("id")
     @JsonView(Views.InclusiveID.class)
-    public Item getItem(@RequestParam long id) {
+    public Item getItem(@RequestParam long id){
         return itemService.findItemById(id);
     }
 
-    @PostMapping("/create")
-    public void createItem(@RequestBody Item item){
-        if(item.getContainerItems() != null){
-            for(ContainerItem containerItem: item.getContainerItems()){
-                containerItem.setItem(item);
-            }
-        }
+    @GetMapping("/page")
+    @JsonView(Views.InclusiveID.class)
+    public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size,
+                                     @RequestParam(defaultValue = "") String search) throws JsonProcessingException {
 
-        itemService.saveItem(item);
+        Page<Item> itemPage = itemService.searchItems(page, size, search);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(itemPage);
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonString); // I did this because it just wouldn't serialize my data at all.
     }
 
     @PutMapping("/edit")
     public void updateItem(@RequestBody Item item) {
-        if(item.getContainerItems() != null){
-            for(ContainerItem containerItem: item.getContainerItems()){
-                containerItem.setItem(item);
-            }
-        }
-
         itemService.saveItem(item);
+    }
+
+    @PostMapping("/create")
+    public void createItem(@RequestBody ItemFormDTO dto){
+        itemService.createItem(dto);
     }
 
     @DeleteMapping("/delete-tag")

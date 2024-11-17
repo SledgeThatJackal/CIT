@@ -1,7 +1,7 @@
 package dev.adamico.cit.Services;
 
-import dev.adamico.cit.DTOs.ContainerDTO;
 import dev.adamico.cit.Models.Container;
+import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Repositories.ContainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,10 +27,6 @@ public class ContainerService {
         return containerRepository.findAll(pageable);
     }
 
-    public List<ContainerDTO> findAllScannerIdsAndNames(){
-        return containerRepository.findAllScannerIdsAndNames();
-    }
-
     public Container findContainerById(Long id){
         return containerRepository.findById(id).orElse(null);
     }
@@ -45,6 +41,42 @@ public class ContainerService {
 
     public void saveContainer(Container container){
         containerRepository.save(container);
+    }
+
+    public void createContainer(Container container, Long parentId){
+        Container parent = findContainerById(parentId);
+        if(parent != null){
+            container.addParent(parent);
+        }
+
+        saveContainer(container);
+    }
+
+    public void updateContainer(Container container){
+        if(container.getContainerItems() != null){
+            for(ContainerItem containerItem: container.getContainerItems()){
+                containerItem.setContainer(container);
+            }
+        }
+
+        saveContainer(container);
+    }
+
+    public void updateParentContainer(Long containerId, Long parentId){
+        Container container = findContainerById(containerId);
+        Container parentContainer = findContainerById(parentId);
+
+        if(parentContainer != null){
+            if(container.getDescendants().contains(parentContainer)){
+                throw new IllegalArgumentException("This container is already part of the parent's tree");
+            }
+
+            container.addParent(parentContainer);
+        } else {
+            container.setParentContainer(null);
+        }
+
+        saveContainer(container);
     }
 
     public void deleteContainer(Long id){

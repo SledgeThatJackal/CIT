@@ -1,12 +1,15 @@
 import { z } from "zod";
 import { Tag, TagSchema } from "@schema/Tag";
+import { ItemTypeSchema, ZodItemType } from "@schema/General";
+import { TypeAttribute } from "@schema/Types";
 
 export type Item = {
   id: number;
   name: string;
   description?: string;
-  containerItems?: ZodContainerItemSchema[];
+  containerItems?: ZodContainerItemType[];
   tags?: Tag[];
+  itemType?: ZodItemType;
 };
 
 const ContainerSchema = z.object({
@@ -29,10 +32,30 @@ export const ItemSchema = z.object({
   description: z.string().optional(),
   containerItems: z.array(ContainerItemSchema).optional(),
   tags: z.array(TagSchema).optional(),
+  itemType: ItemTypeSchema.optional(),
 });
 
 export type ItemSchemaType = z.infer<typeof ItemSchema>;
 
-export type ZodContainerSchema = z.infer<typeof ContainerSchema>;
+export type ZodContainerType = z.infer<typeof ContainerSchema>;
 
-export type ZodContainerItemSchema = z.infer<typeof ContainerItemSchema>;
+export type ZodContainerItemType = z.infer<typeof ContainerItemSchema>;
+
+export type ItemAttribute = {
+  id?: number;
+  typeAttribute: TypeAttribute;
+  item?: Item;
+  value: string;
+};
+
+export type ItemAttributeData = {
+  attributes: {
+    typeAttribute: TypeAttribute;
+    value?: string;
+  }[];
+};
+
+export type ItemFormDTO = {
+  item: ItemSchemaType;
+  itemAttributes: ItemAttributeData["attributes"];
+};

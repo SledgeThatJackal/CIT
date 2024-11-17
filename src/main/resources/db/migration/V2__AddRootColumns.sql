@@ -1,0 +1,1 @@
+INSERT INTO itemtype_table (id, name) VALUES (-1, '');

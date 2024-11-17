@@ -1,82 +1,19 @@
+import { ContainerType } from "@container/schemas/Container";
+import { useErrorState } from "@hooks/state/useErrorState";
+import { TagCreate, TagSchemaType } from "@schema/Tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createContainer,
-  createItem,
   createLink,
   createTag,
   deleteContainer,
-  deleteItem,
   deleteLink,
   deleteTag,
   updateContainer,
-  updateItem,
   updateParentContainer,
   updateQuantity,
   updateTag,
 } from "./api";
-import { ItemSchemaType } from "@item/schemas/Item";
-import { TagCreate, TagSchemaType } from "@schema/Tag";
-import { ContainerType } from "@container/schemas/Container";
-import { useErrorState } from "@hooks/state/useErrorState";
-
-// Items
-export function useCreateItem() {
-  const queryClient = useQueryClient();
-  const { displayError } = useErrorState();
-
-  return useMutation({
-    mutationFn: (data: ItemSchemaType) => createItem(data),
-
-    onError: (error: any) => {
-      displayError(error.response.data.message);
-    },
-
-    onSettled: async (_, error) => {
-      if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
-      }
-    },
-  });
-}
-
-export function useUpdateItem() {
-  const queryClient = useQueryClient();
-  const { displayError } = useErrorState();
-
-  return useMutation({
-    mutationFn: (data: ItemSchemaType) => updateItem(data),
-
-    onError: (error: any) => {
-      displayError(error.response.data.message);
-    },
-
-    onSettled: async (_, error) => {
-      if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
-        // await queryClient.invalidateQueries({ queryKey: ["item", { id: variables.id }]})
-      }
-    },
-  });
-}
-
-export function useDeleteItem() {
-  const queryClient = useQueryClient();
-  const { displayError } = useErrorState();
-
-  return useMutation({
-    mutationFn: (id: number) => deleteItem(id),
-
-    onError: (error: any) => {
-      displayError(error.response.data.message);
-    },
-
-    onSettled: async (_, error) => {
-      if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
-      }
-    },
-  });
-}
 
 // Containers
 type ContainerProps = {
@@ -313,5 +250,3 @@ export function useDeleteTag() {
     },
   });
 }
-
-// Types

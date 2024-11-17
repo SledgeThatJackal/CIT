@@ -1,38 +1,14 @@
 import axios from "axios";
 
-import { Item, ItemSchemaType, ZodContainerSchema } from "@item/schemas/Item";
-import { Tag, TagCreate } from "@schema/Tag";
 import { ContainerType } from "@container/schemas/Container";
-
-// Items
-
-// Query
-export const getItem = async (id: number) => {
-  return (await axios.get<Item>(`/api/item/id?id=${id}`)).data;
-};
-
-export const getItems = async () => {
-  return (await axios.get<Item[]>("/api/item")).data;
-};
-
-// Mutate
-export const createItem = async (data: ItemSchemaType) => {
-  await axios.post(`/api/item/create`, data);
-};
-
-export const updateItem = async (data: ItemSchemaType) => {
-  await axios.put(`/api/item/edit`, data);
-};
-
-export const deleteItem = async (id: number) => {
-  await axios.delete(`/api/item/delete?id=${id}`);
-};
+import { ZodContainerType } from "@item/schemas/Item";
+import { Tag, TagCreate } from "@schema/Tag";
 
 // Containers
 
 // Query
 export const getContainers = async () => {
-  return (await axios.get<ZodContainerSchema[]>(`/api/container`)).data;
+  return (await axios.get<ZodContainerType[]>(`/api/container`)).data;
 };
 
 export const getDetailedContainers = async () => {
@@ -62,6 +38,7 @@ export const deleteContainer = async (id: number) => {
 };
 
 // Links
+
 // Query
 
 // Mutate
@@ -102,5 +79,3 @@ export const updateTag = async (data: Tag) => {
 export const deleteTag = async (id: number) => {
   await axios.delete(`/api/tags/delete?id=${id}`);
 };
-
-// Types

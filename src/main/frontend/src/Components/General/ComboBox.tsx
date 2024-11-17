@@ -13,7 +13,7 @@ import {
   UseFormSetFocus,
 } from "react-hook-form";
 
-import { ItemSchemaType, ZodContainerSchema } from "@item/schemas/Item";
+import { ItemSchemaType, ZodContainerType } from "@item/schemas/Item";
 import { useContainers } from "@services/queries";
 
 type InputControllerProps = {
@@ -100,7 +100,7 @@ const ComboBox = ({
 
   const fieldId = getValues(`containerItems.${index}.id`);
 
-  const handleDropdownClick = (value: ZodContainerSchema) => {
+  const handleDropdownClick = (value: ZodContainerType) => {
     const updatedItem = {
       ...field,
       id: undefined,
@@ -115,7 +115,7 @@ const ComboBox = ({
       scannerId.length >= 0 &&
       containerQuery?.some((container) => container.scannerId === scannerId)
     ) {
-      const container: ZodContainerSchema = containerQuery?.find(
+      const container: ZodContainerType = containerQuery?.find(
         (container) => container.scannerId === scannerId,
       )!;
       handleDropdownClick(container);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CellContext } from "@tanstack/react-table";
 import { Form } from "react-bootstrap";
+import ReadRow from "./ReadRow";
 
 const EditCell = <T, S extends string | number | undefined>({
   getValue,
@@ -58,11 +59,7 @@ const EditCell = <T, S extends string | number | undefined>({
           autoFocus
         />
       ) : (
-        <div
-          style={{ ...(!value && { height: "20px" }) }}
-          onDoubleClick={handleDoubleClick}>
-          {value}
-        </div>
+        <ReadRow value={value} handleDoubleClick={handleDoubleClick} />
       )}
     </>
   );
