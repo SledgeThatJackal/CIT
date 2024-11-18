@@ -79,3 +79,18 @@ export const updateTag = async (data: Tag) => {
 export const deleteTag = async (id: number) => {
   await axios.delete(`/api/tags/delete?id=${id}`);
 };
+
+// Images
+
+// Query
+
+// Muatate
+export const createImage = async (data: FormData) => {
+  return (
+    await axios.post(`/api/image/upload`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+  ).data;
+};

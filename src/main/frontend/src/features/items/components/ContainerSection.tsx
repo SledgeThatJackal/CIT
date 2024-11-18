@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CloseButton, Form, Table } from "react-bootstrap";
+import { CloseButton, Container, Form, Table } from "react-bootstrap";
 import {
   Control,
   FieldErrors,
@@ -79,51 +79,53 @@ const ContainerSection = ({
   }, [watchContainerItems, remove]);
 
   return (
-    <Table variant="info">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Container Id</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">Remove</th>
-        </tr>
-      </thead>
-      <tbody>
-        {fields &&
-          fields.map((field, index) => (
-            <tr key={`CIFields-${field.id}`}>
-              <th>{field.container?.name}</th>
-              <td>
-                <ComboBox
-                  index={index}
-                  field={field}
-                  control={control}
-                  errors={errors}
-                  update={update}
-                  setFocus={setFocus}
-                  setError={setError}
-                  clearErrors={clearErrors}
-                  getValues={getValues}
-                />
-              </td>
-              <td>
-                <Form.Control
-                  {...register(`containerItems.${index}.quantity`, {
-                    valueAsNumber: true,
-                  })}
-                  type="number"
-                />
-              </td>
-              <td>
-                <CloseButton
-                  onClick={() => remove(index)}
-                  disabled={fields.length === index}
-                />
-              </td>
-            </tr>
-          ))}
-      </tbody>
-    </Table>
+    <Container className="rounded pe-1 ps-1" style={{ background: "#cff4fc" }}>
+      <Table variant="info" className="mb-1">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Container Id</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          {fields &&
+            fields.map((field, index) => (
+              <tr key={`CIFields-${field.id}`}>
+                <th>{field.container?.name}</th>
+                <td>
+                  <ComboBox
+                    index={index}
+                    field={field}
+                    control={control}
+                    errors={errors}
+                    update={update}
+                    setFocus={setFocus}
+                    setError={setError}
+                    clearErrors={clearErrors}
+                    getValues={getValues}
+                  />
+                </td>
+                <td>
+                  <Form.Control
+                    {...register(`containerItems.${index}.quantity`, {
+                      valueAsNumber: true,
+                    })}
+                    type="number"
+                  />
+                </td>
+                <td>
+                  <CloseButton
+                    onClick={() => remove(index)}
+                    disabled={fields.length === index}
+                  />
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
+    </Container>
   );
 };
 

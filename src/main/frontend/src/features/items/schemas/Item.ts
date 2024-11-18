@@ -2,6 +2,7 @@ import { z } from "zod";
 import { Tag, TagSchema } from "@schema/Tag";
 import { ItemTypeSchema, ZodItemType } from "@schema/General";
 import { TypeAttribute } from "@schema/Types";
+import { Image, ImageSchema } from "@schema/Image";
 
 export type Item = {
   id: number;
@@ -10,6 +11,7 @@ export type Item = {
   containerItems?: ZodContainerItemType[];
   tags?: Tag[];
   itemType?: ZodItemType;
+  images?: Image[];
 };
 
 const ContainerSchema = z.object({
@@ -33,6 +35,7 @@ export const ItemSchema = z.object({
   containerItems: z.array(ContainerItemSchema).optional(),
   tags: z.array(TagSchema).optional(),
   itemType: ItemTypeSchema.optional(),
+  images: z.array(ImageSchema).optional(),
 });
 
 export type ItemSchemaType = z.infer<typeof ItemSchema>;

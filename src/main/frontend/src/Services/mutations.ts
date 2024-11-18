@@ -4,6 +4,7 @@ import { TagCreate, TagSchemaType } from "@schema/Tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createContainer,
+  createImage,
   createLink,
   createTag,
   deleteContainer,
@@ -246,6 +247,26 @@ export function useDeleteTag() {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["tags"] });
         await queryClient.refetchQueries({ queryKey: ["items"] });
+      }
+    },
+  });
+}
+
+// Images
+export function useCreateImage() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: FormData) => createImage(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error) => {
+      if (!error) {
+        // do something most likely
       }
     },
   });

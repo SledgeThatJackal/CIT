@@ -59,6 +59,15 @@ public class Item {
     @JoinColumn(name = "itemtype_id", referencedColumnName = "id")
     private ItemType itemType;
 
+    @ManyToMany
+    @JoinTable(
+            name= "itemimages_table",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id")
+    )
+    @JsonView(Views.Exclusive.class)
+    private Set<Image> images;
+
     @Override
     public String toString() {
         return "Item{" +

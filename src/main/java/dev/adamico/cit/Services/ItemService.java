@@ -15,10 +15,10 @@ import java.util.Set;
 @Service
 public class ItemService {
     @Autowired
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
     @Autowired
-    ItemAttributeService itemAttributeService;
+    private ItemAttributeService itemAttributeService;
 
     public List<Item> findAllItems(){
         return itemRepository.findAll(Sort.by("id"));
