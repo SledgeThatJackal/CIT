@@ -35,8 +35,8 @@ build/
 
 ### ENV Files ###
 .env
-.env.docker
-.env.local
+local.env
+docker.env
 
 ### Docker Image ###
 **/*.tar
