@@ -31,6 +31,11 @@ import CreateBox from "./CreateBox";
 import { MemoizedTableBody, TableBody } from "./TableBody";
 import GenericModal from "@components/general/GenericModal";
 import { useModalState } from "@hooks/state/useModalState";
+import {
+  OverlayScrollbarsComponent,
+  useOverlayScrollbars,
+} from "overlayscrollbars-react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 export const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -59,6 +64,7 @@ export const Input = ({ column }: { column: Column<any, unknown> }) => {
 
 function ItemTable() {
   const { columns, itemsQuery } = useTableData();
+  const parentRef = React.useRef<HTMLDivElement>(null);
 
   const updateItemMutation = useUpdateItem();
   const deleteItemMutation = useDeleteItem();
@@ -157,80 +163,106 @@ function ItemTable() {
     return sizes;
   }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
 
+  const virtualizer = useVirtualizer({
+    count: table.getRowModel().rows.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 30,
+    overscan: 20,
+  });
+
+  const scrollRef = useRef(null);
+  const [initialize, instance] = useOverlayScrollbars({
+    defer: true,
+    options: { scrollbars: { autoHide: "move" } },
+  });
+
+  useEffect(() => {
+    if (scrollRef.current && parentRef.current)
+      initialize({
+        target: scrollRef.current,
+        elements: { viewport: parentRef.current },
+      });
+
+    return () => instance()?.destroy();
+  }, [initialize, instance]);
+
   return (
     <Container className="pt-2" fluid>
-      <div>
-        <Table
-          hover
-          bordered
-          variant="dark"
-          className="m-0 shadow"
-          style={{ ...columnSize, borderRadius: "8px", overflow: "hidden" }}>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => {
-              return (
-                <tr key={`tableHeader-${headerGroup.id}`}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <th
-                        key={`header-${header.id}`}
-                        colSpan={header.colSpan}
-                        style={{
-                          width: `calc(var(--header-${header?.id}-size) * 1px)`,
-                          position: "relative",
-                        }}>
-                        {header.isPlaceholder ? null : (
-                          <React.Fragment key={`headerActions-${header.id}`}>
-                            <div
-                              className={
-                                header.column.getCanSort() ? "sortDiv" : ""
-                              }
-                              onClick={header.column.getToggleSortingHandler()}
-                              title={
-                                header.column.getCanSort()
-                                  ? header.column.getNextSortingOrder() ===
-                                    "asc"
-                                    ? "Ascending"
-                                    : header.column.getNextSortingOrder() ===
-                                        "desc"
-                                      ? "Descending"
-                                      : "Clear"
-                                  : undefined
-                              }>
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}{" "}
-                              {{ asc: " ▲", desc: " ▼" }[
-                                header.column.getIsSorted() as string
-                              ] ?? null}
+      <div ref={scrollRef}>
+        <div ref={parentRef} style={{ height: "80vh", overflow: "auto" }}>
+          <Table
+            hover
+            bordered
+            variant="dark"
+            className="m-0 shadow table-responsive"
+            style={{ ...columnSize, borderRadius: "8px", overflow: "hidden" }}>
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => {
+                return (
+                  <tr key={`tableHeader-${headerGroup.id}`}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <th
+                          key={`header-${header.id}`}
+                          colSpan={header.colSpan}
+                          style={{
+                            width: `calc(var(--header-${header?.id}-size) * 1px)`,
+                            position: "relative",
+                          }}>
+                          {header.isPlaceholder ? null : (
+                            <React.Fragment key={`headerActions-${header.id}`}>
                               <div
-                                onDoubleClick={() => header.column.resetSize()}
-                                onMouseDown={header.getResizeHandler()}
-                                onTouchStart={header.getResizeHandler()}
-                                className={`${header.column.getCanResize() ? "resizer" : ""} ${header.column.getIsResizing() ? "isResizing" : ""}`}
-                              />
-                            </div>
-                            {header.column.getCanFilter() ? (
-                              <div>
-                                <Input column={header.column} />
+                                className={
+                                  header.column.getCanSort() ? "sortDiv" : ""
+                                }
+                                onClick={header.column.getToggleSortingHandler()}
+                                title={
+                                  header.column.getCanSort()
+                                    ? header.column.getNextSortingOrder() ===
+                                      "asc"
+                                      ? "Ascending"
+                                      : header.column.getNextSortingOrder() ===
+                                          "desc"
+                                        ? "Descending"
+                                        : "Clear"
+                                    : undefined
+                                }>
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}{" "}
+                                {{ asc: " ▲", desc: " ▼" }[
+                                  header.column.getIsSorted() as string
+                                ] ?? null}
+                                <div
+                                  onDoubleClick={() =>
+                                    header.column.resetSize()
+                                  }
+                                  onMouseDown={header.getResizeHandler()}
+                                  onTouchStart={header.getResizeHandler()}
+                                  className={`${header.column.getCanResize() ? "resizer" : ""} ${header.column.getIsResizing() ? "isResizing" : ""}`}
+                                />
                               </div>
-                            ) : null}
-                          </React.Fragment>
-                        )}
-                      </th>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </thead>
-          {table.getState().columnSizingInfo.isResizingColumn ? (
-            <MemoizedTableBody table={table} />
-          ) : (
-            <TableBody table={table} />
-          )}
-          {/* <tfoot>
+                              {header.column.getCanFilter() ? (
+                                <div>
+                                  <Input column={header.column} />
+                                </div>
+                              ) : null}
+                            </React.Fragment>
+                          )}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </thead>
+            {table.getState().columnSizingInfo.isResizingColumn ? (
+              <MemoizedTableBody table={table} virtualizer={virtualizer} />
+            ) : (
+              <TableBody table={table} virtualizer={virtualizer} />
+            )}
+            {/* <tfoot>
                         {table.getFooterGroups().map(footerGroup => {
                                 return <tr key={ `tableFooter-${footerGroup.id}` }>{footerGroup.headers.map(footer => {
                                     return <td key={ `footer-${footer.id}` }>{footer.isPlaceholder ? null : flexRender(footer.column.columnDef.header, footer.getContext())}</td>
@@ -238,7 +270,8 @@ function ItemTable() {
                             }
                         )}
                     </tfoot> */}
-        </Table>
+          </Table>
+        </div>
       </div>
       <br />
       <Stack direction="horizontal" gap={3}>
