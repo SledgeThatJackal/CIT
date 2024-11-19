@@ -105,7 +105,7 @@ function ItemTable() {
     data,
     columns,
     defaultColumn: {
-      minSize: 50,
+      minSize: 10,
       maxSize: 1500,
     },
     getRowCanExpand: (row) =>
@@ -163,7 +163,7 @@ function ItemTable() {
         <Table
           hover
           bordered
-          variant="secondary"
+          variant="dark"
           className="m-0 shadow"
           style={{ ...columnSize, borderRadius: "8px", overflow: "hidden" }}>
           <thead>

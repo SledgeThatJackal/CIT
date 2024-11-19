@@ -35,7 +35,7 @@ function TypeSettingsContent() {
   const typeAttributeQuery = useTypeAttribute(type);
   const { openCanvas } = useCanvasState();
   const { displayError } = useErrorState();
-  const { openModal } = useModalState();
+  const { openMessageModal } = useModalState();
 
   const { setProps } = useEditState();
 
@@ -132,7 +132,7 @@ function TypeSettingsContent() {
                     variant="danger"
                     disabled={type === -1}
                     onClick={() =>
-                      openModal(
+                      openMessageModal(
                         "Delete Type",
                         "Delete",
                         handleTypeDelete,
@@ -184,7 +184,7 @@ function TypeSettingsContent() {
                       />
                       <TypeAttributeDeleteCell
                         handleDelete={() =>
-                          openModal(
+                          openMessageModal(
                             "Delete Attribute",
                             "Delete",
                             () => handleAttributeDelete(fType.id),

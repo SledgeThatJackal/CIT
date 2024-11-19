@@ -30,7 +30,7 @@ import { useCanvasState } from "@hooks/state/useCanvasState";
 import TypeSection from "./type_area/TypeSection";
 import SelectComponent from "@components/Forms/SelectComponentF";
 import { useItemTypes } from "@type/services/query";
-import ImageInput from "./ImageInput";
+import ImageForm from "./image/ImageForm";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();
@@ -164,7 +164,7 @@ const CreateBox = () => {
           </Row>
           <Row>
             <Col>
-              <ImageInput />
+              <ImageForm />
             </Col>
           </Row>
           <Row>

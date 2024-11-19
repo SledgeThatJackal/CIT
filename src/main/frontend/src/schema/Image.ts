@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export type Image = {
+export type ImageType = {
   id: number;
   fileName: string;
 };

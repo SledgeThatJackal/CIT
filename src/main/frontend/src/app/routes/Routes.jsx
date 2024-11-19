@@ -20,25 +20,36 @@ const SuspenseLayout = () => (
   </Suspense>
 );
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <SuspenseLayout />,
+      children: [
+        { index: true, element: <HomePage /> },
+        {
+          path: "container",
+          children: [{ index: true, element: <ContainerPage /> }],
+        },
+        { path: "item", children: [{ index: true, element: <ItemPage /> }] },
+        {
+          path: "tag",
+          children: [{ index: true, element: <TagSettingsPage /> }],
+        },
+        {
+          path: "type",
+          children: [{ index: true, element: <TypeSettingsPage /> }],
+        },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: <SuspenseLayout />,
-    children: [
-      { index: true, element: <HomePage /> },
-      {
-        path: "container",
-        children: [{ index: true, element: <ContainerPage /> }],
-      },
-      { path: "item", children: [{ index: true, element: <ItemPage /> }] },
-      {
-        path: "tag",
-        children: [{ index: true, element: <TagSettingsPage /> }],
-      },
-      {
-        path: "type",
-        children: [{ index: true, element: <TypeSettingsPage /> }],
-      },
-    ],
+    future: {
+      v7_relativeSplatPath: true,
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
+    },
   },
-]);
+);

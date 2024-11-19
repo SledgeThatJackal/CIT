@@ -17,7 +17,7 @@ const TypeAttributesForm = () => {
     getValues,
   } = useFormContext<AttributeForm>();
 
-  const { openModal, closeModal } = useModalState();
+  const { openMessageModal, closeModal } = useModalState();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -43,7 +43,7 @@ const TypeAttributesForm = () => {
     const attribute = getValues(`typeAttributes.${index}.id`);
 
     if (attribute) {
-      openModal(
+      openMessageModal(
         "Delete Attribute",
         "Delete",
         () => handleDelete(attribute, index),
