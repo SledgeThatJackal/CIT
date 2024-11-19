@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/exim")
 public class EximController { // EXport IMport
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
 
     @Autowired
-    ContainerService containerService;
+    private ContainerService containerService;
 
     @Autowired
-    ContainerItemService containerItemService;
+    private ContainerItemService containerItemService;
 
     @Autowired
-    EximService eximService;
+    private EximService eximService;
 
     @GetMapping("/export")
     public ResponseEntity<Resource> exportData() throws Exception {

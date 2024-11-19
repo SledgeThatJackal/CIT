@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 @Service
 public class ContainerService {
     @Autowired
-    ContainerRepository containerRepository;
+    private ContainerRepository containerRepository;
 
     public List<Container> findAllContainers(){
         return containerRepository.findAll();

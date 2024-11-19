@@ -5,12 +5,19 @@ type ModalState = {
   title: string;
   buttonLabel: string;
   message?: string;
+  component: React.ComponentType | null;
   onDelete?: () => void;
-  openModal: (
+  openMessageModal: (
     title: string,
     buttonLabel: string,
     onDelete: () => void,
     message: string,
+  ) => void;
+  openElementModal: (
+    title: string,
+    buttonLabel: string,
+    onDelete: () => void,
+    component: React.ComponentType,
   ) => void;
   closeModal: () => void;
 };
@@ -20,13 +27,20 @@ export const useModalState = create<ModalState>((set) => ({
   title: "",
   buttonLabel: "",
   message: "",
+  component: null,
   onDelete: undefined,
-  openModal: (
+  openMessageModal: (
     title: string,
     buttonLabel: string,
     onDelete: () => void,
     message: string,
   ) => set({ showModal: true, title, buttonLabel, onDelete, message }),
+  openElementModal: (
+    title: string,
+    buttonLabel: string,
+    onDelete: () => void,
+    component: React.ComponentType,
+  ) => set({ showModal: true, title, buttonLabel, onDelete, component }),
   closeModal: () =>
     set({
       showModal: false,

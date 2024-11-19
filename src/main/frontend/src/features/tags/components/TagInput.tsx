@@ -86,8 +86,8 @@ const TagInput = ({ control }: TagInputProps) => {
   };
 
   return (
-    <div>
-      <div className="mb-3">
+    <div className="mb-1">
+      <div className="mb-1">
         <InputGroup>
           <Dropdown
             show={showDropdown}

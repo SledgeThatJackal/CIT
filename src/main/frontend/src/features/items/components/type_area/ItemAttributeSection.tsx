@@ -10,7 +10,7 @@ import { useModalState } from "@hooks/state/useModalState";
 const ItemAttributeSection = () => {
   const { context } = useAttributeState();
   const [isNotEditing, setIsNotEditing] = useState<boolean>(true);
-  const { openModal } = useModalState();
+  const { openMessageModal } = useModalState();
 
   const itemAttributeQuery = useItemAttributes(
     context?.table.options.meta?.getId?.(context.row.index) ?? -1,
@@ -36,7 +36,7 @@ const ItemAttributeSection = () => {
   };
 
   const handleTypeChange = (id: number) => {
-    openModal(
+    openMessageModal(
       "Change Type",
       "Change",
       () => changeType(id),

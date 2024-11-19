@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { useDeleteModalState } from "@hooks/state/useDeleteModalState";
 import { CellContext } from "@tanstack/react-table";
 
@@ -12,9 +12,11 @@ const DeleteCell = <T, S extends number>({ getValue }: CellContext<T, S>) => {
   };
 
   return (
-    <Button variant="danger" onClick={handleDelete}>
-      <i className="bi bi-trash"></i>
-    </Button>
+    <Container fluid className="p-0 m-0 w-100 d-flex justify-content-center">
+      <Button variant="danger" onClick={handleDelete}>
+        <i className="bi bi-trash"></i>
+      </Button>
+    </Container>
   );
 };
 

@@ -76,7 +76,7 @@ const TypeSection = ({
           </Row>
         ))
       ) : (
-        <div>Nothing to display, select a type to see options.</div>
+        <div>Nothing to display. Select a type to see options.</div>
       )}
     </Container>
   );

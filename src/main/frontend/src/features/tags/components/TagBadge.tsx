@@ -17,7 +17,7 @@ const TagBadge = ({ tag }: TagProps) => {
 
   return (
     <div
-      className="d-inline-flex badge rounded-pill align-items-center"
+      className="d-inline-flex badge rounded-pill align-items-center shadow"
       style={{
         backgroundColor: tag.color,
         border: `3px solid ${darkerColor}`,

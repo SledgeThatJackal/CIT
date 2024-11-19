@@ -2,14 +2,21 @@ import React, { useEffect, useRef, useState } from "react";
 
 import {
   Button,
+  CloseButton,
   Col,
   Container,
   FloatingLabel,
   Form,
+  InputGroup,
   Row,
   Stack,
 } from "react-bootstrap";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import {
+  FormProvider,
+  useFieldArray,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import {
   ItemAttributeData,
   ItemFormDTO,
@@ -23,6 +30,7 @@ import { useCanvasState } from "@hooks/state/useCanvasState";
 import TypeSection from "./type_area/TypeSection";
 import SelectComponent from "@components/Forms/SelectComponentF";
 import { useItemTypes } from "@type/services/query";
+import ImageForm from "./image/ImageForm";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();
@@ -149,9 +157,14 @@ const CreateBox = () => {
               </Button>
             </Col>
           </Row>
-          <Row className="pt-3">
+          <Row className="pt-1">
             <Col>
               <TagInput control={itemForm.control} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ImageForm />
             </Col>
           </Row>
           <Row>

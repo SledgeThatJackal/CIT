@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/link")
 public class ContainerItemController {
     @Autowired
-    ContainerItemService containerItemService;
+    private ContainerItemService containerItemService;
 
     @PostMapping
     public void createLink(@RequestParam Long itemId, Long containerId, Integer quantity){

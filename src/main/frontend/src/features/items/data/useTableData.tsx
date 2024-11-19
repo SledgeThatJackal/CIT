@@ -9,6 +9,8 @@ import DeleteCell from "@components/custom_cell_renderers/DeleteCell";
 import { Tag } from "@schema/Tag";
 import ActionButtons from "../components/custom_cells/ActionButtons";
 import TypeCell from "../components/custom_cells/TypeCell";
+import ImageCell from "@components/custom_cell_renderers/ImageCell";
+import React from "react";
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -17,6 +19,15 @@ export const useTableData = () => {
 
   const columns = useMemo(
     () => [
+      columnHelper.accessor("images", {
+        id: "images",
+        header: () => null,
+        cell: ImageCell,
+        size: 50,
+        enableResizing: false,
+        enableSorting: false,
+        enableColumnFilter: false,
+      }),
       columnHelper.accessor("name", {
         id: "name",
         header: "Name",
@@ -53,7 +64,7 @@ export const useTableData = () => {
       }),
       columnHelper.accessor("id", {
         id: "id",
-        header: "Delete",
+        header: () => <div className="text-center">Delete</div>,
         size: 50,
         cell: DeleteCell,
         enableResizing: false,
@@ -62,7 +73,7 @@ export const useTableData = () => {
       }),
       columnHelper.accessor("containerItems", {
         id: "containerItems",
-        header: () => null,
+        header: "Action(s)",
         size: 100,
         cell: ActionButtons,
         enableResizing: false,
