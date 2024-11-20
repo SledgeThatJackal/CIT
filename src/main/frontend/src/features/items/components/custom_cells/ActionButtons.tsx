@@ -28,19 +28,24 @@ const ActionButtons = ({ row }: ActionButtonsProps) => {
   };
 
   return (
-    <InputGroup>
+    <InputGroup className="p-0 m-0 w-100 d-flex justify-content-center">
       <Button
         size="sm"
         {...{ onClick: row.getToggleExpandedHandler() }}
-        disabled={!row.getCanExpand()}>
+        disabled={!row.getCanExpand()}
+        title={row.getIsExpanded() ? "Collapse" : "Expand"}>
         {row.getIsExpanded() ? "▲" : "▼"}
       </Button>
       {isActive ? (
-        <Button variant="info" size="sm" onClick={handleClose}>
+        <Button variant="info" size="sm" onClick={handleClose} title="Close">
           ●
         </Button>
       ) : (
-        <Button variant="success" size="sm" onClick={handleOpen}>
+        <Button
+          variant="success"
+          size="sm"
+          onClick={handleOpen}
+          title="Edit Containers">
           +
         </Button>
       )}

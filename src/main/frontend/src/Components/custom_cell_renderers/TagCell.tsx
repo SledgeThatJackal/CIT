@@ -80,7 +80,8 @@ const TagCell = <T, S extends Tag[]>({
       <Dropdown
         className="d-inline-flex ms-auto"
         show={show}
-        onToggle={dropdownToggle}>
+        onToggle={dropdownToggle}
+        title="Edit Tags">
         <Dropdown.Toggle className="ms-auto" variant="secondary">
           <i className="bi bi-gear" style={{ fontSize: "14px" }}></i>
         </Dropdown.Toggle>

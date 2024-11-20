@@ -22,7 +22,7 @@ export function useCreateItem() {
 
     onSettled: async (_, error) => {
       if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
       }
     },
   });
@@ -60,7 +60,7 @@ export function useUpdateItem() {
 
     onSettled: async (_, error, data) => {
       if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
         await queryClient.invalidateQueries({
           queryKey: ["itemattributes", data.id],
         });
@@ -104,7 +104,7 @@ export function useDeleteItem() {
 
     onSettled: async (_, error) => {
       if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
       }
     },
   });

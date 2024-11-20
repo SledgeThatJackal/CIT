@@ -64,7 +64,7 @@ export type ItemFormDTO = {
 };
 
 export type ItemPageResponse = {
-  content: ItemSchemaType[];
+  content: Item[];
   pageable: {
     pageNumber: number;
     pageSize: number;

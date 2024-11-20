@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import { getInfiniteItems, getItem, getItemAttributes, getItems } from "./api";
 import { ColumnFiltersState } from "@tanstack/react-table";
 
@@ -17,7 +21,10 @@ export function useItems() {
   });
 }
 
-export function useInfiniteItems(filter: ColumnFiltersState, size: number = 2) {
+export function useInfiniteItems(
+  filter: ColumnFiltersState,
+  size: number = 10,
+) {
   return useInfiniteQuery({
     queryKey: ["infiniteItems", filter, size],
     queryFn: ({ pageParam = 0 }) => getInfiniteItems(pageParam, size, filter),
@@ -36,6 +43,9 @@ export function useInfiniteItems(filter: ColumnFiltersState, size: number = 2) {
 
       return firstPage.data.pageable.pageNumber - 1;
     },
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 10,
   });
 }
 

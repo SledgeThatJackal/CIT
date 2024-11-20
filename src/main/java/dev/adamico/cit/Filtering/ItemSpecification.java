@@ -19,16 +19,16 @@ public class ItemSpecification{
 
                 if("name".equals(key) || "description".equals(key)){
                     predicate = criteriaBuilder.and(predicate,
-                                criteriaBuilder.like(root.get(key), "%" + value + "%"));
+                            criteriaBuilder.like(criteriaBuilder.lower(root.get(key)), "%" + value.toLowerCase() + "%"));
                 } else if("tags".equals(key)){
                     predicate = criteriaBuilder.and(predicate,
-                                criteriaBuilder.like(root.join("tags").get("tag"), "%" + value + "%"));
+                                criteriaBuilder.like(criteriaBuilder.lower(root.join("tags").get("tag")), "%" + value.toLowerCase() + "%"));
                 } else if("itemType".equals(key)){
                     predicate = criteriaBuilder.and(predicate,
-                                criteriaBuilder.like(root.join("itemType").get("name"), "%" + value + "%"));
+                                criteriaBuilder.like(criteriaBuilder.lower(root.join("itemType").get("name")), "%" + value.toLowerCase() + "%"));
                 } else {
                     predicate = criteriaBuilder.and(predicate,
-                                criteriaBuilder.like(root.join("itemattributes", JoinType.INNER).get("value"), "%" + value + "%"),
+                                criteriaBuilder.like(criteriaBuilder.lower(root.join("itemattributes", JoinType.INNER).get("value")), "%" + value.toLowerCase() + "%"),
                                 criteriaBuilder.like(root.join("itemattributes", JoinType.INNER).join("typeattributes", JoinType.INNER).get("column_title"), "%" + value + "%"));
                 }
             }

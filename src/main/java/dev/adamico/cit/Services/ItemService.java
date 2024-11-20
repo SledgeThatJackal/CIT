@@ -66,6 +66,7 @@ public class ItemService {
     public Page<Item> filterItemPages(int page, int size, Map<String, String> filters){
         final Pageable pageable = PageRequest.of(page, size);
 
+        // Return all items, if there's no filter present
         if(filters.isEmpty()){
             return itemRepository.findAll(pageable);
         }
