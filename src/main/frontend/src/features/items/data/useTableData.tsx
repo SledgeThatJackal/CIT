@@ -4,7 +4,6 @@ import { createColumnHelper, Row } from "@tanstack/react-table";
 import { Item } from "@item/schemas/Item";
 import EditCell from "@components/custom_cell_renderers/EditCell";
 import TagCell from "@components/custom_cell_renderers/TagCell";
-import { useItems } from "@item/services/query";
 import DeleteCell from "@components/custom_cell_renderers/DeleteCell";
 import { Tag } from "@schema/Tag";
 import ActionButtons from "../components/custom_cells/ActionButtons";
@@ -15,15 +14,13 @@ import React from "react";
 const columnHelper = createColumnHelper<Item>();
 
 export const useTableData = () => {
-  const itemsQuery = useItems().data;
-
   const columns = useMemo(
     () => [
       columnHelper.accessor("images", {
         id: "images",
         header: () => null,
         cell: ImageCell,
-        size: 50,
+        size: 75,
         enableResizing: false,
         enableSorting: false,
         enableColumnFilter: false,
@@ -65,7 +62,7 @@ export const useTableData = () => {
       columnHelper.accessor("id", {
         id: "id",
         header: () => <div className="text-center">Delete</div>,
-        size: 50,
+        size: 75,
         cell: DeleteCell,
         enableResizing: false,
         enableSorting: false,
@@ -73,8 +70,8 @@ export const useTableData = () => {
       }),
       columnHelper.accessor("containerItems", {
         id: "containerItems",
-        header: "Action(s)",
-        size: 100,
+        header: () => <div className="text-center">Actions</div>,
+        size: 90,
         cell: ActionButtons,
         enableResizing: false,
         enableSorting: false,
@@ -84,5 +81,5 @@ export const useTableData = () => {
     [],
   );
 
-  return { columns, itemsQuery };
+  return { columns };
 };

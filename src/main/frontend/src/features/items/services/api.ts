@@ -2,8 +2,10 @@ import {
   Item,
   ItemAttribute,
   ItemFormDTO,
+  ItemPageResponse,
   ItemSchemaType,
 } from "@item/schemas/Item";
+import { ColumnFiltersState } from "@tanstack/react-table";
 import axios from "axios";
 
 // Query
@@ -13,6 +15,28 @@ export const getItem = async (id: number) => {
 
 export const getItems = async () => {
   return (await axios.get<Item[]>("/api/item")).data;
+};
+
+export const getInfiniteItems = async (
+  pageParam: number = 0,
+  size: number = 10,
+  filters?: ColumnFiltersState,
+) => {
+  const filterParams = filters?.reduce(
+    (column, filter) => {
+      column[filter.id] = filter.value;
+      return column;
+    },
+    {} as Record<string, any>,
+  );
+
+  const query = new URLSearchParams({
+    page: pageParam.toLocaleString(),
+    size: size.toLocaleString(),
+    ...filterParams,
+  });
+
+  return await axios.get<ItemPageResponse>(`/api/item/page?${query}`);
 };
 
 export const getItemAttributes = async (id: number) => {

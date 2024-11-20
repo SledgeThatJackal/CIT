@@ -62,3 +62,27 @@ export type ItemFormDTO = {
   item: ItemSchemaType;
   itemAttributes: ItemAttributeData["attributes"];
 };
+
+export type ItemPageResponse = {
+  content: Item[];
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+      empty: boolean;
+      unsorted: boolean;
+      sorted: boolean;
+    };
+    offset: number;
+    unpaged: boolean;
+    paged: boolean;
+  };
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+  size: number;
+  number: number;
+  numberOfelements: number;
+  first: boolean;
+  empty: boolean;
+};

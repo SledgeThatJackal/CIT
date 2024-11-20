@@ -53,7 +53,7 @@ const ImageCell = <T, S extends ImageType[]>(context: CellContext<T, S>) => {
             onClick={handleOnClick}
             width="50"
             height="50"
-            style={{ cursor: "pointer" }}
+            style={images.length > 1 ? { cursor: "pointer" } : {}}
             draggable={false}
             alt="Item Image"
             onContextMenu={handleRightClick}
@@ -61,6 +61,7 @@ const ImageCell = <T, S extends ImageType[]>(context: CellContext<T, S>) => {
         </OverlayTrigger>
       ) : (
         <div
+          title="Right Click to Edit"
           className="w-100"
           style={{ height: "50px" }}
           onContextMenu={handleRightClick}></div>

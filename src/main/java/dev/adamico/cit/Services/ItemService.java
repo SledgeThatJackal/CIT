@@ -1,16 +1,21 @@
 package dev.adamico.cit.Services;
 
 import dev.adamico.cit.DTO.ItemFormDTO;
+import dev.adamico.cit.Filtering.ItemSpecification;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @Service
 public class ItemService {
@@ -58,13 +63,16 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public Page<Item> searchItems(int page, int size, String search){
+    public Page<Item> filterItemPages(int page, int size, Map<String, String> filters){
         final Pageable pageable = PageRequest.of(page, size);
-        final Page<Long> itemIds = itemRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search, search, pageable);
 
-        final Set<Long> ids = Set.copyOf(itemIds.getContent());
-        final List<Item> items = itemRepository.findByIdIn(ids);
+        // Return all items, if there's no filter present
+        if(filters.isEmpty()){
+            return itemRepository.findAll(pageable);
+        }
 
-        return new PageImpl<>(items, pageable, itemIds.getTotalElements());
+        Specification<Item> itemSpecification = ItemSpecification.withFilters(filters);
+
+        return itemRepository.findAll(itemSpecification, pageable);
     }
 }

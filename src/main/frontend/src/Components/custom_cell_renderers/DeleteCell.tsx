@@ -13,7 +13,7 @@ const DeleteCell = <T, S extends number>({ getValue }: CellContext<T, S>) => {
 
   return (
     <Container fluid className="p-0 m-0 w-100 d-flex justify-content-center">
-      <Button variant="danger" onClick={handleDelete}>
+      <Button variant="danger" onClick={handleDelete} title="Delete">
         <i className="bi bi-trash"></i>
       </Button>
     </Container>

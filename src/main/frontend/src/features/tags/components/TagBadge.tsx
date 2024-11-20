@@ -21,7 +21,10 @@ const TagBadge = ({ tag }: TagProps) => {
       style={{
         backgroundColor: tag.color,
         border: `3px solid ${darkerColor}`,
-      }}>
+        cursor: "default",
+        userSelect: "none",
+      }}
+      title={tag.description}>
       <span
         style={{
           color: darkerColor,

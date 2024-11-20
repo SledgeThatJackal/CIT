@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/item")
@@ -50,10 +51,12 @@ public class ItemController {
     @GetMapping("/page")
     @JsonView(Views.InclusiveID.class)
     public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "10") int size,
-                                     @RequestParam(defaultValue = "") String search) throws JsonProcessingException {
+                                              @RequestParam(defaultValue = "10") int size,
+                                              @RequestParam(required = false)Map<String, String> filters) throws JsonProcessingException {
+        filters.remove("page");
+        filters.remove("size");
 
-        Page<Item> itemPage = itemService.searchItems(page, size, search);
+        Page<Item> itemPage = itemService.filterItemPages(page, size, filters);
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(itemPage);
