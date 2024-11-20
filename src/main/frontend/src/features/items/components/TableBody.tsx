@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from "react";
-import { Item } from "../schemas/Item";
 import { flexRender, Table } from "@tanstack/react-table";
+import { Virtualizer } from "@tanstack/react-virtual";
+import React from "react";
+import { Item } from "../schemas/Item";
 import ContainerTable from "./container_row/ContainerTable";
-import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { useVirtualizer, Virtualizer } from "@tanstack/react-virtual";
 
 type TableBodyProps = {
   table: Table<Item>;

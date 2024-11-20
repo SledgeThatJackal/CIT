@@ -1,6 +1,7 @@
 package dev.adamico.cit.Services;
 
 import dev.adamico.cit.DTO.ItemFormDTO;
+import dev.adamico.cit.Filtering.ItemSpecification;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Repositories.ItemRepository;
@@ -9,10 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ItemService {
@@ -60,8 +63,15 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public Page<Item> searchItems(int page, int size, String search){
+    public Page<Item> filterItemPages(int page, int size, Map<String, String> filters){
         final Pageable pageable = PageRequest.of(page, size);
-        return itemRepository.findAll(pageable);
+
+        if(filters.isEmpty()){
+            return itemRepository.findAll(pageable);
+        }
+
+        Specification<Item> itemSpecification = ItemSpecification.withFilters(filters);
+
+        return itemRepository.findAll(itemSpecification, pageable);
     }
 }

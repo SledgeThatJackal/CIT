@@ -1,5 +1,6 @@
 import {
   Column,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -35,6 +36,7 @@ import {
   useOverlayScrollbars,
 } from "overlayscrollbars-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { useInfiniteItems } from "@item/services/query";
 
 export const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -64,6 +66,12 @@ export const Input = ({ column }: { column: Column<any, unknown> }) => {
 function ItemTable() {
   const { columns, itemsQuery } = useTableData();
   const parentRef = React.useRef<HTMLDivElement>(null);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const {
+    data: infiniteData,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteItems(columnFilters);
 
   const updateItemMutation = useUpdateItem();
   const deleteItemMutation = useDeleteItem();
@@ -111,7 +119,7 @@ function ItemTable() {
       (row.getValue("containerItems") as ZodContainerType[]).length > 0,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    manualFiltering: true,
     columnResizeMode: "onChange",
     meta: {
       updateData,
@@ -128,6 +136,10 @@ function ItemTable() {
         },
       ],
     },
+    state: {
+      columnFilters,
+    },
+    onColumnFiltersChange: setColumnFilters,
   });
 
   useEffect(() => {
@@ -176,7 +188,7 @@ function ItemTable() {
 
   return (
     <Container className="pt-2" fluid>
-      <div ref={scrollRef}>
+      <div ref={scrollRef} className="shadow">
         <div ref={parentRef} style={{ height: "80vh", overflow: "auto" }}>
           <Table
             hover
@@ -279,6 +291,14 @@ function ItemTable() {
         message={"Are you sure you want to delete this item?"}
       />
       <GenericModal />
+      <div>
+        {infiniteData?.pages.map((page) =>
+          page.data.content.map((infItemData) => <div>{infItemData.name}</div>),
+        )}
+        <Button onClick={() => fetchNextPage()} disabled={!hasNextPage}>
+          Next
+        </Button>
+      </div>
     </Container>
   );
 }
