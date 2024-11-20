@@ -2,6 +2,7 @@ import {
   Item,
   ItemAttribute,
   ItemFormDTO,
+  ItemPageResponse,
   ItemSchemaType,
 } from "@item/schemas/Item";
 import axios from "axios";

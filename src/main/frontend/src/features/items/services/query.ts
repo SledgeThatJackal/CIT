@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getItem, getItemAttributes, getItems } from "./api";
+import { ItemSchemaType } from "@item/schemas/Item";
 
 export function useItem(id: number) {
   return useQuery({

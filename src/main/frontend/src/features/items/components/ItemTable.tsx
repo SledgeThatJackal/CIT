@@ -30,7 +30,6 @@ import "@item/styles/ItemTable.css";
 import CreateBox from "./CreateBox";
 import { MemoizedTableBody, TableBody } from "./TableBody";
 import GenericModal from "@components/general/GenericModal";
-import { useModalState } from "@hooks/state/useModalState";
 import {
   OverlayScrollbarsComponent,
   useOverlayScrollbars,
@@ -79,12 +78,6 @@ function ItemTable() {
   // Create
   const { openCanvas } = useCanvasState();
 
-  // Pagination
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-
   const pageResetRef = useRef<boolean>(false);
 
   const updateData = (rowIndex: number, columnID: string, value: any) => {
@@ -117,8 +110,6 @@ function ItemTable() {
     getRowCanExpand: (row) =>
       (row.getValue("containerItems") as ZodContainerType[]).length > 0,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     columnResizeMode: "onChange",
@@ -128,9 +119,6 @@ function ItemTable() {
       getId: (rowIndex: number) => {
         return data[rowIndex].id;
       },
-    },
-    state: {
-      pagination,
     },
     initialState: {
       sorting: [
@@ -275,7 +263,6 @@ function ItemTable() {
       </div>
       <br />
       <Stack direction="horizontal" gap={3}>
-        {table.getPageCount() > 0 && <PaginationControl table={table} />}
         <Button
           variant="success"
           className="shadow"

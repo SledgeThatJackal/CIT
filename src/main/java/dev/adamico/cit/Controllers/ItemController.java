@@ -51,9 +51,11 @@ public class ItemController {
     @JsonView(Views.InclusiveID.class)
     public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
-                                     @RequestParam(defaultValue = "") String search) throws JsonProcessingException {
+                                     @RequestParam(defaultValue = "") String filter) throws JsonProcessingException {
 
-        Page<Item> itemPage = itemService.searchItems(page, size, search);
+        System.out.println(page);
+        System.out.println(size);
+        Page<Item> itemPage = itemService.searchItems(page, size, filter);
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(itemPage);
