@@ -12,6 +12,14 @@ export type Item = {
   tags?: Tag[];
   itemType?: ZodItemType;
   images?: ImageType[];
+  itemAttributes: ItemAttributes[];
+};
+
+type ItemAttributes = {
+  id: number;
+  typeAttribute: TypeAttribute;
+  value: string;
+  itemid: number;
 };
 
 const ContainerSchema = z.object({

@@ -4,7 +4,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { getInfiniteItems, getItem, getItemAttributes, getItems } from "./api";
-import { ColumnFiltersState } from "@tanstack/react-table";
+import { ColumnFilter, ColumnFiltersState } from "@tanstack/react-table";
 
 export function useItem(id: number) {
   return useQuery({
@@ -23,11 +23,13 @@ export function useItems() {
 
 export function useInfiniteItems(
   filter: ColumnFiltersState,
+  tableFilter: string,
   size: number = 10,
 ) {
   return useInfiniteQuery({
-    queryKey: ["infiniteItems", filter, size],
-    queryFn: ({ pageParam = 0 }) => getInfiniteItems(pageParam, size, filter),
+    queryKey: ["infiniteItems", tableFilter, filter],
+    queryFn: ({ pageParam = 0 }) =>
+      getInfiniteItems(pageParam, size, tableFilter, filter),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (lastPage.data.last) {
@@ -44,8 +46,7 @@ export function useInfiniteItems(
       return firstPage.data.pageable.pageNumber - 1;
     },
     placeholderData: keepPreviousData,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: true,
   });
 }
 

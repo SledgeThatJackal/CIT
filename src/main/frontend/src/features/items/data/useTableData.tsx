@@ -10,12 +10,15 @@ import ActionButtons from "../components/custom_cells/ActionButtons";
 import TypeCell from "../components/custom_cells/TypeCell";
 import ImageCell from "@components/custom_cell_renderers/ImageCell";
 import React from "react";
+import { useTypeAttribute } from "@type/services/query";
 
 const columnHelper = createColumnHelper<Item>();
 
-export const useTableData = () => {
-  const columns = useMemo(
-    () => [
+export const useTableData = (typeId: number) => {
+  const typeAttributesQuery = useTypeAttribute(typeId).data;
+
+  const columns = useMemo(() => {
+    const defaultColumns = [
       columnHelper.accessor("images", {
         id: "images",
         header: () => null,
@@ -77,9 +80,38 @@ export const useTableData = () => {
         enableSorting: false,
         enableColumnFilter: false,
       }),
-    ],
-    [],
-  );
+    ];
+
+    if (typeId === -1) {
+      return defaultColumns;
+    }
+
+    const attributeColumns = typeAttributesQuery
+      ?.sort((a, b) => (a?.displayOrder || 0) - (b?.displayOrder || 0))
+      .map((typeAttr, index) => {
+        return columnHelper.accessor(
+          (row) => row.itemAttributes[index]?.value || "",
+          {
+            id: typeAttr.columnTitle || "",
+            header: () => <div>{typeAttr.columnTitle}</div>,
+            size: 100,
+            cell: EditCell,
+            enableResizing: true,
+          },
+        );
+      });
+
+    const startingColumns = defaultColumns.slice(0, defaultColumns.length - 2);
+    const endingColumns = defaultColumns.slice(defaultColumns.length - 2);
+
+    const typedColumns = [
+      ...startingColumns,
+      ...(attributeColumns || []),
+      ...endingColumns,
+    ];
+
+    return typedColumns;
+  }, [typeAttributesQuery]);
 
   return { columns };
 };

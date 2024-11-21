@@ -1,5 +1,6 @@
 package dev.adamico.cit.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Views;
 import jakarta.persistence.*;
@@ -26,7 +27,12 @@ public class ItemAttribute {
 
     @ManyToOne
     @JoinColumn(name = "itemid", nullable = false)
+    @JsonBackReference
     private Item item;
+
+    public Long getItemid(){
+        return this.getItem().getId();
+    }
 
     private String value;
 

@@ -1,5 +1,6 @@
 import {
   Column,
+  ColumnFilter,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -36,6 +37,9 @@ import GenericModal from "@components/general/GenericModal";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useInfiniteItems } from "@item/services/query";
+import SelectComponentW from "@components/Write/SelectComponentW";
+import { useItemTypes } from "@type/services/query";
+import { ZodItemType } from "@schema/General";
 
 export const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -63,8 +67,10 @@ export const Input = ({ column }: { column: Column<any, unknown> }) => {
 };
 
 function ItemTable() {
-  const { columns } = useTableData();
+  const [filter, setFilter] = useState<ZodItemType>({ id: -1, name: "" });
+  const { columns } = useTableData(filter.id);
   const parentRef = React.useRef<HTMLDivElement>(null);
+  const typeQuery = useItemTypes().data;
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const {
@@ -72,7 +78,7 @@ function ItemTable() {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteItems(columnFilters);
+  } = useInfiniteItems(columnFilters, filter?.name);
 
   const data: Item[] = useMemo(
     () => infiniteData?.pages.flatMap((page) => page.data.content) ?? [],
@@ -132,23 +138,17 @@ function ItemTable() {
         return data[rowIndex].id;
       },
     },
-    initialState: {
-      sorting: [
-        {
-          id: "name",
-          desc: false,
-        },
-      ],
-    },
     state: {
       columnFilters,
     },
     onColumnFiltersChange: setColumnFilters,
+    debugCells: true,
   });
 
   const columnSize = useMemo(() => {
     const headers = table.getFlatHeaders();
     const sizes: { [key: string]: number } = {};
+    console.log("Here");
 
     for (let i = 0; i < headers.length; i++) {
       const header = headers[i]!;
@@ -157,7 +157,11 @@ function ItemTable() {
     }
 
     return sizes;
-  }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
+  }, [
+    table.getState().columnSizingInfo,
+    table.getState().columnSizing,
+    columns,
+  ]);
 
   const virtualizer = useVirtualizer({
     count: table.getRowModel().rows.length,
@@ -170,7 +174,7 @@ function ItemTable() {
     if (data.length > 0) {
       pageResetRef.current = false; // Re-enable page reset
     }
-  }, [data]);
+  }, [data, columns]);
 
   const fetchPages = useCallback(
     (parentRef?: HTMLDivElement | null) => {
@@ -211,6 +215,18 @@ function ItemTable() {
   return (
     <Container className="pt-2" fluid>
       <Stack direction="horizontal" gap={3} className="mb-2">
+        <SelectComponentW
+          data={typeQuery}
+          labelKey={"name"}
+          setValue={(id: number) =>
+            setFilter(
+              typeQuery?.find((type) => type.id === id) || {
+                id: -1,
+                name: "",
+              },
+            )
+          }
+        />
         <Button
           variant="success"
           className="shadow ms-auto"
@@ -225,6 +241,7 @@ function ItemTable() {
           style={{ maxHeight: "80vh", overflow: "auto" }}
           onScroll={(e) => fetchPages(e.target as HTMLDivElement)}>
           <Table
+            key={`itemTable-${filter.name}`}
             hover
             bordered
             variant="dark"

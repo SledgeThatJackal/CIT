@@ -1,6 +1,7 @@
 package dev.adamico.cit.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Views;
 import jakarta.persistence.*;
@@ -65,8 +66,11 @@ public class Item {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "image_id")
     )
-    @JsonView(Views.Exclusive.class)
     private Set<Image> images;
+
+    @OneToMany(mappedBy = "item")
+    @JsonManagedReference
+    private Set<ItemAttribute> itemAttributes;
 
     @Override
     public String toString() {

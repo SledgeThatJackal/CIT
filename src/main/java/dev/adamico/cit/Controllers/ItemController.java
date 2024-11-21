@@ -51,10 +51,14 @@ public class ItemController {
     @GetMapping("/page")
     @JsonView(Views.InclusiveID.class)
     public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "10") int size,
-                                              @RequestParam(required = false)Map<String, String> filters) throws JsonProcessingException {
+                                                    @RequestParam(defaultValue = "10") int size,
+                                                    @RequestParam(required = false)Map<String, String> filters) throws JsonProcessingException {
         filters.remove("page");
         filters.remove("size");
+
+        if(filters.get("type").isEmpty()){
+            filters.remove("type");
+        }
 
         Page<Item> itemPage = itemService.filterItemPages(page, size, filters);
 
