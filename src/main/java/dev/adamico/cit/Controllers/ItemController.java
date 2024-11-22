@@ -56,7 +56,7 @@ public class ItemController {
         filters.remove("page");
         filters.remove("size");
 
-        if(filters.get("type").isEmpty()){
+        if(filters.get("type") != null && filters.get("type").isEmpty()){
             filters.remove("type");
         }
 

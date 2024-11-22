@@ -1,6 +1,6 @@
 package dev.adamico.cit.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Views;
 import jakarta.persistence.*;
@@ -27,7 +27,7 @@ public class ItemAttribute {
 
     @ManyToOne
     @JoinColumn(name = "itemid", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties("itemAttributes")
     private Item item;
 
     public Long getItemid(){
@@ -40,7 +40,7 @@ public class ItemAttribute {
     public String toString() {
         return "ItemAttribute{" +
                 "id=" + id +
-                ", typeAttributes=" + typeAttribute +
+                ", typeAttribute=" + typeAttribute +
                 ", item=" + item +
                 ", value='" + value + '\'' +
                 '}';

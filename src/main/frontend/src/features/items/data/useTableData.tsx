@@ -10,14 +10,15 @@ import ActionButtons from "../components/custom_cells/ActionButtons";
 import TypeCell from "../components/custom_cells/TypeCell";
 import ImageCell from "@components/custom_cell_renderers/ImageCell";
 import React from "react";
-import { useTypeAttribute } from "@type/services/query";
+import { TypeAttribute } from "@schema/Types";
+import TypeEditCell from "@item/components/custom_cells/TypeEditCell";
 
 const columnHelper = createColumnHelper<Item>();
 
-export const useTableData = (typeId: number) => {
-  const typeAttributesQuery = useTypeAttribute(typeId).data;
-
+export const useTableData = (itemData: Item[], filter: TypeAttribute) => {
   const columns = useMemo(() => {
+    const itemAttributes = itemData?.[0]?.itemAttributes;
+
     const defaultColumns = [
       columnHelper.accessor("images", {
         id: "images",
@@ -82,20 +83,24 @@ export const useTableData = (typeId: number) => {
       }),
     ];
 
-    if (typeId === -1) {
+    if (filter.id === -1) {
       return defaultColumns;
     }
 
-    const attributeColumns = typeAttributesQuery
-      ?.sort((a, b) => (a?.displayOrder || 0) - (b?.displayOrder || 0))
-      .map((typeAttr, index) => {
+    const attributeColumns = itemAttributes
+      ?.sort(
+        (a, b) =>
+          (a.typeAttribute.displayOrder || 0) -
+          (b.typeAttribute.displayOrder || 0),
+      )
+      .map((itemAttribute, index) => {
         return columnHelper.accessor(
           (row) => row.itemAttributes[index]?.value || "",
           {
-            id: typeAttr.columnTitle || "",
-            header: () => <div>{typeAttr.columnTitle}</div>,
+            id: `itemAttributes.${index}`,
+            header: () => <div>{itemAttribute.typeAttribute.columnTitle}</div>,
             size: 100,
-            cell: EditCell,
+            cell: TypeEditCell,
             enableResizing: true,
           },
         );
@@ -111,7 +116,7 @@ export const useTableData = (typeId: number) => {
     ];
 
     return typedColumns;
-  }, [typeAttributesQuery]);
+  }, [itemData, filter]);
 
   return { columns };
 };

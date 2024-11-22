@@ -1,7 +1,6 @@
 package dev.adamico.cit.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Views;
 import jakarta.persistence.*;
@@ -10,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -68,9 +69,17 @@ public class Item {
     )
     private Set<Image> images;
 
-    @OneToMany(mappedBy = "item")
-    @JsonManagedReference
-    private Set<ItemAttribute> itemAttributes;
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("item")
+    private List<ItemAttribute> itemAttributes;
+
+    @PostLoad
+    private void sortItemAttributes(){
+        if(itemAttributes != null && !itemAttributes.isEmpty()){
+            itemAttributes.sort(Comparator.comparing(a -> a.getTypeAttribute().getDisplayOrder()));
+        }
+
+    }
 
     @Override
     public String toString() {
