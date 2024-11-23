@@ -5,6 +5,7 @@ import dev.adamico.cit.Filtering.ItemSpecification;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Repositories.ItemRepository;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +39,7 @@ public class ItemService {
     @Transactional
     public void createItem(ItemFormDTO dto){
         Item item = dto.getItem();
+        List<ItemFormDTO.Attribute> itemAttributes = dto.getItemAttributes();
 
         if(item.getContainerItems() != null){
             for(ContainerItem containerItem : item.getContainerItems()){
@@ -44,9 +47,47 @@ public class ItemService {
             }
         }
 
+        boolean hasDuplicates = dto.getItemAttributes().stream().anyMatch(ItemFormDTO.Attribute::getDuplicate);
+
+        if(hasDuplicates){
+            processItemAttributes(item, itemAttributes, 0);
+        } else {
+            saveItems(item, itemAttributes);
+        }
+    }
+
+    @Transactional
+    public void processItemAttributes(Item item, @NonNull List<ItemFormDTO.Attribute> itemAttributes, int index){
+        List<String> attrValues = new ArrayList<>();
+        ItemFormDTO.Attribute currentAttribute = itemAttributes.get(index);
+        String originalValue = currentAttribute.getValue();
+
+        if(currentAttribute.getDuplicate()){
+            attrValues.addAll(List.of(currentAttribute.getValue().split("\\|")));
+        } else {
+            attrValues.add(currentAttribute.getValue());
+        }
+
+        attrValues.forEach(currentValue -> {
+            System.out.println("Index: " + index);
+            System.out.println(currentValue);
+            currentAttribute.setValue(currentValue);
+
+            if(index < itemAttributes.size() - 1){
+                processItemAttributes(item, itemAttributes, index + 1);
+            } else {
+                saveItems(new Item(item), new ArrayList<>(itemAttributes));
+            }
+        });
+
+        currentAttribute.setValue(originalValue);
+    }
+
+    @Transactional
+    public void saveItems(Item item, List<ItemFormDTO.Attribute> itemAttributes){
         Long id = itemRepository.save(item).getId();
 
-        itemAttributeService.updateItemAttributes(id, dto.getItemAttributes());
+        itemAttributeService.updateItemAttributes(id, itemAttributes);
     }
 
     public void saveItem(Item item){

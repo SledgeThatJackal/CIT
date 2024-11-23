@@ -61,6 +61,7 @@ export type ItemAttributeData = {
   attributes: {
     typeAttribute: TypeAttribute;
     value?: string;
+    duplicate: boolean;
   }[];
 };
 

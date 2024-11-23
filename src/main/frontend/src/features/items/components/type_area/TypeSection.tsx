@@ -1,5 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+  ToggleButton,
+} from "react-bootstrap";
 import {
   Control,
   FormState,
@@ -75,6 +83,7 @@ const TypeSection = ({
         append({
           typeAttribute: typeAttrQuery[i],
           value: "",
+          duplicate: false,
         });
       }
     }
@@ -93,8 +102,16 @@ const TypeSection = ({
       </Row>
       {fields && fields.length > 0 ? (
         fields.map((field, index) => (
-          <Row className="mt-2" key={`typeRow-${field.id}`}>
-            <Col key={`typeCol-${field.id}`}>
+          <Row className="mt-2 align-items-center" key={`typeRow-${field.id}`}>
+            <Col key={`typeCol-${field.id}`} xs="auto">
+              <input
+                key={`typeDuplicate-${field.id}`}
+                title="Duplicate"
+                type="checkbox"
+                {...registerItemAttr(`attributes.${index}.duplicate`)}
+              />
+            </Col>
+            <Col className="w-100 ps-0">
               <FormFloatingLabel
                 key={`typeField-${field.id}`}
                 register={registerItemAttr}

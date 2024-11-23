@@ -81,6 +81,17 @@ public class Item {
 
     }
 
+    public Item(Item other){
+        this.id = null;
+        this.name = other.name;
+        this.description = other.description;
+        this.containerItems = other.containerItems;
+        this.tags = other.tags;
+        this.itemType = other.itemType;
+        this.images = other.images;
+        this.itemAttributes = other.itemAttributes;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
