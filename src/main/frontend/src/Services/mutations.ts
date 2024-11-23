@@ -39,6 +39,9 @@ export function useCreateContainer() {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
         });
+        await queryClient.invalidateQueries({
+          queryKey: ["containers"],
+        });
       }
     },
   });
@@ -60,6 +63,9 @@ export function useUpdateContainer() {
       if (!error) {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["containers"],
         });
       }
     },
@@ -88,6 +94,9 @@ export function useUpdateParentContainer() {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
         });
+        await queryClient.invalidateQueries({
+          queryKey: ["containers"],
+        });
       }
     },
   });
@@ -108,6 +117,10 @@ export function useDeleteContainer() {
       if (!error) {
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: ["containers"],
         });
 
         await queryClient.invalidateQueries({ queryKey: ["items"] });
@@ -140,6 +153,9 @@ export function useCreateLink() {
         await queryClient.invalidateQueries({ queryKey: ["items"] });
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["containers"],
         });
       }
     },

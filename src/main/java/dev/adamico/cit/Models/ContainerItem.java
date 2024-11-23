@@ -32,12 +32,4 @@ public class ContainerItem {
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
-
-    public Long getContainerId(){
-        return this.getContainer().getId();
-    }
-
-    public Long getItem_Id(){
-        return this.getItem().getId();
-    }
 }

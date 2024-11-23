@@ -1,8 +1,6 @@
 package dev.adamico.cit.Controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.adamico.cit.DTO.ItemFormDTO;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
@@ -14,7 +12,6 @@ import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,9 +47,9 @@ public class ItemController {
 
     @GetMapping("/page")
     @JsonView(Views.InclusiveID.class)
-    public ResponseEntity<String> getItemPage(@RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "10") int size,
-                                                    @RequestParam(required = false)Map<String, String> filters) throws JsonProcessingException {
+    public Page<Item> getItemPage(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size,
+                                                     @RequestParam(required = false)Map<String, String> filters) {
         filters.remove("page");
         filters.remove("size");
 
@@ -60,12 +57,7 @@ public class ItemController {
             filters.remove("type");
         }
 
-        Page<Item> itemPage = itemService.filterItemPages(page, size, filters);
-
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = mapper.writeValueAsString(itemPage);
-
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonString); // I did this because it just wouldn't serialize my data at all.
+        return itemService.filterItemPages(page, size, filters);
     }
 
     @PutMapping("/edit")
