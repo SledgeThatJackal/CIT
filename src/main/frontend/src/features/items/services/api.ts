@@ -5,7 +5,7 @@ import {
   ItemPageResponse,
   ItemSchemaType,
 } from "@item/schemas/Item";
-import { ColumnFiltersState } from "@tanstack/react-table";
+import { ColumnFilter, ColumnFiltersState } from "@tanstack/react-table";
 import axios from "axios";
 
 // Query
@@ -20,6 +20,7 @@ export const getItems = async () => {
 export const getInfiniteItems = async (
   pageParam: number = 0,
   size: number = 10,
+  tableFilter: string = "",
   filters?: ColumnFiltersState,
 ) => {
   const filterParams = filters?.reduce(
@@ -33,6 +34,7 @@ export const getInfiniteItems = async (
   const query = new URLSearchParams({
     page: pageParam.toLocaleString(),
     size: size.toLocaleString(),
+    type: tableFilter,
     ...filterParams,
   });
 

@@ -18,8 +18,7 @@ const TagCell = <T, S extends Tag[]>({
   column: { id },
   table,
 }: CellContext<T, S>) => {
-  const initialValue = getValue();
-  const [value, setValue] = useState<Tag[]>(initialValue);
+  const [value, setValue] = useState<Tag[]>(getValue());
 
   const [show, setShow] = useState<boolean>(false);
   const dropdownToggle = () => {
@@ -72,11 +71,15 @@ const TagCell = <T, S extends Tag[]>({
 
   return (
     <Stack direction="horizontal" gap={1} ref={targetRef}>
-      {value &&
-        value.length > 0 &&
-        value
-          .sort((a, b) => tagStringCompare(a, b))
-          .map((tag) => <TagBadge tag={tag} key={`tag-${tag.id}`} />)}
+      <React.Fragment key={`tagCell-${index}`}>
+        {value &&
+          value.length > 0 &&
+          value
+            .sort((a, b) => tagStringCompare(a, b))
+            .map((tag) => (
+              <TagBadge tag={tag} key={`tagBadge-${index}-${tag.id}`} />
+            ))}
+      </React.Fragment>
       <Dropdown
         className="d-inline-flex ms-auto"
         show={show}
@@ -121,7 +124,7 @@ const TagMenu = ({ currentTags, addTag, removeTag }: TagMenuProps) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Dropdown.Header>
         <Form.Control
           type="text"
@@ -138,7 +141,7 @@ const TagMenu = ({ currentTags, addTag, removeTag }: TagMenuProps) => {
 
             return (
               <Dropdown.Item
-                key={`db-tags-${index}`}
+                key={`db-tags-${index}-${tag.id}`}
                 onClick={() => (tagExists ? removeTag(tag) : addTag(tag))}>
                 <span style={{ paddingRight: "10px" }}>
                   {tagExists ? "✔️" : "❌"}
@@ -150,7 +153,7 @@ const TagMenu = ({ currentTags, addTag, removeTag }: TagMenuProps) => {
       ) : (
         <Dropdown.Item disabled>No tags were found</Dropdown.Item>
       )}
-    </>
+    </React.Fragment>
   );
 };
 

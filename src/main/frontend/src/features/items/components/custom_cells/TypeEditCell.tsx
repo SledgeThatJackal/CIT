@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { CellContext } from "@tanstack/react-table";
 import { Form } from "react-bootstrap";
-import ReadRow from "./ReadRow";
-import { ItemAttribute } from "@item/schemas/Item";
+import ReadRow from "@components/custom_cell_renderers/ReadRow";
+import { Item } from "@item/schemas/Item";
 
-const EditCell = <T, S extends string | number | undefined>({
+const TypeEditCell = ({
   getValue,
-  row: { index },
+  row,
   column: { id },
   table,
-}: CellContext<T, S>) => {
+}: CellContext<Item, string>) => {
   const initialValue = getValue()?.toString() ?? "";
 
   const [value, setValue] = useState<string>(initialValue);
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
 
@@ -22,7 +23,12 @@ const EditCell = <T, S extends string | number | undefined>({
 
   const onBlur = async () => {
     if (!isCancelled) {
-      table.options.meta?.updateData(index, id, value);
+      const itemAttr = {
+        ...row.original.itemAttributes[Number(id.charAt(id.length - 1))],
+        value: value,
+      };
+
+      table.options.meta?.updateItemAttribute?.(itemAttr);
     }
 
     setIsEditing(false);
@@ -66,4 +72,4 @@ const EditCell = <T, S extends string | number | undefined>({
   );
 };
 
-export default EditCell;
+export default TypeEditCell;

@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { getInfiniteItems, getItem, getItemAttributes, getItems } from "./api";
 import { ColumnFiltersState } from "@tanstack/react-table";
+import { useMemo } from "react";
 
 export function useItem(id: number) {
   return useQuery({
@@ -23,11 +24,15 @@ export function useItems() {
 
 export function useInfiniteItems(
   filter: ColumnFiltersState,
+  tableFilter: string,
   size: number = 10,
 ) {
+  const memoizedFilter = useMemo(() => filter, [filter]);
+
   return useInfiniteQuery({
-    queryKey: ["infiniteItems", filter, size],
-    queryFn: ({ pageParam = 0 }) => getInfiniteItems(pageParam, size, filter),
+    queryKey: ["infiniteItems", tableFilter, memoizedFilter],
+    queryFn: ({ pageParam = 0 }) =>
+      getInfiniteItems(pageParam, size, tableFilter, memoizedFilter),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       if (lastPage.data.last) {
@@ -43,9 +48,7 @@ export function useInfiniteItems(
 
       return firstPage.data.pageable.pageNumber - 1;
     },
-    placeholderData: keepPreviousData,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: true,
   });
 }
 

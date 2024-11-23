@@ -24,7 +24,7 @@ export const TableBody = ({ table, virtualizer }: TableBodyProps) => {
                 height: `${virtualRow.size}px`,
                 transform: `translateY(${virtualRow.start - index * virtualRow.size}px)`,
               }}>
-              {row.getVisibleCells().map((cell) => {
+              {row.getVisibleCells().map((cell, index) => {
                 return (
                   <td
                     key={`cell-${cell.id}`}

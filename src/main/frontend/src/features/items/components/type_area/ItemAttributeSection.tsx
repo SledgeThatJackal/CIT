@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAttributeState } from "@item/hooks/useAttributeState";
-import { useItemAttributes } from "@item/services/query";
 import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
 import EditCellW from "@components/Write/EditCellW";
 import SelectComponentW from "@components/Write/SelectComponentW";
 import { useItemTypes } from "@type/services/query";
 import { useModalState } from "@hooks/state/useModalState";
+import { ItemAttribute } from "@item/schemas/Item";
 
 const ItemAttributeSection = () => {
   const { context } = useAttributeState();
   const [isNotEditing, setIsNotEditing] = useState<boolean>(true);
   const { openMessageModal } = useModalState();
 
-  const itemAttributeQuery = useItemAttributes(
-    context?.table.options.meta?.getId?.(context.row.index) ?? -1,
-  ).data?.sort(
-    (a, b) =>
-      (a?.typeAttribute.displayOrder || 0) -
-      (b?.typeAttribute.displayOrder || 0),
-  );
-
   const itemTypeQuery = useItemTypes().data;
+
+  const [itemAttributes, setItemAttributes] = useState<
+    ItemAttribute[] | undefined
+  >(context?.row.original.itemAttributes);
+
+  useEffect(() => {
+    setItemAttributes(context?.row.original.itemAttributes);
+  }, [context]);
 
   const handleEdit = (itemAttr: any) => {
     context?.table.options.meta?.updateItemAttribute?.(itemAttr);
@@ -77,8 +77,8 @@ const ItemAttributeSection = () => {
           </InputGroup>
         </Col>
       </Row>
-      {itemAttributeQuery ? (
-        itemAttributeQuery.map((attr) => (
+      {itemAttributes ? (
+        itemAttributes.map((attr) => (
           <Row
             key={`attrRow-${attr.id}`}
             className="mt-1 mb-1 d-flex align-items-center justify-content-center"
