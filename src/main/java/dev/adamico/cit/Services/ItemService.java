@@ -69,8 +69,6 @@ public class ItemService {
         }
 
         attrValues.forEach(currentValue -> {
-            System.out.println("Index: " + index);
-            System.out.println(currentValue);
             currentAttribute.setValue(currentValue);
 
             if(index < itemAttributes.size() - 1){
