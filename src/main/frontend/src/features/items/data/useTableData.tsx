@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { createColumnHelper, Row } from "@tanstack/react-table";
+import { useMemo, useRef } from "react";
+import { ColumnDef, createColumnHelper, Row } from "@tanstack/react-table";
 
 import { Item } from "@item/schemas/Item";
 import EditCell from "@components/custom_cell_renderers/EditCell";
@@ -16,7 +16,13 @@ import TypeEditCell from "@item/components/custom_cells/TypeEditCell";
 const columnHelper = createColumnHelper<Item>();
 
 export const useTableData = (itemData: Item[], filter: TypeAttribute) => {
+  const previousColumnRef = useRef<ColumnDef<Item, any>[]>([]);
+
   const columns = useMemo(() => {
+    if (itemData.length < 1) {
+      return previousColumnRef.current;
+    }
+
     const itemAttributes = itemData?.[0]?.itemAttributes;
 
     const defaultColumns = [
@@ -84,6 +90,7 @@ export const useTableData = (itemData: Item[], filter: TypeAttribute) => {
     ];
 
     if (filter.id === -1) {
+      previousColumnRef.current = defaultColumns;
       return defaultColumns;
     }
 
@@ -97,7 +104,7 @@ export const useTableData = (itemData: Item[], filter: TypeAttribute) => {
         return columnHelper.accessor(
           (row) => row.itemAttributes[index]?.value || "",
           {
-            id: `itemAttributes.${index}`,
+            id: `${itemAttribute.typeAttribute.columnTitle}.${index}`,
             header: () => <div>{itemAttribute.typeAttribute.columnTitle}</div>,
             size: 100,
             cell: TypeEditCell,
@@ -115,8 +122,9 @@ export const useTableData = (itemData: Item[], filter: TypeAttribute) => {
       ...endingColumns,
     ];
 
+    previousColumnRef.current = typedColumns;
     return typedColumns;
-  }, [itemData, filter]);
+  }, [itemData]);
 
   return { columns };
 };
