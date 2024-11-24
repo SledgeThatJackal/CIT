@@ -1,4 +1,20 @@
 # CIT
+v0.4.0
+- Images
+  - Items can now have images associated with them
+    - Clicking the image will cycle through them
+    - Hovering over the image thumbnail will display a larger one
+- Infinite Scrolling
+  - Instead of using pagination on the item page, the page now has an infinite query setup
+- Typed Tables
+  - Above the table is now a select bar that allows you to switch types, this changes the displayed columns and filters the table based on type
+- Item Duplication
+  - Items now have a button to duplicate them
+    - This will pull all of the information for that item into the Create page
+  - When creating an item there is now the ability to create multiple duplicates of an item based on the item attributes
+    - There's a checkbox next to the item attribute input if you toggle this on, if you create a | delimited list, it will create duplicate items with the various attributes
+      - This is set up to handle any number of attributes at once
+
 v0.3.0
 - Create Item Types
   - Custom fields for items based on type
