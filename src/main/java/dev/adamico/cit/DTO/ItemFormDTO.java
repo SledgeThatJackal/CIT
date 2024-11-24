@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +14,7 @@ import java.util.Set;
 public class ItemFormDTO {
     private Item item;
 
-    private Set<Attribute> itemAttributes;
+    private List<Attribute> itemAttributes;
 
     @Data
     @AllArgsConstructor
@@ -22,6 +22,7 @@ public class ItemFormDTO {
     public static class Attribute {
         private TypeAttribute typeAttribute;
         private String value;
+        private Boolean duplicate;
 
         @Override
         public String toString() {

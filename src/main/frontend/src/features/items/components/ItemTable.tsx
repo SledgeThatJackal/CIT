@@ -164,9 +164,9 @@ function ItemTable() {
 
   const virtualizer = useVirtualizer({
     count: table.getRowModel().rows.length,
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => scrollRef.current,
     estimateSize: () => 70,
-    overscan: 20,
+    overscan: 30,
   });
 
   useEffect(() => {
@@ -198,7 +198,9 @@ function ItemTable() {
   const scrollRef = useRef(null);
   const [initialize, instance] = useOverlayScrollbars({
     defer: true,
-    options: { scrollbars: { autoHide: "move" } },
+    options: {
+      scrollbars: { autoHide: "scroll", autoHideDelay: 800 },
+    },
   });
 
   useEffect(() => {
@@ -215,7 +217,7 @@ function ItemTable() {
 
   useEffect(() => {
     setTableKey((prev) => prev + 1);
-  }, [columns]);
+  }, [filter]);
 
   return (
     <Container className="pt-2" fluid>
@@ -243,7 +245,11 @@ function ItemTable() {
       <div ref={scrollRef} className="shadow rounded">
         <div
           ref={parentRef}
-          style={{ maxHeight: "80vh", overflow: "auto" }}
+          style={{
+            maxHeight: "80vh",
+            overflow: "auto",
+            scrollSnapType: "none",
+          }}
           onScroll={(e) => fetchPages(e.target as HTMLDivElement)}>
           <Table
             key={`table-${tableKey}`}

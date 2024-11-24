@@ -105,7 +105,6 @@ const ComboBox = ({
       ...field,
       id: undefined,
       container: value,
-      containerId: value.id,
     };
     update(index, updatedItem);
   };

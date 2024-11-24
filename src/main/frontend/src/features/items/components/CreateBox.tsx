@@ -2,21 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 
 import {
   Button,
-  CloseButton,
   Col,
   Container,
   FloatingLabel,
   Form,
-  InputGroup,
   Row,
   Stack,
 } from "react-bootstrap";
-import {
-  FormProvider,
-  useFieldArray,
-  useForm,
-  useWatch,
-} from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import {
   ItemAttributeData,
   ItemFormDTO,
@@ -31,38 +24,48 @@ import TypeSection from "./type_area/TypeSection";
 import SelectComponent from "@components/Forms/SelectComponentF";
 import { useItemTypes } from "@type/services/query";
 import ImageForm from "./image/ImageForm";
+import { useActionState } from "@item/hooks/useActionState";
+import omit from "lodash.omit";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();
   const itemTypeQuery = useItemTypes().data;
   const { closeCanvas } = useCanvasState();
-  const [typeId, setTypeId] = useState<number>(-1);
+  const { item } = useActionState();
+  const [typeId, setTypeId] = useState<number>(item?.itemType?.id || -1);
 
   const itemForm = useForm<ItemSchemaType>({
-    defaultValues: {
-      id: undefined,
-      name: undefined,
-      description: undefined,
-      containerItems: [
-        {
+    defaultValues: item
+      ? omit(item, ["itemAttributes"])
+      : {
           id: undefined,
-          containerId: undefined,
-          item_id: undefined,
-          quantity: 1,
+          name: undefined,
+          description: undefined,
+          containerItems: [
+            {
+              id: undefined,
+              quantity: 1,
+            },
+          ],
+          tags: [],
+          itemType: {
+            id: -1,
+            name: "",
+          },
         },
-      ],
-      tags: [],
-      itemType: {
-        id: -1,
-        name: "",
-      },
-    },
     // resolver: zodResolver(ItemSchema),
   });
 
   const typeForm = useForm<ItemAttributeData>({
     defaultValues: {
-      attributes: [],
+      attributes: item
+        ? item.itemAttributes.map((itemAttr) => {
+            return {
+              typeAttribute: itemAttr.typeAttribute,
+              value: itemAttr.value,
+            };
+          })
+        : [],
     },
   });
 

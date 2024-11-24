@@ -31,7 +31,7 @@ public class ItemSpecification{
                 } else {
                     predicate = criteriaBuilder.and(predicate,
                                 criteriaBuilder.like(criteriaBuilder.lower(root.join("itemAttributes").get("value")), "%" + value.toLowerCase() + "%"),
-                                criteriaBuilder.like(root.join("itemAttributes").join("typeAttribute").get("columnTitle"), "%" + value + "%"));
+                                criteriaBuilder.like(criteriaBuilder.lower(root.join("itemAttributes").join("typeAttribute").get("columnTitle")), "%" + key.substring(0, key.length() - 2).toLowerCase() + "%"));
                 }
             }
 

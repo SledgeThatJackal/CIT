@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 public class ItemAttributeService {
@@ -22,7 +21,7 @@ public class ItemAttributeService {
     }
 
     @Transactional
-    public void updateItemAttributes(Long id, Set<ItemFormDTO.Attribute> itemAttributes){
+    public void updateItemAttributes(Long id, List<ItemFormDTO.Attribute> itemAttributes){
         List<ItemAttribute> dbItemAttributes = itemAttributeRepository.findByItemId(id);
 
         dbItemAttributes.forEach((dbItemAttribute -> {

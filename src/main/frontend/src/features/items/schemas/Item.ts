@@ -30,9 +30,7 @@ const ContainerSchema = z.object({
 
 export const ContainerItemSchema = z.object({
   id: z.number().optional(),
-  containerId: z.number().optional(),
   container: ContainerSchema.optional(),
-  item_id: z.number().optional(),
   quantity: z.number(),
 });
 
@@ -63,6 +61,7 @@ export type ItemAttributeData = {
   attributes: {
     typeAttribute: TypeAttribute;
     value?: string;
+    duplicate: boolean;
   }[];
 };
 

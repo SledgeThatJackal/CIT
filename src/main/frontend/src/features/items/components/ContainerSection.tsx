@@ -94,7 +94,7 @@ const ContainerSection = ({
             fields.map((field, index) => (
               <tr key={`CIFields-${field.id}`}>
                 <th>{field.container?.name}</th>
-                <td>
+                <td key={`CIComboBox-${field.id}`}>
                   <ComboBox
                     index={index}
                     field={field}

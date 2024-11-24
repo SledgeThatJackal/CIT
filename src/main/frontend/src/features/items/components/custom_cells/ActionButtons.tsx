@@ -5,6 +5,7 @@ import { Item } from "../../schemas/Item";
 import { useActionState } from "../../hooks/useActionState";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import LinkBox from "../LinkBox";
+import CreateBox from "../CreateBox";
 
 type ActionButtonsProps = {
   table: any;
@@ -23,6 +24,12 @@ const ActionButtons = ({ row }: ActionButtonsProps) => {
     updateAction(row.original, row.getValue("id"));
   };
 
+  const handleDuplicate = () => {
+    openCanvas(CreateBox, "bottom", `Duplicating: ${row.getValue("name")}`);
+
+    updateAction(row.original);
+  };
+
   const handleClose = () => {
     closeCanvas();
     clearAction();
@@ -36,6 +43,13 @@ const ActionButtons = ({ row }: ActionButtonsProps) => {
         disabled={!row.getCanExpand()}
         title={row.getIsExpanded() ? "Collapse" : "Expand"}>
         {row.getIsExpanded() ? "▲" : "▼"}
+      </Button>
+      <Button
+        onClick={handleDuplicate}
+        size="sm"
+        variant="secondary"
+        title="Duplicate">
+        <i className="bi bi-clipboard" />
       </Button>
       {isActive ? (
         <Button variant="info" size="sm" onClick={handleClose} title="Close">
