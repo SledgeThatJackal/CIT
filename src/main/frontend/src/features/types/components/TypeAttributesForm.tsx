@@ -7,6 +7,7 @@ import TypeAttributeFormDelete from "./Form/TypeAttributeFormDelete";
 import { AttributeForm } from "@type/schema/Type";
 import { useModalState } from "@hooks/state/useModalState";
 import { useDeleteTypeAttribute } from "@type/services/mutation";
+import { useDeleteModalState } from "@hooks/state/useDeleteModalState";
 
 const TypeAttributesForm = () => {
   const deleteAttributeMutation = useDeleteTypeAttribute();
@@ -42,16 +43,15 @@ const TypeAttributesForm = () => {
   const deleteRow = (index: number) => {
     const attribute = getValues(`typeAttributes.${index}.id`);
 
-    if (attribute) {
-      openMessageModal(
-        "Delete Attribute",
-        "Delete",
-        () => handleDelete(attribute, index),
-        "Are you sure you want to delete this attribute?",
-      );
-    } else {
-      remove(index);
-    }
+    const editFunction = () => handleDelete(attribute || 0, index);
+    const createFunction = () => remove(index);
+
+    openMessageModal(
+      "Delete Attribute",
+      "Delete",
+      attribute ? editFunction : createFunction,
+      "Are you sure you want to delete this attribute?",
+    );
   };
 
   return (

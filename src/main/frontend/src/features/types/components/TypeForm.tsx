@@ -8,6 +8,7 @@ import { Button, Col, Container, Form, Row, Stack } from "react-bootstrap";
 import { FormProvider, useForm } from "react-hook-form";
 import TypeAttributesForm from "./TypeAttributesForm";
 import { useCreateItemType } from "@type/services/mutation";
+import GenericModal from "@components/general/GenericModal";
 
 const TypeForm = () => {
   const { itemType, typeAttributes } = useEditState();
@@ -62,6 +63,7 @@ const TypeForm = () => {
         background: "#3d454e",
         border: "3px solid #7B8895",
       }}>
+      <GenericModal />
       <FormProvider {...typeForm}>
         <Form className="mt-3" onSubmit={typeForm.handleSubmit(onSubmit)}>
           <Row>
@@ -102,7 +104,7 @@ const TypeForm = () => {
               <Col md={1} className="text-center">
                 Order
               </Col>
-              <Col md={10}>Name</Col>
+              <Col md={10}>Attribute Name</Col>
               <Col md={1} className="text-center">
                 Remove
               </Col>

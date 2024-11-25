@@ -42,6 +42,14 @@ public class Container {
     @JsonIgnoreProperties("container")
     private Set<ContainerItem> containerItems;
 
+    @ManyToMany
+    @JoinTable(
+            name= "containerimages_table",
+            joinColumns = @JoinColumn(name = "container_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id")
+    )
+    private Set<Image> images;
+
     @Transactional
     public void addParent(Container parent){
         this.parentContainer = parent;

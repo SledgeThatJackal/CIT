@@ -7,6 +7,8 @@ import { Tag } from "@schema/Tag";
 import { createPortal } from "react-dom";
 import { useData } from "@hooks/TagProvider";
 import { CellContext } from "@tanstack/react-table";
+import { useTags } from "@services/queries";
+import GenericMenu from "@components/general/GenericMenu";
 
 const tagStringCompare = (tag1: Tag, tag2: Tag) => {
   return tag1.tag.localeCompare(tag2.tag);
@@ -77,7 +79,7 @@ const TagCell = <T, S extends Tag[]>({
           value
             .sort((a, b) => tagStringCompare(a, b))
             .map((tag) => (
-              <TagBadge tag={tag} key={`tagBadge-${index}-${tag.id}`} />
+              <TagBadge {...tag} key={`tagBadge-${index}-${tag.id}`} />
             ))}
       </React.Fragment>
       <Dropdown
@@ -86,74 +88,21 @@ const TagCell = <T, S extends Tag[]>({
         onToggle={dropdownToggle}
         title="Edit Tags">
         <Dropdown.Toggle className="ms-auto" variant="secondary">
-          <i className="bi bi-gear" style={{ fontSize: "14px" }}></i>
+          <i className="bi bi-gear" style={{ fontSize: "14px" }} />
         </Dropdown.Toggle>
 
         <Dropdown.Menu as={CustomMenu} show={show} dimensions={dimensions}>
-          <TagMenu currentTags={value} addTag={addTag} removeTag={removeTag} />
+          <GenericMenu
+            currentData={value}
+            type="Tag"
+            filterProperty="tag"
+            addObject={addTag}
+            removeObject={removeTag}
+            Component={TagBadge}
+          />
         </Dropdown.Menu>
       </Dropdown>
     </Stack>
-  );
-};
-
-type TagMenuProps = {
-  currentTags: Tag[];
-  addTag: (newTag: Tag) => void;
-  removeTag: (tagToRemove: Tag) => void;
-};
-
-const TagMenu = ({ currentTags, addTag, removeTag }: TagMenuProps) => {
-  const tags = useData();
-
-  const [search, setSearch] = useState<string>("");
-  const [filteredTags, setFilteredTags] = useState<Tag[]>([]);
-
-  useEffect(() => {
-    if (tags) {
-      setFilteredTags(
-        tags.filter((tag) =>
-          tag.tag.toLowerCase().includes(search.toLowerCase()),
-        ),
-      );
-    }
-  }, [tags, search]);
-
-  const checkIfTagExists = (tagToCheck: Tag) => {
-    return currentTags.some((tag) => tag.id === tagToCheck.id);
-  };
-
-  return (
-    <React.Fragment>
-      <Dropdown.Header>
-        <Form.Control
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search"
-        />
-      </Dropdown.Header>
-      {filteredTags.length > 0 ? (
-        filteredTags
-          .sort((a, b) => tagStringCompare(a, b))
-          .map((tag, index) => {
-            const tagExists = checkIfTagExists(tag);
-
-            return (
-              <Dropdown.Item
-                key={`db-tags-${index}-${tag.id}`}
-                onClick={() => (tagExists ? removeTag(tag) : addTag(tag))}>
-                <span style={{ paddingRight: "10px" }}>
-                  {tagExists ? "✔️" : "❌"}
-                </span>
-                <TagBadge tag={tag} />
-              </Dropdown.Item>
-            );
-          })
-      ) : (
-        <Dropdown.Item disabled>No tags were found</Dropdown.Item>
-      )}
-    </React.Fragment>
   );
 };
 

@@ -30,10 +30,6 @@ public class ItemAttribute {
     @JsonIgnoreProperties("itemAttributes")
     private Item item;
 
-    public Long getItemid(){
-        return this.getItem().getId();
-    }
-
     private String value;
 
     @Override

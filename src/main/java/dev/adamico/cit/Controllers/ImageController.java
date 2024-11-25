@@ -18,6 +18,11 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
+    @GetMapping
+    public List<Image> fetchImages(){
+      return imageService.getImages();
+    }
+
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<Image> uploadImage(@RequestParam("image") List<MultipartFile> images) throws IOException {
         return imageService.createImage(images);

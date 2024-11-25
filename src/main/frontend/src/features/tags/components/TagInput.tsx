@@ -124,7 +124,7 @@ const TagInput = ({ control }: TagInputProps) => {
                     <Dropdown.Item
                       key={`db-tags-${index}`}
                       onClick={() => addTag(tag)}>
-                      <TagBadge tag={tag} />
+                      <TagBadge {...tag} />
                     </Dropdown.Item>
                   ))
               ) : (

@@ -30,6 +30,10 @@ public class ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
+    public List<Image> getImages(){
+        return imageRepository.findAll();
+    }
+
     public ResponseEntity<Resource> getImage(String filename) throws IOException {
         File file = new File(imageDirectory + "\\" + filename);
 

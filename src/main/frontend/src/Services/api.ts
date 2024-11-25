@@ -3,6 +3,7 @@ import axios from "axios";
 import { ContainerType } from "@container/schemas/Container";
 import { ZodContainerType } from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";
+import { ImageType } from "@schema/Image";
 
 // Containers
 
@@ -83,6 +84,9 @@ export const deleteTag = async (id: number) => {
 // Images
 
 // Query
+export const getImages = async () => {
+  return (await axios.get<ImageType[]>(`/api/image`)).data;
+};
 
 // Muatate
 export const createImage = async (data: FormData) => {

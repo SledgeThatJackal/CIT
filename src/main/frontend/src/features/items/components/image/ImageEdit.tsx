@@ -35,6 +35,16 @@ const ImageEdit = () => {
     });
   };
 
+  const handleAdd = (image: ImageType) => {
+    setImages((prev) => [...prev, image]);
+  };
+
+  const handleRemove = (image: ImageType) => {
+    setImages((prev) =>
+      prev.filter((element) => element.fileName !== image.fileName),
+    );
+  };
+
   useEffect(() => {
     setData(images);
   }, [images]);
@@ -45,6 +55,8 @@ const ImageEdit = () => {
         data={images}
         onChange={onChange}
         onRemove={onRemove}
+        handleAdd={handleAdd}
+        handleRemove={handleRemove}
         buttonWidth={20}
       />
     </Container>

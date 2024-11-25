@@ -26,6 +26,7 @@ import { useItemTypes } from "@type/services/query";
 import ImageForm from "./image/ImageForm";
 import { useActionState } from "@item/hooks/useActionState";
 import omit from "lodash.omit";
+import { useBooleanState } from "@hooks/state/useBooleanState";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();
@@ -33,6 +34,7 @@ const CreateBox = () => {
   const { closeCanvas } = useCanvasState();
   const { item } = useActionState();
   const [typeId, setTypeId] = useState<number>(item?.itemType?.id || -1);
+  const { isOn } = useBooleanState();
 
   const itemForm = useForm<ItemSchemaType>({
     defaultValues: item
@@ -78,6 +80,10 @@ const CreateBox = () => {
     setTypeId(watchTypeId);
   }, [watchTypeId]);
 
+  useEffect(() => {
+    itemForm.setFocus("name");
+  }, []);
+
   const onSubmit = async (itemData: ItemSchemaType) => {
     const item: ItemSchemaType = {
       ...itemData,
@@ -100,7 +106,12 @@ const CreateBox = () => {
 
     typeForm.reset();
     itemForm.reset();
-    closeCanvas();
+
+    if (!isOn) {
+      closeCanvas();
+    }
+
+    itemForm.setFocus("name");
   };
 
   return (

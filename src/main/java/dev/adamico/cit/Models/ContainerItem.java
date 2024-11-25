@@ -27,7 +27,7 @@ public class ContainerItem {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnoreProperties("containerItems")
+    @JsonIgnoreProperties({"containerItems", "itemAttributes"})
     private Item item;
 
     @Column(name = "quantity", nullable = false)
