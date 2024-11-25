@@ -200,6 +200,9 @@ function ItemTable() {
   const scrollRef = useRef(null);
   const [initialize, instance] = useOverlayScrollbars({
     defer: true,
+    options: {
+      scrollbars: { theme: "os-theme-light" },
+    },
   });
 
   useEffect(() => {
