@@ -40,6 +40,7 @@ import { useInfiniteItems } from "@item/services/query";
 import SelectComponentW from "@components/Write/SelectComponentW";
 import { useItemTypes, useTypeAttribute } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
+import { useBooleanState } from "@hooks/state/useBooleanState";
 
 export const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -96,6 +97,7 @@ function ItemTable() {
 
   // Create
   const { openCanvas } = useCanvasState();
+  const { isOn, toggle } = useBooleanState();
 
   const pageResetRef = useRef<boolean>(false);
 
@@ -163,10 +165,10 @@ function ItemTable() {
   ]);
 
   const virtualizer = useVirtualizer({
-    count: table.getRowModel().rows.length,
+    count: data.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => 70,
-    overscan: 30,
+    overscan: 50,
   });
 
   useEffect(() => {
@@ -198,9 +200,6 @@ function ItemTable() {
   const scrollRef = useRef(null);
   const [initialize, instance] = useOverlayScrollbars({
     defer: true,
-    options: {
-      scrollbars: { autoHide: "scroll", autoHideDelay: 800 },
-    },
   });
 
   useEffect(() => {
@@ -219,6 +218,12 @@ function ItemTable() {
     setTableKey((prev) => prev + 1);
   }, [filter]);
 
+  useEffect(() => {
+    if (!isFetchingNextPage) {
+      virtualizer.measure();
+    }
+  }, [table.getRowModel().rows, isFetchingNextPage]);
+
   return (
     <Container className="pt-2" fluid>
       <Stack direction="horizontal" gap={3} className="mb-2">
@@ -234,12 +239,25 @@ function ItemTable() {
             )
           }
         />
-        <Button
-          variant="success"
-          className="shadow ms-auto"
-          onClick={() => openCanvas(CreateBox, "bottom", "Create")}>
-          Create
-        </Button>
+        <Stack
+          direction="horizontal"
+          gap={2}
+          className="bg-light text-dark p-2 rounded shadow ms-auto">
+          <Button
+            variant="success"
+            className="shadow ms-auto"
+            size="sm"
+            onClick={() => openCanvas(CreateBox, "bottom", "Create")}>
+            Create
+          </Button>
+
+          <Form.Switch
+            id="bulkSwitch"
+            label="Bulk Create"
+            style={{ textWrap: "nowrap" }}
+            onChange={() => toggle(!isOn)}
+          />
+        </Stack>
       </Stack>
 
       <div ref={scrollRef} className="shadow rounded">

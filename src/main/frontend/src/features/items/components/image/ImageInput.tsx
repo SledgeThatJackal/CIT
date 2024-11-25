@@ -1,9 +1,11 @@
+import GenericMenu from "@components/general/GenericMenu";
 import { ImageType } from "@schema/Image";
 import React, { useRef } from "react";
 import {
   Button,
   CloseButton,
   Col,
+  Dropdown,
   Form,
   InputGroup,
   Row,
@@ -13,6 +15,8 @@ import {
 type ImageInputType<T extends ImageType> = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => any;
   onRemove: (index: number) => void;
+  handleAdd: (element: T) => void;
+  handleRemove: (element: T) => void;
   data: T[];
   buttonWidth: number;
 };
@@ -20,6 +24,8 @@ type ImageInputType<T extends ImageType> = {
 const ImageInput = <T extends ImageType>({
   onChange,
   onRemove,
+  handleAdd,
+  handleRemove,
   data,
   buttonWidth,
 }: ImageInputType<T>) => {
@@ -55,9 +61,31 @@ const ImageInput = <T extends ImageType>({
             <InputGroup.Text
               as="label"
               htmlFor="customFileInput"
-              style={{ cursor: "pointer", width: `${100 - buttonWidth}%` }}>
+              style={{ cursor: "pointer", width: `${100 - buttonWidth * 2}%` }}>
               {data.length < 1 ? "No file chosen" : `${data.length} files`}
             </InputGroup.Text>
+
+            <Dropdown drop="start">
+              <Dropdown.Toggle
+                className="ms-0 pe-1"
+                variant="light"
+                size="sm"
+                style={{ width: `${buttonWidth}%`, border: "none" }}>
+                Existing
+              </Dropdown.Toggle>
+              <Dropdown.Menu
+                className="p-2 w-75"
+                style={{ maxHeight: "30vh", overflowY: "auto" }}>
+                <GenericMenu
+                  currentData={data}
+                  type="Image"
+                  filterProperty="fileName"
+                  addObject={handleAdd}
+                  removeObject={handleRemove}
+                  Component={ImageRow}
+                />
+              </Dropdown.Menu>
+            </Dropdown>
           </InputGroup>
         </Col>
       </Row>
@@ -71,6 +99,10 @@ const ImageInput = <T extends ImageType>({
       ))}
     </React.Fragment>
   );
+};
+
+const ImageRow = (image: ImageType) => {
+  return <span>{image.fileName}</span>;
 };
 
 export default ImageInput;

@@ -164,7 +164,7 @@ function TypeSettingsContent() {
                   <Col md={1} className="text-center">
                     Order
                   </Col>
-                  <Col md={10}>Name</Col>
+                  <Col md={10}>Attribute Name</Col>
                   <Col md={1} className="text-center">
                     Delete
                   </Col>

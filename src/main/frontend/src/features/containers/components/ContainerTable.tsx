@@ -10,7 +10,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ContainerType } from "../schemas/Container";
-import { Button, Container, Stack, Table } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Row,
+  Stack,
+  Table,
+} from "react-bootstrap";
 import PaginationControl from "@components/general/PaginationControl";
 import { Input } from "@item/components/ItemTable";
 import { MemoizedTableBody, TableBody } from "./TableBody";
@@ -24,6 +32,8 @@ import {
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import ContainerCreate from "./ContainerCreate";
 import Canvas from "@components/general/Canvas";
+import GenericModal from "@components/general/GenericModal";
+import { useBooleanState } from "@hooks/state/useBooleanState";
 
 function ContainerTable() {
   const { columns, containersQuery } = useTableData();
@@ -39,6 +49,7 @@ function ContainerTable() {
 
   // Create
   const { openCanvas } = useCanvasState();
+  const { isOn, toggle } = useBooleanState();
 
   // Pagination
   const [pagination, setPagination] = useState<PaginationState>({
@@ -131,13 +142,42 @@ function ContainerTable() {
 
   return (
     <Container className="pt-2" fluid>
+      <Stack direction="horizontal" gap={3} className="mb-2">
+        {table.getPageCount() > 0 && (
+          <Stack direction="horizontal" gap={3}>
+            <PaginationControl table={table} />
+          </Stack>
+        )}
+        <Stack
+          direction="horizontal"
+          gap={2}
+          className="bg-light text-dark p-2 rounded shadow ms-auto">
+          <Button
+            variant="success"
+            className="shadow"
+            size="sm"
+            onClick={() => openCanvas(ContainerCreate, "bottom", "Create")}>
+            Create
+          </Button>
+          <Form.Switch
+            id="bulkSwitch"
+            label="Bulk Create"
+            onChange={() => toggle(!isOn)}
+          />
+        </Stack>
+      </Stack>
       <div>
         <Table
           hover
           bordered
           variant="dark"
           className="m-0 shadow"
-          style={{ ...columnSize, borderRadius: "8px", overflow: "hidden" }}>
+          style={{
+            ...columnSize,
+            borderRadius: "8px",
+            overflow: "hidden",
+            tableLayout: "fixed",
+          }}>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => {
               return (
@@ -205,19 +245,6 @@ function ContainerTable() {
         </Table>
       </div>
       <br />
-      <Stack direction="horizontal" gap={3}>
-        {table.getPageCount() > 0 && (
-          <Stack direction="horizontal" gap={3}>
-            <PaginationControl table={table} />
-          </Stack>
-        )}
-        <Button
-          variant="success"
-          className="shadow"
-          onClick={() => openCanvas(ContainerCreate, "bottom", "Create")}>
-          Create
-        </Button>
-      </Stack>
       <Canvas />
       <ConfirmationModal
         show={showModal}
@@ -225,6 +252,7 @@ function ContainerTable() {
         onDelete={removeData}
         message={"Are you sure you want to delete this container?"}
       />
+      <GenericModal />
     </Container>
   );
 }

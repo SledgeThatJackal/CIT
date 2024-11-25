@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getContainers, getDetailedContainers, getTags } from "./api";
+import {
+  getContainers,
+  getDetailedContainers,
+  getImages,
+  getTags,
+} from "./api";
 
 // Containers
 export function useContainers() {
@@ -28,3 +33,10 @@ export function useTags() {
 }
 
 // Images
+export function useImages() {
+  return useQuery({
+    queryKey: ["images"],
+    queryFn: getImages,
+    staleTime: 1000 * 60 * 10,
+  });
+}

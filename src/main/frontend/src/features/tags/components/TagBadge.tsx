@@ -2,11 +2,7 @@ import React from "react";
 
 import { Tag } from "@schema/Tag";
 
-type TagProps = {
-  tag: Tag;
-};
-
-const TagBadge = ({ tag }: TagProps) => {
+const TagBadge = (tag: Tag) => {
   const tagColor = tag.color.replace("#", "");
 
   // Darken base color

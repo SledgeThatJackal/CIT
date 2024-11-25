@@ -1,6 +1,6 @@
 import { flexRender, Table } from "@tanstack/react-table";
 import { Virtualizer } from "@tanstack/react-virtual";
-import React from "react";
+import React, { useEffect } from "react";
 import { Item } from "../schemas/Item";
 import ContainerTable from "./container_row/ContainerTable";
 

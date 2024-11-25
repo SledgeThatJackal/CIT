@@ -35,7 +35,7 @@ const TagRead = ({
       }}>
       <Col className="d-flex align-items-center me-auto">
         <Stack direction="horizontal" gap={1}>
-          <TagBadge tag={tag} />
+          <TagBadge {...tag} />
           <div>: {tag.description}</div>
         </Stack>
       </Col>

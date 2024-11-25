@@ -105,7 +105,7 @@ const TagForm = ({
           borderBottom: "3px solid #7B8895",
         }}>
         <Col md="auto" as={Stack} direction="horizontal" gap={2}>
-          <TagBadge tag={exampleTag} />
+          <TagBadge {...exampleTag} />
           <div className="vr" />
         </Col>
         <Form.Group as={Col} md="3" controlId="tagName">
