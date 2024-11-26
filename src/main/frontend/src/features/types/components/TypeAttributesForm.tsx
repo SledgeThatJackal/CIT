@@ -7,7 +7,6 @@ import TypeAttributeFormDelete from "./Form/TypeAttributeFormDelete";
 import { AttributeForm } from "@type/schema/Type";
 import { useModalState } from "@hooks/state/useModalState";
 import { useDeleteTypeAttribute } from "@type/services/mutation";
-import { useDeleteModalState } from "@hooks/state/useDeleteModalState";
 
 const TypeAttributesForm = () => {
   const deleteAttributeMutation = useDeleteTypeAttribute();
@@ -31,6 +30,7 @@ const TypeAttributesForm = () => {
       itemType: undefined,
       displayOrder: undefined,
       columnTitle: undefined,
+      dataType: "STRING",
     });
   };
 
