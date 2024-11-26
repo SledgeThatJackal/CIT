@@ -7,6 +7,7 @@ import TypeAttributeFormDelete from "./Form/TypeAttributeFormDelete";
 import { AttributeForm } from "@type/schema/Type";
 import { useModalState } from "@hooks/state/useModalState";
 import { useDeleteTypeAttribute } from "@type/services/mutation";
+import TypeAttributeFormSelect from "./Form/TypeAttributeFormSelect";
 
 const TypeAttributesForm = () => {
   const deleteAttributeMutation = useDeleteTypeAttribute();
@@ -64,12 +65,16 @@ const TypeAttributesForm = () => {
               path={`typeAttributes.${index}.displayOrder`}
               error={errors.typeAttributes?.[index]?.message}
             />
-            <TypeAttributeFormEdit
+            <TypeAttributeFormSelect
               key={`formEditSecondCell-${field.id}`}
+              path={`typeAttributes.${index}.dataType`}
+            />
+            <TypeAttributeFormEdit
+              key={`formEditThirdCell-${field.id}`}
               path={`typeAttributes.${index}.columnTitle`}
             />
             <TypeAttributeFormDelete
-              key={`formEditThirdCell-${field.id}`}
+              key={`formEditFourthCell-${field.id}`}
               handleRemove={() => deleteRow(index)}
             />
           </TypeAttributeRow>

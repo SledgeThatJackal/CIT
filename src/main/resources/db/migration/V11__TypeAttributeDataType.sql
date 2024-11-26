@@ -1,6 +1,4 @@
-Create TYPE type_enum AS ENUM ('STRING', 'NUMBER', 'BOOLEAN', 'LIST');
-
-ALTER TABLE typeattributes_table ADD COLUMN data_type type_enum DEFAULT 'STRING';
+ALTER TABLE typeattributes_table ADD COLUMN data_type VARCHAR;
 
 ALTER TABLE itemattributes_table RENAME COLUMN "value" TO string_value;
 

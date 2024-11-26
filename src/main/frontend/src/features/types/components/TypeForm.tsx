@@ -104,7 +104,8 @@ const TypeForm = () => {
               <Col md={1} className="text-center">
                 Order
               </Col>
-              <Col md={10}>Attribute Name</Col>
+              <Col md={2}>Data Type</Col>
+              <Col md={8}>Attribute Name</Col>
               <Col md={1} className="text-center">
                 Remove
               </Col>

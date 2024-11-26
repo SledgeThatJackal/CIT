@@ -1,0 +1,1 @@
+ALTER TABLE typeattributes_table ALTER COLUMN data_type TYPE VARCHAR(10);
