@@ -21,11 +21,11 @@ export function useCreateItemType() {
       displayError(error.response.data.message);
     },
 
-    onSettled: async (response, error) => {
+    onSettled: async (_, error) => {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["types"] });
         await queryClient.invalidateQueries({
-          queryKey: ["typeattribute", response?.data],
+          queryKey: ["typeattribute"],
         });
       }
     },
@@ -43,10 +43,10 @@ export function useCreateTypeAttribute() {
       displayError(error.response.data.message);
     },
 
-    onSettled: async (_, error, data) => {
+    onSettled: async (_, error) => {
       if (!error) {
         await queryClient.invalidateQueries({
-          queryKey: ["typeattribute", data.itemType?.id],
+          queryKey: ["typeattribute"],
         });
       }
     },

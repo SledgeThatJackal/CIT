@@ -13,7 +13,7 @@ type ActionButtonsProps = {
 };
 
 const ActionButtons = ({ row }: ActionButtonsProps) => {
-  const { callerId, updateAction, clearAction } = useActionState();
+  const { callerId, updateItemAction, clearAction } = useActionState();
   const { openCanvas, closeCanvas } = useCanvasState();
 
   const isActive = callerId === row.getValue("id");
@@ -21,13 +21,13 @@ const ActionButtons = ({ row }: ActionButtonsProps) => {
   const handleOpen = () => {
     openCanvas(LinkBox, "bottom", `Editing: ${row.getValue("name")}`);
 
-    updateAction(row.original, row.getValue("id"));
+    updateItemAction(row.original, row.getValue("id"));
   };
 
   const handleDuplicate = () => {
     openCanvas(CreateBox, "bottom", `Duplicating: ${row.getValue("name")}`);
 
-    updateAction(row.original);
+    updateItemAction(row.original);
   };
 
   const handleClose = () => {

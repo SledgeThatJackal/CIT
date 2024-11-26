@@ -30,6 +30,7 @@ export const useTableData = (itemData: Item[], filter: TypeAttribute) => {
         id: "images",
         header: () => null,
         cell: ImageCell,
+        minSize: 50,
         maxSize: 75,
         enableResizing: false,
         enableSorting: false,

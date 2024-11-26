@@ -61,12 +61,14 @@ const CreateBox = () => {
   const typeForm = useForm<ItemAttributeData>({
     defaultValues: {
       attributes: item
-        ? item.itemAttributes.map((itemAttr) => {
-            return {
-              typeAttribute: itemAttr.typeAttribute,
-              value: itemAttr.value,
-            };
-          })
+        ? item.itemAttributes.map(
+            (itemAttr: { typeAttribute: any; value: any }) => {
+              return {
+                typeAttribute: itemAttr.typeAttribute,
+                value: itemAttr.value,
+              };
+            },
+          )
         : [],
     },
   });
