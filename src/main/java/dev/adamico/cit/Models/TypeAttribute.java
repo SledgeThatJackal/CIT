@@ -1,6 +1,7 @@
 package dev.adamico.cit.Models;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import dev.adamico.cit.Enums.TypeEnum;
 import dev.adamico.cit.Views;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,9 @@ public class TypeAttribute {
 
     private Integer displayOrder;
     private String columnTitle;
+
+    @Enumerated(EnumType.STRING)
+    private TypeEnum dataType;
 
     @Override
     public String toString() {

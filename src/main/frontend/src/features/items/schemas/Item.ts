@@ -60,7 +60,7 @@ export type ItemAttribute = {
 export type ItemAttributeData = {
   attributes: {
     typeAttribute: TypeAttribute;
-    value?: string;
+    value?: string | number;
     duplicate: boolean;
   }[];
 };

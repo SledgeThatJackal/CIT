@@ -30,15 +30,7 @@ public class ItemAttribute {
     @JsonIgnoreProperties("itemAttributes")
     private Item item;
 
-    private String value;
+    private String stringValue;
 
-    @Override
-    public String toString() {
-        return "ItemAttribute{" +
-                "id=" + id +
-                ", typeAttribute=" + typeAttribute +
-                ", item=" + item +
-                ", value='" + value + '\'' +
-                '}';
-    }
+    private Double numberValue;
 }

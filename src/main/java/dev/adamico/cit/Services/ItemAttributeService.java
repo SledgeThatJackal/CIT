@@ -31,7 +31,7 @@ public class ItemAttributeService {
                 ItemFormDTO.Attribute attribute = iterator.next();
 
                 if(Objects.equals(attribute.getTypeAttribute().getId(), dbItemAttribute.getTypeAttribute().getId())){
-                    dbItemAttribute.setValue(attribute.getValue());
+                    dbItemAttribute.setStringValue(attribute.getValue());
 
                     iterator.remove();
                     break;

@@ -5,4 +5,5 @@ export type TypeAttribute = {
   itemType?: ZodItemType;
   displayOrder?: number;
   columnTitle?: string;
+  dataType?: string;
 };
