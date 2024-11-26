@@ -123,7 +123,7 @@ export function useDeleteContainer() {
           queryKey: ["containers"],
         });
 
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
       }
     },
   });
@@ -150,7 +150,7 @@ export function useCreateLink() {
 
     onSettled: async (_, error) => {
       if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
         await queryClient.invalidateQueries({
           queryKey: ["detailedContainers"],
         });
@@ -181,7 +181,7 @@ export function useUpdateQuantity() {
 
     onSettled: async (_, error) => {
       if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
       }
     },
   });
@@ -200,7 +200,7 @@ export function useDeleteLink() {
 
     onSettled: async (_, error) => {
       if (!error) {
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
       }
     },
   });
@@ -242,7 +242,7 @@ export function useUpdateTag() {
     onSettled: async (_, error) => {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["tags"] });
-        await queryClient.invalidateQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
       }
     },
   });
@@ -262,7 +262,7 @@ export function useDeleteTag() {
     onSettled: async (_, error) => {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["tags"] });
-        await queryClient.refetchQueries({ queryKey: ["items"] });
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
       }
     },
   });
