@@ -4,6 +4,7 @@ import { ContainerType } from "@container/schemas/Container";
 import { ZodContainerType } from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";
 import { ImageType } from "@schema/Image";
+import omit from "lodash.omit";
 
 // Containers
 
@@ -17,7 +18,12 @@ export const getDetailedContainers = async () => {
 };
 
 // Mutate
-export const createContainer = async (data: ContainerType, id?: number) => {
+export const createContainer = async (
+  container: ContainerType,
+  id?: number,
+) => {
+  const data = omit(container, ["id"]);
+
   await axios.post(`/api/container/create?id=${id}`, data);
 };
 

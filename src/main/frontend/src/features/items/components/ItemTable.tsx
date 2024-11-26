@@ -126,7 +126,6 @@ function ItemTable() {
     columns,
     defaultColumn: {
       minSize: 60,
-      maxSize: 1500,
     },
     getRowCanExpand: (row) =>
       (row.getValue("containerItems") as ZodContainerType[]).length > 0,
@@ -153,6 +152,7 @@ function ItemTable() {
 
     for (let i = 0; i < headers.length; i++) {
       const header = headers[i]!;
+      console.log(header);
       sizes[`--header-${header.id}-size`] = header.getSize();
       sizes[`--col-${header.column.id}-size`] = header.column.getSize();
     }
@@ -200,6 +200,9 @@ function ItemTable() {
   const scrollRef = useRef(null);
   const [initialize, instance] = useOverlayScrollbars({
     defer: true,
+    options: {
+      scrollbars: { theme: "os-theme-light" },
+    },
   });
 
   useEffect(() => {
@@ -274,7 +277,7 @@ function ItemTable() {
             hover
             bordered
             variant="dark"
-            className="m-0 shadow table-responsive"
+            className="m-0 shadow"
             style={{
               ...columnSize,
               borderRadius: "8px",

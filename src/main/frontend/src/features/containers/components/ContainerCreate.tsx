@@ -15,22 +15,26 @@ import { ContainerType } from "../schemas/Container";
 import { useDetailedContainers } from "@services/queries";
 import ImageForm from "@item/components/image/ImageForm";
 import { useBooleanState } from "@hooks/state/useBooleanState";
+import { useActionState } from "@item/hooks/useActionState";
 
 const ContainerCreate = () => {
   const containerQuery = useDetailedContainers().data;
   const createContainerMutation = useCreateContainer();
+  const { container: duplicatedContainer } = useActionState();
   const { closeCanvas } = useCanvasState();
   const { isOn } = useBooleanState();
 
   const containerForm = useForm<ContainerType>({
-    defaultValues: {
-      id: undefined,
-      name: undefined,
-      description: undefined,
-      scannerId: undefined,
-      parentContainer: undefined,
-      containerItems: [],
-    },
+    defaultValues: duplicatedContainer
+      ? duplicatedContainer
+      : {
+          id: undefined,
+          name: undefined,
+          description: undefined,
+          scannerId: undefined,
+          parentContainer: undefined,
+          containerItems: [],
+        },
   });
 
   const onSubmit = async (container: ContainerType) => {

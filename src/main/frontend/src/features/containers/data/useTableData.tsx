@@ -7,6 +7,7 @@ import DeleteCell from "@components/custom_cell_renderers/DeleteCell";
 import ParentContainerCell from "../components/custom_cells/ParentContainerCell";
 import ImageCell from "@components/custom_cell_renderers/ImageCell";
 import React from "react";
+import DuplicateCell from "@container/components/custom_cells/DuplicateCell";
 
 const columnHelper = createColumnHelper<ContainerType>();
 
@@ -57,6 +58,15 @@ export const useTableData = () => {
         header: () => <div className="text-center">Delete</div>,
         size: 75,
         cell: DeleteCell,
+        enableResizing: false,
+        enableSorting: false,
+        enableColumnFilter: false,
+      }),
+      columnHelper.display({
+        id: "duplicate",
+        header: () => <div className="text-center">Duplicate</div>,
+        size: 75,
+        cell: DuplicateCell,
         enableResizing: false,
         enableSorting: false,
         enableColumnFilter: false,
