@@ -27,6 +27,9 @@ public class ImageService {
     @Value("${IMAGES_ENVIRONMENT_PATH}")
     private String imageDirectory;
 
+    @Value("${ENVIRONMENT}")
+    private String env;
+
     @Autowired
     private ImageRepository imageRepository;
 
@@ -35,10 +38,15 @@ public class ImageService {
     }
 
     public ResponseEntity<Resource> getImage(String filename) throws IOException {
-        File file = new File(imageDirectory + "\\" + filename);
+        File file;
+
+        if(env.equalsIgnoreCase("local")){
+            file = new File(imageDirectory + "\\" + filename);
+        } else{
+            file = new File(imageDirectory + "/" + filename);
+        }
 
         if(!file.exists() || file.isDirectory()){
-            System.out.println(file);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
