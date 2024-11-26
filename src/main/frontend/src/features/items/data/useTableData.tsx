@@ -10,12 +10,12 @@ import ActionButtons from "../components/custom_cells/ActionButtons";
 import TypeCell from "../components/custom_cells/TypeCell";
 import ImageCell from "@components/custom_cell_renderers/ImageCell";
 import React from "react";
-import { TypeAttribute } from "@schema/Types";
 import TypeEditCell from "@item/components/custom_cells/TypeEditCell";
+import { ZodItemType } from "@schema/General";
 
 const columnHelper = createColumnHelper<Item>();
 
-export const useTableData = (itemData: Item[], filter: TypeAttribute) => {
+export const useTableData = (itemData: Item[], filter: ZodItemType) => {
   const previousColumnRef = useRef<ColumnDef<Item, any>[]>([]);
 
   const columns = useMemo(() => {
@@ -107,7 +107,7 @@ export const useTableData = (itemData: Item[], filter: TypeAttribute) => {
         return columnHelper.accessor(
           (row) => row.itemAttributes[index]?.value || "",
           {
-            id: `${itemAttribute.typeAttribute.columnTitle}-${index}`,
+            id: `typeAttribute-${itemAttribute.typeAttribute.id}`,
             header: () => <div>{itemAttribute.typeAttribute.columnTitle}</div>,
             cell: TypeEditCell,
             minSize: 200,

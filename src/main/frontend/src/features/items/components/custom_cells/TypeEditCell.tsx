@@ -23,8 +23,17 @@ const TypeEditCell = ({
 
   const onBlur = async () => {
     if (!isCancelled) {
+      const columnId = parseInt(id.replace(/.*?(\d+)$/, "$1"));
+      const oldItemAttribute = row.original.itemAttributes.find(
+        (itemAttribute) => itemAttribute.typeAttribute.id === columnId,
+      );
+
+      if (!oldItemAttribute) {
+        return;
+      }
+
       const itemAttr = {
-        ...row.original.itemAttributes[Number(id.charAt(id.length - 1))],
+        ...oldItemAttribute,
         value: value,
       };
 
