@@ -1,7 +1,7 @@
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import { useActionState } from "@item/hooks/useActionState";
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import ContainerCreate from "../ContainerCreate";
 import { Row } from "@tanstack/react-table";
 import { ContainerType } from "@container/schemas/Container";
@@ -25,13 +25,11 @@ const DuplicateCell = ({ row }: DeleteCellProps) => {
   };
 
   return (
-    <Button
-      onClick={handleDuplicate}
-      size="sm"
-      variant="secondary"
-      title="Duplicate">
-      <i className="bi bi-clipboard" />
-    </Button>
+    <Container fluid className="p-0 m-0 w-100 d-flex justify-content-center">
+      <Button onClick={handleDuplicate} variant="secondary" title="Duplicate">
+        <i className="bi bi-clipboard" />
+      </Button>
+    </Container>
   );
 };
 
