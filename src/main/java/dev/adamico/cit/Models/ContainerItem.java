@@ -20,12 +20,12 @@ public class ContainerItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "container_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties("containerItems")
     private Container container;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties({"containerItems", "itemAttributes"})
     private Item item;

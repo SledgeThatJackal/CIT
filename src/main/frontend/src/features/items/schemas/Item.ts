@@ -12,6 +12,7 @@ export type Item = {
   tags?: Tag[];
   itemType?: ZodItemType;
   images?: ImageType[];
+  totalQuantity?: number;
   itemAttributes: ItemAttributes[];
 };
 

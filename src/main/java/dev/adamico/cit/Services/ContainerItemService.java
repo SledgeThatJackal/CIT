@@ -42,6 +42,7 @@ public class ContainerItemService {
         containerItemRepository.updateQuantityById(quantity, id);
     }
 
+    @Transactional
     public void removeContainerItemLink(Long containerItemId){
         containerItemRepository.deleteById(containerItemId);
     }
