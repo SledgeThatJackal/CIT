@@ -46,7 +46,7 @@ const AddLink = ({ itemId }: AddLinkProps) => {
               <option value={-1}></option>
               {containerQuery && containerQuery.length > 0 ? (
                 containerQuery.map((container) => (
-                  <option value={container.id}>
+                  <option value={container.id} key={container.id}>
                     {container.scannerId} ({container.name})
                   </option>
                 ))
@@ -77,12 +77,16 @@ const AddLink = ({ itemId }: AddLinkProps) => {
         </tr>
       )}
       {!show && (
-        <Button
-          variant="success"
-          className="mt-2"
-          onClick={() => setShow(true)}>
-          Add
-        </Button>
+        <tr>
+          <td colSpan={4}>
+            <Button
+              variant="success"
+              className="mt-2"
+              onClick={() => setShow(true)}>
+              Add
+            </Button>
+          </td>
+        </tr>
       )}
     </>
   );

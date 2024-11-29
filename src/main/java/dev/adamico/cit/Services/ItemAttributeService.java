@@ -31,7 +31,11 @@ public class ItemAttributeService {
                 ItemFormDTO.Attribute attribute = iterator.next();
 
                 if(Objects.equals(attribute.getTypeAttribute().getId(), dbItemAttribute.getTypeAttribute().getId())){
-                    dbItemAttribute.setStringValue(attribute.getValue());
+                    switch(dbItemAttribute.getTypeAttribute().getDataType()){
+                        case STRING -> dbItemAttribute.setStringValue(attribute.getValue());
+                        case NUMBER, BOOLEAN -> dbItemAttribute.setNumberValue(Double.valueOf(attribute.getValue()));
+                        // List (if implemented)
+                    }
 
                     iterator.remove();
                     break;

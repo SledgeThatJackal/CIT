@@ -105,7 +105,9 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
       )
       .map((itemAttribute, index) => {
         return columnHelper.accessor(
-          (row) => row.itemAttributes[index]?.value || "",
+          (row) =>
+            row.itemAttributes[index]?.stringValue ||
+            row.itemAttributes[index]?.numberValue,
           {
             id: `typeAttribute-${itemAttribute.typeAttribute.id}`,
             header: () => <div>{itemAttribute.typeAttribute.columnTitle}</div>,
