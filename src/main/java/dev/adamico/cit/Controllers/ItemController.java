@@ -57,7 +57,13 @@ public class ItemController {
             filters.remove("type");
         }
 
-        return itemService.filterItemPages(page, size, filters);
+        Page<Item> itemPage = itemService.filterItemPages(page, size, filters);
+        itemPage.forEach(item -> {
+            item.sortItemAttributes();
+            item.setTotalQuantity();
+        });
+
+        return itemPage;
     }
 
     @PutMapping("/edit")

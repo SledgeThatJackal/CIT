@@ -73,12 +73,18 @@ public class Item {
     @JsonIgnoreProperties("item")
     private List<ItemAttribute> itemAttributes;
 
-    @PostLoad
-    private void sortItemAttributes(){
+    @Transient
+    private Integer totalQuantity = 0;
+
+
+    public void sortItemAttributes(){
         if(itemAttributes != null && !itemAttributes.isEmpty()){
             itemAttributes.sort(Comparator.comparing(a -> a.getTypeAttribute().getDisplayOrder()));
         }
+    }
 
+    public void setTotalQuantity(){
+        this.totalQuantity = containerItems.stream().mapToInt(ContainerItem::getQuantity).sum();
     }
 
     public Item(Item other){
@@ -90,6 +96,7 @@ public class Item {
         this.itemType = other.itemType;
         this.images = other.images;
         this.itemAttributes = other.itemAttributes;
+        this.totalQuantity = other.totalQuantity;
     }
 
     @Override

@@ -28,7 +28,7 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
     const defaultColumns = [
       columnHelper.accessor("images", {
         id: "images",
-        header: () => null,
+        header: () => <div className="text-center">{`Image(s)`}</div>,
         cell: ImageCell,
         minSize: 50,
         maxSize: 75,
@@ -50,6 +50,20 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
         cell: EditCell,
         minSize: 200,
         sortUndefined: 1,
+      }),
+      columnHelper.display({
+        id: "totalQuantity",
+        header: () => <div className="text-center">Quantity</div>,
+        cell: (context) => (
+          <div className="text-center">
+            {context.row.original.totalQuantity}
+          </div>
+        ),
+        minSize: 50,
+        maxSize: 75,
+        enableResizing: false,
+        enableSorting: false,
+        enableColumnFilter: false,
       }),
       columnHelper.accessor("tags", {
         id: "tags",

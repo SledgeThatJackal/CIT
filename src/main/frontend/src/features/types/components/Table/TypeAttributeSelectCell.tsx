@@ -37,8 +37,9 @@ const TypeAttributeSelectCell = ({
           onChange={(e) => setValue(e.target.value)}>
           {["STRING", "NUMBER", "BOOLEAN", "LIST"].map((dataType) => (
             <option
-              value={
-                dataType
+              value={dataType}
+              disabled={
+                dataType === "LIST"
               }>{`${dataType.charAt(0).toUpperCase()}${dataType.slice(1).toLowerCase()}`}</option>
           ))}
         </Form.Select>
