@@ -1,7 +1,9 @@
 package dev.adamico.cit.Filtering;
 
 import dev.adamico.cit.Models.Item;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Map;
@@ -37,5 +39,37 @@ public class ItemSpecification{
 
             return predicate;
         });
+    }
+
+    private static Predicate applyNumberFilter(Root<?> root, Predicate predicate, CriteriaBuilder criteriaBuilder, String key, String value){
+        switch(value){
+            case "G" -> {
+                return criteriaBuilder.and(predicate, criteriaBuilder.like(criteriaBuilder.equal(root.join("itemAttributes").get("numberValue"), Integer.parseInt(key.replaceAll(".*?(\\d+)$", "$1"))),
+                        criteriaBuilder.equal(root.join("itemAttributes").join("typeAttribute").get("id"), Integer.parseInt(key.replaceAll(".*?(\\d+)$", "$1"))))));
+            }
+            case "GE" -> {
+
+            }
+            case "L" -> {
+
+            }
+            case "LE" -> {
+
+            }
+            case "R" -> {
+
+            }
+            default -> {
+
+            }
+        }
+
+        return predicate;
+    }
+
+    private static Predicate applyStringFilter(Root<?> root, Predicate predicate, CriteriaBuilder criteriaBuilder, String key, String value){
+        return criteriaBuilder.and(predicate,
+                criteriaBuilder.like(criteriaBuilder.lower(root.join("itemAttributes").get("stringValue")), "%" + value.toLowerCase() + "%"),
+                criteriaBuilder.equal(root.join("itemAttributes").join("typeAttribute").get("id"), Integer.parseInt(key.replaceAll(".*?(\\d+)$", "$1"))));
     }
 }
