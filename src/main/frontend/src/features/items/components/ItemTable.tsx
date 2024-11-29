@@ -152,7 +152,6 @@ function ItemTable() {
 
     for (let i = 0; i < headers.length; i++) {
       const header = headers[i]!;
-      console.log(header);
       sizes[`--header-${header.id}-size`] = header.getSize();
       sizes[`--col-${header.column.id}-size`] = header.column.getSize();
     }

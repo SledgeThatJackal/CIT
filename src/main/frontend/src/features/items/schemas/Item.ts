@@ -18,7 +18,8 @@ export type Item = {
 type ItemAttributes = {
   id: number;
   typeAttribute: TypeAttribute;
-  value: string;
+  stringValue?: string;
+  numberValue?: number;
   itemid: number;
 };
 
@@ -54,13 +55,15 @@ export type ItemAttribute = {
   id?: number;
   typeAttribute: TypeAttribute;
   item?: Item;
-  value: string;
+  stringValue?: string;
+  numberValue?: number;
 };
 
 export type ItemAttributeData = {
   attributes: {
     typeAttribute: TypeAttribute;
-    value?: string;
+    stringValue?: string;
+    numberValue?: number;
     duplicate: boolean;
   }[];
 };

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useAttributeState } from "@item/hooks/useAttributeState";
 import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
-import EditCellW from "@components/Write/EditCellW";
 import SelectComponentW from "@components/Write/SelectComponentW";
 import { useItemTypes } from "@type/services/query";
 import { useModalState } from "@hooks/state/useModalState";
 import { ItemAttribute } from "@item/schemas/Item";
+import EditCellWType from "../boolean_rows/EditCellWType";
 
 const ItemAttributeSection = () => {
   const { context } = useAttributeState();
@@ -60,7 +60,6 @@ const ItemAttributeSection = () => {
             <SelectComponentW
               data={itemTypeQuery}
               labelKey="name"
-              onBlur={() => setIsNotEditing(true)}
               setValue={handleTypeChange}
               isDisabled={isNotEditing}
               initialValue={context?.getValue().id}
@@ -87,11 +86,7 @@ const ItemAttributeSection = () => {
               {attr.typeAttribute.columnTitle}:
             </Col>
             <Col md={9}>
-              <EditCellW
-                initialElement={attr}
-                elementKey="value"
-                handleEdit={handleEdit}
-              />
+              <EditCellWType initialElement={attr} handleEdit={handleEdit} />
             </Col>
           </Row>
         ))

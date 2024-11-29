@@ -9,6 +9,7 @@ import { ContainerItem } from "@schema/ContainerItem";
 import { Container, Table } from "react-bootstrap";
 import { useDeleteLink, useUpdateQuantity } from "@services/mutations";
 import AddLink from "./AddLink";
+import GenericModal from "@components/general/GenericModal";
 
 type ContainerTableProps = {
   value: ContainerItem[];

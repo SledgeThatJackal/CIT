@@ -11,6 +11,7 @@ import {
 import {
   Control,
   FormState,
+  Path,
   useFieldArray,
   UseFormRegister,
   UseFormReset,
@@ -82,7 +83,8 @@ const TypeSection = ({
       for (var i = 0; i < typeAttrQuery?.length; i++) {
         append({
           typeAttribute: typeAttrQuery[i],
-          value: "",
+          stringValue: undefined,
+          numberValue: undefined,
           duplicate: false,
         });
       }
@@ -101,29 +103,37 @@ const TypeSection = ({
         <hr />
       </Row>
       {fields && fields.length > 0 ? (
-        fields.map((field, index) => (
-          <Row className="mt-2 align-items-center" key={`typeRow-${field.id}`}>
-            <Col key={`typeCol-${field.id}`} xs="auto">
-              <input
-                key={`typeDuplicate-${field.id}`}
-                title="Duplicate"
-                type="checkbox"
-                {...registerItemAttr(`attributes.${index}.duplicate`)}
-              />
-            </Col>
-            <Col className="w-100 ps-0">
-              <FormFloatingLabel
-                key={`typeField-${field.id}`}
-                register={registerItemAttr}
-                path={`attributes.${index}.value`}
-                title={field.typeAttribute.columnTitle}
-                errorMessage={
-                  itemAttrFormState.errors.attributes?.[index]?.message
-                }
-              />
-            </Col>
-          </Row>
-        ))
+        fields.map((field, index) => {
+          const path: Path<ItemAttributeData> =
+            field.typeAttribute.dataType?.localeCompare("STRING")
+              ? `attributes.${index}.stringValue`
+              : `attributes.${index}.numberValue`;
+          return (
+            <Row
+              className="mt-2 align-items-center"
+              key={`typeRow-${field.id}`}>
+              <Col key={`typeCol-${field.id}`} xs="auto">
+                <input
+                  key={`typeDuplicate-${field.id}`}
+                  title="Duplicate"
+                  type="checkbox"
+                  {...registerItemAttr(`attributes.${index}.duplicate`)}
+                />
+              </Col>
+              <Col className="w-100 ps-0">
+                <FormFloatingLabel
+                  key={`typeField-${field.id}`}
+                  register={registerItemAttr}
+                  path={path}
+                  title={field.typeAttribute.columnTitle}
+                  errorMessage={
+                    itemAttrFormState.errors.attributes?.[index]?.message
+                  }
+                />
+              </Col>
+            </Row>
+          );
+        })
       ) : (
         <div>Nothing to display. Select a type to see options.</div>
       )}

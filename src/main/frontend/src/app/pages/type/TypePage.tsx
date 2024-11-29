@@ -27,6 +27,7 @@ import { useEditState } from "@type/hooks/state/useEditState";
 import TypeAttributeRow from "@type/components/TypeAttributeRow";
 import TypeAttributeEditCell from "@type/components/Table/TypeAttributeEditCell";
 import TypeAttributeDeleteCell from "@type/components/Table/TypeAttributeDeleteCell";
+import TypeAttributeSelectCell from "@type/components/Table/TypeAttributeSelectCell";
 
 function TypeSettingsContent() {
   const itemTypesQuery = useData();
@@ -164,7 +165,8 @@ function TypeSettingsContent() {
                   <Col md={1} className="text-center">
                     Order
                   </Col>
-                  <Col md={10}>Attribute Name</Col>
+                  <Col md={2}>Data Type</Col>
+                  <Col md={8}>Attribute Name</Col>
                   <Col md={1} className="text-center">
                     Delete
                   </Col>
@@ -176,6 +178,10 @@ function TypeSettingsContent() {
                       fType={fType}>
                       <TypeAttributeEditCell
                         attributeKey="displayOrder"
+                        fType={fType}
+                      />
+                      <TypeAttributeSelectCell
+                        attributeKey="dataType"
                         fType={fType}
                       />
                       <TypeAttributeEditCell

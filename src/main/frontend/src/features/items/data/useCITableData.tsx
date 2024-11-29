@@ -17,7 +17,7 @@ export const useCITableData = () => {
       }),
       columnHelper.accessor("container.scannerId", {
         id: "containerId",
-        header: "Container ID",
+        header: "Barcode ID",
         cell: ({ getValue }) => <div>{getValue<string>()}</div>,
       }),
       columnHelper.accessor("quantity", {

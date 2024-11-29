@@ -23,9 +23,10 @@ const TypeAttributeRow = <T extends TypeAttribute>({
       <Col md={1} className="text-center mt-2 mb-2">
         {children[0]}
       </Col>
-      <Col md={10}>{children[1]}</Col>
+      <Col md={2}>{children[1]}</Col>
+      <Col md={8}>{children[2]}</Col>
       <Col md={1} className="d-flex align-items-center justify-content-center">
-        {children[2]}
+        {children[3]}
       </Col>
     </Row>
   );

@@ -62,10 +62,15 @@ const CreateBox = () => {
     defaultValues: {
       attributes: item
         ? item.itemAttributes.map(
-            (itemAttr: { typeAttribute: any; value: any }) => {
+            (itemAttr: {
+              typeAttribute: any;
+              stringValue?: string;
+              numberValue?: number;
+            }) => {
               return {
                 typeAttribute: itemAttr.typeAttribute,
-                value: itemAttr.value,
+                stringValue: itemAttr.stringValue,
+                numberValue: itemAttr.numberValue,
               };
             },
           )
