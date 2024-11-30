@@ -32,4 +32,11 @@ public class ContainerItem {
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+
+    public ContainerItem(ContainerItem other) {
+        this.id = null;
+        this.container = other.container;
+        this.item = other.item;
+        this.quantity = other.quantity;
+    }
 }

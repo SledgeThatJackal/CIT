@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Col,
@@ -6,6 +6,7 @@ import {
   Form,
   InputGroup,
   Row,
+  Stack,
   ToggleButton,
 } from "react-bootstrap";
 import {
@@ -19,6 +20,7 @@ import {
 import { ItemAttributeData } from "@item/schemas/Item";
 import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
 import { useTypeAttribute } from "@type/services/query";
+import CheckBoxInput from "../boolean_rows/CheckBoxInput";
 
 type TypeSectionProps = {
   typeId: number;
@@ -37,7 +39,7 @@ const TypeSection = ({
 }: TypeSectionProps) => {
   const typeAttrQuery = useTypeAttribute(typeId).data;
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, update } = useFieldArray({
     control: itemAttrControl,
     name: "attributes",
   });
@@ -84,7 +86,9 @@ const TypeSection = ({
         append({
           typeAttribute: typeAttrQuery[i],
           stringValue: undefined,
-          numberValue: undefined,
+          numberValue: typeAttrQuery[i].dataType?.startsWith("B")
+            ? 0
+            : undefined,
           duplicate: false,
         });
       }
@@ -104,10 +108,12 @@ const TypeSection = ({
       </Row>
       {fields && fields.length > 0 ? (
         fields.map((field, index) => {
-          const path: Path<ItemAttributeData> =
-            field.typeAttribute.dataType?.localeCompare("STRING")
-              ? `attributes.${index}.stringValue`
-              : `attributes.${index}.numberValue`;
+          const dataType = field.typeAttribute.dataType;
+
+          const path: Path<ItemAttributeData> = dataType?.startsWith("S")
+            ? `attributes.${index}.stringValue`
+            : `attributes.${index}.numberValue`;
+
           return (
             <Row
               className="mt-2 align-items-center"
@@ -117,19 +123,40 @@ const TypeSection = ({
                   key={`typeDuplicate-${field.id}`}
                   title="Duplicate"
                   type="checkbox"
+                  disabled={dataType?.startsWith("B")}
                   {...registerItemAttr(`attributes.${index}.duplicate`)}
                 />
               </Col>
               <Col className="w-100 ps-0">
-                <FormFloatingLabel
-                  key={`typeField-${field.id}`}
-                  register={registerItemAttr}
-                  path={path}
-                  title={field.typeAttribute.columnTitle}
-                  errorMessage={
-                    itemAttrFormState.errors.attributes?.[index]?.message
-                  }
-                />
+                {dataType?.startsWith("B") ? (
+                  <Stack
+                    direction="horizontal"
+                    gap={2}
+                    key={`typeField-${field.id}`}>
+                    <input
+                      type="checkbox"
+                      checked={field.numberValue === 1}
+                      onChange={(event) => {
+                        const { id, ...rest } = field;
+                        update(index, {
+                          ...rest,
+                          numberValue: event.target.checked ? 1 : 0,
+                        });
+                      }}
+                    />
+                    <span>{field.typeAttribute.columnTitle}</span>
+                  </Stack>
+                ) : (
+                  <FormFloatingLabel
+                    key={`typeField-${field.id}`}
+                    register={registerItemAttr}
+                    path={path}
+                    title={field.typeAttribute.columnTitle}
+                    errorMessage={
+                      itemAttrFormState.errors.attributes?.[index]?.message
+                    }
+                  />
+                )}
               </Col>
             </Row>
           );

@@ -20,6 +20,7 @@ const CheckBoxInput = ({ value, updateValue, onBlur }: CheckBoxInputProps) => {
       checked={checked}
       onChange={onChange}
       onBlur={onBlur}
+      autoFocus
     />
   );
 };

@@ -49,7 +49,7 @@ const EditCellW = ({ initialElement, handleEdit }: EditCellWProps) => {
   return (
     <React.Fragment>
       {isEditing ? (
-        type.current?.charAt(0) === "B" ? (
+        type.current?.startsWith("B") ? (
           <CheckBoxInput
             value={value}
             updateValue={setValue}
@@ -57,7 +57,7 @@ const EditCellW = ({ initialElement, handleEdit }: EditCellWProps) => {
           />
         ) : (
           <Form.Control
-            type={type.current?.charAt(0) === "S" ? "text" : "number"}
+            type={type.current?.startsWith("S") ? "text" : "number"}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onBlur={handleBlur}
@@ -65,7 +65,7 @@ const EditCellW = ({ initialElement, handleEdit }: EditCellWProps) => {
             autoFocus
           />
         )
-      ) : type.current?.charAt(0) === "B" ? (
+      ) : type.current?.startsWith("B") ? (
         <BooleanReadRow value={value} handleDoubleClick={handleDoubleClick} />
       ) : (
         <ReadRow value={value} handleDoubleClick={handleDoubleClick} />
