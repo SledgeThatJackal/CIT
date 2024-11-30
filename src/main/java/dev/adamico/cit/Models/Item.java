@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "item_table")
@@ -91,7 +92,13 @@ public class Item {
         this.id = null;
         this.name = other.name;
         this.description = other.description;
-        this.containerItems = other.containerItems;
+
+        this.containerItems = other.getContainerItems().stream().map(containerItem -> {
+            ContainerItem newCI = new ContainerItem(containerItem);
+            newCI.setItem(this);
+            return newCI;
+        }).collect(Collectors.toUnmodifiableSet());
+
         this.tags = other.tags;
         this.itemType = other.itemType;
         this.images = other.images;
