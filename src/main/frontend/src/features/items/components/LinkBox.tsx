@@ -64,7 +64,7 @@ const LinkBox = () => {
         />
         <Stack direction="horizontal">
           <Button type="submit" variant="success" disabled={isSubmitting}>
-            Submit
+            Save
           </Button>
           <Button variant="danger" className="ms-auto" onClick={closeBox}>
             Cancel
