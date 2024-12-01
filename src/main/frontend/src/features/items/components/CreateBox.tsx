@@ -123,6 +123,7 @@ const CreateBox = () => {
 
   return (
     <Container
+      fluid
       className={`text-light pt-3 pb-3 mb-3 rounded`}
       style={{ background: "#4B555F", border: "3px solid #7B8895" }}>
       <FormProvider {...itemForm}>
@@ -150,6 +151,14 @@ const CreateBox = () => {
               </FloatingLabel>
               <Form.Control.Feedback type="invalid">
                 {itemForm.formState.errors.description?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group as={Col} controlId="url">
+              <FloatingLabel controlId="url" label="URL">
+                <Form.Control {...itemForm.register("externalUrl")} />
+              </FloatingLabel>
+              <Form.Control.Feedback type="invalid">
+                {itemForm.formState.errors.externalUrl?.message}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col} controlId="type">

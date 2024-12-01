@@ -79,7 +79,10 @@ const ContainerSection = ({
   }, [watchContainerItems, remove]);
 
   return (
-    <Container className="rounded pe-1 ps-1" style={{ background: "#cff4fc" }}>
+    <Container
+      className="rounded pe-1 ps-1"
+      style={{ background: "#cff4fc" }}
+      fluid>
       <Table variant="info" className="mb-1">
         <thead>
           <tr>
