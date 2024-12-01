@@ -41,7 +41,7 @@ const ImageForm = () => {
   };
 
   return (
-    <Container className="rounded mb-1" style={{ background: "#d4d5d6" }}>
+    <Container className="rounded mb-1" style={{ background: "#d4d5d6" }} fluid>
       <ImageInput
         data={fields}
         onChange={handleFileChange}
