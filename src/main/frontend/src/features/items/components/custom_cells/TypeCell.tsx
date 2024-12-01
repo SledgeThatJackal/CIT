@@ -6,13 +6,20 @@ import { useCanvasState } from "@hooks/state/useCanvasState";
 import ItemAttributeSection from "../type_area/ItemAttributeSection";
 import { useAttributeState } from "@item/hooks/useAttributeState";
 import SelectCell from "@components/custom_cell_renderers/SelectCell";
+import { Item } from "@item/schemas/Item";
 
-const TypeCell = <T, S extends ZodItemType>(context: CellContext<T, S>) => {
+const TypeCell = <T extends Item, S extends ZodItemType>(
+  context: CellContext<T, S>,
+) => {
   const { openCanvas } = useCanvasState();
   const { setContext } = useAttributeState();
 
   const handleClick = () => {
-    openCanvas(ItemAttributeSection, "end", "Item Attributes");
+    openCanvas(
+      ItemAttributeSection,
+      "end",
+      `Item Attributes (${context.row.original.name})`,
+    );
     setContext(context);
   };
 
