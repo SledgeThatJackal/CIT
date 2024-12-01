@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
-  Button,
   Col,
   Container,
-  Form,
-  InputGroup,
+  OverlayTrigger,
   Row,
   Stack,
-  ToggleButton,
+  Tooltip,
 } from "react-bootstrap";
 import {
   Control,
@@ -20,7 +18,6 @@ import {
 import { ItemAttributeData } from "@item/schemas/Item";
 import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
 import { useTypeAttribute } from "@type/services/query";
-import CheckBoxInput from "../boolean_rows/CheckBoxInput";
 
 type TypeSectionProps = {
   typeId: number;
@@ -101,7 +98,18 @@ const TypeSection = ({
       className="rounded bg-dark text-white overflow-auto"
       style={{ height: "20vh", border: "3px solid #7B8895" }}>
       <Row className="mt-1">
-        <h4>Item Attributes</h4>
+        <Col as={Stack} direction="horizontal" gap={2}>
+          <h4>Item Attributes</h4>
+          <OverlayTrigger
+            overlay={
+              <Tooltip>
+                Use a pipe '|' to seperate options, if you have duplicate turned
+                on.
+              </Tooltip>
+            }>
+            <i className="bi bi-question-circle text-warning" />
+          </OverlayTrigger>
+        </Col>
       </Row>
       <Row>
         <hr />
