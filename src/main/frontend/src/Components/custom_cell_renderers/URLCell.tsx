@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CellContext } from "@tanstack/react-table";
 import { Form } from "react-bootstrap";
-import ReadRow from "./ReadRow";
 
 const URLCell = <T, S extends string | undefined>({
   getValue,
