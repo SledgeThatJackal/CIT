@@ -55,7 +55,7 @@ const URLCell = <T, S extends string | undefined>({
     <>
       {isEditing ? (
         <Form.Control
-          type="text"
+          type="url"
           value={value}
           onChange={onChange}
           onBlur={onBlur}

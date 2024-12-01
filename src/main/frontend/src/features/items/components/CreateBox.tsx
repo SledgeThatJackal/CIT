@@ -155,7 +155,10 @@ const CreateBox = () => {
             </Form.Group>
             <Form.Group as={Col} controlId="url">
               <FloatingLabel controlId="url" label="URL">
-                <Form.Control {...itemForm.register("externalUrl")} />
+                <Form.Control
+                  {...itemForm.register("externalUrl")}
+                  type="url"
+                />
               </FloatingLabel>
               <Form.Control.Feedback type="invalid">
                 {itemForm.formState.errors.externalUrl?.message}
