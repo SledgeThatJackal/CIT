@@ -77,6 +77,8 @@ public class Item {
     @Transient
     private Integer totalQuantity = 0;
 
+    private String externalUrl;
+
 
     public void sortItemAttributes(){
         if(itemAttributes != null && !itemAttributes.isEmpty()){
@@ -104,6 +106,7 @@ public class Item {
         this.images = other.images;
         this.itemAttributes = other.itemAttributes;
         this.totalQuantity = other.totalQuantity;
+        this.externalUrl = other.externalUrl;
     }
 
     @Override

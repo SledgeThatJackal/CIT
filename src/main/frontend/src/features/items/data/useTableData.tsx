@@ -12,6 +12,7 @@ import ImageCell from "@components/custom_cell_renderers/ImageCell";
 import React from "react";
 import TypeEditCell from "@item/components/custom_cells/TypeEditCell";
 import { ZodItemType } from "@schema/General";
+import URLCell from "@components/custom_cell_renderers/URLCell";
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -30,6 +31,16 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
         id: "images",
         header: () => <div className="text-center">{`Image(s)`}</div>,
         cell: ImageCell,
+        minSize: 50,
+        maxSize: 75,
+        enableResizing: false,
+        enableSorting: false,
+        enableColumnFilter: false,
+      }),
+      columnHelper.accessor("externalUrl", {
+        id: "externalUrl",
+        header: () => <div className="text-center">URL</div>,
+        cell: URLCell,
         minSize: 50,
         maxSize: 75,
         enableResizing: false,

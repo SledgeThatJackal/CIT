@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { CellContext } from "@tanstack/react-table";
 import { Form } from "react-bootstrap";
-import ReadRow from "./ReadRow";
 
-const EditCell = <T, S extends string | number | undefined>({
+const URLCell = <T, S extends string | undefined>({
   getValue,
   row: { index },
   column: { id },
@@ -42,7 +41,11 @@ const EditCell = <T, S extends string | number | undefined>({
     }
   };
 
-  const handleDoubleClick = () => {
+  const handleContextMenu = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+
     setIsEditing(true);
     setIsCancelled(false);
   };
@@ -51,7 +54,7 @@ const EditCell = <T, S extends string | number | undefined>({
     <>
       {isEditing ? (
         <Form.Control
-          type="text"
+          type="url"
           value={value}
           onChange={onChange}
           onBlur={onBlur}
@@ -59,10 +62,20 @@ const EditCell = <T, S extends string | number | undefined>({
           autoFocus
         />
       ) : (
-        <ReadRow value={value} handleDoubleClick={handleDoubleClick} />
+        <div
+          title="Right Click to Edit"
+          className="text-center"
+          style={{ ...(!value && { height: "20px" }) }}
+          onContextMenu={handleContextMenu}>
+          {value.length > 0 && (
+            <a href={value} target="_blank" rel="noopener noreferrer">
+              Link
+            </a>
+          )}
+        </div>
       )}
     </>
   );
 };
 
-export default EditCell;
+export default URLCell;

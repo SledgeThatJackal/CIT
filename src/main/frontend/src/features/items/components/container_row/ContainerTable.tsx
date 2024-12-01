@@ -54,6 +54,7 @@ function ContainerTable({ value, itemId }: ContainerTableProps) {
         striped
         bordered
         variant="info"
+        className="mb-0"
         style={{ borderRadius: "8px" }}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => {
