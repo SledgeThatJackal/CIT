@@ -33,7 +33,11 @@ public class ItemAttributeService {
                 if(Objects.equals(attribute.getTypeAttribute().getId(), dbItemAttribute.getTypeAttribute().getId())){
                     switch(dbItemAttribute.getTypeAttribute().getDataType()){
                         case STRING -> dbItemAttribute.setStringValue(attribute.getStringValue());
-                        case NUMBER, BOOLEAN -> dbItemAttribute.setNumberValue(Double.valueOf(attribute.getNumberValue()));
+                        case NUMBER, BOOLEAN -> {
+                            if(!attribute.getNumberValue().isEmpty()){
+                                dbItemAttribute.setNumberValue(Double.valueOf(attribute.getNumberValue()));
+                            }
+                        }
                         // List (if implemented)
                     }
 
