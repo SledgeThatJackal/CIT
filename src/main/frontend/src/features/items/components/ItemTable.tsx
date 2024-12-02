@@ -1,6 +1,5 @@
 import {
   Column,
-  ColumnFilter,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -14,7 +13,14 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Button, Container, Form, Stack, Table } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Form,
+  InputGroup,
+  Stack,
+  Table,
+} from "react-bootstrap";
 
 import { useTableData } from "../data/useTableData";
 
@@ -38,33 +44,124 @@ import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useInfiniteItems } from "@item/services/query";
 import SelectComponentW from "@components/Write/SelectComponentW";
-import { useItemTypes, useTypeAttribute } from "@type/services/query";
+import { useItemTypes } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
 import { useBooleanState } from "@hooks/state/useBooleanState";
 
-export const Input = ({ column }: { column: Column<any, unknown> }) => {
+const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
+  const type = column.columnDef.meta?.type?.toUpperCase() ?? "STRING";
   const [value, setValue] = useState<string>(filterValue);
+  const [filter, setFilter] = useState<string>("NE");
 
   const request = useDebounce(() => {
-    column.setFilterValue(value);
+    if (value.endsWith(",") || value.endsWith("-")) return;
+    if (filter === "R" && value.length > 0 && value.search(",") === -1) return;
+
+    const filteredValue = value.length > 0 ? `${filter}_${value}` : "";
+    column.setFilterValue(filteredValue);
   });
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<any>) => {
     setValue(event.target.value);
 
     request();
   };
 
-  return (
-    <Form.Control
-      size="sm"
-      type="text"
-      onChange={onChange}
-      value={value}
-      placeholder="Search..."
-    />
-  );
+  const onNumericChange = (event: React.ChangeEvent<any>) => {
+    let inputValue = event.target.value.replace(/[^0-9.\,\-]/g, "");
+
+    if (filter === "R") {
+      handleRange(inputValue);
+    } else {
+      inputValue = inputValue.replace(/\,/g, "");
+    }
+
+    inputValue = inputValue.replace(/(\.\d*)\.{1,}/g, "$1");
+
+    if (inputValue && !/^-?\d*\.?\d*$/.test(inputValue)) {
+      setValue("");
+    } else {
+      setValue(inputValue);
+    }
+
+    if (inputValue.length === 0 || /\d/.test(inputValue)) {
+      request();
+    }
+  };
+
+  const handleRange = (inputValue: string) => {
+    const split = inputValue.split(",");
+    if (split.length === 2) {
+      const [first, second] = split;
+      if (!/^\d*\.?\d+$/.test(first) || !/^\d*\.?\d+$/.test(second)) {
+        if (second.length === 0) {
+          return inputValue;
+        }
+
+        inputValue = first;
+      }
+    }
+
+    inputValue = inputValue.replace(/\.,/g, ".");
+
+    return inputValue;
+  };
+
+  useEffect(() => {
+    if (type === "STRING") {
+      setFilter("E");
+    }
+  }, []);
+
+  switch (type) {
+    case "NUMBER":
+      return (
+        <InputGroup>
+          <Form.Select
+            size="sm"
+            className="p-0 text-center"
+            title="Change filtering type by selecting a new option"
+            style={{ backgroundImage: "none" }}
+            onChange={(event) => setFilter(event.target.value)}>
+            <option value="NE">{`=`}</option>
+            <option value="GT">{`>`}</option>
+            <option value="GTE">{"≥"}</option>
+            <option value="LT">{`<`}</option>
+            <option value="LTE">{"≤"}</option>
+            <option value="R">{`R`}</option>
+          </Form.Select>
+          <Form.Control
+            size="sm"
+            type="text"
+            className="w-75"
+            onChange={onNumericChange}
+            value={value}
+            placeholder="Search..."
+          />
+        </InputGroup>
+      );
+
+    case "BOOLEAN":
+      return (
+        <Form.Select size="sm" onChange={onChange}>
+          <option value={undefined}></option>
+          <option value={0}>False</option>
+          <option value={1}>True</option>
+        </Form.Select>
+      );
+
+    default:
+      return (
+        <Form.Control
+          size="sm"
+          type="text"
+          onChange={onChange}
+          value={value}
+          placeholder="Search..."
+        />
+      );
+  }
 };
 
 function ItemTable() {

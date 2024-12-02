@@ -1,75 +1,90 @@
 package dev.adamico.cit.Filtering;
 
-import dev.adamico.cit.Models.Item;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import dev.adamico.cit.Models.*;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ItemSpecification{
 
     public static Specification<Item> withFilters(Map<String, String> filters) {
         return ((root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.conjunction();
+            List<Predicate> predicates = new ArrayList<>();
 
             for(Map.Entry<String, String> filter: filters.entrySet()) {
                 String key = filter.getKey();
-                String value = filter.getValue();
 
-                if ("name".equals(key) || "description".equals(key)) {
-                    predicate = criteriaBuilder.and(predicate,
-                            criteriaBuilder.like(criteriaBuilder.lower(root.get(key)), "%" + value.toLowerCase() + "%"));
-                } else if ("tags".equals(key)) {
-                    predicate = criteriaBuilder.and(predicate,
-                            criteriaBuilder.like(criteriaBuilder.lower(root.join("tags").get("tag")), "%" + value.toLowerCase() + "%"));
-                } else if ("itemType".equals(key)) {
-                    predicate = criteriaBuilder.and(predicate,
-                            criteriaBuilder.like(criteriaBuilder.lower(root.join("itemType").get("name")), "%" + value.toLowerCase() + "%"));
-                } else if ("type".equals(key)) {
-                    predicate = criteriaBuilder.and(predicate,
-                                criteriaBuilder.equal(root.join("itemType").get("name"), value));
+                String value;
+
+                if(filter.getValue().contains("_")){
+                    value = filter.getValue().split("_")[1];
                 } else {
-                    predicate = criteriaBuilder.and(predicate,
-                                criteriaBuilder.like(criteriaBuilder.lower(root.join("itemAttributes").get("value")), "%" + value.toLowerCase() + "%"),
-                                criteriaBuilder.equal(root.join("itemAttributes").join("typeAttribute").get("id"), Integer.parseInt(key.replaceAll(".*?(\\d+)$", "$1"))));
+                    value = filter.getValue();
                 }
+
+                switch (key) {
+                    case "name", "description" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(key)), "%" + value.toLowerCase() + "%"));
+
+                    case "tags" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.join("tags").get("tag")), "%" + value.toLowerCase() + "%"));
+
+                    case "itemType" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.join("itemType").get("name")), "%" + value.toLowerCase() + "%"));
+
+                    case "type" -> predicates.add(criteriaBuilder.equal(root.join("itemType").get("name"), value));
+
+                    default -> {
+                        String comparison = filter.getValue().split("_")[0];
+                        Integer intKey = Integer.parseInt(key.split("-")[1]);
+
+                        Join<Item, ItemAttribute> itemAttributeJoin = root.join("itemAttributes");
+                        predicates.add(
+                                criteriaBuilder.and(
+                                criteriaBuilder.equal(itemAttributeJoin.join("typeAttribute").get("id"), intKey),
+                                comparison.equalsIgnoreCase("E") ? applyStringFilter(criteriaBuilder, value, itemAttributeJoin) : applyNumberFilter(criteriaBuilder, value, comparison, itemAttributeJoin)));
+                    }
+                };
             }
 
-            return predicate;
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }
 
-    private static Predicate applyNumberFilter(Root<?> root, Predicate predicate, CriteriaBuilder criteriaBuilder, String key, String value){
-        switch(value){
-            case "G" -> {
-                return criteriaBuilder.and(predicate, criteriaBuilder.like(criteriaBuilder.equal(root.join("itemAttributes").get("numberValue"), Integer.parseInt(key.replaceAll(".*?(\\d+)$", "$1"))),
-                        criteriaBuilder.equal(root.join("itemAttributes").join("typeAttribute").get("id"), Integer.parseInt(key.replaceAll(".*?(\\d+)$", "$1"))))));
-            }
-            case "GE" -> {
+    private static Predicate applyNumberFilter(CriteriaBuilder criteriaBuilder, String value, String comparison, Join<Item, ItemAttribute> itemAttributeJoin){
+        Path<Double> doublePath = itemAttributeJoin.get("numberValue");
+        Predicate nonNullPredicate = criteriaBuilder.isNotNull(doublePath);
 
-            }
-            case "L" -> {
+        Double doubleValue = 0.0;
 
-            }
-            case "LE" -> {
-
-            }
-            case "R" -> {
-
-            }
-            default -> {
-
-            }
+        if(!value.contains(",")){
+            doubleValue = Double.parseDouble(value);
         }
 
-        return predicate;
+        Predicate comparisonPredicate = switch(comparison){
+            case "GT" -> criteriaBuilder.gt(doublePath, doubleValue);
+
+            case "GTE" -> criteriaBuilder.greaterThanOrEqualTo(doublePath, doubleValue);
+
+            case "LT" -> criteriaBuilder.lt(doublePath, doubleValue);
+
+            case "LTE" -> criteriaBuilder.lessThanOrEqualTo(doublePath, doubleValue);
+
+            case "R" -> {
+                String[] part = value.split(",");
+                Double val1 = Double.parseDouble(part[0]);
+                Double val2 = Double.parseDouble(part[1]);
+
+                yield criteriaBuilder.between(doublePath, val1, val2);
+            }
+
+            default -> criteriaBuilder.equal(doublePath, doubleValue);
+        };
+
+        return criteriaBuilder.and(nonNullPredicate, comparisonPredicate);
     }
 
-    private static Predicate applyStringFilter(Root<?> root, Predicate predicate, CriteriaBuilder criteriaBuilder, String key, String value){
-        return criteriaBuilder.and(predicate,
-                criteriaBuilder.like(criteriaBuilder.lower(root.join("itemAttributes").get("stringValue")), "%" + value.toLowerCase() + "%"),
-                criteriaBuilder.equal(root.join("itemAttributes").join("typeAttribute").get("id"), Integer.parseInt(key.replaceAll(".*?(\\d+)$", "$1"))));
+    private static Predicate applyStringFilter(CriteriaBuilder criteriaBuilder, String value, Join<Item, ItemAttribute> itemAttributeJoin){
+        return criteriaBuilder.like(criteriaBuilder.lower(itemAttributeJoin.get("stringValue")), "%" + value.toLowerCase() + "%");
     }
 }

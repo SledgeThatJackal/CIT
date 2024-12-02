@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.Comparator;
 import java.util.List;
@@ -47,6 +49,7 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Views.Inclusive.class)
     @JsonIgnoreProperties("item")
+    @Fetch(FetchMode.SUBSELECT)
     private Set<ContainerItem> containerItems;
 
     @ManyToMany
@@ -56,6 +59,7 @@ public class Item {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     @JsonView(Views.Exclusive.class)
+    @Fetch(FetchMode.SUBSELECT)
     private Set<Tag> tags;
 
     @ManyToOne
@@ -68,10 +72,12 @@ public class Item {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "image_id")
     )
+    @Fetch(FetchMode.SUBSELECT)
     private Set<Image> images;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("item")
+    @Fetch(FetchMode.SUBSELECT)
     private List<ItemAttribute> itemAttributes;
 
     @Transient
