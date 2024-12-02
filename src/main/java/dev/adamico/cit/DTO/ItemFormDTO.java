@@ -21,14 +21,17 @@ public class ItemFormDTO {
     @NoArgsConstructor
     public static class Attribute {
         private TypeAttribute typeAttribute;
-        private String value;
+        private String stringValue;
+        private String numberValue;
         private Boolean duplicate;
 
         @Override
         public String toString() {
             return "Attribute{" +
                     "typeAttribute=" + typeAttribute +
-                    ", value='" + value + '\'' +
+                    ", stringValue='" + stringValue + '\'' +
+                    ", numberValue=" + numberValue +
+                    ", duplicate=" + duplicate +
                     '}';
         }
     }

@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "item_table")
@@ -73,23 +74,39 @@ public class Item {
     @JsonIgnoreProperties("item")
     private List<ItemAttribute> itemAttributes;
 
-    @PostLoad
-    private void sortItemAttributes(){
+    @Transient
+    private Integer totalQuantity = 0;
+
+    private String externalUrl;
+
+
+    public void sortItemAttributes(){
         if(itemAttributes != null && !itemAttributes.isEmpty()){
             itemAttributes.sort(Comparator.comparing(a -> a.getTypeAttribute().getDisplayOrder()));
         }
+    }
 
+    public void setTotalQuantity(){
+        this.totalQuantity = containerItems.stream().mapToInt(ContainerItem::getQuantity).sum();
     }
 
     public Item(Item other){
         this.id = null;
         this.name = other.name;
         this.description = other.description;
-        this.containerItems = other.containerItems;
+
+        this.containerItems = other.getContainerItems().stream().map(containerItem -> {
+            ContainerItem newCI = new ContainerItem(containerItem);
+            newCI.setItem(this);
+            return newCI;
+        }).collect(Collectors.toUnmodifiableSet());
+
         this.tags = other.tags;
         this.itemType = other.itemType;
         this.images = other.images;
         this.itemAttributes = other.itemAttributes;
+        this.totalQuantity = other.totalQuantity;
+        this.externalUrl = other.externalUrl;
     }
 
     @Override

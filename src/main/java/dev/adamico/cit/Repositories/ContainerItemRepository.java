@@ -1,7 +1,6 @@
 package dev.adamico.cit.Repositories;
 
 import dev.adamico.cit.Models.ContainerItem;
-import jakarta.annotation.Nonnull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,8 +12,6 @@ import java.util.Set;
 @Repository
 public interface ContainerItemRepository extends JpaRepository<ContainerItem, Long> {
     Set<ContainerItem> findByItemId(Long itemId);
-
-    void deleteById(@Nonnull Long itemContainerId);
 
     @Modifying
     @Query("UPDATE ContainerItem ci SET ci.quantity = :quantity WHERE ci.id = :id")

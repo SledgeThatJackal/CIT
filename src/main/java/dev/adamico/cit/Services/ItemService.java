@@ -15,9 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ItemService {
@@ -41,17 +39,15 @@ public class ItemService {
         Item item = dto.getItem();
         List<ItemFormDTO.Attribute> itemAttributes = dto.getItemAttributes();
 
-        if(item.getContainerItems() != null){
-            for(ContainerItem containerItem : item.getContainerItems()){
-                containerItem.setItem(item);
-            }
-        }
-
         boolean hasDuplicates = dto.getItemAttributes().stream().anyMatch(ItemFormDTO.Attribute::getDuplicate);
 
         if(hasDuplicates){
             processItemAttributes(item, itemAttributes, 0);
         } else {
+            if(item.getContainerItems() != null){
+                item.getContainerItems().forEach(containerItem -> containerItem.setItem(item));
+            }
+
             saveItems(item, itemAttributes);
         }
     }
@@ -60,16 +56,22 @@ public class ItemService {
     public void processItemAttributes(Item item, @NonNull List<ItemFormDTO.Attribute> itemAttributes, int index){
         List<String> attrValues = new ArrayList<>();
         ItemFormDTO.Attribute currentAttribute = itemAttributes.get(index);
-        String originalValue = currentAttribute.getValue();
+        String dataType = currentAttribute.getTypeAttribute().getDataType().toString();
+
+        String originalValue = dataType.equalsIgnoreCase("STRING") ? currentAttribute.getStringValue() : currentAttribute.getNumberValue();
 
         if(currentAttribute.getDuplicate()){
-            attrValues.addAll(List.of(currentAttribute.getValue().split("\\|")));
+            attrValues.addAll(List.of(originalValue.split("\\|")));
         } else {
-            attrValues.add(currentAttribute.getValue());
+            attrValues.add(originalValue);
         }
 
         attrValues.forEach(currentValue -> {
-            currentAttribute.setValue(currentValue);
+            if (dataType.equals("STRING")) {
+                currentAttribute.setStringValue(currentValue);
+            } else {
+                currentAttribute.setNumberValue(currentValue);
+            }
 
             if(index < itemAttributes.size() - 1){
                 processItemAttributes(item, itemAttributes, index + 1);
@@ -78,7 +80,11 @@ public class ItemService {
             }
         });
 
-        currentAttribute.setValue(originalValue);
+        if (dataType.equalsIgnoreCase("STRING")) {
+            currentAttribute.setStringValue(originalValue);
+        } else {
+            currentAttribute.setNumberValue(originalValue);
+        }
     }
 
     @Transactional

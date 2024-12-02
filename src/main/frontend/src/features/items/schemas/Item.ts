@@ -12,6 +12,8 @@ export type Item = {
   tags?: Tag[];
   itemType?: ZodItemType;
   images?: ImageType[];
+  totalQuantity?: number;
+  externalUrl?: string;
   itemAttributes: ItemAttributes[];
 };
 
@@ -43,6 +45,7 @@ export const ItemSchema = z.object({
   tags: z.array(TagSchema).optional(),
   itemType: ItemTypeSchema.optional(),
   images: z.array(ImageSchema).optional(),
+  externalUrl: z.string().optional(),
 });
 
 export type ItemSchemaType = z.infer<typeof ItemSchema>;

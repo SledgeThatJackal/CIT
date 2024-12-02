@@ -9,7 +9,6 @@ import { ContainerItem } from "@schema/ContainerItem";
 import { Container, Table } from "react-bootstrap";
 import { useDeleteLink, useUpdateQuantity } from "@services/mutations";
 import AddLink from "./AddLink";
-import GenericModal from "@components/general/GenericModal";
 
 type ContainerTableProps = {
   value: ContainerItem[];
@@ -55,6 +54,7 @@ function ContainerTable({ value, itemId }: ContainerTableProps) {
         striped
         bordered
         variant="info"
+        className="mb-0"
         style={{ borderRadius: "8px" }}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => {

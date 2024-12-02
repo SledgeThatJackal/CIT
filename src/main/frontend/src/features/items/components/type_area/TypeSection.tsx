@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import {
-  Button,
   Col,
   Container,
-  Form,
-  InputGroup,
+  OverlayTrigger,
   Row,
-  ToggleButton,
+  Stack,
+  Tooltip,
 } from "react-bootstrap";
 import {
   Control,
@@ -37,7 +36,7 @@ const TypeSection = ({
 }: TypeSectionProps) => {
   const typeAttrQuery = useTypeAttribute(typeId).data;
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, update } = useFieldArray({
     control: itemAttrControl,
     name: "attributes",
   });
@@ -84,7 +83,9 @@ const TypeSection = ({
         append({
           typeAttribute: typeAttrQuery[i],
           stringValue: undefined,
-          numberValue: undefined,
+          numberValue: typeAttrQuery[i].dataType?.startsWith("B")
+            ? 0
+            : undefined,
           duplicate: false,
         });
       }
@@ -97,17 +98,30 @@ const TypeSection = ({
       className="rounded bg-dark text-white overflow-auto"
       style={{ height: "20vh", border: "3px solid #7B8895" }}>
       <Row className="mt-1">
-        <h4>Item Attributes</h4>
+        <Col as={Stack} direction="horizontal" gap={2}>
+          <h4>Item Attributes</h4>
+          <OverlayTrigger
+            overlay={
+              <Tooltip>
+                Use a pipe '|' to seperate options, if you have duplicate turned
+                on.
+              </Tooltip>
+            }>
+            <i className="bi bi-question-circle text-warning" />
+          </OverlayTrigger>
+        </Col>
       </Row>
       <Row>
         <hr />
       </Row>
       {fields && fields.length > 0 ? (
         fields.map((field, index) => {
-          const path: Path<ItemAttributeData> =
-            field.typeAttribute.dataType?.localeCompare("STRING")
-              ? `attributes.${index}.stringValue`
-              : `attributes.${index}.numberValue`;
+          const dataType = field.typeAttribute.dataType;
+
+          const path: Path<ItemAttributeData> = dataType?.startsWith("S")
+            ? `attributes.${index}.stringValue`
+            : `attributes.${index}.numberValue`;
+
           return (
             <Row
               className="mt-2 align-items-center"
@@ -117,19 +131,40 @@ const TypeSection = ({
                   key={`typeDuplicate-${field.id}`}
                   title="Duplicate"
                   type="checkbox"
+                  disabled={dataType?.startsWith("B")}
                   {...registerItemAttr(`attributes.${index}.duplicate`)}
                 />
               </Col>
               <Col className="w-100 ps-0">
-                <FormFloatingLabel
-                  key={`typeField-${field.id}`}
-                  register={registerItemAttr}
-                  path={path}
-                  title={field.typeAttribute.columnTitle}
-                  errorMessage={
-                    itemAttrFormState.errors.attributes?.[index]?.message
-                  }
-                />
+                {dataType?.startsWith("B") ? (
+                  <Stack
+                    direction="horizontal"
+                    gap={2}
+                    key={`typeField-${field.id}`}>
+                    <input
+                      type="checkbox"
+                      checked={field.numberValue === 1}
+                      onChange={(event) => {
+                        const { id, ...rest } = field;
+                        update(index, {
+                          ...rest,
+                          numberValue: event.target.checked ? 1 : 0,
+                        });
+                      }}
+                    />
+                    <span>{field.typeAttribute.columnTitle}</span>
+                  </Stack>
+                ) : (
+                  <FormFloatingLabel
+                    key={`typeField-${field.id}`}
+                    register={registerItemAttr}
+                    path={path}
+                    title={field.typeAttribute.columnTitle}
+                    errorMessage={
+                      itemAttrFormState.errors.attributes?.[index]?.message
+                    }
+                  />
+                )}
               </Col>
             </Row>
           );

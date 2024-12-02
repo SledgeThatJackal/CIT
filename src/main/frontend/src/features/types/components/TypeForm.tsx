@@ -80,9 +80,9 @@ const TypeForm = () => {
                 type="submit"
                 size="lg"
                 className="ms-auto"
-                variant={itemType ? "info" : "success"}
+                variant="success"
                 disabled={typeForm.formState.isSubmitting}>
-                {itemType ? "Edit" : "Create"}
+                {itemType ? "Save" : "Create"}
               </Button>
               <Button
                 type="button"
