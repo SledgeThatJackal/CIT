@@ -4,6 +4,7 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import React, {
@@ -149,6 +150,8 @@ function ItemTable() {
   const parentRef = React.useRef<HTMLDivElement>(null);
   const typeQuery = useItemTypes().data;
 
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const [filter, setFilter] = useState<ZodItemType>({ id: -1, name: "" });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const {
@@ -156,7 +159,7 @@ function ItemTable() {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteItems(columnFilters, filter?.name);
+  } = useInfiniteItems(columnFilters, sorting, filter?.name);
 
   const data: Item[] = useMemo(
     () => infiniteData?.pages.flatMap((page) => page.data.content) ?? [],
@@ -208,8 +211,8 @@ function ItemTable() {
     getRowCanExpand: (row) =>
       (row.getValue("containerItems") as ZodContainerType[]).length > 0,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     manualFiltering: true,
+    manualSorting: true,
     columnResizeMode: "onChange",
     meta: {
       updateData,
@@ -220,8 +223,12 @@ function ItemTable() {
     },
     state: {
       columnFilters,
+      sorting,
     },
     onColumnFiltersChange: setColumnFilters,
+    onSortingChange: setSorting,
+    enableMultiSort: true,
+    maxMultiSortColCount: 3,
   });
 
   const columnSize = useMemo(() => {

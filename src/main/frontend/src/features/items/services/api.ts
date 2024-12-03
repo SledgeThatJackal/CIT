@@ -5,7 +5,7 @@ import {
   ItemPageResponse,
   ItemSchemaType,
 } from "@item/schemas/Item";
-import { ColumnFilter, ColumnFiltersState } from "@tanstack/react-table";
+import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import axios from "axios";
 
 // Query
@@ -17,28 +17,64 @@ export const getItems = async () => {
   return (await axios.get<Item[]>("/api/item")).data;
 };
 
+type FilterColumnType = {
+  columnLabel?: string;
+  comparison?: string;
+  value?: string;
+  id?: string;
+};
+
+type SortColumnType = {
+  columnLabel?: string;
+  direction?: string;
+};
+
 export const getInfiniteItems = async (
   pageParam: number = 0,
   size: number = 10,
   tableFilter: string = "",
   filters?: ColumnFiltersState,
+  sort?: SortingState,
 ) => {
-  const filterParams = filters?.reduce(
-    (column, filter) => {
-      column[filter.id] = filter.value;
-      return column;
+  const filterColumns = filters?.reduce<FilterColumnType[]>(
+    (currentColumn, filter) => {
+      const columnLabel = filter.id.includes("-")
+        ? filter.id.split("-")[0]
+        : filter.id;
+      const id = filter.id.includes("-") ? filter.id.split("-")[1] : undefined;
+      const comparison = String(filter.value).split("_")[0];
+      const value = String(filter.value).split("_")[1];
+
+      currentColumn.push({
+        columnLabel: columnLabel,
+        comparison: comparison,
+        value: value,
+        id: id,
+      });
+
+      return currentColumn;
     },
-    {} as Record<string, any>,
+    [],
   );
 
-  const query = new URLSearchParams({
-    page: pageParam.toLocaleString(),
-    size: size.toLocaleString(),
-    type: tableFilter,
-    ...filterParams,
-  });
+  const sortColumns = sort?.reduce<SortColumnType[]>((currentColumn, sort) => {
+    currentColumn.push({
+      columnLabel: sort.id,
+      direction: String(sort.desc),
+    });
 
-  return await axios.get<ItemPageResponse>(`/api/item/page?${query}`);
+    return currentColumn;
+  }, []);
+
+  const data = {
+    page: pageParam,
+    size: size,
+    type: tableFilter,
+    filterColumns: filterColumns,
+    sortColumns: sortColumns,
+  };
+
+  return await axios.post<ItemPageResponse>(`/api/item/page`, data);
 };
 
 export const getItemAttributes = async (id: number) => {

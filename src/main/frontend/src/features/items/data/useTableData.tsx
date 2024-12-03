@@ -134,7 +134,7 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
             row.itemAttributes[index]?.stringValue ||
             row.itemAttributes[index]?.numberValue,
           {
-            id: `typeAttribute-${itemAttribute.typeAttribute.id}`,
+            id: `typeAttribute_${itemAttribute.typeAttribute.dataType}-${itemAttribute.typeAttribute.id}`,
             header: () => <div>{itemAttribute.typeAttribute.columnTitle}</div>,
             cell: TypeEditCell,
             minSize: 200,

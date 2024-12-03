@@ -1,29 +1,26 @@
 package dev.adamico.cit.Filtering;
 
-import dev.adamico.cit.Models.*;
-import jakarta.persistence.criteria.*;
+import dev.adamico.cit.DTO.ItemQueryRequest;
+import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Models.ItemAttribute;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ItemSpecification{
 
-    public static Specification<Item> withFilters(Map<String, String> filters) {
+    public static Specification<Item> withFilters(List<ItemQueryRequest.FilterColumn> filterColumns, List<ItemQueryRequest.SortColumn> sortColumns) {
         return ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            for(Map.Entry<String, String> filter: filters.entrySet()) {
-                String key = filter.getKey();
-
-                String value;
-
-                if(filter.getValue().contains("_")){
-                    value = filter.getValue().split("_")[1];
-                } else {
-                    value = filter.getValue();
-                }
+            for(ItemQueryRequest.FilterColumn filterColumn: filterColumns) {
+                String key = filterColumn.getColumnLabel();
+                String value = filterColumn.getValue();
 
                 switch (key) {
                     case "name", "description" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(key)), "%" + value.toLowerCase() + "%"));
@@ -35,13 +32,13 @@ public class ItemSpecification{
                     case "type" -> predicates.add(criteriaBuilder.equal(root.join("itemType").get("name"), value));
 
                     default -> {
-                        String comparison = filter.getValue().split("_")[0];
-                        Integer intKey = Integer.parseInt(key.split("-")[1]);
+                        String comparison = filterColumn.getComparison();
+                        Integer id = filterColumn.getId();
 
                         Join<Item, ItemAttribute> itemAttributeJoin = root.join("itemAttributes");
                         predicates.add(
                                 criteriaBuilder.and(
-                                criteriaBuilder.equal(itemAttributeJoin.join("typeAttribute").get("id"), intKey),
+                                criteriaBuilder.equal(itemAttributeJoin.join("typeAttribute").get("id"), id),
                                 comparison.equalsIgnoreCase("E") ? applyStringFilter(criteriaBuilder, value, itemAttributeJoin) : applyNumberFilter(criteriaBuilder, value, comparison, itemAttributeJoin)));
                     }
                 };

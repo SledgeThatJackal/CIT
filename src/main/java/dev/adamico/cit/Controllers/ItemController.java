@@ -2,6 +2,7 @@ package dev.adamico.cit.Controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.DTO.ItemFormDTO;
+import dev.adamico.cit.DTO.ItemQueryRequest;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ContainerItemService;
@@ -16,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/item")
@@ -45,19 +45,10 @@ public class ItemController {
         return itemService.findItemById(id);
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @JsonView(Views.InclusiveID.class)
-    public Page<Item> getItemPage(@RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "10") int size,
-                                                     @RequestParam(required = false)Map<String, String> filters) {
-        filters.remove("page");
-        filters.remove("size");
-
-        if(filters.get("type") != null && filters.get("type").isEmpty()){
-            filters.remove("type");
-        }
-
-        Page<Item> itemPage = itemService.filterItemPages(page, size, filters);
+    public Page<Item> getItemPage(@RequestBody ItemQueryRequest itemQueryRequest) {
+        Page<Item> itemPage = itemService.filterItemPages(itemQueryRequest);
         itemPage.forEach(item -> {
             item.sortItemAttributes();
             item.setTotalQuantity();
