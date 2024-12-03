@@ -1,0 +1,1 @@
+ALTER TABLE itemattributes_table ALTER COLUMN number_value type DOUBLE PRECISION;
