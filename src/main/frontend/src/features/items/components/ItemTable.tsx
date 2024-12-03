@@ -69,17 +69,20 @@ const Input = ({ column }: { column: Column<any, unknown> }) => {
   };
 
   const onNumericChange = (event: React.ChangeEvent<any>) => {
+    // Remove any non-numeric characters, except for . , -
     let inputValue = event.target.value.replace(/[^0-9.\,\-]/g, "");
 
     if (filter === "R") {
+      // Allow for only one comma | Remove any invalid syntax i.e. number.,number
       inputValue = inputValue.replace(/,{2,}/g, ",").replace(/\.,/g, ".");
     } else {
+      // Remove any commas when not doing a range
       inputValue = inputValue.replace(/\,/g, "");
     }
 
     inputValue = inputValue
-      .replace(/(\.\d*)\.{1,}/g, "$1")
-      .replace(/(?<!^|,)-+/g, "");
+      .replace(/(\.\d*)\.{1,}/g, "$1") // Remove any periods after the first
+      .replace(/(?<!^|,)-+/g, ""); // Remove any hypens after the first
 
     setValue(inputValue);
 
