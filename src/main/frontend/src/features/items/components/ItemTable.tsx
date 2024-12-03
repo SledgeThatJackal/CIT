@@ -72,40 +72,18 @@ const Input = ({ column }: { column: Column<any, unknown> }) => {
     let inputValue = event.target.value.replace(/[^0-9.\,\-]/g, "");
 
     if (filter === "R") {
-      handleRange(inputValue);
+      inputValue = inputValue.replace(/,{2,}/g, ",").replace(/\.,/g, ".");
     } else {
       inputValue = inputValue.replace(/\,/g, "");
     }
 
-    inputValue = inputValue.replace(/(\.\d*)\.{1,}/g, "$1");
+    inputValue = inputValue
+      .replace(/(\.\d*)\.{1,}/g, "$1")
+      .replace(/(?<!^|,)-+/g, "");
 
-    if (inputValue && !/^-?\d*\.?\d*$/.test(inputValue)) {
-      setValue("");
-    } else {
-      setValue(inputValue);
-    }
+    setValue(inputValue);
 
-    if (inputValue.length === 0 || /\d/.test(inputValue)) {
-      request();
-    }
-  };
-
-  const handleRange = (inputValue: string) => {
-    const split = inputValue.split(",");
-    if (split.length === 2) {
-      const [first, second] = split;
-      if (!/^\d*\.?\d+$/.test(first) || !/^\d*\.?\d+$/.test(second)) {
-        if (second.length === 0) {
-          return inputValue;
-        }
-
-        inputValue = first;
-      }
-    }
-
-    inputValue = inputValue.replace(/\.,/g, ".");
-
-    return inputValue;
+    request();
   };
 
   useEffect(() => {
