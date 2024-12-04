@@ -83,6 +83,7 @@ export function useUpdateItemAttribute() {
 
     onSettled: async (_, error, data) => {
       if (!error) {
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
         await queryClient.invalidateQueries({
           queryKey: ["itemattributes", data.item?.id],
         });

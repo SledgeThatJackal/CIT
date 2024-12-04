@@ -1,0 +1,57 @@
+name: Version Increment
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - development
+      - main
+
+jobs:
+  versioning-development:
+    runs-on: ubuntu-latest
+    if: github.base_ref == 'development'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Increment version in package.json
+        run: npm version patch
+        working-directory: ./src/main/frontend
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add package.json
+          git add package-lock.json
+          git commit -m "Incremented version to $(node -p "require('./package.json').version")"
+          git push origin development --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  versioning-main:
+    runs-on: ubuntu-latest
+    if: github.base_ref == 'main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Increment version in package.json
+        run: npm version minor
+        working-directory: ./src/main/frontend
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add package.json
+          git add package-lock.json
+          git commit -m "Incremented version to $(node -p "require('./package.json').version")"
+          git push origin main --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

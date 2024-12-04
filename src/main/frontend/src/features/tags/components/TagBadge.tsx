@@ -20,7 +20,8 @@ const TagBadge = (tag: Tag) => {
         cursor: "default",
         userSelect: "none",
       }}
-      title={tag.description}>
+      title={tag.description}
+      key={`tagDiv-${tag.id}`}>
       <span
         style={{
           color: darkerColor,

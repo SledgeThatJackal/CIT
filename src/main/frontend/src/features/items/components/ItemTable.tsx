@@ -1,10 +1,10 @@
 import {
   Column,
-  ColumnFilter,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import React, {
@@ -14,7 +14,14 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Button, Container, Form, Stack, Table } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Form,
+  InputGroup,
+  Stack,
+  Table,
+} from "react-bootstrap";
 
 import { useTableData } from "../data/useTableData";
 
@@ -38,38 +45,113 @@ import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useInfiniteItems } from "@item/services/query";
 import SelectComponentW from "@components/Write/SelectComponentW";
-import { useItemTypes, useTypeAttribute } from "@type/services/query";
+import { useItemTypes } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
-import { useBooleanState } from "@hooks/state/useBooleanState";
+import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";
 
-export const Input = ({ column }: { column: Column<any, unknown> }) => {
+const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
+  const type = column.columnDef.meta?.type?.toUpperCase() ?? "STRING";
   const [value, setValue] = useState<string>(filterValue);
+  const [filter, setFilter] = useState<string>("NE");
 
   const request = useDebounce(() => {
-    column.setFilterValue(value);
+    if (value.endsWith(",") || value.endsWith("-")) return;
+    if (filter === "R" && value.length > 0 && value.search(",") === -1) return;
+
+    const filteredValue = value.length > 0 ? `${filter}_${value}` : "";
+    column.setFilterValue(filteredValue);
   });
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<any>) => {
     setValue(event.target.value);
 
     request();
   };
 
-  return (
-    <Form.Control
-      size="sm"
-      type="text"
-      onChange={onChange}
-      value={value}
-      placeholder="Search..."
-    />
-  );
+  const onNumericChange = (event: React.ChangeEvent<any>) => {
+    // Remove any non-numeric characters, except for . , -
+    let inputValue = event.target.value.replace(/[^0-9.\,\-]/g, "");
+
+    if (filter === "R") {
+      // Allow for only one comma | Remove any invalid syntax i.e. number.,number
+      inputValue = inputValue.replace(/,{2,}/g, ",").replace(/\.,/g, ".");
+    } else {
+      // Remove any commas when not doing a range
+      inputValue = inputValue.replace(/\,/g, "");
+    }
+
+    inputValue = inputValue
+      .replace(/(\.\d*)\.{1,}/g, "$1") // Remove any periods after the first
+      .replace(/(?<!^|,)-+/g, ""); // Remove any hypens after the first
+
+    setValue(inputValue);
+
+    request();
+  };
+
+  useEffect(() => {
+    if (type === "STRING") {
+      setFilter("E");
+    }
+  }, []);
+
+  switch (type) {
+    case "NUMBER":
+      return (
+        <InputGroup>
+          <Form.Select
+            size="sm"
+            className="p-0 text-center"
+            title="Change filtering type by selecting a new option"
+            style={{ backgroundImage: "none" }}
+            onChange={(event) => setFilter(event.target.value)}>
+            <option value="NE">{`=`}</option>
+            <option value="GT">{`>`}</option>
+            <option value="GTE">{"≥"}</option>
+            <option value="LT">{`<`}</option>
+            <option value="LTE">{"≤"}</option>
+            <option value="R">{`R`}</option>
+          </Form.Select>
+          <Form.Control
+            size="sm"
+            type="text"
+            className="w-75"
+            onChange={onNumericChange}
+            value={value}
+            placeholder="Search..."
+          />
+        </InputGroup>
+      );
+
+    case "BOOLEAN":
+      return (
+        <Form.Select size="sm" onChange={onChange}>
+          <option value={undefined}></option>
+          <option value={0}>False</option>
+          <option value={1}>True</option>
+        </Form.Select>
+      );
+
+    default:
+      return (
+        <Form.Control
+          size="sm"
+          type="text"
+          onChange={onChange}
+          value={value}
+          placeholder="Search..."
+        />
+      );
+  }
 };
 
 function ItemTable() {
   const parentRef = React.useRef<HTMLDivElement>(null);
   const typeQuery = useItemTypes().data;
+
+  const { sorting, setSorting, isBulkCreate, toggleBulkCreate } =
+    useItemSettingsState();
 
   const [filter, setFilter] = useState<ZodItemType>({ id: -1, name: "" });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -78,10 +160,11 @@ function ItemTable() {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteItems(columnFilters, filter?.name);
+  } = useInfiniteItems(columnFilters, sorting, filter?.name);
 
   const data: Item[] = useMemo(
-    () => infiniteData?.pages.flatMap((page) => page.data.content) ?? [],
+    () =>
+      infiniteData?.pages.flatMap((page) => page.data._embedded.itemList) ?? [],
     [infiniteData],
   );
 
@@ -97,7 +180,6 @@ function ItemTable() {
 
   // Create
   const { openCanvas } = useCanvasState();
-  const { isOn, toggle } = useBooleanState();
 
   const pageResetRef = useRef<boolean>(false);
 
@@ -130,8 +212,8 @@ function ItemTable() {
     getRowCanExpand: (row) =>
       (row.getValue("containerItems") as ZodContainerType[]).length > 0,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     manualFiltering: true,
+    manualSorting: true,
     columnResizeMode: "onChange",
     meta: {
       updateData,
@@ -142,8 +224,12 @@ function ItemTable() {
     },
     state: {
       columnFilters,
+      sorting,
     },
     onColumnFiltersChange: setColumnFilters,
+    onSortingChange: setSorting,
+    enableMultiSort: true,
+    maxMultiSortColCount: 3,
   });
 
   const columnSize = useMemo(() => {
@@ -257,7 +343,8 @@ function ItemTable() {
             id="bulkSwitch"
             label="Bulk Create"
             style={{ textWrap: "nowrap" }}
-            onChange={() => toggle(!isOn)}
+            checked={isBulkCreate}
+            onChange={toggleBulkCreate}
           />
         </Stack>
       </Stack>

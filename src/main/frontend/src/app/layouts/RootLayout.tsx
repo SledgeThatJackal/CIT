@@ -6,6 +6,8 @@ import { Container, Navbar, Nav } from "react-bootstrap";
 import { ErrorBoundary } from "react-error-boundary";
 import { NavLink, Outlet } from "react-router-dom";
 
+const version = process.env.VERSION;
+
 const RootLayout = () => {
   // The active key works really weird, if you click the brand button while on item or container, it will leave the previous active and add another one.
   // I did this to make sure that it would "remove" the old active when you click the brand button.
@@ -74,6 +76,7 @@ const RootLayout = () => {
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>
+            <div className="text-light">v{version}</div>
           </Container>
         </Navbar>
       </header>

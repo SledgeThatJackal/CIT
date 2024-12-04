@@ -76,16 +76,18 @@ const ItemAttributeSection = () => {
           </InputGroup>
         </Col>
       </Row>
-      {itemAttributes ? (
+      {itemAttributes ? ( // style={{ height: "40px" }}
         itemAttributes.map((attr) => (
           <Row
             key={`attrRow-${attr.id}`}
-            className="mt-1 mb-1 d-flex align-items-center justify-content-center"
-            style={{ height: "40px" }}>
+            className="d-flex align-items-center justify-content-center m-1">
             <Col md={3} className="text-end">
               {attr.typeAttribute.columnTitle}:
             </Col>
-            <Col md={9}>
+            <Col
+              md={9}
+              className="rounded"
+              style={{ background: "rgb(136, 139, 140)" }}>
               <EditCellWType initialElement={attr} handleEdit={handleEdit} />
             </Col>
           </Row>

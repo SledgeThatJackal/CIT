@@ -72,8 +72,12 @@ const TagCell = <T, S extends Tag[]>({
   };
 
   return (
-    <Stack direction="horizontal" gap={1} ref={targetRef}>
-      <React.Fragment key={`tagCell-${index}`}>
+    <Stack
+      direction="horizontal"
+      gap={1}
+      ref={targetRef}
+      key={`tagCell-${id}-${index}`}>
+      <React.Fragment key={`tagCellBadges-${id}-${index}`}>
         {value &&
           value.length > 0 &&
           value

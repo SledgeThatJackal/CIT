@@ -1,6 +1,7 @@
 package dev.adamico.cit.Services;
 
 import dev.adamico.cit.DTO.ItemFormDTO;
+import dev.adamico.cit.DTO.ItemQueryRequest;
 import dev.adamico.cit.Filtering.ItemSpecification;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
@@ -15,7 +16,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.data.domain.Sort.by;
 
 @Service
 public class ItemService {
@@ -26,7 +30,7 @@ public class ItemService {
     private ItemAttributeService itemAttributeService;
 
     public List<Item> findAllItems(){
-        return itemRepository.findAll(Sort.by("id"));
+        return itemRepository.findAll(by("id"));
 
     }
 
@@ -108,16 +112,59 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public Page<Item> filterItemPages(int page, int size, Map<String, String> filters){
-        final Pageable pageable = PageRequest.of(page, size);
+    public Page<Item> filterItemPages(ItemQueryRequest itemQueryRequest){
+
+
+        final Pageable pageable = PageRequest.of(itemQueryRequest.getPage(),
+                                                 itemQueryRequest.getSize(),
+                                                 createPageSort(itemQueryRequest.getSortColumns()));
 
         // Return all items, if there's no filter present
-        if(filters == null || filters.isEmpty()){
+        if(itemQueryRequest.getFilterColumns().isEmpty() && itemQueryRequest.getSortColumns().isEmpty()){
             return itemRepository.findAll(pageable);
         }
 
-        Specification<Item> itemSpecification = ItemSpecification.withFilters(filters);
+        Specification<Item> itemSpecification = ItemSpecification.withFilters(itemQueryRequest.getFilterColumns(), itemQueryRequest.getSortColumns());
 
         return itemRepository.findAll(itemSpecification, pageable);
     }
+
+    private Sort createPageSort(List<ItemQueryRequest.SortColumn> sortColumns){
+        List<Sort.Order> orders = new ArrayList<>();
+
+        for(ItemQueryRequest.SortColumn currentSort: sortColumns){
+//            if(currentSort.getColumnLabel().contains("typeAttribute")) sortByInnerValue(currentSort);
+            if(currentSort.getColumnLabel().contains("typeAttribute")) continue;
+
+            orders.add(new Sort.Order(currentSort.getDirection(), currentSort.getColumnLabel()));
+        }
+
+        return orders.isEmpty() ? Sort.unsorted() : Sort.by(orders);
+    }
+
+//    private Sort sortByInnerValue(ItemQueryRequest.SortColumn currentSort){
+//        Long id = Long.valueOf(currentSort.getColumnLabel().split("-")[1]);
+//
+//        Comparator<Item> comparator = ((Comparator<Item>) (o1, o2) -> {
+//            ItemAttribute ia1 = o1.getItemAttributes().stream().filter(itemAttribute -> Objects.equals(itemAttribute.getTypeAttribute().getId(), id)).findFirst().orElse(null);
+//            ItemAttribute ia2 = o2.getItemAttributes().stream().filter(itemAttribute -> Objects.equals(itemAttribute.getTypeAttribute().getId(), id)).findFirst().orElse(null);
+//
+//            if(ia1 == null && ia2 == null) return 0;
+//            if(ia1 == null) return 1;
+//            if(ia2 == null) return -1;
+//
+//            String type = ia1.getTypeAttribute().getDataType().toString();
+//            int value;
+//
+//            if(type.equalsIgnoreCase("STRING")){
+//                value = ia1.getStringValue().compareTo(ia2.getStringValue());
+//            } else {
+//                value = ia1.getNumberValue().compareTo(ia2.getNumberValue());
+//            }
+//
+//            return value;
+//        });
+//
+//        return Sort.TypedSort.by();
+//    }
 }

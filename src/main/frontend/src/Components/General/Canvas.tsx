@@ -28,7 +28,7 @@ const Canvas = () => {
       onHide={handleClose}
       placement={placement || "bottom"}
       keyboard
-      style={placement === "bottom" ? { height: "55vh" } : {}}
+      style={placement === "bottom" ? { height: "55vh" } : { width: "40vw" }}
       scroll={true}
       backdrop={true}>
       <Offcanvas.Header closeButton closeVariant="white" className="shadow">

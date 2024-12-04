@@ -1,41 +1,87 @@
 package dev.adamico.cit.Filtering;
 
+import dev.adamico.cit.DTO.ItemQueryRequest;
 import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Models.ItemAttribute;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemSpecification{
 
-    public static Specification<Item> withFilters(Map<String, String> filters) {
+    public static Specification<Item> withFilters(List<ItemQueryRequest.FilterColumn> filterColumns, List<ItemQueryRequest.SortColumn> sortColumns) {
         return ((root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.conjunction();
+            List<Predicate> predicates = new ArrayList<>();
 
-            for(Map.Entry<String, String> filter: filters.entrySet()) {
-                String key = filter.getKey();
-                String value = filter.getValue();
+            for(ItemQueryRequest.FilterColumn filterColumn: filterColumns) {
+                String key = filterColumn.getColumnLabel();
+                String value = filterColumn.getValue();
 
-                if ("name".equals(key) || "description".equals(key)) {
-                    predicate = criteriaBuilder.and(predicate,
-                            criteriaBuilder.like(criteriaBuilder.lower(root.get(key)), "%" + value.toLowerCase() + "%"));
-                } else if ("tags".equals(key)) {
-                    predicate = criteriaBuilder.and(predicate,
-                            criteriaBuilder.like(criteriaBuilder.lower(root.join("tags").get("tag")), "%" + value.toLowerCase() + "%"));
-                } else if ("itemType".equals(key)) {
-                    predicate = criteriaBuilder.and(predicate,
-                            criteriaBuilder.like(criteriaBuilder.lower(root.join("itemType").get("name")), "%" + value.toLowerCase() + "%"));
-                } else if ("type".equals(key)) {
-                    predicate = criteriaBuilder.and(predicate,
-                                criteriaBuilder.equal(root.join("itemType").get("name"), value));
-                } else {
-                    predicate = criteriaBuilder.and(predicate,
-                                criteriaBuilder.like(criteriaBuilder.lower(root.join("itemAttributes").get("value")), "%" + value.toLowerCase() + "%"),
-                                criteriaBuilder.equal(root.join("itemAttributes").join("typeAttribute").get("id"), Integer.parseInt(key.replaceAll(".*?(\\d+)$", "$1"))));
-                }
+                switch (key) {
+                    case "name", "description" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(key)), "%" + value.toLowerCase() + "%"));
+
+                    case "tags" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.join("tags").get("tag")), "%" + value.toLowerCase() + "%"));
+
+                    case "itemType" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.join("itemType").get("name")), "%" + value.toLowerCase() + "%"));
+
+                    case "type" -> predicates.add(criteriaBuilder.equal(root.join("itemType").get("name"), value));
+
+                    default -> {
+                        String comparison = filterColumn.getComparison();
+                        Integer id = filterColumn.getId();
+
+                        Join<Item, ItemAttribute> itemAttributeJoin = root.join("itemAttributes");
+                        predicates.add(
+                                criteriaBuilder.and(
+                                criteriaBuilder.equal(itemAttributeJoin.join("typeAttribute").get("id"), id),
+                                comparison.equalsIgnoreCase("E") ? applyStringFilter(criteriaBuilder, value, itemAttributeJoin) : applyNumberFilter(criteriaBuilder, value, comparison, itemAttributeJoin)));
+                    }
+                };
             }
 
-            return predicate;
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
+    }
+
+    private static Predicate applyNumberFilter(CriteriaBuilder criteriaBuilder, String value, String comparison, Join<Item, ItemAttribute> itemAttributeJoin){
+        Path<Double> doublePath = itemAttributeJoin.get("numberValue");
+        Predicate nonNullPredicate = criteriaBuilder.isNotNull(doublePath);
+
+        Double doubleValue = 0.0;
+
+        if(!value.contains(",")){
+            doubleValue = Double.parseDouble(value);
+        }
+
+        Predicate comparisonPredicate = switch(comparison){
+            case "GT" -> criteriaBuilder.gt(doublePath, doubleValue);
+
+            case "GTE" -> criteriaBuilder.greaterThanOrEqualTo(doublePath, doubleValue);
+
+            case "LT" -> criteriaBuilder.lt(doublePath, doubleValue);
+
+            case "LTE" -> criteriaBuilder.lessThanOrEqualTo(doublePath, doubleValue);
+
+            case "R" -> {
+                String[] part = value.split(",");
+                Double val1 = Double.parseDouble(part[0]);
+                Double val2 = Double.parseDouble(part[1]);
+
+                yield criteriaBuilder.between(doublePath, val1, val2);
+            }
+
+            default -> criteriaBuilder.equal(doublePath, doubleValue);
+        };
+
+        return criteriaBuilder.and(nonNullPredicate, comparisonPredicate);
+    }
+
+    private static Predicate applyStringFilter(CriteriaBuilder criteriaBuilder, String value, Join<Item, ItemAttribute> itemAttributeJoin){
+        return criteriaBuilder.like(criteriaBuilder.lower(itemAttributeJoin.get("stringValue")), "%" + value.toLowerCase() + "%");
     }
 }

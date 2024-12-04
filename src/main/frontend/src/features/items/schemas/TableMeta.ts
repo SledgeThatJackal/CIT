@@ -7,4 +7,8 @@ declare module "@tanstack/react-table" {
     handleRemove?: (id: number) => void;
     updateItemAttribute?: (ItemAttribute: ItemAttribute) => void;
   }
+
+  interface ColumnMeta<TData extends RowData, TValue> {
+    type?: string;
+  }
 }

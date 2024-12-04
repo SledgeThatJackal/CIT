@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTableData } from "../data/useTableData";
 import {
+  Column,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -20,7 +21,6 @@ import {
   Table,
 } from "react-bootstrap";
 import PaginationControl from "@components/general/PaginationControl";
-import { Input } from "@item/components/ItemTable";
 import { MemoizedTableBody, TableBody } from "./TableBody";
 import ConfirmationModal from "@components/general/ConfirmationModal";
 import { useDeleteModalState } from "@hooks/state/useDeleteModalState";
@@ -34,6 +34,32 @@ import ContainerCreate from "./ContainerCreate";
 import Canvas from "@components/general/Canvas";
 import GenericModal from "@components/general/GenericModal";
 import { useBooleanState } from "@hooks/state/useBooleanState";
+import { useDebounce } from "@hooks/useDebounce";
+
+const Input = ({ column }: { column: Column<any, unknown> }) => {
+  const filterValue: string = (column.getFilterValue() ?? "") as string;
+  const [value, setValue] = useState<string>(filterValue);
+
+  const request = useDebounce(() => {
+    column.setFilterValue(value);
+  });
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+
+    request();
+  };
+
+  return (
+    <Form.Control
+      size="sm"
+      type="text"
+      onChange={onChange}
+      value={value}
+      placeholder="Search..."
+    />
+  );
+};
 
 function ContainerTable() {
   const { columns, containersQuery } = useTableData();
