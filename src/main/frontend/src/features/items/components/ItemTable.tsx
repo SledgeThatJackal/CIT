@@ -150,7 +150,12 @@ function ItemTable() {
   const parentRef = React.useRef<HTMLDivElement>(null);
   const typeQuery = useItemTypes().data;
 
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: "name",
+      desc: false,
+    },
+  ]);
 
   const [filter, setFilter] = useState<ZodItemType>({ id: -1, name: "" });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
