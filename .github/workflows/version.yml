@@ -19,6 +19,7 @@ jobs:
 
       - name: Increment version in package.json
         run: npm version patch
+        working-directory: ./frontend
 
       - name: Commit and push changes
         run: |
@@ -41,6 +42,7 @@ jobs:
 
       - name: Increment version in package.json
         run: npm version minor
+        working-directory: ./frontend
 
       - name: Commit and push changes
         run: |
