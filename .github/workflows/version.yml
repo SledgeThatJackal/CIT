@@ -2,8 +2,6 @@ name: Version Increment
 
 on:
   pull_request:
-    types:
-      - closed
     branches:
       - development
       - main
