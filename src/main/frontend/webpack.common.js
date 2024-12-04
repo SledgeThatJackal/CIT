@@ -1,4 +1,6 @@
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const webpack = require("webpack");
+const path = require("path");
 
 module.exports = {
   entry: "./src/app/pages/app.js",
@@ -62,4 +64,11 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.VERSION": JSON.stringify(
+        require(path.resolve(__dirname, "package.json")).version,
+      ),
+    }),
+  ],
 };

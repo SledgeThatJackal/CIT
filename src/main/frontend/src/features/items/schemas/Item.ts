@@ -77,25 +77,13 @@ export type ItemFormDTO = {
 };
 
 export type ItemPageResponse = {
-  content: Item[];
-  pageable: {
-    pageNumber: number;
-    pageSize: number;
-    sort: {
-      empty: boolean;
-      unsorted: boolean;
-      sorted: boolean;
-    };
-    offset: number;
-    unpaged: boolean;
-    paged: boolean;
+  _embedded: {
+    itemList: Item[];
   };
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
-  size: number;
-  number: number;
-  numberOfelements: number;
-  first: boolean;
-  empty: boolean;
+  page: {
+    number: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+  };
 };
