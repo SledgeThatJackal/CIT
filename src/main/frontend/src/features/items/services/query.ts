@@ -43,18 +43,18 @@ export function useInfiniteItems(
       ),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.last) {
+      if (lastPage.data.page.number === lastPage.data.page.totalPages - 1) {
         return undefined;
       }
 
-      return lastPage.data.pageable.pageNumber + 1;
+      return lastPage.data.page.number + 1;
     },
     getPreviousPageParam: (firstPage) => {
-      if (firstPage.data.first) {
+      if (firstPage.data.page.number === 0) {
         return undefined;
       }
 
-      return firstPage.data.pageable.pageNumber - 1;
+      return firstPage.data.page.number - 1;
     },
     refetchOnWindowFocus: true,
   });

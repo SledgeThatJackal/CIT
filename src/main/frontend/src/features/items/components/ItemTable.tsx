@@ -162,8 +162,11 @@ function ItemTable() {
     isFetchingNextPage,
   } = useInfiniteItems(columnFilters, sorting, filter?.name);
 
+  infiniteData?.pages.flatMap((page) => console.log(page.data));
+
   const data: Item[] = useMemo(
-    () => infiniteData?.pages.flatMap((page) => page.data.content) ?? [],
+    () =>
+      infiniteData?.pages.flatMap((page) => page.data._embedded.itemList) ?? [],
     [infiniteData],
   );
 

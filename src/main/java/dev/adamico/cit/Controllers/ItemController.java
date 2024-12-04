@@ -12,6 +12,9 @@ import dev.adamico.cit.Services.TagService;
 import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,14 +50,14 @@ public class ItemController {
 
     @PostMapping("/page")
     @JsonView(Views.InclusiveID.class)
-    public Page<Item> getItemPage(@RequestBody ItemQueryRequest itemQueryRequest) {
+    public PagedModel<EntityModel<Item>> getItemPage(@RequestBody ItemQueryRequest itemQueryRequest, PagedResourcesAssembler<Item> assembler) {
         Page<Item> itemPage = itemService.filterItemPages(itemQueryRequest);
         itemPage.forEach(item -> {
             item.sortItemAttributes();
             item.setTotalQuantity();
         });
 
-        return itemPage;
+        return assembler.toModel(itemPage);
     }
 
     @PutMapping("/edit")
