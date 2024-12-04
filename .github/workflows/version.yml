@@ -1,18 +1,19 @@
 name: Version Increment
 
 on:
-  workflow_dispatch:
-#  pull_request:
-#    types:
-#      - closed
-#    branches:
-#      - development
-#      - main
+  pull_request:
+    types:
+      - closed
+    branches:
+      - development
+      - main
 
 jobs:
   versioning-development:
     runs-on: ubuntu-latest
     if: github.base_ref == 'development'
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -36,9 +37,9 @@ jobs:
 
   versioning-main:
     runs-on: ubuntu-latest
+    if: github.base_ref == 'main'
     permissions:
       contents: write
-#    if: github.base_ref == 'main'
 
     steps:
       - name: Checkout code
