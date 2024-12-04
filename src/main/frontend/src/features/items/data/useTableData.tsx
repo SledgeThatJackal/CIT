@@ -139,6 +139,7 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
             cell: TypeEditCell,
             minSize: 200,
             enableResizing: true,
+            enableSorting: false,
             meta: { type: itemAttribute.typeAttribute.dataType?.toUpperCase() },
           },
         );
