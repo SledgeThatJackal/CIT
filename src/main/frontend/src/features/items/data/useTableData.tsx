@@ -13,6 +13,7 @@ import React from "react";
 import TypeEditCell from "@item/components/custom_cells/TypeEditCell";
 import { ZodItemType } from "@schema/General";
 import URLCell from "@components/custom_cell_renderers/URLCell";
+import TextAreaCell from "@components/custom_cell_renderers/TextAreaCell";
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -58,7 +59,7 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
         id: "description",
         header: "Description",
         enableResizing: true,
-        cell: EditCell,
+        cell: TextAreaCell,
         minSize: 200,
         sortUndefined: 1,
       }),

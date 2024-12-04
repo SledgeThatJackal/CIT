@@ -3,7 +3,7 @@ import { CellContext } from "@tanstack/react-table";
 import { Form } from "react-bootstrap";
 import ReadRow from "./ReadRow";
 
-const EditCell = <T, S extends string | number | undefined>({
+const TextAreaCell = <T, S extends string | number | undefined>({
   getValue,
   row: { index },
   column: { id },
@@ -48,15 +48,16 @@ const EditCell = <T, S extends string | number | undefined>({
   };
 
   return (
-    <React.Fragment key={`editCell-${id}-${index}`}>
+    <React.Fragment key={`textAreaCell-${id}-${index}`}>
       {isEditing ? (
         <Form.Control
-          type="text"
+          as="textarea"
           value={value}
           onChange={onChange}
           onBlur={onBlur}
           onKeyDown={handleEnter}
           autoFocus
+          rows={4}
         />
       ) : (
         <ReadRow value={value} handleDoubleClick={handleDoubleClick} />
@@ -65,4 +66,4 @@ const EditCell = <T, S extends string | number | undefined>({
   );
 };
 
-export default EditCell;
+export default TextAreaCell;
