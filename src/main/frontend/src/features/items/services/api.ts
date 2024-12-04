@@ -74,11 +74,7 @@ export const getInfiniteItems = async (
     sortColumns: sortColumns,
   };
 
-  const fetched = await axios.post<ItemPageResponse>(`/api/item/page`, data);
-
-  console.log(fetched);
-
-  return fetched;
+  return await axios.post<ItemPageResponse>(`/api/item/page`, data);
 };
 
 export const getItemAttributes = async (id: number) => {
