@@ -26,7 +26,7 @@ import { useItemTypes } from "@type/services/query";
 import ImageForm from "./image/ImageForm";
 import { useActionState } from "@item/hooks/useActionState";
 import omit from "lodash.omit";
-import { useBooleanState } from "@hooks/state/useBooleanState";
+import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";
 
 const CreateBox = () => {
   const createItemMutation = useCreateItem();
@@ -34,7 +34,7 @@ const CreateBox = () => {
   const { closeCanvas } = useCanvasState();
   const { item } = useActionState();
   const [typeId, setTypeId] = useState<number>(item?.itemType?.id || -1);
-  const { isOn } = useBooleanState();
+  const { isBulkCreate } = useItemSettingsState();
 
   const itemForm = useForm<ItemSchemaType>({
     defaultValues: item
@@ -114,7 +114,7 @@ const CreateBox = () => {
     typeForm.reset();
     itemForm.reset();
 
-    if (!isOn) {
+    if (!isBulkCreate) {
       closeCanvas();
     }
 
