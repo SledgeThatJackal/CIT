@@ -53,7 +53,7 @@ jobs:
           git add package.json
           git add package-lock.json
           git commit -m "Incremented version to $(node -p "require('./package.json').version")"
-          git push origin main --tags
+          git push origin master --tags
         working-directory: ./src/main/frontend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
