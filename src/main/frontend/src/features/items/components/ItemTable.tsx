@@ -47,7 +47,7 @@ import { useInfiniteItems } from "@item/services/query";
 import SelectComponentW from "@components/Write/SelectComponentW";
 import { useItemTypes } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
-import { useBooleanState } from "@hooks/state/useBooleanState";
+import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";
 
 const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -150,12 +150,8 @@ function ItemTable() {
   const parentRef = React.useRef<HTMLDivElement>(null);
   const typeQuery = useItemTypes().data;
 
-  const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: "name",
-      desc: false,
-    },
-  ]);
+  const { sorting, setSorting, isBulkCreate, toggleBulkCreate } =
+    useItemSettingsState();
 
   const [filter, setFilter] = useState<ZodItemType>({ id: -1, name: "" });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -183,7 +179,6 @@ function ItemTable() {
 
   // Create
   const { openCanvas } = useCanvasState();
-  const { isOn, toggle } = useBooleanState();
 
   const pageResetRef = useRef<boolean>(false);
 
@@ -347,7 +342,8 @@ function ItemTable() {
             id="bulkSwitch"
             label="Bulk Create"
             style={{ textWrap: "nowrap" }}
-            onChange={() => toggle(!isOn)}
+            checked={isBulkCreate}
+            onChange={toggleBulkCreate}
           />
         </Stack>
       </Stack>
