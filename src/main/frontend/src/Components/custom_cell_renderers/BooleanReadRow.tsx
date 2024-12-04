@@ -14,6 +14,7 @@ const BooleanReadRow = (props: ReadRowProps) => {
   return (
     <div
       title="Double Click to Edit"
+      className="align-middle"
       style={{ ...(!props.value && { height: "20px" }) }}
       onDoubleClick={props.handleDoubleClick}>
       {display}
