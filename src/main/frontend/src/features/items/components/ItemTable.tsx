@@ -3,8 +3,6 @@ import {
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import React, {
@@ -44,7 +42,7 @@ import GenericModal from "@components/general/GenericModal";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useInfiniteItems } from "@item/services/query";
-import SelectComponentW from "@components/Write/SelectComponentW";
+import SelectComponentW from "@components/write/SelectComponentW";
 import { useItemTypes } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
 import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";

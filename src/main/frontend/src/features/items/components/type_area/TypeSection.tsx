@@ -16,7 +16,7 @@ import {
   UseFormReset,
 } from "react-hook-form";
 import { ItemAttributeData } from "@item/schemas/Item";
-import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
+import FormFloatingLabel from "@components/forms/FormFloatingLabel";
 import { useTypeAttribute } from "@type/services/query";
 
 type TypeSectionProps = {

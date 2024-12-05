@@ -1,4 +1,4 @@
-import FormFloatingLabel from "@components/Forms/FormFloatingLabel";
+import FormFloatingLabel from "@components/forms/FormFloatingLabel";
 import { useEditState } from "@type/hooks/state/useEditState";
 import { AttributeForm, TypeFormDTO } from "@type/schema/Type";
 import { useCanvasState } from "@hooks/state/useCanvasState";

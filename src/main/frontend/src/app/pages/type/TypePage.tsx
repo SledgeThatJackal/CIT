@@ -1,4 +1,4 @@
-import SelectComponentW from "@components/Write/SelectComponentW";
+import SelectComponentW from "@components/write/SelectComponentW";
 import { TypeAttribute } from "@schema/Types";
 import React, { useEffect, useState } from "react";
 import {
@@ -25,9 +25,9 @@ import { TypeProvider, useData } from "@type/hooks/TypeProvider";
 import { AttributeForm } from "@type/schema/Type";
 import { useEditState } from "@type/hooks/state/useEditState";
 import TypeAttributeRow from "@type/components/TypeAttributeRow";
-import TypeAttributeEditCell from "@type/components/Table/TypeAttributeEditCell";
-import TypeAttributeDeleteCell from "@type/components/Table/TypeAttributeDeleteCell";
-import TypeAttributeSelectCell from "@type/components/Table/TypeAttributeSelectCell";
+import TypeAttributeEditCell from "@type/components/table/TypeAttributeEditCell";
+import TypeAttributeDeleteCell from "@type/components/table/TypeAttributeDeleteCell";
+import TypeAttributeSelectCell from "@type/components/table/TypeAttributeSelectCell";
 
 function TypeSettingsContent() {
   const itemTypesQuery = useData();

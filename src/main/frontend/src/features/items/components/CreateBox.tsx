@@ -21,7 +21,7 @@ import TagInput from "@tag/components/TagInput";
 import ContainerSection from "./ContainerSection";
 import { useCanvasState } from "@hooks/state/useCanvasState";
 import TypeSection from "./type_area/TypeSection";
-import SelectComponent from "@components/Forms/SelectComponentF";
+import SelectComponent from "@components/forms/SelectComponentF";
 import { useItemTypes } from "@type/services/query";
 import ImageForm from "./image/ImageForm";
 import { useActionState } from "@item/hooks/useActionState";

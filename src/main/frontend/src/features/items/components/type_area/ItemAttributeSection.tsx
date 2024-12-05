@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAttributeState } from "@item/hooks/useAttributeState";
 import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
-import SelectComponentW from "@components/Write/SelectComponentW";
+import SelectComponentW from "@components/write/SelectComponentW";
 import { useItemTypes } from "@type/services/query";
 import { useModalState } from "@hooks/state/useModalState";
 import { ItemAttribute } from "@item/schemas/Item";

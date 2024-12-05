@@ -2,12 +2,12 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import TypeAttributeRow from "./TypeAttributeRow";
-import TypeAttributeFormEdit from "./Form/TypeAttributeFormEdit";
-import TypeAttributeFormDelete from "./Form/TypeAttributeFormDelete";
+import TypeAttributeFormEdit from "./form/TypeAttributeFormEdit";
+import TypeAttributeFormDelete from "./form/TypeAttributeFormDelete";
 import { AttributeForm } from "@type/schema/Type";
 import { useModalState } from "@hooks/state/useModalState";
 import { useDeleteTypeAttribute } from "@type/services/mutation";
-import TypeAttributeFormSelect from "./Form/TypeAttributeFormSelect";
+import TypeAttributeFormSelect from "./form/TypeAttributeFormSelect";
 
 const TypeAttributesForm = () => {
   const deleteAttributeMutation = useDeleteTypeAttribute();

@@ -1,7 +1,7 @@
 import { CellContext } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import ReadRow from "./ReadRow";
-import SelectComponentW from "@components/Write/SelectComponentW";
+import SelectComponentW from "@components/write/SelectComponentW";
 import { useItemTypes } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
 
