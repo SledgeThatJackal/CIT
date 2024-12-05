@@ -1,0 +1,107 @@
+name: Docker Creation
+
+on:
+  workflow_dispatch:
+  pull_request:
+      types:
+        - closed
+      branches:
+        - main
+
+jobs:
+  versioning-master:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Increment version in package.json
+        run: npm version minor
+        working-directory: ./src/main/frontend
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add package.json
+          git add package-lock.json
+          git commit -m "Incremented version to $(node -p "require('./package.json').version")"
+          git push origin master --tags
+        working-directory: ./src/main/frontend
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  static-files-directory:
+    runs-on: ubuntu-latest
+    needs: versioning-master
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create Static Files Directory
+        run: mkdir -p src/main/resources/static
+
+
+  build-react-files:
+    runs-on: ubuntu-latest
+    needs: [versioning-master, static-files-directory]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Build React App using Webpack
+        run: npm run build
+        working-directory: ./src/main/frontend
+
+  build-jar:
+    runs-on: ubuntu-latest
+    needs: [versioning-master, static-files-directory, build-react-files]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build Spring Boot Jar File
+        run: ./mvnw clean package -Dmaven.test.skip=true
+
+
+  build-docker-image:
+    runs-on: ubuntu-latest
+    needs: [versioning-master, static-files-directory, build-react-files, build-jar]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Get Version Number
+        id: get_version
+        run: |
+          VERSION=$(jq -r .version < src/main/frontend/package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Build and Push Docker Image
+        run: |
+          docker image build -t ghcr.io/${{ github.repository }}/cit:${{ env.VERSION }} \
+                             -t ghcr.io/${{ github.repository }}/cit:latest .
+          docker push ghcr.io/${{ github.repository }}/cit:${{ env.VERSION }}
+          docker push ghcr.io/${{ github.repository }}/cit:latest
