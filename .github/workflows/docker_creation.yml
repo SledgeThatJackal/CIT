@@ -3,10 +3,10 @@ name: Docker Creation
 on:
   workflow_dispatch:
   pull_request:
-      types:
-        - closed
-      branches:
-        - main
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   versioning-master:
@@ -24,12 +24,12 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add package.json
-          git add package-lock.json
-          git commit -m "Incremented version to $(node -p "require('./package.json').version")"
-          git push origin master --tags
+        #          git config --global user.name "GitHub Actions"
+        #          git config --global user.email "actions@github.com"
+        #          git add package.json
+        #          git add package-lock.json
+        #          git commit -m "Incremented version to $(node -p "require('./package.json').version")"
+        #          git push origin master --tags
         working-directory: ./src/main/frontend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,8 +53,18 @@ jobs:
       contents: write
 
     steps:
-      - name: Build React App using Webpack
-        run: npm run build
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies and Build React App
+        run: |
+          npm ci
+          npm run build
         working-directory: ./src/main/frontend
 
   build-jar:
@@ -64,6 +74,9 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
