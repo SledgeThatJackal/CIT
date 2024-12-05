@@ -73,6 +73,14 @@ const TypeAttributesForm = () => {
               key={`formEditThirdCell-${field.id}`}
               path={`typeAttributes.${index}.columnTitle`}
             />
+            <TypeAttributeFormEdit
+              key={`formEditThirdCell-${field.id}`}
+              path={
+                field.dataType?.startsWith("S")
+                  ? `typeAttributes.${index}.stringDefaultValue`
+                  : `typeAttributes.${index}.numberDefaultValue`
+              }
+            />
             <TypeAttributeFormDelete
               key={`formEditFourthCell-${field.id}`}
               handleRemove={() => deleteRow(index)}

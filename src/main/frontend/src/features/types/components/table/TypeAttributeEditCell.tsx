@@ -48,7 +48,11 @@ const TypeAttributeEditCell = ({
           onKeyDown={handleKeyDown}
         />
       ) : (
-        <div onDoubleClick={() => setIsEditing(true)}>{value}</div>
+        <div
+          onDoubleClick={() => setIsEditing(true)}
+          style={value.localeCompare("null") === -1 ? {} : { height: "20px" }}>
+          {value.localeCompare("null") === -1 ? value : ""}
+        </div>
       )}
     </React.Fragment>
   );

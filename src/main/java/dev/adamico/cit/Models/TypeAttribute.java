@@ -29,8 +29,10 @@ public class TypeAttribute {
     private String columnTitle;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "type_enum")
     private TypeEnum dataType;
+
+    private String stringDefaultValue;
+    private Double numberDefaultValue;
 
     @Override
     public String toString() {

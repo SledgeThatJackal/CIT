@@ -166,7 +166,8 @@ function TypeSettingsContent() {
                     Order
                   </Col>
                   <Col md={2}>Data Type</Col>
-                  <Col md={8}>Attribute Name</Col>
+                  <Col md={6}>Attribute Name</Col>
+                  <Col md={2}>Default Value</Col>
                   <Col md={1} className="text-center">
                     Delete
                   </Col>
@@ -186,6 +187,14 @@ function TypeSettingsContent() {
                       />
                       <TypeAttributeEditCell
                         attributeKey="columnTitle"
+                        fType={fType}
+                      />
+                      <TypeAttributeEditCell
+                        attributeKey={
+                          fType.dataType?.startsWith("S")
+                            ? "stringDefaultValue"
+                            : "numberDefaultValue"
+                        }
                         fType={fType}
                       />
                       <TypeAttributeDeleteCell
