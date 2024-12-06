@@ -14,9 +14,13 @@ import java.util.List;
 
 public class ItemSpecification{
 
-    public static Specification<Item> withFilters(List<ItemQueryRequest.FilterColumn> filterColumns, List<ItemQueryRequest.SortColumn> sortColumns) {
+    public static Specification<Item> withFilters(String type, List<ItemQueryRequest.FilterColumn> filterColumns) {
         return ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
+
+            if(!type.isEmpty()){
+                predicates.add(criteriaBuilder.equal(root.join("itemType").get("name"), type));
+            }
 
             for(ItemQueryRequest.FilterColumn filterColumn: filterColumns) {
                 String key = filterColumn.getColumnLabel();
@@ -28,8 +32,6 @@ public class ItemSpecification{
                     case "tags" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.join("tags").get("tag")), "%" + value.toLowerCase() + "%"));
 
                     case "itemType" -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.join("itemType").get("name")), "%" + value.toLowerCase() + "%"));
-
-                    case "type" -> predicates.add(criteriaBuilder.equal(root.join("itemType").get("name"), value));
 
                     default -> {
                         String comparison = filterColumn.getComparison();
