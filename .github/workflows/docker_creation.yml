@@ -36,7 +36,6 @@ jobs:
 
   build-docker-image:
     runs-on: ubuntu-latest
-    needs: versioning-master
     permissions:
       contents: write
 
