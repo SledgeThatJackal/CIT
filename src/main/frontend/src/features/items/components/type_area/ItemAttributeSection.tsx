@@ -6,6 +6,7 @@ import { useItemTypes } from "@type/services/query";
 import { useModalState } from "@hooks/state/useModalState";
 import { ItemAttribute } from "@item/schemas/Item";
 import EditCellWType from "../boolean_rows/EditCellWType";
+import { alterItemAttribute } from "../boolean_rows/AlteredItemAttribute";
 
 const ItemAttributeSection = () => {
   const { context } = useAttributeState();
@@ -22,8 +23,10 @@ const ItemAttributeSection = () => {
     setItemAttributes(context?.row.original.itemAttributes);
   }, [context]);
 
-  const handleEdit = (itemAttr: any) => {
-    context?.table.options.meta?.updateItemAttribute?.(itemAttr);
+  const handleEdit = (itemAttr: any, value: string | number) => {
+    const updatedElement = alterItemAttribute(itemAttr, value);
+
+    context?.table.options.meta?.updateItemAttribute?.(updatedElement);
   };
 
   const changeType = (id: number) => {
@@ -88,7 +91,12 @@ const ItemAttributeSection = () => {
               md={9}
               className="rounded"
               style={{ background: "rgb(136, 139, 140)" }}>
-              <EditCellWType initialElement={attr} handleEdit={handleEdit} />
+              <EditCellWType
+                initialElement={attr}
+                defaultValue={attr.stringValue || attr.numberValue}
+                handleEdit={handleEdit}
+                typeKey="typeAttribute"
+              />
             </Col>
           </Row>
         ))

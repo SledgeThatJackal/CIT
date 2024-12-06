@@ -1,7 +1,7 @@
 import React from "react";
 
 type ReadRowProps = {
-  value: string | number;
+  value?: string | number;
   handleDoubleClick: () => void;
 };
 

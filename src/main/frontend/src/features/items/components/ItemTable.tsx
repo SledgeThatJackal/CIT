@@ -357,7 +357,7 @@ function ItemTable() {
           }}
           onScroll={(e) => fetchPages(e.target as HTMLDivElement)}>
           <Table
-            key={`table-${tableKey}`}
+            // key={`table-${tableKey}`}
             hover
             bordered
             variant="dark"
@@ -429,11 +429,13 @@ function ItemTable() {
                 );
               })}
             </thead>
-            {table.getState().columnSizingInfo.isResizingColumn ? (
-              <MemoizedTableBody table={table} virtualizer={virtualizer} />
-            ) : (
-              <TableBody table={table} virtualizer={virtualizer} />
-            )}
+            <React.Fragment key={`rows-${tableKey}`}>
+              {table.getState().columnSizingInfo.isResizingColumn ? (
+                <MemoizedTableBody table={table} virtualizer={virtualizer} />
+              ) : (
+                <TableBody table={table} virtualizer={virtualizer} />
+              )}
+            </React.Fragment>
             {/* <tfoot>
                         {table.getFooterGroups().map(footerGroup => {
                                 return <tr key={ `tableFooter-${footerGroup.id}` }>{footerGroup.headers.map(footer => {

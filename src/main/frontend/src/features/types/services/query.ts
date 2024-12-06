@@ -22,6 +22,5 @@ export function useTypeAttribute(id: number) {
     queryKey: ["typeattribute", id],
     queryFn: () => getTypeAttriutesById(id),
     enabled: !!id,
-    staleTime: 1000 * 60 * 10,
   });
 }
