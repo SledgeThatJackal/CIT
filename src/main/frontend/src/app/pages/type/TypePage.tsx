@@ -19,6 +19,7 @@ import { useModalState } from "@hooks/state/useModalState";
 import {
   useDeleteItemType,
   useDeleteTypeAttribute,
+  useEditTypeAttribute,
 } from "@type/services/mutation";
 import { useTypeAttribute } from "@type/services/query";
 import { TypeProvider, useData } from "@type/hooks/TypeProvider";
@@ -28,6 +29,8 @@ import TypeAttributeRow from "@type/components/TypeAttributeRow";
 import TypeAttributeEditCell from "@type/components/table/TypeAttributeEditCell";
 import TypeAttributeDeleteCell from "@type/components/table/TypeAttributeDeleteCell";
 import TypeAttributeSelectCell from "@type/components/table/TypeAttributeSelectCell";
+import EditCellW from "@item/components/boolean_rows/EditCellWType";
+import { useDebounce } from "@hooks/useDebounce";
 
 function TypeSettingsContent() {
   const itemTypesQuery = useData();
@@ -41,6 +44,7 @@ function TypeSettingsContent() {
   const { setProps } = useEditState();
 
   // Mutations
+  const updateAttributeMutation = useEditTypeAttribute();
   const deleteTypeMuation = useDeleteItemType();
   const deleteAttributeMutation = useDeleteTypeAttribute();
 
@@ -78,6 +82,23 @@ function TypeSettingsContent() {
     }
   };
 
+  const handleAttributeEdit = (
+    typeAttr: TypeAttribute,
+    value?: string | number,
+  ) => {
+    const getDataTypeKey = (): keyof TypeAttribute =>
+      typeAttr.dataType?.startsWith("S")
+        ? "stringDefaultValue"
+        : "numberDefaultValue";
+
+    const updatedAttr =
+      value !== undefined
+        ? { ...typeAttr, [getDataTypeKey()]: value }
+        : typeAttr;
+
+    updateAttributeMutation.mutate(updatedAttr);
+  };
+
   const handleTypeDelete = () => {
     if (type) {
       deleteTypeMuation.mutate(type);
@@ -90,6 +111,16 @@ function TypeSettingsContent() {
       deleteAttributeMutation.mutate(id);
     }
   };
+
+  const [tableIndex, setTableIndex] = useState<number>(0);
+
+  const request = useDebounce(() => {
+    setTableIndex((prev) => prev + 1);
+  }, 50);
+
+  useEffect(() => {
+    request();
+  }, [typeAttributeQuery.data]);
 
   return (
     <React.Fragment>
@@ -166,40 +197,55 @@ function TypeSettingsContent() {
                     Order
                   </Col>
                   <Col md={2}>Data Type</Col>
-                  <Col md={8}>Attribute Name</Col>
+                  <Col md={6}>Attribute Name</Col>
+                  <Col md={2}>Default Value</Col>
                   <Col md={1} className="text-center">
                     Delete
                   </Col>
                 </Row>
-                {filteredTypes &&
-                  filteredTypes.map((fType) => (
-                    <TypeAttributeRow
-                      key={`pageTypeRow-${fType.id}`}
-                      fType={fType}>
-                      <TypeAttributeEditCell
-                        attributeKey="displayOrder"
-                        fType={fType}
-                      />
-                      <TypeAttributeSelectCell
-                        attributeKey="dataType"
-                        fType={fType}
-                      />
-                      <TypeAttributeEditCell
-                        attributeKey="columnTitle"
-                        fType={fType}
-                      />
-                      <TypeAttributeDeleteCell
-                        handleDelete={() =>
-                          openMessageModal(
-                            "Delete Attribute",
-                            "Delete",
-                            () => handleAttributeDelete(fType.id),
-                            "Are you sure you want to delete this attribute?",
-                          )
-                        }
-                      />
-                    </TypeAttributeRow>
-                  ))}
+                <React.Fragment key={`typeRows-${tableIndex}`}>
+                  {filteredTypes &&
+                    filteredTypes.map((fType) => (
+                      <TypeAttributeRow
+                        key={`pageTypeRow-${fType.id}`}
+                        fType={fType}>
+                        <TypeAttributeEditCell
+                          attributeKey="displayOrder"
+                          fType={fType}
+                          handleEdit={handleAttributeEdit}
+                        />
+                        <TypeAttributeSelectCell
+                          attributeKey="dataType"
+                          fType={fType}
+                        />
+                        <TypeAttributeEditCell
+                          attributeKey="columnTitle"
+                          fType={fType}
+                          handleEdit={handleAttributeEdit}
+                        />
+                        <EditCellW
+                          key={`TypeRow-${fType.dataType}-${fType.id}`}
+                          initialElement={fType}
+                          handleEdit={handleAttributeEdit}
+                          defaultValue={
+                            fType.dataType?.startsWith("S")
+                              ? fType.stringDefaultValue
+                              : fType.numberDefaultValue
+                          }
+                        />
+                        <TypeAttributeDeleteCell
+                          handleDelete={() =>
+                            openMessageModal(
+                              "Delete Attribute",
+                              "Delete",
+                              () => handleAttributeDelete(fType.id),
+                              "Are you sure you want to delete this attribute?",
+                            )
+                          }
+                        />
+                      </TypeAttributeRow>
+                    ))}
+                </React.Fragment>
               </Container>
             </Row>
           </Container>

@@ -1,4 +1,3 @@
-import { useEditTypeAttribute } from "@type/services/mutation";
 import { TypeAttribute } from "@schema/Types";
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
@@ -6,16 +5,16 @@ import { Form } from "react-bootstrap";
 type TypeAttributeEditCellProps = {
   attributeKey: keyof TypeAttribute;
   fType: TypeAttribute;
+  handleEdit: (typeAttr: TypeAttribute) => void;
 };
 
 const TypeAttributeEditCell = ({
   attributeKey,
   fType,
+  handleEdit,
 }: TypeAttributeEditCellProps) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [value, setValue] = useState<string>(String(fType[attributeKey]));
-
-  const updateAttributeMutation = useEditTypeAttribute();
+  const [value, setValue] = useState<string>(String(fType[attributeKey] ?? ""));
 
   const handleOnBlur = () => {
     const updatedValue = {
@@ -23,7 +22,7 @@ const TypeAttributeEditCell = ({
       [attributeKey]: value,
     };
 
-    updateAttributeMutation.mutate(updatedValue);
+    handleEdit(updatedValue);
 
     setIsEditing(false);
   };
@@ -33,7 +32,7 @@ const TypeAttributeEditCell = ({
       handleOnBlur();
     } else if (event.key === "Escape") {
       setIsEditing(false);
-      setValue(String(fType[attributeKey]));
+      setValue(String(fType[attributeKey] ?? ""));
     }
   };
 
@@ -48,7 +47,11 @@ const TypeAttributeEditCell = ({
           onKeyDown={handleKeyDown}
         />
       ) : (
-        <div onDoubleClick={() => setIsEditing(true)}>{value}</div>
+        <div
+          onDoubleClick={() => setIsEditing(true)}
+          style={value.length < 1 ? {} : { height: "20px" }}>
+          {value}
+        </div>
       )}
     </React.Fragment>
   );

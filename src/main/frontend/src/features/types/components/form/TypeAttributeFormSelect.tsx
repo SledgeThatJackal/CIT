@@ -15,6 +15,7 @@ const TypeAttributeFormSelect = ({ path }: TypeAttributeFormSelectProps) => {
       {["STRING", "NUMBER", "BOOLEAN", "LIST"].map((dataType) => (
         <option
           value={dataType}
+          key={`formSelect-${dataType}`}
           disabled={
             dataType === "LIST"
           }>{`${dataType.charAt(0).toUpperCase()}${dataType.slice(1).toLowerCase()}`}</option>

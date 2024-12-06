@@ -120,11 +120,11 @@ public class ItemService {
                                                  createPageSort(itemQueryRequest.getSortColumns()));
 
         // Return all items, if there's no filter present
-        if(itemQueryRequest.getFilterColumns().isEmpty() && itemQueryRequest.getSortColumns().isEmpty()){
+        if(itemQueryRequest.getFilterColumns().isEmpty() && itemQueryRequest.getType().isEmpty()){
             return itemRepository.findAll(pageable);
         }
 
-        Specification<Item> itemSpecification = ItemSpecification.withFilters(itemQueryRequest.getFilterColumns(), itemQueryRequest.getSortColumns());
+        Specification<Item> itemSpecification = ItemSpecification.withFilters(itemQueryRequest.getType(), itemQueryRequest.getFilterColumns());
 
         return itemRepository.findAll(itemSpecification, pageable);
     }

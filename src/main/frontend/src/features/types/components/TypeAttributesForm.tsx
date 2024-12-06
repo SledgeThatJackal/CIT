@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import TypeAttributeRow from "./TypeAttributeRow";
 import TypeAttributeFormEdit from "@type/components/form/TypeAttributeFormEdit";
 import TypeAttributeFormDelete from "./form/TypeAttributeFormDelete";
@@ -16,6 +16,7 @@ const TypeAttributesForm = () => {
     control,
     formState: { errors },
     getValues,
+    watch,
   } = useFormContext<AttributeForm>();
 
   const { openMessageModal, closeModal } = useModalState();
@@ -58,27 +59,44 @@ const TypeAttributesForm = () => {
   return (
     <React.Fragment>
       {fields && fields.length > 0 ? (
-        fields.map((field, index) => (
-          <TypeAttributeRow fType={field} key={`formEditRow-${field.id}`}>
-            <TypeAttributeFormEdit
-              key={`formEditFirstCell-${field.id}`}
-              path={`typeAttributes.${index}.displayOrder`}
-              error={errors.typeAttributes?.[index]?.message}
-            />
-            <TypeAttributeFormSelect
-              key={`formEditSecondCell-${field.id}`}
-              path={`typeAttributes.${index}.dataType`}
-            />
-            <TypeAttributeFormEdit
-              key={`formEditThirdCell-${field.id}`}
-              path={`typeAttributes.${index}.columnTitle`}
-            />
-            <TypeAttributeFormDelete
-              key={`formEditFourthCell-${field.id}`}
-              handleRemove={() => deleteRow(index)}
-            />
-          </TypeAttributeRow>
-        ))
+        fields.map((field, index) => {
+          const dataType = watch(`typeAttributes.${index}.dataType`);
+          const type = dataType?.startsWith("B")
+            ? "checkbox"
+            : dataType?.startsWith("N")
+              ? "number"
+              : "text";
+          return (
+            <TypeAttributeRow fType={field} key={`formEditRow-${field.id}`}>
+              <TypeAttributeFormEdit
+                key={`formEditFirstCell-${field.id}`}
+                path={`typeAttributes.${index}.displayOrder`}
+                error={errors.typeAttributes?.[index]?.message}
+              />
+              <TypeAttributeFormSelect
+                key={`formEditSecondCell-${field.id}`}
+                path={`typeAttributes.${index}.dataType`}
+              />
+              <TypeAttributeFormEdit
+                key={`formEditThirdCell-${field.id}`}
+                path={`typeAttributes.${index}.columnTitle`}
+              />
+              <TypeAttributeFormEdit
+                key={`formEditThirdCell-${type}-${field.id}`}
+                path={
+                  dataType?.startsWith("S")
+                    ? `typeAttributes.${index}.stringDefaultValue`
+                    : `typeAttributes.${index}.numberDefaultValue`
+                }
+                type={type}
+              />
+              <TypeAttributeFormDelete
+                key={`formEditFourthCell-${field.id}`}
+                handleRemove={() => deleteRow(index)}
+              />
+            </TypeAttributeRow>
+          );
+        })
       ) : (
         <div>No attributes found</div>
       )}
