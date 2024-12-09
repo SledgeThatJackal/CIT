@@ -27,10 +27,6 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const onSubmit = async (loginData: User) => {
-    const config = {
-      withCredentials: true,
-    };
-
     const response = await axios.post(
       `/login?username=${loginData.username}&password=${loginData.password}`,
     );

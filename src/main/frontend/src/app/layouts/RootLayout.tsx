@@ -1,5 +1,6 @@
 import ErrorBanner from "@components/error_handling/ErrorBanner";
 import ErrorBoundaryFallBack from "@components/error_handling/ErrorBoundaryFallBack";
+import LogoutButton from "@components/general/LogoutButton";
 import { useErrorState } from "@hooks/state/useErrorState";
 import React, { useState } from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
@@ -84,6 +85,7 @@ const RootLayout = () => {
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>
+            <LogoutButton />
             <div className="text-light">v{version}</div>
           </Container>
         </Navbar>
