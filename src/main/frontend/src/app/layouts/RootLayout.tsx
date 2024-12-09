@@ -74,6 +74,14 @@ const RootLayout = () => {
                   onClick={() => setActiveKey("type")}>
                   Type
                 </Nav.Link>
+                <Nav.Link
+                  as={NavLink}
+                  to="/login"
+                  eventKey="login"
+                  className="nav-link"
+                  onClick={() => setActiveKey("login")}>
+                  Login
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
             <div className="text-light">v{version}</div>
