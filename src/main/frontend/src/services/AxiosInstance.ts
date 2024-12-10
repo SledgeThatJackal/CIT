@@ -8,11 +8,4 @@ const AxiosInstance = axios.create({
   withCredentials: true,
 });
 
-export function getCsrfToken() {
-  const csrfCookie = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("XSRF-TOKEN="));
-  return csrfCookie ? decodeURIComponent(csrfCookie.split("=")[1]) : undefined;
-}
-
 export default AxiosInstance;

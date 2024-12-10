@@ -48,12 +48,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Create Public Key
-        env:
-          PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
-        run: |
-          echo "$PUBLIC_KEY" > ./public.key
-
       - name: Install Dependencies and Build React App
         run: |
           npm ci

@@ -9,13 +9,15 @@ const LogoutButton = () => {
   const { displayError } = useErrorState();
 
   const handleLogout = async () => {
-    const response = await axios.post(`/logout`);
+    const response = await axios.post(`/logout`, null, {
+      withCredentials: true,
+    });
 
     const url = new URL(response.request.responseURL);
     const searchParams = new URLSearchParams(url.search);
 
     if (searchParams.get("logout")) {
-      navigate("/login");
+      navigate("/login", { state: { success: true } });
     } else {
       displayError(
         "Something went wrong and you were unable to logout. Please try again.",

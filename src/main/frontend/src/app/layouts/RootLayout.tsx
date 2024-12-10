@@ -1,4 +1,4 @@
-import ErrorBanner from "@components/error_handling/ErrorBanner";
+import { ErrorBanner } from "@components/general/Banners";
 import ErrorBoundaryFallBack from "@components/error_handling/ErrorBoundaryFallBack";
 import LogoutButton from "@components/general/LogoutButton";
 import { useErrorState } from "@hooks/state/useErrorState";

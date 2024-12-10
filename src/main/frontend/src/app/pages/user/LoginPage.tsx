@@ -1,19 +1,19 @@
 import { User } from "@schema/User";
 import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
   Container,
   FloatingLabel,
   Form,
-  FormLabel,
   Row,
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "@styles/Login.css";
+import { SuccessBanner } from "@components/general/Banners";
 
 function LoginPage() {
   const {
@@ -25,6 +25,9 @@ function LoginPage() {
   } = useForm<User>();
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [isLogout, setIsLogout] = useState<boolean>(false);
 
   const onSubmit = async (loginData: User) => {
     const response = await axios.post(
@@ -45,6 +48,14 @@ function LoginPage() {
     }
   };
 
+  useEffect(() => {
+    const { success } = location.state || {};
+
+    if (success) {
+      setIsLogout(true);
+    }
+  }, []);
+
   return (
     <Container
       fluid
@@ -53,6 +64,7 @@ function LoginPage() {
       <Container
         className="rounded text-light w-50 shadow"
         style={{ background: "rgb(15, 25, 37)" }}>
+        {isLogout && <SuccessBanner setState={setIsLogout} />}
         <Row className="mb-2">
           <Col as="h1">Login</Col>
         </Row>
