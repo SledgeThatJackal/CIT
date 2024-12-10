@@ -1,6 +1,15 @@
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
+const fs = require("fs");
+
+let publicKey;
+if (process.env.NODE_ENV === "production") {
+  publicKey = process.env.PUBLIC_KEY;
+} else {
+  const path = path.resolve(__dirname, "public.key");
+  publicKey = fs.readFileSync(path, "utf8");
+}
 
 module.exports = {
   entry: "./src/app/pages/app.js",
@@ -69,6 +78,9 @@ module.exports = {
       "process.env.VERSION": JSON.stringify(
         require(path.resolve(__dirname, "package.json")).version,
       ),
+    }),
+    new webpack.DefinePlugin({
+      "process.env.PUBLIC_KEY": JSON.stringify(publicKey),
     }),
   ],
 };
