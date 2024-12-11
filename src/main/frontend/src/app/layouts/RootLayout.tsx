@@ -1,5 +1,6 @@
-import ErrorBanner from "@components/error_handling/ErrorBanner";
+import { ErrorBanner } from "@components/general/Banners";
 import ErrorBoundaryFallBack from "@components/error_handling/ErrorBoundaryFallBack";
+import LogoutButton from "@components/general/LogoutButton";
 import { useErrorState } from "@hooks/state/useErrorState";
 import React, { useState } from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
@@ -74,8 +75,17 @@ const RootLayout = () => {
                   onClick={() => setActiveKey("type")}>
                   Type
                 </Nav.Link>
+                <Nav.Link
+                  as={NavLink}
+                  to="/login"
+                  eventKey="login"
+                  className="nav-link"
+                  onClick={() => setActiveKey("login")}>
+                  Login
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
+            <LogoutButton />
             <div className="text-light">v{version}</div>
           </Container>
         </Navbar>

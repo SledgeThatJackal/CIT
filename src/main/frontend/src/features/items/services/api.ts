@@ -5,16 +5,16 @@ import {
   ItemPageResponse,
   ItemSchemaType,
 } from "@item/schemas/Item";
+import AxiosInstance from "@services/AxiosInstance";
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
-import axios from "axios";
 
 // Query
 export const getItem = async (id: number) => {
-  return (await axios.get<Item>(`/api/item/id?id=${id}`)).data;
+  return (await AxiosInstance.get<Item>(`/item/id?id=${id}`)).data;
 };
 
 export const getItems = async () => {
-  return (await axios.get<Item[]>("/api/item")).data;
+  return (await AxiosInstance.get<Item[]>("/item")).data;
 };
 
 type FilterColumnType = {
@@ -74,31 +74,31 @@ export const getInfiniteItems = async (
     sortColumns: sortColumns,
   };
 
-  return await axios.post<ItemPageResponse>(`/api/item/page`, data);
+  return await AxiosInstance.post<ItemPageResponse>(`/item/page`, data);
 };
 
 export const getItemAttributes = async (id: number) => {
-  return (await axios.get<ItemAttribute[]>(`/api/attribute/item?id=${id}`))
+  return (await AxiosInstance.get<ItemAttribute[]>(`/attribute/item?id=${id}`))
     .data;
 };
 
 // Mutate
 export const createItem = async (data: ItemFormDTO) => {
-  await axios.post(`/api/item/create`, data);
+  await AxiosInstance.post(`/item/create`, data);
 };
 
 export const createItemAttribute = async (data: ItemAttribute) => {
-  await axios.post(`/api/attribute/item/create`, data);
+  await AxiosInstance.post(`/attribute/item/create`, data);
 };
 
 export const updateItem = async (data: ItemSchemaType) => {
-  await axios.put(`/api/item/edit`, data);
+  await AxiosInstance.put(`/item/edit`, data);
 };
 
 export const updateItemAttribute = async (data: ItemAttribute) => {
-  await axios.put(`/api/attribute/item/edit`, data);
+  await AxiosInstance.put(`/attribute/item/edit`, data);
 };
 
 export const deleteItem = async (id: number) => {
-  await axios.delete(`/api/item/delete?id=${id}`);
+  await AxiosInstance.delete(`/item/delete?id=${id}`);
 };

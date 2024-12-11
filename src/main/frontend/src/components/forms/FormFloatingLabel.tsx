@@ -7,6 +7,8 @@ type FormFloatingLabel<T extends FieldValues> = {
   path: Path<T>;
   title?: string;
   errorMessage?: string;
+  type?: string;
+  required?: boolean;
 };
 
 const FormFloatingLabel = <T extends FieldValues>({
@@ -14,15 +16,25 @@ const FormFloatingLabel = <T extends FieldValues>({
   path,
   title,
   errorMessage,
+  type = "text",
+  required = false,
 }: FormFloatingLabel<T>) => {
   return (
     <Form.Group>
-      <FloatingLabel label={title} controlId="floatingInput">
-        <Form.Control {...register(path)} type="text" />
+      <FloatingLabel label={title} controlId={`floatingInput-${path}`}>
+        <Form.Control
+          {...register(path)}
+          type={type}
+          required={required}
+          isInvalid={!!errorMessage}
+        />
+        <Form.Control.Feedback
+          type="invalid"
+          className="rounded ps-1"
+          style={{ background: "white" }}>
+          {errorMessage}
+        </Form.Control.Feedback>
       </FloatingLabel>
-      <Form.Control.Feedback type="invalid">
-        {errorMessage}
-      </Form.Control.Feedback>
     </Form.Group>
   );
 };
