@@ -4,6 +4,7 @@ import RootLayout from "../layouts/RootLayout.tsx";
 
 import HomePage from "../pages/home/HomePage.tsx";
 import { createBrowserRouter } from "react-router-dom";
+import LoginPage from "../pages/user/LoginPage.tsx";
 
 const ContainerPage = lazy(
   () => import("../pages/container/ContainerPage.tsx"),
@@ -26,7 +27,10 @@ export const router = createBrowserRouter(
       path: "/",
       element: <SuspenseLayout />,
       children: [
-        { index: true, element: <HomePage /> },
+        {
+          index: true,
+          element: <HomePage />,
+        },
         {
           path: "container",
           children: [{ index: true, element: <ContainerPage /> }],
@@ -41,6 +45,14 @@ export const router = createBrowserRouter(
           children: [{ index: true, element: <TypeSettingsPage /> }],
         },
       ],
+    },
+    {
+      path: "/login",
+      element: (
+        <Suspense fallback={<>Loading...</>}>
+          <LoginPage />
+        </Suspense>
+      ),
     },
   ],
   {

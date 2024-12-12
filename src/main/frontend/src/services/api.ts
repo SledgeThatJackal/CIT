@@ -5,16 +5,17 @@ import { ZodContainerType } from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";
 import { ImageType } from "@schema/Image";
 import omit from "lodash.omit";
+import AxiosInstance from "./AxiosInstance";
 
 // Containers
 
 // Query
 export const getContainers = async () => {
-  return (await axios.get<ZodContainerType[]>(`/api/container`)).data;
+  return (await AxiosInstance.get<ZodContainerType[]>(`/container`)).data;
 };
 
 export const getDetailedContainers = async () => {
-  return (await axios.get<ContainerType[]>(`/api/container/detail`)).data;
+  return (await AxiosInstance.get<ContainerType[]>(`/container/detail`)).data;
 };
 
 // Mutate
@@ -24,24 +25,24 @@ export const createContainer = async (
 ) => {
   const data = omit(container, ["id"]);
 
-  await axios.post(`/api/container/create?id=${id}`, data);
+  await AxiosInstance.post(`/container/create?id=${id}`, data);
 };
 
 export const updateContainer = async (data: ContainerType) => {
-  await axios.put(`/api/container/edit`, data);
+  await AxiosInstance.put(`/container/edit`, data);
 };
 
 export const updateParentContainer = async (
   id: number,
   parentContainerId: number,
 ) => {
-  await axios.put(
-    `/api/container/edit-parent?id=${id}&parentId=${parentContainerId}`,
+  await AxiosInstance.put(
+    `/container/edit-parent?id=${id}&parentId=${parentContainerId}`,
   );
 };
 
 export const deleteContainer = async (id: number) => {
-  await axios.delete(`/api/container/delete?id=${id}`);
+  await AxiosInstance.delete(`/container/delete?id=${id}`);
 };
 
 // Links
@@ -54,50 +55,50 @@ export const createLink = async (
   containerId: number,
   quantity: number,
 ) => {
-  await axios.post(
-    `/api/link?itemId=${itemId}&containerId=${containerId}&quantity=${quantity}`,
+  await AxiosInstance.post(
+    `/link?itemId=${itemId}&containerId=${containerId}&quantity=${quantity}`,
   );
 };
 
 export const updateQuantity = async (quantity: number, id: number) => {
-  await axios.put(`/api/link?quantity=${quantity}&id=${id}`);
+  await AxiosInstance.put(`/link?quantity=${quantity}&id=${id}`);
 };
 
 export const deleteLink = async (id: number) => {
-  await axios.delete(`/api/link?id=${id}`);
+  await AxiosInstance.delete(`/link?id=${id}`);
 };
 
 // Tags
 
 //Query
 export const getTags = async () => {
-  return (await axios.get<Tag[]>(`/api/tags`)).data;
+  return (await AxiosInstance.get<Tag[]>(`/tags`)).data;
 };
 
 // Mutate
 export const createTag = async (data: TagCreate) => {
-  return await axios.post(`/api/tags/create`, data);
+  return await AxiosInstance.post(`/tags/create`, data);
 };
 
 export const updateTag = async (data: Tag) => {
-  await axios.put(`/api/tags/edit`, data);
+  await AxiosInstance.put(`/tags/edit`, data);
 };
 
 export const deleteTag = async (id: number) => {
-  await axios.delete(`/api/tags/delete?id=${id}`);
+  await AxiosInstance.delete(`/tags/delete?id=${id}`);
 };
 
 // Images
 
 // Query
 export const getImages = async () => {
-  return (await axios.get<ImageType[]>(`/api/image`)).data;
+  return (await AxiosInstance.get<ImageType[]>(`/image`)).data;
 };
 
 // Muatate
 export const createImage = async (data: FormData) => {
   return (
-    await axios.post(`/api/image/upload`, data, {
+    await AxiosInstance.post(`/image/upload`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

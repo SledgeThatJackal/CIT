@@ -51,3 +51,7 @@ cit_export.json
 
 ### Config ###
 .editorconfig
+
+# RSA Keys
+private.key
+public.key

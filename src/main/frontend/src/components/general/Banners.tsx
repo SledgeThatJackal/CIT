@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useErrorState } from "@hooks/state/useErrorState";
 import { Col, Container, Row } from "react-bootstrap";
 
-const ErrorBanner = () => {
+export const ErrorBanner = () => {
   const { errorMessage, closeError } = useErrorState();
 
   useEffect(() => {
@@ -22,4 +22,24 @@ const ErrorBanner = () => {
   );
 };
 
-export default ErrorBanner;
+type SuccessBannerProps = {
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const SuccessBanner = ({ setState }: SuccessBannerProps) => {
+  useEffect(() => {
+    setTimeout(() => {
+      setState(false);
+    }, 5000);
+  }, []);
+
+  return (
+    <Container className="bg-success" fluid>
+      <Row className="justify-content-center">
+        <Col className="align-middle text-center">
+          <h2>You have been successfully logged out</h2>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
