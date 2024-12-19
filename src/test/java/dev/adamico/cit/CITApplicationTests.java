@@ -11,7 +11,6 @@ import org.springframework.test.context.DynamicPropertySource;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 public class CITApplicationTests extends DatabaseTest {
-
 	@DynamicPropertySource
 	static void configureDatasource(DynamicPropertyRegistry registry){
 		registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
