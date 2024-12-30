@@ -24,17 +24,21 @@ const ImageForm = () => {
 
     if (data) {
       const images: ImageType[] = await createImageMutation.mutateAsync(data);
-      append(images);
+      const imageEntities = images.map((image) => {
+        return { imageOrder: 1, image: image };
+      });
+
+      append(imageEntities);
     }
   };
 
   const handleAdd = (image: ImageType) => {
-    append(image);
+    append({ imageOrder: 1, image: image });
   };
 
   const handleRemove = (image: ImageType) => {
     const index = fields.findIndex(
-      (field) => field.fileName === image.fileName,
+      (field) => field.image.fileName === image.fileName,
     );
 
     if (index !== -1) remove(index);
@@ -43,7 +47,9 @@ const ImageForm = () => {
   return (
     <Container className="rounded mb-1" style={{ background: "#d4d5d6" }} fluid>
       <ImageInput
-        data={fields}
+        data={fields.map((field) => {
+          return field.image;
+        })}
         onChange={handleFileChange}
         onRemove={(index: number) => remove(index)}
         handleAdd={handleAdd}

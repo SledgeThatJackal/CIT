@@ -43,7 +43,10 @@ export function useInfiniteItems(
       ),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.page.number === lastPage.data.page.totalPages - 1) {
+      if (
+        lastPage.data.page.number === lastPage.data.page.totalPages - 1 ||
+        lastPage.data.page.totalPages === 0
+      ) {
         return undefined;
       }
 

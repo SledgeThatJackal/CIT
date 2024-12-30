@@ -162,7 +162,9 @@ function ItemTable() {
 
   const data: Item[] = useMemo(
     () =>
-      infiniteData?.pages.flatMap((page) => page.data._embedded.itemList) ?? [],
+      infiniteData?.pages.flatMap(
+        (page) => page.data._embedded?.itemList ?? [],
+      ) ?? [],
     [infiniteData],
   );
 

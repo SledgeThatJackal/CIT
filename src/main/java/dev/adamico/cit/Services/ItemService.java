@@ -105,6 +105,10 @@ public class ItemService {
             }
         }
 
+        if(item.getImages() != null){
+            item.getImages().forEach(itemImage -> itemImage.setItem(item));
+        }
+
         itemRepository.save(item);
     }
 
