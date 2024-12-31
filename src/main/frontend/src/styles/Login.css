@@ -5,8 +5,8 @@
   border-radius: 0% !important;
 }
 
-.form-control.is-invalid,
-.was-validated .form-control:invalid {
+.loginForm .form-control.is-invalid,
+.loginForm .was-validated .form-control:invalid {
   border-bottom: 1px solid red !important;
 }
 
@@ -18,24 +18,24 @@
   display: none;
 }
 
-.form-floating label {
+.loginForm .form-floating label {
   padding-left: 0 !important;
   padding-bottom: 0 !important;
 }
 
-.form-floating label::after {
+.loginForm .form-floating label::after {
   background: transparent !important;
 }
 
-.form-floating > .form-control-plaintext ~ label,
-.form-floating > .form-control:focus ~ label,
-.form-floating > .form-control:not(:placeholder-shown) ~ label,
-.form-floating > .form-select ~ label {
+.loginForm .form-floating > .form-control-plaintext ~ label,
+.loginForm .form-floating > .form-control:focus ~ label,
+.loginForm .form-floating > .form-control:not(:placeholder-shown) ~ label,
+.loginForm .form-floating > .form-select ~ label {
   opacity: 100% !important;
   color: #00ffff !important;
 }
 
-.btn-outline-info {
+.loginForm .btn-outline-info {
   --bs-btn-color: #00ffff;
   --bs-btn-border-color: #00ffff;
   --bs-btn-hover-color: #000;
