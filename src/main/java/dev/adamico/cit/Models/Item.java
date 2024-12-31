@@ -69,7 +69,7 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     @OrderBy("imageOrder")
-    private Set<ItemImage> images;
+    private List<ItemImage> images;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("item")
