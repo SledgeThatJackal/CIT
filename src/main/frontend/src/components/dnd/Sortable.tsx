@@ -9,7 +9,6 @@ export function WriteSortable(props: any) {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    // background: props.isOver && "yellow",
   };
 
   return (
