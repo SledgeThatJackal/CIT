@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { TagSchema } from "../../../schema/Tag";
 import { ItemTypeSchema } from "@schema/General";
-import { ImageSchema, ImageType } from "@schema/Image";
+import { ContainerImageSchema, ContainerImageType } from "@schema/Image";
 
 export type ContainerType = {
   id: number;
@@ -10,7 +10,7 @@ export type ContainerType = {
   scannerId: string;
   parentContainer?: ContainerType;
   containerItems?: ZodContainerItemSchema[];
-  images?: ImageType[];
+  images?: ContainerImageType[];
 };
 
 const ItemSchema = z.object({
@@ -35,7 +35,7 @@ const BaseContainerSchema = z.object({
   description: z.string().optional(),
   scannerId: z.string(),
   containerItems: z.array(ContainerItemSchema).optional(),
-  images: z.array(ImageSchema).optional(),
+  images: z.array(ContainerImageSchema).optional(),
 });
 
 const ParentContainerSchema = z.object({

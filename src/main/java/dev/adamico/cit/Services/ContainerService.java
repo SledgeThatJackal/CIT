@@ -49,6 +49,10 @@ public class ContainerService {
             container.addParent(parent);
         }
 
+        if(container.getImages() != null){
+            container.getImages().forEach(image -> image.setContainer(container));
+        }
+
         saveContainer(container);
     }
 
@@ -57,6 +61,10 @@ public class ContainerService {
             for(ContainerItem containerItem: container.getContainerItems()){
                 containerItem.setContainer(container);
             }
+        }
+
+        if(container.getImages() != null){
+            container.getImages().forEach(image -> image.setContainer(container));
         }
 
         saveContainer(container);

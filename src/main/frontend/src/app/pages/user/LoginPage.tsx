@@ -68,7 +68,7 @@ function LoginPage() {
         <Row className="mb-2">
           <Col as="h1">Login</Col>
         </Row>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} className="loginForm">
           <Form.Group controlId="usernameForm" className="mb-4">
             <FloatingLabel label="Username" controlId="floatingUsername">
               <Form.Control

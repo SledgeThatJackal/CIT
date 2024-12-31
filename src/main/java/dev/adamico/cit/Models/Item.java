@@ -66,14 +66,10 @@ public class Item {
     @JoinColumn(name = "itemtype_id", referencedColumnName = "id")
     private ItemType itemType;
 
-    @ManyToMany
-    @JoinTable(
-            name= "itemimages_table",
-            joinColumns = @JoinColumn(name = "item_id"),
-            inverseJoinColumns = @JoinColumn(name = "image_id")
-    )
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
-    private Set<Image> images;
+    @OrderBy("imageOrder")
+    private List<ItemImage> images;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("item")

@@ -12,7 +12,7 @@ const ImageForm = () => {
   const { control } = useFormContext<ItemSchemaType | ContainerType>();
   const createImageMutation = useCreateImage();
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, update, remove } = useFieldArray({
     control: control,
     name: "images",
   });
@@ -24,30 +24,53 @@ const ImageForm = () => {
 
     if (data) {
       const images: ImageType[] = await createImageMutation.mutateAsync(data);
-      append(images);
+      const imageEntities = images.map((image, index) => {
+        return { imageOrder: fields.length + index, image: image };
+      });
+
+      append(imageEntities);
     }
   };
 
-  const handleAdd = (image: ImageType) => {
-    append(image);
+  const handleAdd = (image: ImageType, order: number) => {
+    append({ imageOrder: order, image: image });
   };
 
   const handleRemove = (image: ImageType) => {
     const index = fields.findIndex(
-      (field) => field.fileName === image.fileName,
+      (field) => field.image.fileName === image.fileName,
     );
 
-    if (index !== -1) remove(index);
+    if (index !== -1) {
+      remove(index);
+      updateImageOrder();
+    }
+  };
+
+  const updateImageOrder = () => {
+    fields.forEach((field, index) => {
+      update(index, { ...field, imageOrder: index });
+    });
+  };
+
+  const handleDragEnd = (images: ImageType[]) => {
+    fields.forEach((field, index) => {
+      const newIndex = images.findIndex((image) => image.id === field.image.id);
+      update(index, { ...field, imageOrder: newIndex });
+    });
   };
 
   return (
     <Container className="rounded mb-1" style={{ background: "#d4d5d6" }} fluid>
       <ImageInput
-        data={fields}
+        data={fields.map((field) => {
+          return field.image;
+        })}
         onChange={handleFileChange}
         onRemove={(index: number) => remove(index)}
         handleAdd={handleAdd}
         handleRemove={handleRemove}
+        onDragEnd={handleDragEnd}
         buttonWidth={10}
       />
     </Container>

@@ -1,15 +1,20 @@
 package dev.adamico.cit.Models;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Views;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,13 +47,10 @@ public class Container {
     @JsonIgnoreProperties("container")
     private Set<ContainerItem> containerItems;
 
-    @ManyToMany
-    @JoinTable(
-            name= "containerimages_table",
-            joinColumns = @JoinColumn(name = "container_id"),
-            inverseJoinColumns = @JoinColumn(name = "image_id")
-    )
-    private Set<Image> images;
+    @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    @OrderBy("imageOrder")
+    private List<ContainerImage> images;
 
     @Transactional
     public void addParent(Container parent){
