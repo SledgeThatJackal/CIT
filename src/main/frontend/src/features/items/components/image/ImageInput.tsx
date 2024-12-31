@@ -17,7 +17,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ImageType } from "@schema/Image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   CloseButton,
@@ -94,13 +94,11 @@ const ImageInput = <T extends ImageType>({
 
   const removeImage = (index: number) => {
     onRemove(index);
-    setItems((prev) => {
-      const updatedItems = [...prev];
-      updatedItems.splice(index, 1);
-
-      return updatedItems;
-    });
   };
+
+  useEffect(() => {
+    setItems(data);
+  }, [data]);
 
   return (
     <React.Fragment>
