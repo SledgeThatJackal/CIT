@@ -19,8 +19,8 @@ const ImageEdit = () => {
       const fetchedImages: ImageType[] =
         await createImageMutation.mutateAsync(data);
 
-      const newImages = fetchedImages.map((image) => {
-        return { imageOrder: 1, image: image };
+      const newImages = fetchedImages.map((image, index) => {
+        return { imageOrder: images.length + index, image: image };
       });
 
       const combinedImages = [
@@ -37,18 +37,33 @@ const ImageEdit = () => {
     setImages((prev) => {
       const newImages = [...prev];
       newImages.splice(index, 1);
+
+      newImages.forEach(
+        (image, currentIndex) => (image.imageOrder = currentIndex),
+      );
+
       return newImages;
     });
   };
 
-  const handleAdd = (image: ImageType) => {
-    setImages((prev) => [...prev, { imageOrder: 1, image: image }]);
+  const handleAdd = (image: ImageType, order: number) => {
+    setImages((prev) => [...prev, { imageOrder: order, image: image }]);
   };
 
   const handleRemove = (image: ImageType) => {
     setImages((prev) =>
       prev.filter((element) => element.image.fileName !== image.fileName),
     );
+  };
+
+  const handleDragEnd = (images: ImageType[]) => {
+    setImages((prev) => {
+      return prev.map((image) => {
+        const newIndex = images.findIndex((img) => img.id === image.image.id);
+
+        return { ...image, imageOrder: newIndex };
+      });
+    });
   };
 
   useEffect(() => {
@@ -65,6 +80,7 @@ const ImageEdit = () => {
         onRemove={onRemove}
         handleAdd={handleAdd}
         handleRemove={handleRemove}
+        onDragEnd={handleDragEnd}
         buttonWidth={20}
       />
     </Container>
