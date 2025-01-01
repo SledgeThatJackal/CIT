@@ -9,7 +9,7 @@ import { useMemo } from "react";
 
 export function useItem(id: number) {
   return useQuery({
-    queryKey: ["item"],
+    queryKey: ["item", id],
     queryFn: () => getItem(id),
   });
 }
