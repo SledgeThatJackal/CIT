@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.springframework.data.domain.Sort.by;
 
@@ -28,6 +29,9 @@ public class ItemService {
 
     @Autowired
     private ItemAttributeService itemAttributeService;
+
+    @Autowired
+    private SettingService settingService;
 
     public List<Item> findAllItems(){
         return itemRepository.findAll(by("id"));
@@ -65,7 +69,8 @@ public class ItemService {
         String originalValue = dataType.equalsIgnoreCase("STRING") ? currentAttribute.getStringValue() : currentAttribute.getNumberValue();
 
         if(currentAttribute.getDuplicate()){
-            attrValues.addAll(List.of(originalValue.split("\\|")));
+            String delimiter = settingService.findByKey("itemDelimiter");
+            attrValues.addAll(List.of(originalValue.split(Pattern.quote(delimiter))));
         } else {
             attrValues.add(originalValue);
         }
