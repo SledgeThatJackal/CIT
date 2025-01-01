@@ -12,8 +12,23 @@ const ContainerPage = lazy(
 
 const ItemPage = lazy(() => import("../pages/item/ItemPage.tsx"));
 
-const TagSettingsPage = lazy(() => import("../pages/tag/TagPage.tsx"));
-const TypeSettingsPage = lazy(() => import("../pages/type/TypePage.tsx"));
+const TagPage = lazy(() => import("../pages/tag/TagPage.tsx"));
+const TypePage = lazy(() => import("../pages/type/TypePage.tsx"));
+
+const SettingsPage = lazy(() => import("../pages/settings/SettingsPage.tsx"));
+const ContainerSettings = lazy(
+  () =>
+    import("../../features/settings/components/pages/ContainerSettings.tsx"),
+);
+const ItemSettings = lazy(
+  () => import("../../features/settings/components/pages/ItemSettings.tsx"),
+);
+const TagSettings = lazy(
+  () => import("../../features/settings/components/pages/TagSettings.tsx"),
+);
+const TypeSettings = lazy(
+  () => import("../../features/settings/components/pages/TypeSettings.tsx"),
+);
 
 const SuspenseLayout = () => (
   <Suspense fallback={<>Loading...</>}>
@@ -38,11 +53,21 @@ export const router = createBrowserRouter(
         { path: "item", children: [{ index: true, element: <ItemPage /> }] },
         {
           path: "tag",
-          children: [{ index: true, element: <TagSettingsPage /> }],
+          children: [{ index: true, element: <TagPage /> }],
         },
         {
           path: "type",
-          children: [{ index: true, element: <TypeSettingsPage /> }],
+          children: [{ index: true, element: <TypePage /> }],
+        },
+        {
+          path: "settings",
+          element: <SettingsPage />,
+          children: [
+            { path: "container", element: <ContainerSettings /> },
+            { path: "item", element: <ItemSettings /> },
+            { path: "tag", element: <TagSettings /> },
+            { path: "type", element: <TypeSettings /> },
+          ],
         },
       ],
     },
