@@ -5,9 +5,7 @@ import TagBadge from "@tag/components/TagBadge";
 
 import { Tag } from "@schema/Tag";
 import { createPortal } from "react-dom";
-import { useData } from "@hooks/TagProvider";
 import { CellContext } from "@tanstack/react-table";
-import { useTags } from "@services/queries";
 import GenericMenu from "@components/general/GenericMenu";
 
 const tagStringCompare = (tag1: Tag, tag2: Tag) => {

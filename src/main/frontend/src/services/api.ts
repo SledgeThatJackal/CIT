@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { ContainerType } from "@container/schemas/Container";
 import { ZodContainerType } from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";

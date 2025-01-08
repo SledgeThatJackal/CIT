@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import {
   Col,
   Container,
@@ -18,6 +18,8 @@ import {
 import { ItemAttributeData } from "@item/schemas/Item";
 import FormFloatingLabel from "@components/forms/FormFloatingLabel";
 import { useTypeAttribute } from "@type/services/query";
+import { useSettingsData } from "@hooks/SettingsProvider";
+import { createSettingsMemo } from "@settings/data/SettingsMethods";
 
 type TypeSectionProps = {
   typeId: number;
@@ -35,6 +37,9 @@ const TypeSection = ({
   itemAttrFormState,
 }: TypeSectionProps) => {
   const typeAttrQuery = useTypeAttribute(typeId).data;
+  const settingsData = useSettingsData();
+
+  const delimiter = createSettingsMemo(settingsData, "itemDelimiter");
 
   const { fields, append, update } = useFieldArray({
     control: itemAttrControl,
@@ -103,8 +108,8 @@ const TypeSection = ({
           <OverlayTrigger
             overlay={
               <Tooltip>
-                Use a pipe '|' to seperate options, if you have duplicate turned
-                on.
+                Use a {delimiter} to separate options, if you have duplicate
+                turned on.
               </Tooltip>
             }>
             <i className="bi bi-question-circle text-warning" />
