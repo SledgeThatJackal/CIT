@@ -86,4 +86,15 @@ public class Container {
             child.setParentContainer(null);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Container{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", scannerId='" + scannerId + '\'' +
+//                ", images=" + images +
+                '}';
+    }
 }
