@@ -1,0 +1,1 @@
+CREATE INDEX idx_scanner_id ON container_table (scanner_id);
