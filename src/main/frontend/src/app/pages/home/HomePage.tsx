@@ -1,8 +1,7 @@
 import React from "react";
 
 import DatabaseExportButton from "@components/general/DatabaseExportButton";
-import { NavLink } from "react-router-dom";
-import BulkCreateButton from "@components/bulk_create/BulkCreateButton";
+import BulkCreateButton from "@container/components/zip_create/BulkCreateButton";
 
 function Home() {
   return (
