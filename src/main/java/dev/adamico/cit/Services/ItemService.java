@@ -56,6 +56,10 @@ public class ItemService {
                 item.getContainerItems().forEach(containerItem -> containerItem.setItem(item));
             }
 
+            if(item.getImages() != null){
+                item.getImages().forEach(image -> image.setItem(item));
+            }
+
             saveItems(item, itemAttributes);
         }
     }

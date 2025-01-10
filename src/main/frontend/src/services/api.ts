@@ -43,7 +43,7 @@ export const deleteContainer = async (id: number) => {
   await AxiosInstance.delete(`/container/delete?id=${id}`);
 };
 
-export const bulkContainerCreate = async (data: FormData) => {
+export const zipContainerCreate = async (data: FormData) => {
   await AxiosInstance.post("/bulk", data, {
     headers: {
       "Content-Type": "multipart/form-data",

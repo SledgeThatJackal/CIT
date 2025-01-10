@@ -1,8 +1,8 @@
 import { ContainerImageType } from "@schema/Image";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo } from "react";
 
 import "../../styles/ImageSelect.css";
-import { ContainerContext } from "@container/components/custom_cells/ItemCreateCell";
+import { ContainerContext } from "./ZipCreate";
 
 const ImageSelect = () => {
   const containerContext = useContext(ContainerContext);

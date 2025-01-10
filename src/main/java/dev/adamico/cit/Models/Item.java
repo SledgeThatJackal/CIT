@@ -35,8 +35,8 @@ import java.util.stream.Collectors;
         })
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonView(Views.Exclusive.class)
 public class Item {
     @Id
@@ -105,7 +105,7 @@ public class Item {
 
         this.tags = other.tags;
         this.itemType = other.itemType;
-        this.images = other.images;
+        this.images = other.getImages().stream().map(images -> new ItemImage(this, images.getImage(), images.getImageOrder())).collect(Collectors.toList());
         this.itemAttributes = other.itemAttributes;
         this.totalQuantity = other.totalQuantity;
         this.externalUrl = other.externalUrl;

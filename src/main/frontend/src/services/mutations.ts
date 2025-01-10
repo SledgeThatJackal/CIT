@@ -3,7 +3,7 @@ import { useErrorState } from "@hooks/state/useErrorState";
 import { TagCreate, TagSchemaType } from "@schema/Tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  bulkContainerCreate,
+  zipContainerCreate,
   createContainer,
   createImage,
   createLink,
@@ -135,7 +135,7 @@ export function useBulkContainerCreate() {
   const { displayError } = useErrorState();
 
   return useMutation({
-    mutationFn: (data: FormData) => bulkContainerCreate(data),
+    mutationFn: (data: FormData) => zipContainerCreate(data),
 
     onError: (error: any) => {
       displayError(error.response.data.message);

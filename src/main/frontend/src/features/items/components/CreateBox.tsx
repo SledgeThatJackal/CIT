@@ -28,7 +28,11 @@ import { useActionState } from "@item/hooks/useActionState";
 import omit from "lodash.omit";
 import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";
 
-const CreateBox = () => {
+type CreateBoxProps = {
+  afterSubmit?: () => void;
+};
+
+const CreateBox = ({ afterSubmit }: CreateBoxProps) => {
   const createItemMutation = useCreateItem();
   const itemTypeQuery = useItemTypes().data;
   const { closeCanvas } = useCanvasState();
@@ -38,7 +42,7 @@ const CreateBox = () => {
 
   const itemForm = useForm<ItemSchemaType>({
     defaultValues: item
-      ? omit(item, ["itemAttributes"])
+      ? omit(item, ["id", "itemAttributes"])
       : {
           id: undefined,
           name: undefined,
@@ -66,13 +70,11 @@ const CreateBox = () => {
               typeAttribute: any;
               stringValue?: string;
               numberValue?: number;
-            }) => {
-              return {
-                typeAttribute: itemAttr.typeAttribute,
-                stringValue: itemAttr.stringValue,
-                numberValue: itemAttr.numberValue,
-              };
-            },
+            }) => ({
+              typeAttribute: itemAttr.typeAttribute,
+              stringValue: itemAttr.stringValue,
+              numberValue: itemAttr.numberValue,
+            }),
           )
         : [],
     },
@@ -90,6 +92,17 @@ const CreateBox = () => {
   useEffect(() => {
     itemForm.setFocus("name");
   }, []);
+
+  const handleItemSubmit = () => {
+    typeForm.reset();
+    itemForm.reset();
+
+    if (!isBulkCreate) {
+      closeCanvas();
+    }
+
+    itemForm.setFocus("name");
+  };
 
   const onSubmit = async (itemData: ItemSchemaType) => {
     const item: ItemSchemaType = {
@@ -109,16 +122,9 @@ const CreateBox = () => {
       itemAttributes: typeForm.getValues().attributes,
     };
 
-    createItemMutation.mutate(itemFormDTO);
+    await createItemMutation.mutateAsync(itemFormDTO);
 
-    typeForm.reset();
-    itemForm.reset();
-
-    if (!isBulkCreate) {
-      closeCanvas();
-    }
-
-    itemForm.setFocus("name");
+    afterSubmit ? afterSubmit() : handleItemSubmit();
   };
 
   return (

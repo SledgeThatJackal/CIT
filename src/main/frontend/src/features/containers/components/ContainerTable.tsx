@@ -35,6 +35,7 @@ import Canvas from "@components/general/Canvas";
 import GenericModal from "@components/general/GenericModal";
 import { useBooleanState } from "@hooks/state/useBooleanState";
 import { useDebounce } from "@hooks/useDebounce";
+import ZipCreateModal from "./zip_create/ZipCreate";
 
 const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -279,6 +280,7 @@ function ContainerTable() {
         message={"Are you sure you want to delete this container?"}
       />
       <GenericModal />
+      <ZipCreateModal />
     </Container>
   );
 }

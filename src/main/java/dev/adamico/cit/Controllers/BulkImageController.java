@@ -18,4 +18,6 @@ public class BulkImageController {
     public void bulkCreateContainers(@RequestParam("file") MultipartFile file) throws Exception {
         bulkImageService.handleZipFile(file);
     }
+
+
 }
