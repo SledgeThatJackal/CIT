@@ -4,8 +4,10 @@ import dev.adamico.cit.CustomMultipartFile;
 import dev.adamico.cit.Models.Container;
 import dev.adamico.cit.Models.ContainerImage;
 import dev.adamico.cit.Models.Image;
+import dev.adamico.cit.Repositories.ContainerImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -17,12 +19,15 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @Service
-public class BulkImageService {
+public class ZipImageService {
     @Autowired
     ImageService imageService;
 
     @Autowired
     ContainerService containerService;
+
+    @Autowired
+    ContainerImageRepository containerImageRepository;
 
     public void handleZipFile(MultipartFile file) throws Exception {
         if(file.isEmpty()) return;
@@ -79,7 +84,7 @@ public class BulkImageService {
         List<Image> images = imageService.createImage(imageFiles);
         AtomicInteger index = new AtomicInteger();
 
-        List<ContainerImage> containerImages = images.stream().map(image -> new ContainerImage(container, image, index.getAndIncrement())).toList();
+        List<ContainerImage> containerImages = images.stream().map(image -> new ContainerImage(null, container, image, index.getAndIncrement())).toList();
 
         container.setImages(containerImages);
 
@@ -100,5 +105,10 @@ public class BulkImageService {
         }
 
         return outputStream.toByteArray();
+    }
+
+    @Transactional
+    public void deleteImages(List<ContainerImage> containerImages){
+        containerImageRepository.deleteAll(containerImages);
     }
 }
