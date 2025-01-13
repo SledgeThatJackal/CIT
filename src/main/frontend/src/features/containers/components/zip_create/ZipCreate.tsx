@@ -7,6 +7,7 @@ import { ContainerImageType } from "@schema/Image";
 import { createImagesArray, createItem } from "./ItemCreation";
 import { ContainerType } from "@container/schemas/Container";
 import { useZipCreateState } from "@container/hooks/useZipCreateState";
+import { useDeleteContainerImageLink } from "@container/services/mutation";
 
 type ContainerContextType = {
   container: ContainerType;
@@ -20,7 +21,8 @@ export const ContainerContext = createContext<ContainerContextType | undefined>(
 
 const ZipCreateModal = () => {
   const { updateItemAction } = useActionState();
-  const { row, showModal, closeModal, deleteLink } = useZipCreateState();
+  const { row, showModal, closeModal } = useZipCreateState();
+  const deleteContainerImageLinkMutation = useDeleteContainerImageLink();
 
   const [componentToggle, setComponentToggle] = useState<boolean>(false);
 
@@ -52,19 +54,17 @@ const ZipCreateModal = () => {
     )
       return;
 
-    const selectedImagesSet = new Set(selectedImages);
-    const updatedImages = container.images.filter(
-      (image) => !selectedImagesSet.has(image),
-    );
+    const images = selectedImages.map((image) => ({
+      id: image.id || -1,
+    }));
 
-    deleteLink && deleteLink(updatedImages);
-
-    setComponentToggle(false);
+    deleteContainerImageLinkMutation.mutate(images);
   };
 
   useEffect(() => {
     setSelectedImages([]);
-    setComponentToggle(false);
+    setComponentToggle((container?.images?.length ?? 0) < 1);
+    handleRowChange();
   }, [row]);
 
   if (!container) return;
@@ -99,7 +99,7 @@ const ZipCreateModal = () => {
         <Button
           variant="primary"
           onClick={() => setComponentToggle(false)}
-          disabled={!componentToggle}>
+          disabled={!componentToggle || (container.images?.length ?? 0) < 1}>
           Images
         </Button>
         <Button variant="info" onClick={handleClick} disabled={componentToggle}>

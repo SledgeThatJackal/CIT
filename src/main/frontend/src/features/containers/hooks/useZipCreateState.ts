@@ -5,12 +5,9 @@ import { create } from "zustand";
 type ZipCreateState = {
   row?: Row<ContainerType>;
   showModal: boolean;
-  openModal: (
-    row: Row<ContainerType>,
-    deleteLink?: (value: any) => void,
-  ) => void;
+  openModal: (row: Row<ContainerType>) => void;
   closeModal: () => void;
-  deleteLink?: (value: any) => void;
+  setRow: (row: Row<ContainerType>) => void;
 };
 
 export const useZipCreateState = create<ZipCreateState>((set) => ({
@@ -18,6 +15,7 @@ export const useZipCreateState = create<ZipCreateState>((set) => ({
   showModal: false,
   deleteLink: undefined,
 
-  openModal: (row, deleteLink) => set({ row, deleteLink, showModal: true }),
+  openModal: (row) => set({ row, showModal: true }),
   closeModal: () => set({ showModal: false }),
+  setRow: (row) => set({ row }),
 }));

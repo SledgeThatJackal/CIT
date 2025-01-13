@@ -14,7 +14,7 @@ const ImageSelect = () => {
 
   const { container, selectedImages, setSelectedImages } = containerContext;
 
-  const containerImages = useMemo(() => container.images, [container]);
+  const containerImages = useMemo(() => container.images, [container.images]);
 
   const toggleSelect = (selectedImage: ContainerImageType) => {
     setSelectedImages((prev) =>
@@ -37,11 +37,8 @@ const ImageSelect = () => {
                 alt={`Image- ${image.image.fileName}`}
                 draggable={false}
               />
-              <input
-                type="checkbox"
-                checked={selectedImages.includes(image)}
-                className={`photo-checkbox`}
-                readOnly
+              <label
+                className={`photo-checkbox ${selectedImages.includes(image) ? "selected" : ""}`}
               />
             </div>
           </div>

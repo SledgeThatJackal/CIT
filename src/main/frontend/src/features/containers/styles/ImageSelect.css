@@ -22,8 +22,18 @@
   position: relative;
 }
 
+.photo-container:hover,
+.photo-container:hover .photo-checkbox:not(.selected) {
+  border-color: #8c97a3;
+}
+
 .photo-container.selected {
-  border: 2px solid rgb(0, 117, 255);
+  border-color: rgb(0, 117, 255);
+}
+
+.photo-container.selected:hover,
+.photo-container:hover .photo-checkbox.selected {
+  border-color: rgb(0, 94, 204);
 }
 
 .photo img {
@@ -34,9 +44,28 @@
 }
 
 .photo-checkbox {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  background-color: whitesmoke;
+  border: 2px solid #7b8895;
+  border-radius: 4px;
+  display: inline-block;
   position: absolute;
   top: 10px;
   left: 10px;
-  cursor: pointer;
-  transform: scale(1.5);
+}
+
+.photo-checkbox.selected {
+  background-color: rgb(0, 117, 255);
+}
+
+.photo-container.selected::after {
+  content: "✓";
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+  top: 8px;
+  left: 14px;
 }

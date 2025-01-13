@@ -1,6 +1,4 @@
-import { z } from "zod";
-import { TagSchema } from "../../../schema/Tag";
-import { ItemTypeSchema } from "@schema/General";
+import { StringValidation, z } from "zod";
 import { ContainerImageSchema, ContainerImageType } from "@schema/Image";
 
 export type ContainerType = {
@@ -9,16 +7,26 @@ export type ContainerType = {
   description?: string;
   scannerId: string;
   parentContainer?: ContainerType;
-  containerItems?: ZodContainerItemSchema[];
+  containerItems?: ContainerItemType[];
   images?: ContainerImageType[];
+};
+
+type ContainerItemType = {
+  id: number;
+  quantity: number;
+  item: Item;
+};
+
+type Item = {
+  id: number;
+  name: string;
+  description: string;
 };
 
 const ItemSchema = z.object({
   id: z.number().optional(),
   name: z.string({ message: "The Item name is required" }),
   description: z.string().optional(),
-  tags: z.array(TagSchema).optional(),
-  itemType: ItemTypeSchema.optional(),
 });
 
 export const ContainerItemSchema = z.object({

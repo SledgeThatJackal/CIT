@@ -15,7 +15,7 @@ const ImageCell = <T, S extends ItemImageType[]>(
   const { setContext } = useAttributeState();
 
   const displayedImage = useMemo(() => {
-    return images.length > 0
+    return images?.length > 0
       ? `/api/image/${images[index].image.fileName}`
       : "";
   }, [index, images]);
