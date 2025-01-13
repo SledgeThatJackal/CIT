@@ -23,7 +23,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonView(Views.Exclusive.class)
+@JsonView(Views.Basic.class)
 public class Container {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -35,21 +35,23 @@ public class Container {
 
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @ManyToOne(targetEntity = Container.class, fetch = FetchType.EAGER)
-    @JsonView(Views.ExclusiveObject.class)
+    @JsonView(Views.ContainerItem.class)
     private Container parentContainer;
 
     @OneToMany(mappedBy = "parentContainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Container> childContainers = new HashSet<>();
 
-    @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonView(Views.Inclusive.class)
-    @JsonIgnoreProperties("container")
+    @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = {"container"}, allowSetters = true)
+    @JsonView(Views.ContainerItem.class)
     private Set<ContainerItem> containerItems;
 
     @OneToMany(mappedBy = "container", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     @OrderBy("imageOrder")
+    @JsonIgnoreProperties("container")
+    @JsonView(Views.ContainerItem.class)
     private List<ContainerImage> images;
 
     @Transactional
@@ -72,6 +74,7 @@ public class Container {
     }
 
     @JsonIgnore
+    @Transactional
     private void addDescendantsToSet(Set<Container> descendants){
         for(Container child: this.getChildContainers()){
             descendants.add(child);
@@ -85,16 +88,5 @@ public class Container {
         for(Container child : this.getChildContainers()){
             child.setParentContainer(null);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Container{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", scannerId='" + scannerId + '\'' +
-//                ", images=" + images +
-                '}';
     }
 }
