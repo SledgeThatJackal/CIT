@@ -1,3 +1,4 @@
+import { Row } from "@tanstack/react-table";
 import { z } from "zod";
 
 export type RefMethod = {
@@ -10,3 +11,7 @@ export const ItemTypeSchema = z.object({
 });
 
 export type ZodItemType = z.infer<typeof ItemTypeSchema>;
+
+export type DisplayCell<T> = {
+  row: Row<T>;
+};

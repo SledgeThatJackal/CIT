@@ -11,25 +11,25 @@ export const ImageSchema = z.object({
 });
 
 export type ItemImageType = {
-  itemId?: number;
+  id?: number;
   imageOrder: number;
   image: ImageType;
 };
 
 export const ItemImageSchema = z.object({
-  itemId: z.number().optional(),
+  id: z.number().optional(),
   imageOrder: z.number(),
   image: ImageSchema,
 });
 
 export type ContainerImageType = {
-  containerId?: number;
+  id?: number;
   imageOrder: number;
   image: ImageType;
 };
 
 export const ContainerImageSchema = z.object({
-  containerId: z.number().optional(),
+  id: z.number().optional(),
   imageOrder: z.number(),
   image: ImageSchema,
 });

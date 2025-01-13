@@ -23,6 +23,9 @@ export function useCreateItem() {
     onSettled: async (_, error) => {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["detailedContainers"],
+        });
       }
     },
   });

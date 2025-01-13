@@ -1,0 +1,8 @@
+.image-modal {
+  --bs-modal-bg: rgb(33, 37, 41) !important;
+}
+
+.image-modal .modal-header,
+.image-modal h3 {
+  color: white;
+}

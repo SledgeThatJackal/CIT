@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonView(Views.Exclusive.class)
+@JsonView(Views.Basic.class)
 public class ItemAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

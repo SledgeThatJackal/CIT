@@ -52,11 +52,7 @@ public class ItemService {
         if(hasDuplicates){
             processItemAttributes(item, itemAttributes, 0);
         } else {
-            if(item.getContainerItems() != null){
-                item.getContainerItems().forEach(containerItem -> containerItem.setItem(item));
-            }
-
-            saveItems(item, itemAttributes);
+            saveItem(item);
         }
     }
 
@@ -103,6 +99,7 @@ public class ItemService {
         itemAttributeService.updateItemAttributes(id, itemAttributes);
     }
 
+    @Transactional
     public void saveItem(Item item){
         if(item.getContainerItems() != null){
             for(ContainerItem containerItem : item.getContainerItems()){

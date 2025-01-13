@@ -18,26 +18,11 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "item_table")
-@NamedEntityGraph(
-        name = "graph.Item",
-        attributeNodes= {
-                @NamedAttributeNode(value = "containerItems", subgraph = "containerItemSubgraph")
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "containerItemSubgraph",
-                        attributeNodes = {
-                                @NamedAttributeNode("id"),
-                                @NamedAttributeNode("quantity"),
-                                @NamedAttributeNode("container")
-                        }
-                )
-        })
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@JsonView(Views.Exclusive.class)
+@AllArgsConstructor
+@JsonView(Views.Basic.class)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -46,10 +31,10 @@ public class Item {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonView(Views.Inclusive.class)
-    @JsonIgnoreProperties("item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = {"item"}, allowSetters = true)
     @Fetch(FetchMode.SUBSELECT)
+    @JsonView(Views.ItemContainer.class)
     private Set<ContainerItem> containerItems;
 
     @ManyToMany
@@ -58,27 +43,33 @@ public class Item {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    @JsonView(Views.Exclusive.class)
     @Fetch(FetchMode.SUBSELECT)
+    @JsonView(Views.ItemContainer.class)
     private Set<Tag> tags;
 
     @ManyToOne
     @JoinColumn(name = "itemtype_id", referencedColumnName = "id")
+    @JsonView(Views.ItemContainer.class)
     private ItemType itemType;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     @OrderBy("imageOrder")
+    @JsonIgnoreProperties("item")
+    @JsonView(Views.ItemContainer.class)
     private List<ItemImage> images;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("item")
     @Fetch(FetchMode.SUBSELECT)
+    @JsonView(Views.ItemContainer.class)
     private List<ItemAttribute> itemAttributes;
 
     @Transient
+    @JsonView(Views.ItemContainer.class)
     private Integer totalQuantity = 0;
 
+    @JsonView(Views.ItemContainer.class)
     private String externalUrl;
 
 
@@ -105,7 +96,7 @@ public class Item {
 
         this.tags = other.tags;
         this.itemType = other.itemType;
-        this.images = other.images;
+        this.images = other.getImages().stream().map(images -> new ItemImage(null, this, images.getImage(), images.getImageOrder())).collect(Collectors.toList());
         this.itemAttributes = other.itemAttributes;
         this.totalQuantity = other.totalQuantity;
         this.externalUrl = other.externalUrl;
