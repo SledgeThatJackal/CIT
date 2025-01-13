@@ -1,7 +1,9 @@
 package dev.adamico.cit.Controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.TypeAttribute;
 import dev.adamico.cit.Services.TypeAttributeService;
+import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +16,13 @@ public class TypeAttributeController {
     private TypeAttributeService typeAttributeService;
 
     @GetMapping
+    @JsonView(Views.Basic.class)
     public List<TypeAttribute> getTypeAttributes(){
         return typeAttributeService.findAll();
     }
 
     @GetMapping("/id")
+    @JsonView(Views.Basic.class)
     public List<TypeAttribute> getTypeAttributesById(@RequestParam("id") Long id){
         return typeAttributeService.findByTypeId(id);
     }

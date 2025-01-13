@@ -1,7 +1,9 @@
 package dev.adamico.cit.Controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.Image;
 import dev.adamico.cit.Services.ImageService;
+import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -19,6 +21,7 @@ public class ImageController {
     private ImageService imageService;
 
     @GetMapping
+    @JsonView(Views.Basic.class)
     public List<Image> fetchImages(){
       return imageService.getImages();
     }

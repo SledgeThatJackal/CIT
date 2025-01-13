@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonView(Views.Exclusive.class)
+@JsonView(Views.Basic.class)
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

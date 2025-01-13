@@ -1,8 +1,10 @@
 package dev.adamico.cit.Controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.DTO.TypeFormDTO;
 import dev.adamico.cit.Models.ItemType;
 import dev.adamico.cit.Services.ItemTypeService;
+import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ public class ItemTypeController {
     private ItemTypeService itemTypeService;
 
     @GetMapping
+    @JsonView(Views.Basic.class)
     public List<ItemType> getTypes(){
         return itemTypeService.findAll();
     }

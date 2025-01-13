@@ -37,19 +37,19 @@ public class ItemController {
     private ContainerItemService containerItemService;
 
     @GetMapping
-    @JsonView(Views.InclusiveID.class)
+    @JsonView(Views.ItemContainer.class)
     public List<Item> getItems(){
         return itemService.findAllItems();
     }
 
     @GetMapping("id")
-    @JsonView(Views.InclusiveID.class)
+    @JsonView(Views.ItemContainer.class)
     public Item getItem(@RequestParam long id){
         return itemService.findItemById(id);
     }
 
     @PostMapping("/page")
-    @JsonView(Views.InclusiveID.class)
+    @JsonView(Views.ItemContainer.class)
     public PagedModel<EntityModel<Item>> getItemPage(@RequestBody ItemQueryRequest itemQueryRequest, PagedResourcesAssembler<Item> assembler) {
         Page<Item> itemPage = itemService.filterItemPages(itemQueryRequest);
         itemPage.forEach(item -> {

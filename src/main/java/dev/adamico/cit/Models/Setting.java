@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonView(Views.Exclusive.class)
+@JsonView(Views.Basic.class)
 public class Setting {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
