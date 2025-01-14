@@ -1,7 +1,6 @@
 import { useErrorState } from "@hooks/state/useErrorState";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteContainerImageLinks } from "./api";
-import { ContainerImageType } from "@schema/Image";
 
 export function useDeleteContainerImageLink() {
   const queryClient = useQueryClient();
@@ -10,6 +9,7 @@ export function useDeleteContainerImageLink() {
   return useMutation({
     mutationFn: (data: { id: number }[]) => deleteContainerImageLinks(data),
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       displayError(error.response.data.message);
     },

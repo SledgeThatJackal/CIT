@@ -25,7 +25,7 @@ const ImageSelect = () => {
   };
 
   return (
-    <div className="photo-grid">
+    <div className="photo-grid shadow">
       {containerImages &&
         containerImages.map((image) => (
           <div

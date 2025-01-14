@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.DTO.ItemFormDTO;
 import dev.adamico.cit.DTO.ItemQueryRequest;
 import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Models.ItemImage;
 import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ContainerItemService;
 import dev.adamico.cit.Services.ContainerService;
@@ -68,6 +69,11 @@ public class ItemController {
     @PostMapping("/create")
     public void createItem(@RequestBody ItemFormDTO dto){
         itemService.createItem(dto);
+    }
+
+    @PostMapping("/create/image")
+    public void createItemImages(@RequestBody List<ItemImage> itemImages){
+        itemService.createItemImages(itemImages);
     }
 
     @DeleteMapping("/delete-tag")

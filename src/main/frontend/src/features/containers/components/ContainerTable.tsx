@@ -11,15 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ContainerType } from "../schemas/Container";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Row,
-  Stack,
-  Table,
-} from "react-bootstrap";
+import { Button, Container, Form, Stack, Table } from "react-bootstrap";
 import PaginationControl from "@components/general/PaginationControl";
 import { MemoizedTableBody, TableBody } from "./TableBody";
 import ConfirmationModal from "@components/general/ConfirmationModal";
@@ -37,7 +29,7 @@ import { useBooleanState } from "@hooks/state/useBooleanState";
 import { useDebounce } from "@hooks/useDebounce";
 import ZipCreateModal from "./zip_create/ZipCreate";
 
-const Input = ({ column }: { column: Column<any, unknown> }) => {
+const Input = ({ column }: { column: Column<ContainerType, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
   const [value, setValue] = useState<string>(filterValue);
 
@@ -86,7 +78,7 @@ function ContainerTable() {
 
   const pageResetRef = useRef<boolean>(false);
 
-  const updateData = (rowIndex: number, columnID: string, value: any) => {
+  const updateData = (rowIndex: number, columnID: string, value: unknown) => {
     pageResetRef.current = true; // Disable page from changing
 
     const updatedContainer = { ...data[rowIndex], [columnID]: value };
@@ -165,7 +157,7 @@ function ContainerTable() {
     }
 
     return sizes;
-  }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
+  }, [table]);
 
   return (
     <Container className="pt-2" fluid>

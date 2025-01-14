@@ -2,6 +2,7 @@ import {
   Item,
   ItemAttribute,
   ItemFormDTO,
+  ItemImageRequest,
   ItemPageResponse,
   ItemSchemaType,
 } from "@item/schemas/Item";
@@ -89,6 +90,10 @@ export const createItem = async (data: ItemFormDTO) => {
 
 export const createItemAttribute = async (data: ItemAttribute) => {
   await AxiosInstance.post(`/attribute/item/create`, data);
+};
+
+export const updateItemImage = async (data: ItemImageRequest[]) => {
+  await AxiosInstance.post(`/item/create/image`, data);
 };
 
 export const updateItem = async (data: ItemSchemaType) => {

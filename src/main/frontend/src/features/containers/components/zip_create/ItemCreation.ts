@@ -1,10 +1,23 @@
 import { ContainerType } from "@container/schemas/Container";
+import { ItemImageRequest } from "@item/schemas/Item";
 import { ContainerImageType, ImageType } from "@schema/Image";
 
 export const createImagesArray = (selectedImages: ContainerImageType[]) =>
   selectedImages.map((currentImage, index) => ({
     imageOrder: index,
     image: currentImage.image,
+  }));
+
+export const createItemImagesArray = (
+  id: number,
+  selectedImages: ContainerImageType[],
+): ItemImageRequest[] =>
+  selectedImages.map((currentImage, index) => ({
+    imageOrder: index,
+    image: currentImage.image,
+    item: {
+      id: id,
+    },
   }));
 
 export const createItem = (
