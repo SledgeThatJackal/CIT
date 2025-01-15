@@ -13,6 +13,7 @@ const ItemCreateCell = ({ row }: DisplayCell<ContainerType>) => {
     if (showModal) {
       setRow(row);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [row]);
 
   return (

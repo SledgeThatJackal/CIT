@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useErrorState } from "@hooks/state/useErrorState";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -6,8 +7,14 @@ import {
   deleteItem,
   updateItem,
   updateItemAttribute,
+  updateItemImage,
 } from "./api";
-import { ItemAttribute, ItemFormDTO, ItemSchemaType } from "@item/schemas/Item";
+import {
+  ItemAttribute,
+  ItemFormDTO,
+  ItemImageRequest,
+  ItemSchemaType,
+} from "@item/schemas/Item";
 
 export function useCreateItem() {
   const queryClient = useQueryClient();
@@ -32,7 +39,6 @@ export function useCreateItem() {
 }
 
 export function useCreateItemAttribute() {
-  const queryClient = useQueryClient();
   const { displayError } = useErrorState();
 
   return useMutation({
@@ -40,12 +46,6 @@ export function useCreateItemAttribute() {
 
     onError: (error: any) => {
       displayError(error.response.data.message);
-    },
-
-    onSettled: async (_, error) => {
-      if (!error) {
-        // set up invadliation
-      }
     },
   });
 }
@@ -89,6 +89,28 @@ export function useUpdateItemAttribute() {
         await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
         await queryClient.invalidateQueries({
           queryKey: ["itemattributes", data.item?.id],
+        });
+      }
+    },
+  });
+}
+
+export function useCreateItemImages() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: ItemImageRequest[]) => updateItemImage(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error) => {
+      if (!error) {
+        await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["detailedContainers"],
         });
       }
     },

@@ -1,0 +1,39 @@
+.item-select-container {
+  background-color: rgb(61, 69, 78);
+  border-radius: 5px;
+  border: 3px solid #7b8895;
+}
+
+.item-select-list {
+  list-style: none;
+  display: block;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-left: 0 !important;
+  scroll-behavior: smooth;
+}
+
+.item-select-item {
+  color: white;
+  padding: 0.5em;
+  margin: 0.5em;
+  margin-left: 20px;
+  border-radius: 4px;
+  border: 2px solid rgb(61, 69, 78);
+}
+
+.item-select-item:hover {
+  background-color: rgb(81, 89, 98);
+  border-color: rgb(100, 110, 120);
+  cursor: pointer;
+}
+
+.item-select-item.selected {
+  background-color: rgb(81, 99, 120);
+  border-color: rgb(101, 119, 140);
+  cursor: default;
+}
+
+.item-select-button {
+  margin-top: 16px;
+}

@@ -11,15 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ContainerType } from "../schemas/Container";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Row,
-  Stack,
-  Table,
-} from "react-bootstrap";
+import { Button, Container, Form, Stack, Table } from "react-bootstrap";
 import PaginationControl from "@components/general/PaginationControl";
 import { MemoizedTableBody, TableBody } from "./TableBody";
 import ConfirmationModal from "@components/general/ConfirmationModal";
@@ -36,8 +28,11 @@ import GenericModal from "@components/general/GenericModal";
 import { useBooleanState } from "@hooks/state/useBooleanState";
 import { useDebounce } from "@hooks/useDebounce";
 import ZipCreateModal from "./zip_create/ZipCreate";
+import ZipCreateButton from "./zip_create/ZipCreateButton";
 
-const Input = ({ column }: { column: Column<any, unknown> }) => {
+import "@container/styles/ContainerTable.css";
+
+const Input = ({ column }: { column: Column<ContainerType, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
   const [value, setValue] = useState<string>(filterValue);
 
@@ -86,7 +81,7 @@ function ContainerTable() {
 
   const pageResetRef = useRef<boolean>(false);
 
-  const updateData = (rowIndex: number, columnID: string, value: any) => {
+  const updateData = (rowIndex: number, columnID: string, value: unknown) => {
     pageResetRef.current = true; // Disable page from changing
 
     const updatedContainer = { ...data[rowIndex], [columnID]: value };
@@ -165,7 +160,7 @@ function ContainerTable() {
     }
 
     return sizes;
-  }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
+  }, [table]);
 
   return (
     <Container className="pt-2" fluid>
@@ -175,22 +170,24 @@ function ContainerTable() {
             <PaginationControl table={table} />
           </Stack>
         )}
-        <Stack
-          direction="horizontal"
-          gap={2}
-          className="bg-light text-dark p-2 rounded shadow ms-auto">
-          <Button
-            variant="success"
-            className="shadow"
-            size="sm"
-            onClick={() => openCanvas(ContainerCreate, "bottom", "Create")}>
-            Create
-          </Button>
-          <Form.Switch
-            id="bulkSwitch"
-            label="Bulk Create"
-            onChange={() => toggle(!isOn)}
-          />
+        <Stack direction="horizontal" gap={2} className="ms-auto">
+          <Container className="container-create" style={{ width: "auto" }}>
+            <ZipCreateButton />
+          </Container>
+          <Stack direction="horizontal" gap={2} className="container-create">
+            <Button
+              variant="success"
+              className="shadow"
+              size="sm"
+              onClick={() => openCanvas(ContainerCreate, "bottom", "Create")}>
+              Create
+            </Button>
+            <Form.Switch
+              id="bulkSwitch"
+              label="Bulk Create"
+              onChange={() => toggle(!isOn)}
+            />
+          </Stack>
         </Stack>
       </Stack>
       <div>

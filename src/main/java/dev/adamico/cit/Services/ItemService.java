@@ -5,6 +5,8 @@ import dev.adamico.cit.DTO.ItemQueryRequest;
 import dev.adamico.cit.Filtering.ItemSpecification;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Models.ItemImage;
+import dev.adamico.cit.Repositories.ItemImageRepository;
 import dev.adamico.cit.Repositories.ItemRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class ItemService {
 
     @Autowired
     private SettingService settingService;
+
+    @Autowired
+    private ItemImageRepository itemImageRepository;
 
     public List<Item> findAllItems(){
         return itemRepository.findAll(by("id"));
@@ -146,6 +151,10 @@ public class ItemService {
         }
 
         return orders.isEmpty() ? Sort.unsorted() : Sort.by(orders);
+    }
+
+    public void createItemImages(List<ItemImage> itemImages) {
+        itemImageRepository.saveAll(itemImages);
     }
 
 //    private Sort sortByInnerValue(ItemQueryRequest.SortColumn currentSort){

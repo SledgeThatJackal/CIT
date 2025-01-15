@@ -47,6 +47,7 @@ import { useItemTypes } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
 import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Input = ({ column }: { column: Column<any, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
   const type = column.columnDef.meta?.type?.toUpperCase() ?? "STRING";
@@ -61,12 +62,14 @@ const Input = ({ column }: { column: Column<any, unknown> }) => {
     column.setFilterValue(filteredValue);
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (event: React.ChangeEvent<any>) => {
     setValue(event.target.value);
 
     request();
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onNumericChange = (event: React.ChangeEvent<any>) => {
     // Remove any non-numeric characters, except for . , -
     let inputValue = event.target.value.replace(/[^0-9.\,\-]/g, "");
@@ -92,6 +95,7 @@ const Input = ({ column }: { column: Column<any, unknown> }) => {
     if (type === "STRING") {
       setFilter("E");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   switch (type) {
@@ -183,7 +187,7 @@ function ItemTable() {
 
   const pageResetRef = useRef<boolean>(false);
 
-  const updateData = (rowIndex: number, columnID: string, value: any) => {
+  const updateData = (rowIndex: number, columnID: string, value: unknown) => {
     pageResetRef.current = true; // Disable page from changing
 
     const updatedItem = { ...data[rowIndex], [columnID]: value };
@@ -243,11 +247,8 @@ function ItemTable() {
     }
 
     return sizes;
-  }, [
-    table.getState().columnSizingInfo,
-    table.getState().columnSizing,
-    columns,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table, columns]);
 
   const virtualizer = useVirtualizer({
     count: data.length,
@@ -306,11 +307,12 @@ function ItemTable() {
     setTableKey((prev) => prev + 1);
   }, [filter]);
 
+  const tableRows = table.getRowModel().rows;
   useEffect(() => {
     if (!isFetchingNextPage) {
       virtualizer.measure();
     }
-  }, [table.getRowModel().rows, isFetchingNextPage]);
+  }, [tableRows, isFetchingNextPage, virtualizer]);
 
   return (
     <Container className="pt-2" fluid>
@@ -359,7 +361,6 @@ function ItemTable() {
           }}
           onScroll={(e) => fetchPages(e.target as HTMLDivElement)}>
           <Table
-            // key={`table-${tableKey}`}
             hover
             bordered
             variant="dark"

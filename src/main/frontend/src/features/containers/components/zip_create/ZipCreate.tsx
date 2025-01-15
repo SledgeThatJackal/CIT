@@ -8,6 +8,7 @@ import { createImagesArray, createItem } from "./ItemCreation";
 import { ContainerType } from "@container/schemas/Container";
 import { useZipCreateState } from "@container/hooks/useZipCreateState";
 import { useDeleteContainerImageLink } from "@container/services/mutation";
+import ItemSelect from "./ItemSelect";
 
 type ContainerContextType = {
   container: ContainerType;
@@ -19,12 +20,18 @@ export const ContainerContext = createContext<ContainerContextType | undefined>(
   undefined,
 );
 
+const STATE = {
+  CREATE: "CREATE",
+  EXISTING: "EXISTING",
+  IMAGES: "IMAGES",
+};
+
 const ZipCreateModal = () => {
   const { updateItemAction } = useActionState();
   const { row, showModal, closeModal } = useZipCreateState();
   const deleteContainerImageLinkMutation = useDeleteContainerImageLink();
 
-  const [componentToggle, setComponentToggle] = useState<boolean>(false);
+  const [componentState, setComponentState] = useState<string>(STATE.IMAGES);
 
   const [selectedImages, setSelectedImages] = useState<ContainerImageType[]>(
     [],
@@ -41,9 +48,9 @@ const ZipCreateModal = () => {
     updateItemAction(item);
   };
 
-  const handleClick = () => {
+  const handleCreateClick = () => {
     handleRowChange();
-    setComponentToggle(true);
+    setComponentState(STATE.CREATE);
   };
 
   const handleLinkDelete = () => {
@@ -63,9 +70,70 @@ const ZipCreateModal = () => {
 
   useEffect(() => {
     setSelectedImages([]);
-    setComponentToggle((container?.images?.length ?? 0) < 1);
     handleRowChange();
-  }, [row]);
+    setComponentState(
+      (container?.images?.length ?? 0) < 1 ? STATE.CREATE : STATE.IMAGES,
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [container]);
+
+  const renderButtons = () => {
+    const buttons = [];
+
+    if (
+      componentState !== STATE.IMAGES &&
+      (container?.images?.length ?? 0) > 0
+    ) {
+      buttons.push(
+        <ModalButton
+          label="Back"
+          variant="danger"
+          handleClick={() => setComponentState(STATE.IMAGES)}
+          key={"ModalButton-IMAGES"}
+        />,
+      );
+    }
+
+    if (
+      componentState === STATE.IMAGES &&
+      (container?.containerItems?.length ?? 0) > 0
+    )
+      buttons.push(
+        <ModalButton
+          label="Add to existing Item"
+          variant="light"
+          handleClick={() => setComponentState(STATE.EXISTING)}
+          isDisabled={selectedImages.length < 1}
+          key={"ModalButton-EXISTING"}
+        />,
+      );
+
+    if (componentState === STATE.IMAGES)
+      buttons.push(
+        <ModalButton
+          label="Create new Item"
+          variant="info"
+          handleClick={handleCreateClick}
+          key={"ModalButton-CREATE"}
+        />,
+      );
+
+    return buttons;
+  };
+
+  const renderComponents = () => {
+    switch (componentState) {
+      case STATE.IMAGES:
+        return <ItemCreate />;
+      case STATE.EXISTING:
+        return <ItemSelect handleLinkDelete={handleLinkDelete} />;
+      case STATE.CREATE:
+        return <CreateBox afterSubmit={handleLinkDelete} />;
+      default:
+        return <div>An error has occured</div>;
+    }
+  };
 
   if (!container) return;
 
@@ -85,28 +153,40 @@ const ZipCreateModal = () => {
             selectedImages,
             setSelectedImages,
           }}>
-          {componentToggle ? (
-            <CreateBox afterSubmit={handleLinkDelete} />
-          ) : (
-            <ItemCreate />
-          )}
+          {renderComponents()}
         </ContainerContext.Provider>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={closeModal}>
           Cancel
         </Button>
-        <Button
-          variant="primary"
-          onClick={() => setComponentToggle(false)}
-          disabled={!componentToggle || (container.images?.length ?? 0) < 1}>
-          Images
-        </Button>
-        <Button variant="info" onClick={handleClick} disabled={componentToggle}>
-          Item
-        </Button>
+        {renderButtons()}
       </Modal.Footer>
     </Modal>
+  );
+};
+
+type ModalButtonProps = {
+  label: string;
+  variant: string;
+  isDisabled?: boolean;
+  handleClick: () => void;
+};
+
+const ModalButton = ({
+  label,
+  variant,
+  isDisabled = false,
+  handleClick,
+}: ModalButtonProps) => {
+  return (
+    <Button
+      variant={variant}
+      onClick={handleClick}
+      disabled={isDisabled}
+      className="shadow">
+      {label}
+    </Button>
   );
 };
 

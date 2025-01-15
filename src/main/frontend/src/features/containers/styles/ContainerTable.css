@@ -1,0 +1,7 @@
+.container-create {
+  background-color: var(--bs-light);
+  color: var(--bs-dark);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  box-shadow: var(--bs-box-shadow);
+}
