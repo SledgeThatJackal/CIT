@@ -2,10 +2,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 10px;
-  background-color: rgb(61, 69, 78);
+  background-color: var(--container-body);
   padding: 1em;
   border-radius: 5px;
-  border: 3px solid #7b8895;
+  border: 3px solid var(--container-body-border);
 }
 
 .photo-container {
@@ -13,7 +13,7 @@
   overflow: hidden;
   width: 100%;
   height: 150px;
-  border: 2px solid #8c97a3;
+  border: 2px solid var(--container-body-border-alternate);
   border-radius: 5px;
 }
 
@@ -24,16 +24,16 @@
 
 .photo-container:hover,
 .photo-container:hover .photo-checkbox:not(.selected) {
-  border-color: rgb(81, 89, 98);
+  border-color: var(--select-hover);
 }
 
 .photo-container.selected {
-  border-color: rgb(0, 117, 255);
+  border-color: var(--photo-selected-body);
 }
 
 .photo-container.selected:hover,
 .photo-container:hover .photo-checkbox.selected {
-  border-color: rgb(0, 94, 204);
+  border-color: var(--photo-selected-border-hover);
 }
 
 .photo img {
@@ -48,7 +48,7 @@
   width: 20px;
   height: 20px;
   background-color: whitesmoke;
-  border: 2px solid #8c97a3;
+  border: 2px solid var(--container-body-border-alternate);
   border-radius: 4px;
   display: inline-block;
   position: absolute;
@@ -57,8 +57,8 @@
 }
 
 .photo-checkbox.selected {
-  background-color: rgb(0, 117, 255);
-  border-color: rgb(0, 117, 255);
+  background-color: var(--photo-selected-body);
+  border-color: var(--photo-selected-body);
 }
 
 .photo-container.selected::after {

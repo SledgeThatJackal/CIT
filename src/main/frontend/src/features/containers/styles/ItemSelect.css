@@ -1,7 +1,7 @@
 .item-select-container {
-  background-color: rgb(61, 69, 78);
+  background-color: var(--container-body);
   border-radius: 5px;
-  border: 3px solid #7b8895;
+  border: 3px solid var(--container-body-border);
 }
 
 .item-select-list {
@@ -19,18 +19,18 @@
   margin: 0.5em;
   margin-left: 20px;
   border-radius: 4px;
-  border: 2px solid rgb(61, 69, 78);
+  border: 2px solid var(--container-body);
 }
 
 .item-select-item:hover {
-  background-color: rgb(81, 89, 98);
-  border-color: rgb(100, 110, 120);
+  background-color: var(--select-hover);
+  border-color: var(--select-hover-border);
   cursor: pointer;
 }
 
 .item-select-item.selected {
-  background-color: rgb(81, 99, 120);
-  border-color: rgb(101, 119, 140);
+  background-color: var(--select-body);
+  border-color: var(--select-body-border);
   cursor: default;
 }
 
