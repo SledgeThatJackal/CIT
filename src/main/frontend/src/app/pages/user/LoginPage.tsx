@@ -54,7 +54,7 @@ function LoginPage() {
     if (success) {
       setIsLogout(true);
     }
-  }, []);
+  }, [location.state]);
 
   return (
     <Container
@@ -79,6 +79,7 @@ function LoginPage() {
                 className={`text-light loginInput ps-1 pb-1 ${errors.password?.message && "is-invalid"}`}
                 required
                 autoFocus
+                autoComplete="username"
               />
             </FloatingLabel>
           </Form.Group>
@@ -91,6 +92,7 @@ function LoginPage() {
                 placeholder="Password"
                 className="text-light loginInput ps-1 pb-1"
                 required
+                autoComplete="current-password"
               />
               <Form.Control.Feedback type="invalid">
                 {errors.password?.message}
