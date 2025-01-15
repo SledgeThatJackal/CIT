@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Tag, TagSchema } from "@schema/Tag";
 import { ItemTypeSchema, ZodItemType } from "@schema/General";
 import { TypeAttribute } from "@schema/Types";
-import { ImageType, ImageSchema } from "@schema/Image";
+import { ImageType, ItemImageSchema, ItemImageType } from "@schema/Image";
 
 export type Item = {
   id: number;
@@ -11,7 +11,7 @@ export type Item = {
   containerItems?: ZodContainerItemType[];
   tags?: Tag[];
   itemType?: ZodItemType;
-  images?: ImageType[];
+  images?: ItemImageType[];
   totalQuantity?: number;
   externalUrl?: string;
   itemAttributes: ItemAttributes[];
@@ -44,7 +44,7 @@ export const ItemSchema = z.object({
   containerItems: z.array(ContainerItemSchema).optional(),
   tags: z.array(TagSchema).optional(),
   itemType: ItemTypeSchema.optional(),
-  images: z.array(ImageSchema).optional(),
+  images: z.array(ItemImageSchema).optional(),
   externalUrl: z.string().optional(),
 });
 
@@ -85,5 +85,13 @@ export type ItemPageResponse = {
     size: number;
     totalElements: number;
     totalPages: number;
+  };
+};
+
+export type ItemImageRequest = {
+  imageOrder: number;
+  image: ImageType;
+  item: {
+    id: number;
   };
 };

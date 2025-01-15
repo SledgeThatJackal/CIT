@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class ContainerService {
@@ -35,8 +36,8 @@ public class ContainerService {
         return containerRepository.findByName(name).orElse(null);
     }
 
-    public Container findContainerByScannerId(String scannerId){
-        return containerRepository.findByScannerId(scannerId).orElse(null);
+    public Optional<Container> findContainerByScannerId(String scannerId){
+        return containerRepository.findByScannerId(scannerId);
     }
 
     public void saveContainer(Container container){
@@ -49,6 +50,10 @@ public class ContainerService {
             container.addParent(parent);
         }
 
+        if(container.getImages() != null){
+            container.getImages().forEach(image -> image.setContainer(container));
+        }
+
         saveContainer(container);
     }
 
@@ -57,6 +62,12 @@ public class ContainerService {
             for(ContainerItem containerItem: container.getContainerItems()){
                 containerItem.setContainer(container);
             }
+        }
+
+        System.out.println(container);
+
+        if(container.getImages() != null){
+            container.getImages().forEach(image -> image.setContainer(container));
         }
 
         saveContainer(container);

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "esnext",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"],
@@ -14,7 +14,8 @@
       "@item/*": ["src/features/items/*"],
       "@container/*": ["src/features/containers/*"],
       "@tag/*": ["src/features/tags/*"],
-      "@type/*": ["src/features/types/*"]
+      "@type/*": ["src/features/types/*"],
+      "@settings/*": ["src/features/settings/*"]
     },
     "strict": true,
     "moduleResolution": "node",
@@ -22,5 +23,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "src/app/pages/app.js"]
+  "include": ["src", "src/app/pages/app.jsx"]
 }

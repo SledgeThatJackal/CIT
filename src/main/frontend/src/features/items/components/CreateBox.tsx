@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Button,
@@ -15,7 +15,6 @@ import {
   ItemFormDTO,
   ItemSchemaType,
 } from "../schemas/Item";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateItem } from "@item/services/mutation";
 import TagInput from "@tag/components/TagInput";
 import ContainerSection from "./ContainerSection";
@@ -28,7 +27,29 @@ import { useActionState } from "@item/hooks/useActionState";
 import omit from "lodash.omit";
 import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";
 
-const CreateBox = () => {
+const defaultItem = {
+  id: undefined,
+  name: undefined,
+  description: undefined,
+  containerItems: [
+    {
+      id: undefined,
+      quantity: 1,
+    },
+  ],
+  tags: [],
+  itemType: {
+    id: -1,
+    name: "",
+  },
+  images: [],
+};
+
+type CreateBoxProps = {
+  afterSubmit?: () => void;
+};
+
+const CreateBox = ({ afterSubmit }: CreateBoxProps) => {
   const createItemMutation = useCreateItem();
   const itemTypeQuery = useItemTypes().data;
   const { closeCanvas } = useCanvasState();
@@ -37,46 +58,37 @@ const CreateBox = () => {
   const { isBulkCreate } = useItemSettingsState();
 
   const itemForm = useForm<ItemSchemaType>({
-    defaultValues: item
-      ? omit(item, ["itemAttributes"])
-      : {
-          id: undefined,
-          name: undefined,
-          description: undefined,
-          containerItems: [
-            {
-              id: undefined,
-              quantity: 1,
-            },
-          ],
-          tags: [],
-          itemType: {
-            id: -1,
-            name: "",
-          },
-        },
+    defaultValues: defaultItem,
     // resolver: zodResolver(ItemSchema),
   });
 
+  const { reset: itemFormReset } = itemForm;
+
   const typeForm = useForm<ItemAttributeData>({
     defaultValues: {
-      attributes: item
-        ? item.itemAttributes.map(
-            (itemAttr: {
-              typeAttribute: any;
-              stringValue?: string;
-              numberValue?: number;
-            }) => {
-              return {
-                typeAttribute: itemAttr.typeAttribute,
-                stringValue: itemAttr.stringValue,
-                numberValue: itemAttr.numberValue,
-              };
-            },
-          )
-        : [],
+      attributes: [],
     },
   });
+
+  const { reset: typeFormReset } = typeForm;
+
+  useEffect(() => {
+    if (item) {
+      itemFormReset(omit(item, ["id", "itemAttributes"]));
+      typeFormReset({
+        attributes: {
+          ...item.itemAttributes.map((itemAttr) => ({
+            typeAttribute: itemAttr.typeAttribute,
+            stringValue: itemAttr.stringValue,
+            numberValue: itemAttr.numberValue,
+          })),
+        },
+      });
+    } else {
+      itemFormReset(defaultItem);
+      typeFormReset({ attributes: [] });
+    }
+  }, [item, itemFormReset, typeFormReset]);
 
   const watchTypeId = useWatch({
     control: itemForm.control,
@@ -89,7 +101,18 @@ const CreateBox = () => {
 
   useEffect(() => {
     itemForm.setFocus("name");
-  }, []);
+  }, [itemForm]);
+
+  const handleItemSubmit = () => {
+    typeForm.reset();
+    itemForm.reset();
+
+    if (!isBulkCreate) {
+      closeCanvas();
+    }
+
+    itemForm.setFocus("name");
+  };
 
   const onSubmit = async (itemData: ItemSchemaType) => {
     const item: ItemSchemaType = {
@@ -109,16 +132,13 @@ const CreateBox = () => {
       itemAttributes: typeForm.getValues().attributes,
     };
 
-    createItemMutation.mutate(itemFormDTO);
+    await createItemMutation.mutateAsync(itemFormDTO);
 
-    typeForm.reset();
-    itemForm.reset();
-
-    if (!isBulkCreate) {
-      closeCanvas();
+    if (afterSubmit) {
+      afterSubmit();
+    } else {
+      handleItemSubmit();
     }
-
-    itemForm.setFocus("name");
   };
 
   return (

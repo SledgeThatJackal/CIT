@@ -1,9 +1,11 @@
 package dev.adamico.cit.Controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ItemService;
 import dev.adamico.cit.Services.TagService;
+import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ public class TagController {
     private ItemService itemService;
 
     @GetMapping
+    @JsonView(Views.Basic.class)
     public List<Tag> getTags(){
         return tagService.fetchTags();
     }

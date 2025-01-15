@@ -1,7 +1,9 @@
 package dev.adamico.cit.DTO;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.Item;
 import dev.adamico.cit.Models.TypeAttribute;
+import dev.adamico.cit.Views;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonView(Views.ItemContainer.class)
 public class ItemFormDTO {
     private Item item;
 

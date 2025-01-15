@@ -5,6 +5,8 @@ import dev.adamico.cit.DTO.ItemQueryRequest;
 import dev.adamico.cit.Filtering.ItemSpecification;
 import dev.adamico.cit.Models.ContainerItem;
 import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Models.ItemImage;
+import dev.adamico.cit.Repositories.ItemImageRepository;
 import dev.adamico.cit.Repositories.ItemRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.springframework.data.domain.Sort.by;
 
@@ -28,6 +31,12 @@ public class ItemService {
 
     @Autowired
     private ItemAttributeService itemAttributeService;
+
+    @Autowired
+    private SettingService settingService;
+
+    @Autowired
+    private ItemImageRepository itemImageRepository;
 
     public List<Item> findAllItems(){
         return itemRepository.findAll(by("id"));
@@ -48,11 +57,7 @@ public class ItemService {
         if(hasDuplicates){
             processItemAttributes(item, itemAttributes, 0);
         } else {
-            if(item.getContainerItems() != null){
-                item.getContainerItems().forEach(containerItem -> containerItem.setItem(item));
-            }
-
-            saveItems(item, itemAttributes);
+            saveItem(item);
         }
     }
 
@@ -65,7 +70,8 @@ public class ItemService {
         String originalValue = dataType.equalsIgnoreCase("STRING") ? currentAttribute.getStringValue() : currentAttribute.getNumberValue();
 
         if(currentAttribute.getDuplicate()){
-            attrValues.addAll(List.of(originalValue.split("\\|")));
+            String delimiter = settingService.findByKey("itemDelimiter");
+            attrValues.addAll(List.of(originalValue.split(Pattern.quote(delimiter))));
         } else {
             attrValues.add(originalValue);
         }
@@ -98,11 +104,16 @@ public class ItemService {
         itemAttributeService.updateItemAttributes(id, itemAttributes);
     }
 
+    @Transactional
     public void saveItem(Item item){
         if(item.getContainerItems() != null){
             for(ContainerItem containerItem : item.getContainerItems()){
                 containerItem.setItem(item);
             }
+        }
+
+        if(item.getImages() != null){
+            item.getImages().forEach(itemImage -> itemImage.setItem(item));
         }
 
         itemRepository.save(item);
@@ -140,6 +151,10 @@ public class ItemService {
         }
 
         return orders.isEmpty() ? Sort.unsorted() : Sort.by(orders);
+    }
+
+    public void createItemImages(List<ItemImage> itemImages) {
+        itemImageRepository.saveAll(itemImages);
     }
 
 //    private Sort sortByInnerValue(ItemQueryRequest.SortColumn currentSort){

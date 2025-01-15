@@ -1,7 +1,9 @@
 package dev.adamico.cit.Controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.ItemAttribute;
 import dev.adamico.cit.Services.ItemAttributeService;
+import dev.adamico.cit.Views;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ public class ItemAttributeController {
     private EntityManager entityManager;
 
     @GetMapping
+    @JsonView(Views.Basic.class)
     public List<ItemAttribute> getItemAttributes(@RequestParam("id") Long id){
         return itemAttributeService.findByItemId(id);
     }

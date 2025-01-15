@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonView(Views.Inclusive.class)
+@JsonView(Views.Basic.class)
 public class ContainerItem {
     @Id
     @Column(name = "id")
@@ -22,12 +22,13 @@ public class ContainerItem {
 
     @ManyToOne
     @JoinColumn(name = "container_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnoreProperties("containerItems")
+    @JsonView(Views.ItemContainer.class)
     private Container container;
 
     @ManyToOne
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnoreProperties({"containerItems", "itemAttributes"})
+    @JsonIgnoreProperties("itemAttributes")
+    @JsonView(Views.ContainerItem.class)
     private Item item;
 
     @Column(name = "quantity", nullable = false)

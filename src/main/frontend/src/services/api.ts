@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { ContainerType } from "@container/schemas/Container";
 import { ZodContainerType } from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";
@@ -43,6 +41,14 @@ export const updateParentContainer = async (
 
 export const deleteContainer = async (id: number) => {
   await AxiosInstance.delete(`/container/delete?id=${id}`);
+};
+
+export const zipContainerCreate = async (data: FormData) => {
+  await AxiosInstance.post("/bulk", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 // Links

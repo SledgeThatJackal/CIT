@@ -1,4 +1,3 @@
-import { useDeleteModalState } from "@hooks/state/useDeleteModalState";
 import { useModalState } from "@hooks/state/useModalState";
 import { CellContext } from "@tanstack/react-table";
 import React from "react";

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.DTO.ItemFormDTO;
 import dev.adamico.cit.DTO.ItemQueryRequest;
 import dev.adamico.cit.Models.Item;
+import dev.adamico.cit.Models.ItemImage;
 import dev.adamico.cit.Models.Tag;
 import dev.adamico.cit.Services.ContainerItemService;
 import dev.adamico.cit.Services.ContainerService;
@@ -37,19 +38,19 @@ public class ItemController {
     private ContainerItemService containerItemService;
 
     @GetMapping
-    @JsonView(Views.InclusiveID.class)
+    @JsonView(Views.ItemContainer.class)
     public List<Item> getItems(){
         return itemService.findAllItems();
     }
 
     @GetMapping("id")
-    @JsonView(Views.InclusiveID.class)
+    @JsonView(Views.ItemContainer.class)
     public Item getItem(@RequestParam long id){
         return itemService.findItemById(id);
     }
 
     @PostMapping("/page")
-    @JsonView(Views.InclusiveID.class)
+    @JsonView(Views.ItemContainer.class)
     public PagedModel<EntityModel<Item>> getItemPage(@RequestBody ItemQueryRequest itemQueryRequest, PagedResourcesAssembler<Item> assembler) {
         Page<Item> itemPage = itemService.filterItemPages(itemQueryRequest);
         itemPage.forEach(item -> {
@@ -68,6 +69,11 @@ public class ItemController {
     @PostMapping("/create")
     public void createItem(@RequestBody ItemFormDTO dto){
         itemService.createItem(dto);
+    }
+
+    @PostMapping("/create/image")
+    public void createItemImages(@RequestBody List<ItemImage> itemImages){
+        itemService.createItemImages(itemImages);
     }
 
     @DeleteMapping("/delete-tag")

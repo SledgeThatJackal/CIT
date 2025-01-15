@@ -1,7 +1,5 @@
 import { z } from "zod";
-import { TagSchema } from "../../../schema/Tag";
-import { ItemTypeSchema } from "@schema/General";
-import { ImageSchema, ImageType } from "@schema/Image";
+import { ContainerImageSchema, ContainerImageType } from "@schema/Image";
 
 export type ContainerType = {
   id: number;
@@ -9,16 +7,26 @@ export type ContainerType = {
   description?: string;
   scannerId: string;
   parentContainer?: ContainerType;
-  containerItems?: ZodContainerItemSchema[];
-  images?: ImageType[];
+  containerItems?: ContainerItemType[];
+  images?: ContainerImageType[];
+};
+
+type ContainerItemType = {
+  id: number;
+  quantity: number;
+  item: Item;
+};
+
+type Item = {
+  id: number;
+  name: string;
+  description: string;
 };
 
 const ItemSchema = z.object({
   id: z.number().optional(),
   name: z.string({ message: "The Item name is required" }),
   description: z.string().optional(),
-  tags: z.array(TagSchema).optional(),
-  itemType: ItemTypeSchema.optional(),
 });
 
 export const ContainerItemSchema = z.object({
@@ -35,7 +43,7 @@ const BaseContainerSchema = z.object({
   description: z.string().optional(),
   scannerId: z.string(),
   containerItems: z.array(ContainerItemSchema).optional(),
-  images: z.array(ImageSchema).optional(),
+  images: z.array(ContainerImageSchema).optional(),
 });
 
 const ParentContainerSchema = z.object({

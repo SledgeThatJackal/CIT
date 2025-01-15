@@ -18,13 +18,13 @@ public class ContainerController {
     private ContainerService containerService;
 
     @GetMapping
-    @JsonView(Views.ExclusiveID.class)
+    @JsonView(Views.Basic.class)
     public List<Container> getContainers(){
         return containerService.findAllContainers();
     }
 
     @GetMapping("/detail")
-    @JsonView(Views.InclusiveObject.class)
+    @JsonView(Views.ContainerItem.class)
     public List<Container> getDetailedContainers(){
         return containerService.findAllContainers();
     }

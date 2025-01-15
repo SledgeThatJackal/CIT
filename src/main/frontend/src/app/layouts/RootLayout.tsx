@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { ErrorBoundary } from "react-error-boundary";
 import { NavLink, Outlet } from "react-router-dom";
+import { SettingsProvider } from "@hooks/SettingsProvider";
 
 const version = process.env.VERSION;
 
@@ -77,6 +78,14 @@ const RootLayout = () => {
                 </Nav.Link>
                 <Nav.Link
                   as={NavLink}
+                  to="/settings"
+                  eventKey="settings"
+                  className="nav-link"
+                  onClick={() => setActiveKey("settings")}>
+                  Settings
+                </Nav.Link>
+                <Nav.Link
+                  as={NavLink}
                   to="/login"
                   eventKey="login"
                   className="nav-link"
@@ -94,7 +103,9 @@ const RootLayout = () => {
       <ErrorBoundary FallbackComponent={ErrorBoundaryFallBack}>
         <main className="bg-secondary">
           {showError && <ErrorBanner />}
-          <Outlet />
+          <SettingsProvider>
+            <Outlet />
+          </SettingsProvider>
         </main>
       </ErrorBoundary>
     </>

@@ -54,7 +54,7 @@ function LoginPage() {
     if (success) {
       setIsLogout(true);
     }
-  }, []);
+  }, [location.state]);
 
   return (
     <Container
@@ -68,7 +68,7 @@ function LoginPage() {
         <Row className="mb-2">
           <Col as="h1">Login</Col>
         </Row>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} className="loginForm">
           <Form.Group controlId="usernameForm" className="mb-4">
             <FloatingLabel label="Username" controlId="floatingUsername">
               <Form.Control
@@ -79,6 +79,7 @@ function LoginPage() {
                 className={`text-light loginInput ps-1 pb-1 ${errors.password?.message && "is-invalid"}`}
                 required
                 autoFocus
+                autoComplete="username"
               />
             </FloatingLabel>
           </Form.Group>
@@ -91,6 +92,7 @@ function LoginPage() {
                 placeholder="Password"
                 className="text-light loginInput ps-1 pb-1"
                 required
+                autoComplete="current-password"
               />
               <Form.Control.Feedback type="invalid">
                 {errors.password?.message}

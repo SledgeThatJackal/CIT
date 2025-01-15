@@ -1,19 +1,23 @@
 import React, { useMemo, useState } from "react";
 import { CellContext } from "@tanstack/react-table";
-import { ImageType } from "@schema/Image";
+import { ItemImageType } from "@schema/Image";
 import { OverlayTrigger } from "react-bootstrap";
 import { useModalState } from "@hooks/state/useModalState";
 import ImageEdit from "@item/components/image/ImageEdit";
 import { useAttributeState } from "@item/hooks/useAttributeState";
 
-const ImageCell = <T, S extends ImageType[]>(context: CellContext<T, S>) => {
+const ImageCell = <T, S extends ItemImageType[]>(
+  context: CellContext<T, S>,
+) => {
   const [index, setIndex] = useState<number>(0);
-  const images: ImageType[] = context.getValue();
+  const images: ItemImageType[] = context.getValue();
   const { openElementModal } = useModalState();
   const { setContext } = useAttributeState();
 
   const displayedImage = useMemo(() => {
-    return images.length > 0 ? `/api/image/${images[index].fileName}` : "";
+    return images?.length > 0
+      ? `/api/image/${images[index].image.fileName}`
+      : "";
   }, [index, images]);
 
   const handleOnClick = () => {

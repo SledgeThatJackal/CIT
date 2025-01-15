@@ -3,6 +3,7 @@ import { useErrorState } from "@hooks/state/useErrorState";
 import { TagCreate, TagSchemaType } from "@schema/Tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  zipContainerCreate,
   createContainer,
   createImage,
   createLink,
@@ -124,6 +125,30 @@ export function useDeleteContainer() {
         });
 
         await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
+      }
+    },
+  });
+}
+
+export function useBulkContainerCreate() {
+  const queryClient = useQueryClient();
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: FormData) => zipContainerCreate(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
+    },
+
+    onSettled: async (_, error) => {
+      if (!error) {
+        await queryClient.invalidateQueries({
+          queryKey: ["detailedContainers"],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["containers"],
+        });
       }
     },
   });
