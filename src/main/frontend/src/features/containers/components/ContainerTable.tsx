@@ -28,6 +28,9 @@ import GenericModal from "@components/general/GenericModal";
 import { useBooleanState } from "@hooks/state/useBooleanState";
 import { useDebounce } from "@hooks/useDebounce";
 import ZipCreateModal from "./zip_create/ZipCreate";
+import ZipCreateButton from "./zip_create/ZipCreateButton";
+
+import "@container/styles/ContainerTable.css";
 
 const Input = ({ column }: { column: Column<ContainerType, unknown> }) => {
   const filterValue: string = (column.getFilterValue() ?? "") as string;
@@ -167,22 +170,24 @@ function ContainerTable() {
             <PaginationControl table={table} />
           </Stack>
         )}
-        <Stack
-          direction="horizontal"
-          gap={2}
-          className="bg-light text-dark p-2 rounded shadow ms-auto">
-          <Button
-            variant="success"
-            className="shadow"
-            size="sm"
-            onClick={() => openCanvas(ContainerCreate, "bottom", "Create")}>
-            Create
-          </Button>
-          <Form.Switch
-            id="bulkSwitch"
-            label="Bulk Create"
-            onChange={() => toggle(!isOn)}
-          />
+        <Stack direction="horizontal" gap={2} className="ms-auto">
+          <Container className="container-create" style={{ width: "auto" }}>
+            <ZipCreateButton />
+          </Container>
+          <Stack direction="horizontal" gap={2} className="container-create">
+            <Button
+              variant="success"
+              className="shadow"
+              size="sm"
+              onClick={() => openCanvas(ContainerCreate, "bottom", "Create")}>
+              Create
+            </Button>
+            <Form.Switch
+              id="bulkSwitch"
+              label="Bulk Create"
+              onChange={() => toggle(!isOn)}
+            />
+          </Stack>
         </Stack>
       </Stack>
       <div>
