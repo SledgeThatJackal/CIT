@@ -5,6 +5,11 @@ export type ImageType = {
   fileName: string;
 };
 
+export type Image = {
+  imageOrder: number;
+  image: ImageType;
+};
+
 export const ImageSchema = z.object({
   id: z.number(),
   fileName: z.string(),

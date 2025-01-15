@@ -9,8 +9,14 @@ import LoginPage from "../pages/user/LoginPage.tsx";
 const ContainerPage = lazy(
   () => import("../pages/container/ContainerPage.tsx"),
 );
+const DetailedContainerPage = lazy(
+  () => import("../pages/container/DetailedContainerPage.tsx"),
+);
 
 const ItemPage = lazy(() => import("../pages/item/ItemPage.tsx"));
+const DetailedItemPage = lazy(
+  () => import("../pages/item/DetailedItemPage.tsx"),
+);
 
 const TagPage = lazy(() => import("../pages/tag/TagPage.tsx"));
 const TypePage = lazy(() => import("../pages/type/TypePage.tsx"));
@@ -48,9 +54,18 @@ export const router = createBrowserRouter(
         },
         {
           path: "container",
-          children: [{ index: true, element: <ContainerPage /> }],
+          children: [
+            { index: true, element: <ContainerPage /> },
+            { path: ":scannerId", element: <DetailedContainerPage /> },
+          ],
         },
-        { path: "item", children: [{ index: true, element: <ItemPage /> }] },
+        {
+          path: "item",
+          children: [
+            { index: true, element: <ItemPage /> },
+            { path: ":id", element: <DetailedItemPage /> },
+          ],
+        },
         {
           path: "tag",
           children: [{ index: true, element: <TagPage /> }],

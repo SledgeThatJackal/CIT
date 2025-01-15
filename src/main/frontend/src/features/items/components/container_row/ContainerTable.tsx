@@ -27,6 +27,7 @@ function ContainerTable({ value, itemId }: ContainerTableProps) {
     setData(value);
   }, [value]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateData = (rowIndex: number, columnId: string, value: any) => {
     const id = data[rowIndex].id!;
 

@@ -18,6 +18,7 @@ import TextAreaCell from "@components/custom_cell_renderers/TextAreaCell";
 const columnHelper = createColumnHelper<Item>();
 
 export const useTableData = (itemData: Item[], filter: ZodItemType) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const previousColumnRef = useRef<ColumnDef<Item, any>[]>([]);
 
   const columns = useMemo(() => {
@@ -157,7 +158,7 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
 
     previousColumnRef.current = typedColumns;
     return typedColumns;
-  }, [itemData]);
+  }, [filter.id, itemData]);
 
   return { columns };
 };

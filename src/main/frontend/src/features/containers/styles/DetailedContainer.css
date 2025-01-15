@@ -1,0 +1,83 @@
+.detail-container {
+  border-radius: 5px;
+  background-color: var(--container-body);
+  border: 3px solid var(--container-body-border);
+  margin-top: 66px;
+  color: white;
+  padding: 0;
+}
+
+.detail-container h3 {
+  text-align: center;
+  background-color: var(--select-body);
+  border-bottom: 3px solid var(--container-body-border);
+  padding: 0.25em;
+  margin-bottom: 0;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.detail-list {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 0.25em;
+  justify-content: center;
+}
+
+.detail-list-item {
+  padding: 1em;
+  width: 100%;
+}
+
+.detail-list-item strong {
+  background-color: var(--select-hover);
+  border: 2px solid var(--select-hover-border);
+  border-right: 1px solid var(--select-hover-border);
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding-right: auto;
+}
+
+.detail-list-item span {
+  background-color: var(--select-body);
+  border: 2px solid var(--select-body-border);
+  border-left: 1px solid var(--select-body-border);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.detail-list-item strong,
+.detail-list-item span {
+  padding: 0.5em;
+}
+
+.carousel-container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.carousel-container .carousel-item img {
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.carousel-container .carousel-item {
+  height: 100%;
+}
+
+.carousel-container.container .carousel.slide {
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+}
