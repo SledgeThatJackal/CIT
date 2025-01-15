@@ -51,3 +51,15 @@
   --bs-btn-disabled-border-color: #00ffff;
   --bs-gradient: none;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 50px rgb(15, 25, 37) inset !important;
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+}
+
+input:-interval-autofill-previewed {
+  background-color: rgb(15, 25, 37) !important;
+  color: white !important;
+}
