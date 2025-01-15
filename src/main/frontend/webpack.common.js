@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
-  entry: "./src/app/pages/app.js",
+  entry: "./src/app/pages/app.jsx",
   optimization: {
     splitChunks: {
       cacheGroups: {

@@ -23,5 +23,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "src/app/pages/app.js"]
+  "include": ["src", "src/app/pages/app.jsx"]
 }
