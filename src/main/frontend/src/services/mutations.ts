@@ -215,7 +215,9 @@ export function useUpdateQuantity() {
         await queryClient.invalidateQueries({
           queryKey: ["containers"],
         });
-
+        await queryClient.invalidateQueries({
+          queryKey: ["item"],
+        });
         await queryClient.invalidateQueries({
           queryKey: ["container"],
         });
@@ -244,7 +246,9 @@ export function useDeleteLink() {
         await queryClient.invalidateQueries({
           queryKey: ["containers"],
         });
-
+        await queryClient.invalidateQueries({
+          queryKey: ["item"],
+        });
         await queryClient.invalidateQueries({
           queryKey: ["container"],
         });
