@@ -4,6 +4,7 @@ import React from "react";
 import { Form, InputGroup, Pagination, Stack } from "react-bootstrap";
 
 type PaginationControlProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   table: Table<any>;
 };
 

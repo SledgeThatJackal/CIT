@@ -10,4 +10,7 @@
   --select-body-border: rgb(101, 119, 140);
   --select-hover: rgb(81, 89, 98);
   --select-hover-border: rgb(100, 110, 120);
+
+  --detail-table-body: rgb(26, 28, 40);
+  --detail-table-border: rgb(40, 44, 57);
 }

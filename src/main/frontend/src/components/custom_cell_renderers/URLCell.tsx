@@ -30,7 +30,7 @@ const URLCell = <T, S extends string | undefined>({
     setValue(initialValue);
   }, [initialValue]);
 
-  const handleEnter = (event: React.KeyboardEvent<any>) => {
+  const handleEnter = (event: React.KeyboardEvent<unknown>) => {
     if (event.key === "Enter") {
       onBlur();
     }

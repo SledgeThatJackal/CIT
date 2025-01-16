@@ -18,21 +18,26 @@
 .info-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: 100%;
+  padding: 0;
 }
 
 .detail-list {
   display: flex;
   flex-direction: column;
   width: 50%;
-  padding: 0.25em;
+  padding: 0.25em 0 0.25em 0;
   justify-content: center;
 }
 
 .detail-list-item {
-  padding: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 }
 
 .detail-list-item strong {
@@ -41,7 +46,7 @@
   border-right: 1px solid var(--select-hover-border);
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  padding-right: auto;
+  text-align: end;
 }
 
 .detail-list-item span {
@@ -57,27 +62,36 @@
   padding: 0.5em;
 }
 
-.carousel-container {
+.detail-carousel-container {
   width: 50%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
 
-.carousel-container .carousel-item img {
-  object-fit: cover;
+.detail-carousel-container .carousel-item img {
   border-radius: 5px;
+  height: 100%;
+  width: 100%;
 }
 
-.carousel-container .carousel-item {
+.detail-carousel-container .carousel-item {
   height: 100%;
 }
 
-.carousel-container.container .carousel.slide {
+.detail-carousel-container.container .carousel.slide {
   width: 50%;
   height: 100%;
   box-sizing: border-box;
+}
+
+.detail-grid {
+  border: 3px solid var(--select-body-border);
+  border-radius: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  background-color: var(--detail-table-body);
 }

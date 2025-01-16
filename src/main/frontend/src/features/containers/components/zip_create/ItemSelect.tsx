@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 import { ContainerContext } from "./ZipCreate";
 import { createItemImagesArray } from "./ItemCreation";
 import { useCreateItemImages } from "@item/services/mutation";
 
 import "@container/styles/ItemSelect.css";
-import { useOverlayScrollbars } from "overlayscrollbars-react";
+import useScrollbar from "@hooks/useScrollbar";
 
 type ItemSelectProps = {
   handleLinkDelete: () => void;
@@ -32,22 +32,7 @@ const ItemSelect = ({ handleLinkDelete }: ItemSelectProps) => {
 
   const scrollRef = useRef<HTMLUListElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
-  const [initialize, instance] = useOverlayScrollbars({
-    defer: true,
-    options: {
-      scrollbars: { theme: "os-theme-light" },
-    },
-  });
-
-  useEffect(() => {
-    if (scrollRef.current && viewRef.current)
-      initialize({
-        target: viewRef.current,
-        elements: { viewport: scrollRef.current },
-      });
-
-    return () => instance()?.destroy();
-  }, [initialize, instance]);
+  useScrollbar(scrollRef, viewRef);
 
   return (
     <Container fluid>

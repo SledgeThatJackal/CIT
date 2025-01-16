@@ -5,6 +5,5 @@ export function useContainer(scannerId: string) {
   return useQuery({
     queryKey: ["container", scannerId],
     queryFn: () => getContainer(scannerId),
-    staleTime: 1000 * 60 * 10,
   });
 }

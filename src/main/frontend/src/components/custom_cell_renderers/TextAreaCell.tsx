@@ -31,7 +31,7 @@ const TextAreaCell = <T, S extends string | number | undefined>({
     setValue(initialValue);
   }, [initialValue]);
 
-  const handleEnter = (event: React.KeyboardEvent<any>) => {
+  const handleEnter = (event: React.KeyboardEvent<unknown>) => {
     if (event.key === "Enter") {
       onBlur();
     }

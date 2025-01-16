@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ContainerType } from "@container/schemas/Container";
 import { useErrorState } from "@hooks/state/useErrorState";
 import { TagCreate, TagSchemaType } from "@schema/Tag";
@@ -182,6 +183,7 @@ export function useCreateLink() {
         await queryClient.invalidateQueries({
           queryKey: ["containers"],
         });
+        await queryClient.invalidateQueries({ queryKey: ["container"] });
       }
     },
   });
@@ -207,6 +209,16 @@ export function useUpdateQuantity() {
     onSettled: async (_, error) => {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["detailedContainers"],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["containers"],
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: ["container"],
+        });
       }
     },
   });
@@ -226,6 +238,16 @@ export function useDeleteLink() {
     onSettled: async (_, error) => {
       if (!error) {
         await queryClient.invalidateQueries({ queryKey: ["infiniteItems"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["detailedContainers"],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["containers"],
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: ["container"],
+        });
       }
     },
   });
@@ -295,7 +317,6 @@ export function useDeleteTag() {
 
 // Images
 export function useCreateImage() {
-  const queryClient = useQueryClient();
   const { displayError } = useErrorState();
 
   return useMutation({

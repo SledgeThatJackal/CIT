@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,6 +45,9 @@ public class ContainerItemService {
 
     @Transactional
     public void removeContainerItemLink(Long containerItemId){
-        containerItemRepository.deleteById(containerItemId);
+        ContainerItem ci = containerItemRepository.findById(containerItemId).orElseThrow();
+        Item item = ci.getItem();
+
+        item.getContainerItems().removeIf(containerItem -> Objects.equals(containerItem.getId(), containerItemId));
     }
 }

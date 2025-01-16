@@ -1,8 +1,4 @@
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  useQuery,
-} from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getInfiniteItems, getItem, getItemAttributes, getItems } from "./api";
 import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import { useMemo } from "react";
@@ -32,7 +28,13 @@ export function useInfiniteItems(
   const memoizedSort = useMemo(() => sort, [sort]);
 
   return useInfiniteQuery({
-    queryKey: ["infiniteItems", tableFilter, memoizedFilter, memoizedSort],
+    queryKey: [
+      "infiniteItems",
+      tableFilter,
+      memoizedFilter,
+      memoizedSort,
+      size,
+    ],
     queryFn: ({ pageParam = 0 }) =>
       getInfiniteItems(
         pageParam,

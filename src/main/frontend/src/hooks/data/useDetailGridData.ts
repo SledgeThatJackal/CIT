@@ -1,5 +1,6 @@
-import EditCell from "@components/custom_cell_renderers/EditCell";
-import RemoveCell from "@components/custom_cell_renderers/RemoveCell";
+import DetailButtonCell from "@components/detail_cell_renderers/DetailButtonCell";
+import NumberCell from "@components/detail_cell_renderers/NumberCell";
+import RemoveCell from "@components/detail_cell_renderers/RemoveCell";
 import { setProperCase } from "@components/general/DetailBody";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
@@ -21,7 +22,12 @@ export const useDetailGridData = <T extends DataType>(data: T) => {
       columnHelper.accessor("quantity", {
         id: "quantity",
         header: "Quantity",
-        cell: EditCell,
+        cell: NumberCell,
+      }),
+      columnHelper.display({
+        id: "view",
+        header: "Navigate",
+        cell: DetailButtonCell,
       }),
       columnHelper.accessor("id", {
         id: "id",
