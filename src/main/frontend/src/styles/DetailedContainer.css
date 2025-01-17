@@ -33,8 +33,8 @@
 }
 
 .detail-list-item {
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -49,16 +49,20 @@
   text-align: end;
 }
 
-.detail-list-item span {
+.detail-list-span {
   background-color: var(--select-body);
   border: 2px solid var(--select-body-border);
   border-left: 1px solid var(--select-body-border);
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+  max-height: 100px;
+  overflow-y: auto;
 }
 
 .detail-list-item strong,
-.detail-list-item span {
+.detail-list-span {
   padding: 0.5em;
 }
 
