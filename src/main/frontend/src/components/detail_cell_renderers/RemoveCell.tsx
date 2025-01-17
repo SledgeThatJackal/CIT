@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useModalState } from "@hooks/state/useModalState";
 import { useDeleteLink } from "@services/mutations";
 import { CellContext } from "@tanstack/react-table";
 import React from "react";
@@ -9,9 +10,15 @@ const RemoveCell = <T, S extends number>({
   table,
 }: CellContext<T, S>) => {
   const deleteLinkMutation = useDeleteLink();
+  const { openMessageModal } = useModalState();
 
   const handleClick = () => {
-    deleteLinkMutation.mutate(getValue());
+    openMessageModal(
+      "Delete Link",
+      "Delete",
+      () => deleteLinkMutation.mutate(getValue()),
+      "Are you sure you want to remove this link?",
+    );
   };
 
   return (
