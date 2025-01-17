@@ -1,7 +1,7 @@
 import { useContainer } from "@container/services/query";
 import { Container } from "react-bootstrap";
 import React, { useParams } from "react-router-dom";
-import "@container/styles/DetailedContainer.css";
+import "@styles/DetailedContainer.css";
 import DetailBody from "@components/general/DetailBody";
 import { DetailContext } from "@hooks/data/useDetailContext";
 

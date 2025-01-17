@@ -3,7 +3,7 @@ import { DetailContext } from "@hooks/data/useDetailContext";
 import { useItem } from "@item/services/query";
 import { Container } from "react-bootstrap";
 import React, { useParams } from "react-router-dom";
-import "@container/styles/DetailedContainer.css";
+import "@styles/DetailedContainer.css";
 
 function DetailedItemPage() {
   const { id } = useParams();
