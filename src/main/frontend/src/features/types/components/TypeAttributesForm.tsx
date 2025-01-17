@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import TypeAttributeRow from "./TypeAttributeRow";
 import TypeAttributeFormEdit from "@type/components/form/TypeAttributeFormEdit";
 import TypeAttributeFormDelete from "./form/TypeAttributeFormDelete";
@@ -81,15 +81,20 @@ const TypeAttributesForm = () => {
                 key={`formEditThirdCell-${field.id}`}
                 path={`typeAttributes.${index}.columnTitle`}
               />
-              <TypeAttributeFormEdit
-                key={`formEditThirdCell-${type}-${field.id}`}
-                path={
-                  dataType?.startsWith("S")
-                    ? `typeAttributes.${index}.stringDefaultValue`
-                    : `typeAttributes.${index}.numberDefaultValue`
-                }
-                type={type}
-              />
+              {dataType?.startsWith("S") ? (
+                <TypeAttributeFormEdit
+                  key={`formEditThirdCell-${type}-${field.id}`}
+                  path={`typeAttributes.${index}.stringDefaultValue`}
+                  type={type}
+                />
+              ) : (
+                <TypeAttributeFormEdit
+                  key={`formEditThirdCell-${type}-${field.id}`}
+                  path={`typeAttributes.${index}.numberDefaultValue`}
+                  type={type}
+                />
+              )}
+
               <TypeAttributeFormDelete
                 key={`formEditFourthCell-${field.id}`}
                 handleRemove={() => deleteRow(index)}
