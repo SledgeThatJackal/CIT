@@ -30,7 +30,7 @@ const GenericModal = () => {
         <Button
           variant="danger"
           onClick={() => {
-            onDelete && onDelete();
+            if (onDelete) onDelete();
 
             closeModal();
           }}>
