@@ -10,6 +10,7 @@ import { Container } from "react-bootstrap";
 import "@styles/DetailGrid.css";
 import useScrollbar from "@hooks/useScrollbar";
 import { useDetailContext } from "@hooks/data/useDetailContext";
+import GenericModal from "./GenericModal";
 
 const DetailGrid = <T extends DataType>() => {
   const data = useDetailContext<T>().containerItems;
@@ -40,6 +41,7 @@ const DetailGrid = <T extends DataType>() => {
 
   return (
     <Container fluid className="detail-grid-container" ref={scrollRef}>
+      <GenericModal />
       <Container fluid className="detail-grid-table" ref={tableRef}>
         {table.getHeaderGroups().map((headerGroup) => {
           return (
