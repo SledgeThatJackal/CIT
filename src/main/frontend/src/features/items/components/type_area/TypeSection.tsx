@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Col,
   Container,
@@ -95,6 +95,7 @@ const TypeSection = ({
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typeAttrQuery]);
 
   return (
@@ -150,6 +151,7 @@ const TypeSection = ({
                       type="checkbox"
                       checked={field.numberValue === 1}
                       onChange={(event) => {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         const { id, ...rest } = field;
                         update(index, {
                           ...rest,
