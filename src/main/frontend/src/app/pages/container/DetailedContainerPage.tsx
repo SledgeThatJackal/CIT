@@ -39,7 +39,7 @@ function DetailedContainerPage() {
 
   return (
     <Container className="detail-container">
-      <h3>Container</h3>
+      <h3>{containerQuery.scannerId}</h3>
       <DetailContext.Provider value={containerQuery}>
         <DetailBody />
       </DetailContext.Provider>
