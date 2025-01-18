@@ -10,9 +10,9 @@ const DetailCell = ({ row }: DisplayCell<any>) => {
   const handleClick = () => {
     const data = row.original;
 
-    let path = "/home";
+    let path = "/";
 
-    if ("type" in data) path = `/item/${data.id}`;
+    if ("itemType" in data) path = `/item/${data.id}`;
 
     if ("scannerId" in data) path = `/container/${data.scannerId}`;
 
