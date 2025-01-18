@@ -120,7 +120,7 @@ function TypeSettingsContent() {
 
   useEffect(() => {
     request();
-  }, [typeAttributeQuery.data]);
+  }, [request, typeAttributeQuery.data]);
 
   return (
     <React.Fragment>

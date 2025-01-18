@@ -13,7 +13,7 @@ const version = process.env.VERSION;
 const RootLayout = () => {
   // The active key works really weird, if you click the brand button while on item or container, it will leave the previous active and add another one.
   // I did this to make sure that it would "remove" the old active when you click the brand button.
-  const [activeKey, setActiveKey] = useState("home");
+  const [activeKey, setActiveKey] = useState("");
 
   const { showError } = useErrorState();
 
@@ -83,14 +83,6 @@ const RootLayout = () => {
                   className="nav-link"
                   onClick={() => setActiveKey("settings")}>
                   Settings
-                </Nav.Link>
-                <Nav.Link
-                  as={NavLink}
-                  to="/login"
-                  eventKey="login"
-                  className="nav-link"
-                  onClick={() => setActiveKey("login")}>
-                  Login
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>

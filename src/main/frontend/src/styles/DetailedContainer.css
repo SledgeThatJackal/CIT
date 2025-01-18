@@ -1,0 +1,101 @@
+.detail-container {
+  border-radius: 5px;
+  background-color: var(--container-body);
+  border: 3px solid var(--container-body-border);
+  margin-top: 66px;
+  color: white;
+  padding: 0;
+}
+
+.detail-container h3 {
+  text-align: center;
+  background-color: var(--select-body);
+  border-bottom: 3px solid var(--container-body-border);
+  padding: 0.25em;
+  margin-bottom: 0;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.detail-list {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 0.25em 0 0.25em 0;
+  justify-content: center;
+}
+
+.detail-list-item {
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.detail-list-item strong {
+  background-color: var(--select-hover);
+  border: 2px solid var(--select-hover-border);
+  border-right: 1px solid var(--select-hover-border);
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  text-align: end;
+}
+
+.detail-list-span {
+  background-color: var(--select-body);
+  border: 2px solid var(--select-body-border);
+  border-left: 1px solid var(--select-body-border);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.detail-list-item strong,
+.detail-list-span {
+  padding: 0.5em;
+}
+
+.detail-carousel-container {
+  width: 50%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.detail-carousel-container .carousel-item img {
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.detail-carousel-container .carousel-item {
+  height: 100%;
+}
+
+.detail-carousel-container.container .carousel.slide {
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.detail-grid {
+  border: 3px solid var(--select-body-border);
+  border-radius: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  background-color: var(--detail-table-body);
+}

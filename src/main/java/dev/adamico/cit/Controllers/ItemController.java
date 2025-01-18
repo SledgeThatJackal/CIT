@@ -46,7 +46,12 @@ public class ItemController {
     @GetMapping("id")
     @JsonView(Views.ItemContainer.class)
     public Item getItem(@RequestParam long id){
-        return itemService.findItemById(id);
+        Item item = itemService.findItemById(id);
+
+        item.sortItemAttributes();
+        item.setTotalQuantity();
+
+        return item;
     }
 
     @PostMapping("/page")

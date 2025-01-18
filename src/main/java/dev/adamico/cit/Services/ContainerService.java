@@ -64,8 +64,6 @@ public class ContainerService {
             }
         }
 
-        System.out.println(container);
-
         if(container.getImages() != null){
             container.getImages().forEach(image -> image.setContainer(container));
         }

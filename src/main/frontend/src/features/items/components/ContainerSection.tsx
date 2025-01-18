@@ -9,8 +9,6 @@ import {
   UseFormRegister,
   UseFormSetError,
   UseFormSetFocus,
-  UseFormSetValue,
-  UseFormTrigger,
   useWatch,
 } from "react-hook-form";
 import { ItemSchemaType, ZodContainerItemType } from "../schemas/Item";
@@ -76,6 +74,7 @@ const ContainerSection = ({
     ) {
       remove(watchContainerItems.length - 1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchContainerItems, remove]);
 
   return (

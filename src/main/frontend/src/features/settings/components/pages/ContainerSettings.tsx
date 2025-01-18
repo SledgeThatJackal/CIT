@@ -13,7 +13,7 @@ const ContainerSettings = () => {
   return (
     <Container fluid>
       <Row>
-        <h3>General</h3>
+        <h4>General</h4>
       </Row>
       <Row>
         <hr />

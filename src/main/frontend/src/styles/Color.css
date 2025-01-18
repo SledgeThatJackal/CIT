@@ -1,0 +1,16 @@
+:root {
+  --container-body: rgb(61, 69, 78);
+  --container-body-border: #7b8895;
+  --container-body-border-alternate: #8c97a3;
+
+  --photo-selected-body: rgb(0, 117, 255);
+  --photo-selected-border-hover: rgb(0, 94, 204);
+
+  --select-body: rgb(81, 99, 120);
+  --select-body-border: rgb(101, 119, 140);
+  --select-hover: rgb(81, 89, 98);
+  --select-hover-border: rgb(100, 110, 120);
+
+  --detail-table-body: rgb(26, 28, 40);
+  --detail-table-border: rgb(40, 44, 57);
+}

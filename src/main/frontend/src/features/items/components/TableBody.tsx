@@ -1,11 +1,12 @@
 import { flexRender, Table } from "@tanstack/react-table";
 import { Virtualizer } from "@tanstack/react-virtual";
-import React, { useEffect } from "react";
+import React from "react";
 import { Item } from "../schemas/Item";
 import ContainerTable from "./container_row/ContainerTable";
 
 type TableBodyProps = {
   table: Table<Item>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   virtualizer: Virtualizer<any, Element>;
 };
 
@@ -24,7 +25,7 @@ export const TableBody = ({ table, virtualizer }: TableBodyProps) => {
                 height: `${virtualRow.size}px`,
                 transform: `translateY(${virtualRow.start - index * virtualRow.size}px)`,
               }}>
-              {row.getVisibleCells().map((cell, index) => {
+              {row.getVisibleCells().map((cell) => {
                 return (
                   <td
                     key={`cell-${cell.id}`}

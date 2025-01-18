@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "overlayscrollbars/overlayscrollbars.css";
 import "@styles/Default.css";
+import "@styles/Color.css";
 
 import { router } from "../routes/Routes";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";

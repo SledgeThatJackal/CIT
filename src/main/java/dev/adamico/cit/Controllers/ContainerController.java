@@ -29,6 +29,12 @@ public class ContainerController {
         return containerService.findAllContainers();
     }
 
+    @GetMapping("/{scannerId}")
+    @JsonView(Views.ContainerItem.class)
+    public Container getContainer(@PathVariable String scannerId){
+        return containerService.findContainerByScannerId(scannerId).orElseThrow();
+    }
+
     @PostMapping("/create")
     public void createContainer(@RequestParam Long id, @RequestBody Container container){
         containerService.createContainer(container, id);
