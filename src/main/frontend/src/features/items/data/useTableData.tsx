@@ -4,7 +4,6 @@ import { ColumnDef, createColumnHelper, Row } from "@tanstack/react-table";
 import { Item } from "@item/schemas/Item";
 import EditCell from "@components/custom_cell_renderers/EditCell";
 import TagCell from "@components/custom_cell_renderers/TagCell";
-import DeleteCell from "@components/custom_cell_renderers/DeleteCell";
 import { Tag } from "@schema/Tag";
 import ActionButtons from "../components/custom_cells/ActionButtons";
 import TypeCell from "../components/custom_cells/TypeCell";
@@ -101,18 +100,9 @@ export const useTableData = (itemData: Item[], filter: ZodItemType) => {
       }),
       columnHelper.accessor("containerItems", {
         id: "containerItems",
-        header: () => <div className="text-center">Actions</div>,
+        header: () => <div className="text-center">Action(s)</div>,
         maxSize: 90,
         cell: ActionButtons,
-        enableResizing: false,
-        enableSorting: false,
-        enableColumnFilter: false,
-      }),
-      columnHelper.accessor("id", {
-        id: "id",
-        header: () => <div className="text-center">Delete</div>,
-        maxSize: 75,
-        cell: DeleteCell,
         enableResizing: false,
         enableSorting: false,
         enableColumnFilter: false,
