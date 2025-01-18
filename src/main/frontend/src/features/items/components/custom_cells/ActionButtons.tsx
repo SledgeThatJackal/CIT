@@ -56,7 +56,7 @@ const ActionButtons = ({ row }: ActionButtonsProps) => {
         title="Edit Containers">
         <i className="bi bi-pencil" />
       </Button>
-      <DeleteCell id={row.getValue("id")} />
+      <DeleteCell id={row.original.id} />
     </Container>
   );
 };
