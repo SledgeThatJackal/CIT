@@ -106,6 +106,7 @@ function TagSettings() {
               label="Bulk Create"
               onChange={() => setBulkCreating(!bulkCreating)}
               disabled={!showCreate}
+              title="Determines if the canvas closes after creating a tag"
             />
           </Col>
         </Row>

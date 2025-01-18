@@ -340,13 +340,13 @@ function ItemTable() {
             onClick={() => openCanvas(CreateBox, "bottom", "Create")}>
             Create
           </Button>
-
           <Form.Switch
             id="bulkSwitch"
             label="Bulk Create"
             style={{ textWrap: "nowrap" }}
             checked={isBulkCreate}
             onChange={toggleBulkCreate}
+            title="Determines if the canvas closes after creating an item"
           />
         </Stack>
       </Stack>
