@@ -186,6 +186,7 @@ function ContainerTable() {
               id="bulkSwitch"
               label="Bulk Create"
               onChange={() => toggle(!isOn)}
+              title="Determines if the canvas closes after creating a container"
             />
           </Stack>
         </Stack>

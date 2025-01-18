@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/settings")
@@ -34,7 +35,7 @@ public class SettingsController {
     }
 
     @PutMapping("/edit")
-    private void updateSetting(@RequestParam String key, @RequestParam String value){
-        settingsService.updateSettingByKey(key, value);
+    private void updateSetting(@RequestBody Map<String, String>  payload){
+        settingsService.updateSettingByKey(payload.get("key"), payload.get("value"));
     }
 }

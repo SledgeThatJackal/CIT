@@ -14,6 +14,7 @@ export function useEditSetting() {
   return useMutation({
     mutationFn: ({ key, value }: SettingsProps) => updateSetting(key, value),
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       displayError(error.response.data.message);
     },

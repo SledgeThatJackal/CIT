@@ -6,8 +6,10 @@ import {
   Container,
   FloatingLabel,
   Form,
+  OverlayTrigger,
   Row,
   Stack,
+  Tooltip,
 } from "react-bootstrap";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import {
@@ -208,6 +210,26 @@ const CreateBox = ({ afterSubmit }: CreateBoxProps) => {
                 onClick={closeCanvas}>
                 Cancel
               </Button>
+              <OverlayTrigger
+                overlay={
+                  <Tooltip style={{ whiteSpace: "pre-wrap" }}>
+                    To create an item, all you need it to fill in the name and
+                    hit create. &#10;&#10;For adding a tag, you can either
+                    create a new one and hit add, or you can use the &quot;Tag
+                    Name&quot; input and either use it as a search and/or click
+                    on the tag you want to add. &#10;&#10;To add an image,
+                    either click &quot;Choose File(s)&quot; or click on the
+                    &quot;Existing&quot; button on the right side. To add that
+                    item to a container, select a container from the drop down
+                    menu and then change the quantity, if you want. When you add
+                    container, a new row should appear. &#10;&#10;To add Item
+                    Attributes, you must first select a type, this will then add
+                    all of that types attributes to the bottom area, if you
+                    leave the inputs blank, it will use the default values.
+                  </Tooltip>
+                }>
+                <i className="bi bi-question-circle text-warning" />
+              </OverlayTrigger>
             </Col>
           </Row>
           <Row className="pt-1">

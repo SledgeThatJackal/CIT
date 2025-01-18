@@ -3,12 +3,10 @@ import { ContainerType } from "../schemas/Container";
 import { useDetailedContainers } from "@services/queries";
 import { useMemo } from "react";
 import EditCell from "@components/custom_cell_renderers/EditCell";
-import DeleteCell from "@components/custom_cell_renderers/DeleteCell";
 import ParentContainerCell from "../components/custom_cells/ParentContainerCell";
 import ImageCell from "@components/custom_cell_renderers/ImageCell";
 import React from "react";
-import DuplicateCell from "@container/components/custom_cells/DuplicateCell";
-import ItemCreateCell from "@container/components/custom_cells/ItemCreateCell";
+import ActionsCell from "@container/components/custom_cells/ActionsCell";
 
 const columnHelper = createColumnHelper<ContainerType>();
 
@@ -26,6 +24,12 @@ export const useTableData = () => {
         enableSorting: false,
         enableColumnFilter: false,
       }),
+      columnHelper.accessor("scannerId", {
+        id: "scannerId",
+        header: "Barcode ID",
+        enableResizing: true,
+        cell: EditCell,
+      }),
       columnHelper.accessor("name", {
         id: "name",
         header: "Name",
@@ -41,12 +45,6 @@ export const useTableData = () => {
         cell: EditCell,
         sortUndefined: 1,
       }),
-      columnHelper.accessor("scannerId", {
-        id: "scannerId",
-        header: "Barcode ID",
-        enableResizing: true,
-        cell: EditCell,
-      }),
       columnHelper.accessor("parentContainer", {
         id: "parentContainer",
         header: "Parent Container ID",
@@ -55,28 +53,10 @@ export const useTableData = () => {
         sortUndefined: 1,
       }),
       columnHelper.display({
-        id: "duplicate",
-        header: () => <div className="text-center">Duplicate</div>,
-        size: 75,
-        cell: DuplicateCell,
-        enableResizing: false,
-        enableSorting: false,
-        enableColumnFilter: false,
-      }),
-      columnHelper.display({
-        id: "itemCreate",
-        header: () => <div className="text-center">Create Item(s)</div>,
-        size: 75,
-        cell: ItemCreateCell,
-        enableResizing: false,
-        enableSorting: false,
-        enableColumnFilter: false,
-      }),
-      columnHelper.accessor("id", {
-        id: "id",
-        header: () => <div className="text-center">Delete</div>,
-        size: 75,
-        cell: DeleteCell,
+        id: "actions",
+        header: () => <div className="text-center">Action(s)</div>,
+        size: 105,
+        cell: ActionsCell,
         enableResizing: false,
         enableSorting: false,
         enableColumnFilter: false,

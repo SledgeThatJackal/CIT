@@ -6,6 +6,8 @@ import { useModalState } from "@hooks/state/useModalState";
 import ImageEdit from "@item/components/image/ImageEdit";
 import { useAttributeState } from "@item/hooks/useAttributeState";
 
+import "@styles/ImageCell.css";
+
 const ImageCell = <T, S extends ItemImageType[]>(
   context: CellContext<T, S>,
 ) => {
@@ -52,16 +54,22 @@ const ImageCell = <T, S extends ItemImageType[]>(
           key={`imageOverlay-${index}`}
           placement="right"
           overlay={<ImageOverlay source={displayedImage} />}>
-          <img
-            src={displayedImage}
-            onClick={handleOnClick}
-            width="50"
-            height="50"
-            style={images.length > 1 ? { cursor: "pointer" } : {}}
-            draggable={false}
-            alt="Item Image"
-            onContextMenu={handleRightClick}
-          />
+          <div className="image-div">
+            <img
+              src={displayedImage}
+              onClick={handleOnClick}
+              width="50"
+              height="50"
+              style={images.length > 1 ? { cursor: "pointer" } : {}}
+              draggable={false}
+              alt="Item Image"
+              onContextMenu={handleRightClick}
+              title="Left Click to Cycle, Right Click to Edit"
+            />
+            <div className="image-indicator">
+              {index + 1} / {images.length}
+            </div>
+          </div>
         </OverlayTrigger>
       ) : (
         <div
@@ -78,11 +86,13 @@ export default ImageCell;
 
 type ImageOverlayProps = {
   source: string;
-  arrowProps?: any;
-  hasDoneInitialMeasure?: any;
+  arrowProps?: unknown;
+  hasDoneInitialMeasure?: unknown;
 };
 
+// eslint-disable-next-line react/display-name
 const ImageOverlay = React.forwardRef<HTMLImageElement, ImageOverlayProps>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ source, arrowProps, hasDoneInitialMeasure, ...rest }, ref) => {
     return <img ref={ref} {...rest} src={source} width="500" height="auto" />;
   },

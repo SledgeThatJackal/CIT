@@ -11,6 +11,7 @@ const ParentContainerCell = ({
 }: CellContext<ContainerType, ContainerType>) => {
   const containersQuery = useDetailedContainers().data;
   const tableValue = getValue();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   if (!containersQuery) {
     return <div>No Containers Found</div>;
@@ -19,8 +20,6 @@ const ParentContainerCell = ({
   const initialValue = tableValue
     ? containersQuery.find((container) => container.id === tableValue.id)?.id
     : -1;
-
-  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const onChange = (selectedId: number) => {
     table.options.meta?.updateParentContainer?.(index, selectedId);
@@ -49,7 +48,7 @@ const ParentContainerCell = ({
                     key={`options-${container.id}`}
                     value={
                       container.id
-                    }>{`${container.name} (${container.scannerId})`}</option>
+                    }>{`${container.scannerId} (${container.name})`}</option>
                 ))
             ) : (
               <option key={`no-options`}>No Containers found</option>

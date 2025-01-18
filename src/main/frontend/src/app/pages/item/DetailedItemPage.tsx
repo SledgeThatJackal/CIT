@@ -17,7 +17,7 @@ function DetailedItemPage() {
 
   return (
     <Container className="detail-container">
-      <h3>Item</h3>
+      <h3>{itemQuery.name}</h3>
       <DetailContext.Provider value={itemQuery}>
         <DetailBody />
       </DetailContext.Provider>
