@@ -17,5 +17,5 @@ export const getSettingByKey = async (key: string) => {
 
 // Mutate
 export const updateSetting = async (key: string, value: string) => {
-  await AxiosInstance.put(`/settings/edit?key=${key}&value=${value}`);
+  await AxiosInstance.put(`/settings/edit`, { key, value });
 };
