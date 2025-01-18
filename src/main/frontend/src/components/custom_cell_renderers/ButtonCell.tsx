@@ -6,6 +6,7 @@ type ButtonCellProps = {
   color: string;
   isDisabled?: boolean;
   handleClick: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: any;
 };
 
