@@ -1,0 +1,11 @@
+.actions-container:not(.actions-container button:last-child) button {
+  margin-right: 2px;
+}
+
+.actions-container {
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}

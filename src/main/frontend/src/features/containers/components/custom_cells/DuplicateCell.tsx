@@ -4,7 +4,7 @@ import React from "react";
 import ContainerCreate from "../ContainerCreate";
 import { ContainerType } from "@container/schemas/Container";
 import { DisplayCell } from "@schema/General";
-import ButtonCell from "@components/custom_cell_renderers/ButtonCell";
+import { Button } from "react-bootstrap";
 
 const DuplicateCell = ({ row }: DisplayCell<ContainerType>) => {
   const { updateContainerAction } = useActionState();
@@ -21,12 +21,13 @@ const DuplicateCell = ({ row }: DisplayCell<ContainerType>) => {
   };
 
   return (
-    <ButtonCell
+    <Button
       title="Duplicate"
-      color="secondary"
-      handleClick={handleDuplicate}>
+      variant="secondary"
+      size="sm"
+      onClick={handleDuplicate}>
       <i className="bi bi-clipboard" />
-    </ButtonCell>
+    </Button>
   );
 };
 

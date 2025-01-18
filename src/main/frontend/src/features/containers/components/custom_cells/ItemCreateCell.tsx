@@ -1,10 +1,10 @@
-import ButtonCell from "@components/custom_cell_renderers/ButtonCell";
 import { ContainerType } from "@container/schemas/Container";
 import React, { useEffect } from "react";
 
 import "../../styles/ItemCreateModal.css";
 import { useZipCreateState } from "@container/hooks/useZipCreateState";
 import { DisplayCell } from "@schema/General";
+import { Button } from "react-bootstrap";
 
 const ItemCreateCell = ({ row }: DisplayCell<ContainerType>) => {
   const { showModal, openModal, setRow } = useZipCreateState();
@@ -17,15 +17,14 @@ const ItemCreateCell = ({ row }: DisplayCell<ContainerType>) => {
   }, [row]);
 
   return (
-    <React.Fragment>
-      <ButtonCell
-        title="Item Create"
-        color="info"
-        handleClick={() => openModal(row)}
-        key={`containerItemCreateButton-${row.original.id}`}>
-        <i className="bi bi-link" />
-      </ButtonCell>
-    </React.Fragment>
+    <Button
+      title="Item Create"
+      variant="info"
+      onClick={() => openModal(row)}
+      size="sm"
+      key={`containerItemCreateButton-${row.original.id}`}>
+      <i className="bi bi-link" />
+    </Button>
   );
 };
 
