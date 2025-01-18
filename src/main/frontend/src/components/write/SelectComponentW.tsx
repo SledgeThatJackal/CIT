@@ -8,6 +8,7 @@ type HasId = {
 type SelectCompoentProps<T extends HasId> = {
   data?: T[];
   labelKey: keyof T;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setValue: any;
   onBlur?: () => void;
   isDisabled?: boolean;
