@@ -1,13 +1,17 @@
+import DatabaseExportButton from "@components/general/DatabaseExportButton";
 import React from "react";
-import { Col, Container, ListGroup, Row } from "react-bootstrap";
+import { Col, Container, ListGroup, Row, Stack } from "react-bootstrap";
 import { Outlet, NavLink } from "react-router-dom";
 
 const Settings = () => {
   return (
     <Container fluid>
-      <Row>
+      <Stack direction="horizontal" gap={2}>
         <h2>Settings</h2>
-      </Row>
+        <div>
+          <DatabaseExportButton />
+        </div>
+      </Stack>
       <Row>
         <hr />
       </Row>

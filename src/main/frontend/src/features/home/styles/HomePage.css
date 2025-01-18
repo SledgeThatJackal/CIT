@@ -1,0 +1,21 @@
+.home-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.item-container,
+.container-container {
+  background-color: var(--detail-table-body);
+  margin-top: 12px;
+  border-radius: 5px;
+  border: 3px solid var(--detail-table-border);
+  color: white;
+  padding: 0;
+}
+
+.item-container h2,
+.container-container h2 {
+  text-align: center;
+  border-bottom: 1px solid var(--detail-table-border);
+}

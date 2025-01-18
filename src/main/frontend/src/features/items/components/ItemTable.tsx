@@ -46,6 +46,7 @@ import SelectComponentW from "@components/write/SelectComponentW";
 import { useItemTypes } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
 import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";
+import { useLocation } from "react-router-dom";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Input = ({ column }: { column: Column<any, unknown> }) => {
@@ -150,12 +151,18 @@ const Input = ({ column }: { column: Column<any, unknown> }) => {
 
 function ItemTable() {
   const parentRef = React.useRef<HTMLDivElement>(null);
+  const location = useLocation();
   const typeQuery = useItemTypes().data;
 
   const { sorting, setSorting, isBulkCreate, toggleBulkCreate } =
     useItemSettingsState();
 
-  const [filter, setFilter] = useState<ZodItemType>({ id: -1, name: "" });
+  const [filter, setFilter] = useState<ZodItemType>(
+    location.state?.itemType || { id: -1, name: "" },
+  );
+
+  console.log(filter);
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const {
     data: infiniteData,
@@ -320,6 +327,7 @@ function ItemTable() {
         <SelectComponentW
           data={typeQuery}
           labelKey={"name"}
+          initialValue={filter.id}
           setValue={(id: number) =>
             setFilter(
               typeQuery?.find((type) => type.id === id) || {
