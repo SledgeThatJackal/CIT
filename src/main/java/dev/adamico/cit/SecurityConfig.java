@@ -25,8 +25,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .requiresChannel(channel ->
-                channel.anyRequest().requiresSecure())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers("/*.css", "/*.js", "/*.ico", "/index.html").permitAll()
