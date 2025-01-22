@@ -19,8 +19,8 @@ module.exports = merge(common, {
     proxy: [
       {
         context: ["/api", "/login", "/logout"],
-        target: "http://localhost:8080",
-        secure: false,
+        target: "https://localhost:8080",
+        secure: true,
         changeOrigin: true,
       },
     ],
