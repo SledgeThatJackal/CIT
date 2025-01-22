@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.filter.ForwardedHeaderFilter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -28,8 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedOrigin("https://inventory.datasolinc.com");
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://inventory.datasolinc.com"));
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
@@ -51,5 +51,10 @@ public class WebConfig implements WebMvcConfigurer {
         FilterRegistrationBean<?> bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(-105);
         return bean;
+    }
+
+    @Bean
+    public ForwardedHeaderFilter forwardedHeaderFilter(){
+        return new ForwardedHeaderFilter();
     }
 }
