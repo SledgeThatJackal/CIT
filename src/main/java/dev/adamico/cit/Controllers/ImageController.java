@@ -2,6 +2,7 @@ package dev.adamico.cit.Controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Models.Image;
+import dev.adamico.cit.Models.Views.ImageFind;
 import dev.adamico.cit.Services.ImageService;
 import dev.adamico.cit.Views;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,12 @@ public class ImageController {
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> serveImage(@PathVariable String filename) throws IOException {
         return imageService.getImage(filename);
+    }
+
+    @GetMapping("/find")
+    public List<ImageFind> findImages(@RequestParam(value = "containerName", required = false) String containerName,
+                                      @RequestParam(value = "scannerId", required = false) String scannerId,
+                                      @RequestParam(value = "itemName", required = false) String itemName){
+        return imageService.findImages(containerName, scannerId, itemName);
     }
 }
