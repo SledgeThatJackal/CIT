@@ -43,13 +43,13 @@ public class ImageFindRepository implements ImageFindInterface {
         StringBuilder queryBuilder = new StringBuilder("SELECT img.scanner_id, img.item_id, img.file_name FROM image_find img WHERE 1=1 ");
 
         if(containerName != null)
-            queryBuilder.append("AND img.scanner_id IN (SELECT c.scanner_id FROM container_table c WHERE c.name LIKE :containerName) ");
+            queryBuilder.append("AND img.scanner_id IN (SELECT c.scanner_id FROM container_table c WHERE LOWER(c.name) LIKE LOWER(:containerName)) ");
 
         if(scannerId != null)
-            queryBuilder.append("AND img.scanner_id LIKE :scannerId ");
+            queryBuilder.append("AND LOWER(img.scanner_id) LIKE LOWER(:scannerId) ");
 
         if(itemName != null)
-            queryBuilder.append("AND img.item_id IN (SELECT i.id FROM item_table i WHERE i.name LIKE :itemName) ");
+            queryBuilder.append("AND img.item_id IN (SELECT i.id FROM item_table i WHERE LOWER(i.name) LIKE LOWER(:itemName)) ");
 
         return queryBuilder;
     }
