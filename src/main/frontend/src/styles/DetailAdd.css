@@ -1,0 +1,110 @@
+.add-container {
+  background-color: var(--container-body);
+  border-radius: 5px;
+  border: 2px solid var(--container-body-border);
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.3fr;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.add-container-name {
+  display: flex;
+}
+
+.add-container-quantity {
+  display: flex;
+}
+
+.add-quantity-input {
+  flex-grow: 1;
+}
+
+.add-container-button {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.add-add-button,
+.add-cancel-button {
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: var(--bs-body-font-family);
+  border-radius: 5px;
+  padding: 0.2em;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.add-add-button {
+  background-color: #007bff;
+  border: 2px solid #0056b3;
+}
+
+.add-add-button:hover {
+  background-color: #0056b3;
+}
+
+.add-cancel-button {
+  background-color: #6c757d;
+  border: 2px solid #495057;
+}
+
+.add-cancel-button:hover {
+  background-color: #343a40;
+}
+
+.add-dropdown {
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.add-input-group-text {
+  flex-grow: 1;
+  cursor: pointer;
+  background-color: #343a40;
+  color: azure;
+  border: 2px solid #212529;
+}
+
+.add-quantity-input,
+.add-quantity-input:focus {
+  background-color: #343a40;
+  border: 2px solid #212529;
+  color: azure;
+}
+
+.add-quantity-input:focus {
+  box-shadow: 0 0 0 0.25em rgba(52, 58, 64, 0.5);
+}
+
+.add-quantity-label {
+  background-color: #87888a;
+  border: 2px solid #212529;
+  color: azure;
+}
+
+.add-dropdown-toggle {
+  background-color: #495057;
+  border: 2px solid #212529;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.add-dropdown-toggle:hover {
+  background-color: #6c757d;
+  border-color: #495057;
+}
+
+.add-dropdown-toggle:active {
+  background-color: #343a40 !important;
+  border-color: #212529 !important;
+}
+
+.add-dropdown-toggle.show {
+  background-color: #414850;
+  border-color: #2d3338;
+}

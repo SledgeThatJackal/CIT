@@ -14,14 +14,16 @@ import {
 } from "react-hook-form";
 
 import { ItemSchemaType, ZodContainerType } from "@item/schemas/Item";
-import { useContainers } from "@services/queries";
+import { useBasicContainers } from "@services/queries";
 
 type InputControllerProps = {
   fieldName: string;
   control: Control<FieldValues, ItemSchemaType>;
   initialValue?: string;
   checkIfContainerExists: (scannerId: string) => boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setError: UseFormSetError<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   clearErrors: UseFormClearErrors<any>;
   showError: () => void;
 };
@@ -35,10 +37,7 @@ const Input = ({
   clearErrors,
   showError,
 }: InputControllerProps) => {
-  const {
-    field,
-    fieldState: { error },
-  } = useController({
+  const { field } = useController({
     name: fieldName,
     control,
     defaultValue: initialValue || "",
@@ -50,6 +49,7 @@ const Input = ({
         {...field}
         className="form-control"
         onChange={(e) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           field.onChange && field.onChange(e);
         }}
         onBlur={() => {
@@ -71,6 +71,7 @@ const Input = ({
 type ComboBoxProps = {
   index: number;
   field: FieldArrayWithId<ItemSchemaType, "containerItems", "id">;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   errors: FieldErrors<ItemSchemaType>;
   update: UseFieldArrayUpdate<ItemSchemaType>;
@@ -90,7 +91,7 @@ const ComboBox = ({
   clearErrors,
   getValues,
 }: ComboBoxProps) => {
-  const containerQuery = useContainers().data;
+  const containerQuery = useBasicContainers().data;
 
   const [showDropdown, setShowDropdown] = useState(false);
   const handleToggle = (isShown: boolean) => setShowDropdown(isShown);
@@ -114,7 +115,7 @@ const ComboBox = ({
       scannerId.length >= 0 &&
       containerQuery?.some((container) => container.scannerId === scannerId)
     ) {
-      const container: ZodContainerType = containerQuery?.find(
+      const container: ZodContainerType = containerQuery.find(
         (container) => container.scannerId === scannerId,
       )!;
       handleDropdownClick(container);

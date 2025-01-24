@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDetailGridData } from "@hooks/data/useDetailGridData";
-import { DataType } from "./DetailBody";
+import { DataType, DetailContextValueType } from "./DetailBody";
 import {
   flexRender,
   getCoreRowModel,
@@ -13,7 +13,9 @@ import { useDetailContext } from "@hooks/data/useDetailContext";
 import GenericModal from "./GenericModal";
 
 const DetailGrid = <T extends DataType>() => {
-  const data = useDetailContext<T>().containerItems;
+  const {
+    data: { containerItems: data },
+  } = useDetailContext<DetailContextValueType<T, unknown>>();
   const { columns } = useDetailGridData(data);
 
   const table = useReactTable({

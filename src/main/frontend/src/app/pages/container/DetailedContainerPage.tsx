@@ -4,10 +4,14 @@ import React, { useParams } from "react-router-dom";
 import "@styles/DetailedContainer.css";
 import DetailBody from "@components/general/DetailBody";
 import { DetailContext } from "@hooks/data/useDetailContext";
+import { useBasicItems } from "@services/queries";
 
 function DetailedContainerPage() {
   const { scannerId } = useParams();
   const containerQuery = useContainer(scannerId || "").data;
+  const itemQuery = useBasicItems().data;
+
+  console.log(itemQuery);
 
   if (!scannerId || !containerQuery)
     return <div>Barcode ID was not provided</div>;
@@ -40,7 +44,8 @@ function DetailedContainerPage() {
   return (
     <Container className="detail-container">
       <h3>{containerQuery.scannerId}</h3>
-      <DetailContext.Provider value={containerQuery}>
+      <DetailContext.Provider
+        value={{ data: containerQuery, menuData: itemQuery }}>
         <DetailBody />
       </DetailContext.Provider>
     </Container>

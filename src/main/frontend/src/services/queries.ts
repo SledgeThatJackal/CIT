@@ -1,16 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  getContainers,
+  getBasicContainers,
+  getBasicItems,
   getDetailedContainers,
   getImages,
   getTags,
 } from "./api";
 
+// Item
+export function useBasicItems() {
+  return useQuery({
+    queryKey: ["basicItems"],
+    queryFn: getBasicItems,
+    staleTime: 1000 * 60 * 10,
+  });
+}
+
 // Containers
-export function useContainers() {
+export function useBasicContainers() {
   return useQuery({
     queryKey: ["containers"],
-    queryFn: getContainers,
+    queryFn: getBasicContainers,
     staleTime: 1000 * 60 * 10,
   });
 }

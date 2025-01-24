@@ -26,10 +26,10 @@ import {
   Form,
   InputGroup,
   Row,
-  Stack,
 } from "react-bootstrap";
 
 type ImageInputType<T extends ImageType> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => any;
   onRemove: (index: number) => void;
   handleAdd: (element: T, order: number) => void;

@@ -15,12 +15,12 @@ type MenuProps<T extends ID> = {
   Component: React.ComponentType<T>;
 };
 
-type WrapperProps<T extends {}> = {
+type WrapperProps<T extends object> = {
   Component: React.ComponentType<T>;
   element: T;
 };
 
-const ComponentWrapper = <T extends {}>({
+const ComponentWrapper = <T extends object>({
   Component,
   element,
 }: WrapperProps<T>) => {
@@ -42,14 +42,14 @@ const Menu = <T extends ID>({
   useEffect(() => {
     if (dbData) {
       setFilteredData(
-        dbData.filter((element) =>
+        dbData.filter((element: T) =>
           String(element[filterProperty])
             .toLowerCase()
             .includes(search.toLowerCase()),
         ),
       );
     }
-  }, [dbData, search]);
+  }, [dbData, filterProperty, search]);
 
   const checkIfDataExists = (elementTocheck: T) => {
     return currentData.some(

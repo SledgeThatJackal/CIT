@@ -68,7 +68,7 @@ const ImageEdit = () => {
 
   useEffect(() => {
     setData(images);
-  }, [images]);
+  }, [images, setData]);
 
   return (
     <Container>
