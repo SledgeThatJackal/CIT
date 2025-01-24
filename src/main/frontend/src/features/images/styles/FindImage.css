@@ -4,15 +4,21 @@
   border-radius: 5px;
 }
 
-.image-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
-  gap: 3px;
+.image-view {
   background-color: var(--container-body);
   padding: 1em;
   border-radius: 5px;
   border: 2px solid var(--container-body-border);
   margin-top: 8px;
+  overflow-y: auto;
+  max-height: 60vh;
+  scroll-behavior: smooth;
+}
+
+.image-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+  gap: 3px;
 }
 
 .image-div {

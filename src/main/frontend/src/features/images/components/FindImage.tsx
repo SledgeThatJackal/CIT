@@ -6,11 +6,12 @@ import {
   InputGroup,
   Stack,
 } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useImageFinds, useImageFindsTotal } from "../services/query";
 
 import "../styles/FindImage.css";
 import { NavLink } from "react-router-dom";
+import useScrollbar from "@hooks/useScrollbar";
 
 const FindImage = () => {
   const [filters, setFilters] = useState({
@@ -39,6 +40,11 @@ const FindImage = () => {
   };
 
   useEffect(() => handleClick(), []);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const viewRef = useRef<HTMLDivElement>(null);
+
+  useScrollbar(scrollRef, viewRef);
 
   return (
     <Container fluid className="mt-2 w-75 find-container bg-dark shadow">
@@ -93,25 +99,27 @@ const FindImage = () => {
           </Button>
         </InputGroup>
       </Container>
-      <Container fluid className="image-container">
-        {imageFindsQuery &&
-          imageFindsQuery[0]?.scannerId &&
-          imageFindsQuery?.map((image, index) => (
-            <div
-              key={`imageFind-${image.scannerId}-${index}`}
-              className="image-div text-center shadow"
-              title={image.fileName}>
-              <label>{image.scannerId}</label>
-              <NavLink to={`/container/${image.scannerId}`}>
-                <img
-                  src={`/api/image/${image.fileName}`}
-                  alt={`Image-${image.fileName}`}
-                  width={"100px"}
-                  height={"100px"}
-                />
-              </NavLink>
-            </div>
-          ))}
+      <Container fluid ref={viewRef} className="image-view shadow">
+        <Container fluid className="image-scroll" ref={scrollRef}>
+          {imageFindsQuery &&
+            imageFindsQuery[0]?.scannerId &&
+            imageFindsQuery?.map((image, index) => (
+              <div
+                key={`imageFind-${image.scannerId}-${index}`}
+                className="image-div text-center shadow"
+                title={image.fileName}>
+                <label>{image.scannerId}</label>
+                <NavLink to={`/container/${image.scannerId}`}>
+                  <img
+                    src={`/api/image/${image.fileName}`}
+                    alt={`Image-${image.fileName}`}
+                    width={"100px"}
+                    height={"100px"}
+                  />
+                </NavLink>
+              </div>
+            ))}
+        </Container>
       </Container>
     </Container>
   );
