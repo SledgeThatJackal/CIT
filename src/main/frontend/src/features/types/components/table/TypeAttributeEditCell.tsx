@@ -27,6 +27,7 @@ const TypeAttributeEditCell = ({
     setIsEditing(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleKeyDown = (event: any) => {
     if (event.key === "Enter") {
       handleOnBlur();

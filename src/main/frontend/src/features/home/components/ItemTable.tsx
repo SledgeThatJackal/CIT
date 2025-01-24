@@ -13,7 +13,7 @@ const ItemTable = () => {
         <strong>
           <u>{data?.numberOfItems} Items</u>
         </strong>
-        {data?.itemTypes.map((type) => (
+        {data?.itemTypes?.map((type) => (
           <div key={type.a.id}>
             {type.b}{" "}
             {type.a.name ? (
