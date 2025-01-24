@@ -2,7 +2,7 @@ package dev.adamico.cit.Services;
 
 import dev.adamico.cit.Models.Image;
 import dev.adamico.cit.Models.Views.ImageFind;
-import dev.adamico.cit.Repositories.ImageFindCustomRepositoryImpl;
+import dev.adamico.cit.Repositories.ImageFindRepository;
 import dev.adamico.cit.Repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ public class ImageService {
     private ImageRepository imageRepository;
 
     @Autowired
-    private ImageFindCustomRepositoryImpl imageFindRepository;
+    private ImageFindRepository imageFindRepository;
 
     public List<Image> getImages(){
         return imageRepository.findAll();

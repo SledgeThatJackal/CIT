@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-interface ImageFindRepository {
+interface ImageFindInterface {
     List<ImageFind> findByContainerOrItemName(@Param("containerName") String containerName,
                                               @Param("scannerId") String scannerId,
                                               @Param("itemName") String itemName);
 }
 
 @Repository
-public class ImageFindCustomRepositoryImpl implements ImageFindRepository {
+public class ImageFindRepository implements ImageFindInterface {
     @PersistenceContext
     private EntityManager entityManager;
 
