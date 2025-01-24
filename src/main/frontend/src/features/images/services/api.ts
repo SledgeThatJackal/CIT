@@ -31,3 +31,7 @@ export const getImageFinds = async (
   return (await AxiosInstance.get<ImageFind[]>(`/image/find${requestParams}`))
     .data;
 };
+
+export const getImageFindsTotal = async () => {
+  return (await AxiosInstance.get<number>(`/image/find/total`)).data;
+};

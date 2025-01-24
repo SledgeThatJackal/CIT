@@ -94,4 +94,8 @@ public class ImageService {
     public List<ImageFind> findImages(String containerName, String scannerId, String itemName){
         return imageFindRepository.findByContainerOrItemName(containerName, scannerId, itemName);
     }
+
+    public Integer findTotal(){
+        return imageFindRepository.count();
+    }
 }

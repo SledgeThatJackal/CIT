@@ -1,0 +1,34 @@
+.find-container {
+  border: 2px solid var(--type-table-border);
+  padding: 1em;
+  border-radius: 5px;
+}
+
+.image-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+  gap: 3px;
+  background-color: var(--container-body);
+  padding: 1em;
+  border-radius: 5px;
+  border: 2px solid var(--container-body-border);
+  margin-top: 8px;
+}
+
+.image-div img {
+  border: 2px solid var(--select-body-border);
+  border-radius: 5px;
+}
+
+.image-div img:hover {
+  border: 2px solid var(--select-hover-border);
+}
+
+.image-div {
+  background-color: var(--detail-table-body);
+  padding: 0.1em;
+  color: white;
+  padding: 0.5em 0.75em 0.5em 0.5em;
+  border: 2px solid var(--detail-table-border);
+  border-radius: 5px;
+}

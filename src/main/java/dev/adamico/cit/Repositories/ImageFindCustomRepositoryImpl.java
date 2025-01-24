@@ -53,4 +53,8 @@ public class ImageFindCustomRepositoryImpl implements ImageFindRepository {
 
         return queryBuilder;
     }
+
+    public Integer count(){
+        return (Integer) entityManager.createNativeQuery("SELECT COUNT(*) FROM image_find", Integer.class).getSingleResult();
+    }
 }

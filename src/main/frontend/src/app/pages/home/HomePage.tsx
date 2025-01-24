@@ -7,7 +7,6 @@ import { HomeType } from "src/features/home/schemas/Home";
 import { useHome } from "src/features/home/services/query";
 
 import "@home/styles/HomePage.css";
-import FindImageButton from "src/features/images/components/FindImageButton";
 
 export const HomeContext = createContext<HomeType | undefined>(undefined);
 
@@ -22,8 +21,6 @@ function Home() {
         <ContainerTable />
         <ItemTable />
       </HomeContext.Provider>
-
-      <FindImageButton />
     </Container>
   );
 }

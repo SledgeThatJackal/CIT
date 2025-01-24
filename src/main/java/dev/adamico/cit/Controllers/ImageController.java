@@ -43,4 +43,9 @@ public class ImageController {
                                       @RequestParam(value = "itemName", required = false) String itemName){
         return imageService.findImages(containerName, scannerId, itemName);
     }
+
+    @GetMapping("/find/total")
+    public Integer findImagesTotal(){
+        return imageService.findTotal();
+    }
 }
