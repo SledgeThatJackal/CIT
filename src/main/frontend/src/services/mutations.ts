@@ -184,6 +184,7 @@ export function useCreateLink() {
           queryKey: ["containers"],
         });
         await queryClient.invalidateQueries({ queryKey: ["container"] });
+        await queryClient.invalidateQueries({ queryKey: ["item"] });
       }
     },
   });

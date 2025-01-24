@@ -43,7 +43,13 @@ public class ItemController {
         return itemService.findAllItems();
     }
 
-    @GetMapping("id")
+    @GetMapping("/basic")
+    @JsonView(Views.Basic.class)
+    public List<Item> getBasicItems(){
+        return itemService.findAllItems();
+    }
+
+    @GetMapping("/id")
     @JsonView(Views.ItemContainer.class)
     public Item getItem(@RequestParam long id){
         Item item = itemService.findItemById(id);

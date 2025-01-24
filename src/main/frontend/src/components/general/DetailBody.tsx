@@ -1,20 +1,30 @@
 import { Image } from "@schema/Image";
-import React, { useMemo } from "react";
-import { Carousel, Container } from "react-bootstrap";
+import React, { useMemo, useState } from "react";
+import { Button, Carousel, Container } from "react-bootstrap";
 import DetailGrid from "./DetailGrid";
 import { useDetailContext } from "@hooks/data/useDetailContext";
 import { ItemAttribute } from "@item/schemas/Item";
+import DetailAdd from "./DetailAdd";
 
 export type DataType = {
+  id: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   images: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   containerItems: any;
 };
 
+export type DetailContextValueType<T, S> = {
+  data: T;
+  menuData: S[];
+};
+
 const DetailBody = <T extends DataType, S extends Image>() => {
-  const data = useDetailContext<T>();
+  const { data } = useDetailContext<DetailContextValueType<T, unknown>>();
   const keyValues = useMemo(() => extractValues(data), [data]);
+  const [show, setShow] = useState<boolean>(false);
+
+  const toggleShow = () => setShow((prev) => !prev);
 
   return (
     <Container>
@@ -50,6 +60,17 @@ const DetailBody = <T extends DataType, S extends Image>() => {
       {data.containerItems.length > 0 && (
         <Container fluid className="detail-grid">
           <DetailGrid />
+          {show ? (
+            <Container fluid style={{ marginTop: "12px" }}>
+              <DetailAdd toggleShow={toggleShow} />
+            </Container>
+          ) : (
+            <div className="detail-grid-button">
+              <Button size="sm" title="Add New Row" onClick={toggleShow}>
+                <i className="bi bi-plus" />
+              </Button>
+            </div>
+          )}
         </Container>
       )}
     </Container>
