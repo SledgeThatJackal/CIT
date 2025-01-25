@@ -39,7 +39,11 @@ const FindImage = () => {
     }, 0);
   };
 
-  useEffect(() => handleClick(), []);
+  useEffect(() => {
+    setTimeout(() => {
+      handleClick();
+    }, 0);
+  }, []);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
