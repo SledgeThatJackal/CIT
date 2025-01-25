@@ -13,4 +13,14 @@
 
   --detail-table-body: rgb(26, 28, 40);
   --detail-table-border: rgb(40, 44, 57);
+  --detail-table-button-hover: rgb(85, 90, 105);
+
+  --type-table-body: #3d454e;
+  --type-table-border: #7b8895;
+
+  --image-color: rgb(230, 84, 70);
+  --image-hover: rgb(200, 60, 50);
+  --image-button: #5c6b73;
+  --image-button-hover: #4a5a61;
+  --image-button-hover-border: #6a7c89;
 }

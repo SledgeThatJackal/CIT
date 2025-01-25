@@ -1,14 +1,21 @@
-import { ContainerType } from "@container/schemas/Container";
+import { ContainerType, ZodItemSchema } from "@container/schemas/Container";
 import { ZodContainerType } from "@item/schemas/Item";
 import { Tag, TagCreate } from "@schema/Tag";
 import { ImageType } from "@schema/Image";
 import omit from "lodash.omit";
 import AxiosInstance from "./AxiosInstance";
 
+// Items
+
+// Query
+export const getBasicItems = async () => {
+  return (await AxiosInstance.get<ZodItemSchema[]>(`/item/basic`)).data;
+};
+
 // Containers
 
 // Query
-export const getContainers = async () => {
+export const getBasicContainers = async () => {
   return (await AxiosInstance.get<ZodContainerType[]>(`/container`)).data;
 };
 

@@ -12,9 +12,9 @@ const DetailCell = ({ row }: DisplayCell<any>) => {
 
     let path = "/";
 
-    if ("itemType" in data) path = `/item/${data.id}`;
+    if ("itemType" in data) path = `/item/id/${data.id}`;
 
-    if ("scannerId" in data) path = `/container/${data.scannerId}`;
+    if ("scannerId" in data) path = `/container/id/${data.scannerId}`;
 
     navigate(path);
   };

@@ -13,13 +13,11 @@ const ItemTable = () => {
         <strong>
           <u>{data?.numberOfItems} Items</u>
         </strong>
-        {data?.itemTypes.map((type) => (
+        {data?.itemTypes?.map((type) => (
           <div key={type.a.id}>
             {type.b}{" "}
             {type.a.name ? (
-              <NavLink to="/item" state={{ itemType: type.a }}>
-                {type.a.name}
-              </NavLink>
+              <NavLink to={`/item/${type.a.name}`}>{type.a.name}</NavLink>
             ) : (
               "No Type"
             )}

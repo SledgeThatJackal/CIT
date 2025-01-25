@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { createContext, useContext } from "react";
 
-import { useContainers, useImages, useTags } from "../services/queries";
+import { useBasicContainers, useImages, useTags } from "../services/queries";
 import { useItemTypes } from "@type/services/query";
 import { useItems } from "@item/services/query";
 
-const DataContext = createContext<any[]>([]);
+const DataContext = createContext<unknown[]>([]);
 
 type MenuDataProviderProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: any;
   type: string;
 };
@@ -43,7 +45,7 @@ const getQuery = (type: string) => {
       return useItems();
     }
     case "Container": {
-      return useContainers();
+      return useBasicContainers();
     }
     case "Image": {
       return useImages();
@@ -51,4 +53,5 @@ const getQuery = (type: string) => {
   }
 };
 
-export const useData = () => useContext(DataContext);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useData = () => useContext<any>(DataContext);

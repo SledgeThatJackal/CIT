@@ -4,10 +4,12 @@ import { useItem } from "@item/services/query";
 import { Container } from "react-bootstrap";
 import React, { useParams } from "react-router-dom";
 import "@styles/DetailedContainer.css";
+import { useBasicContainers } from "@services/queries";
 
 function DetailedItemPage() {
   const { id } = useParams();
   const itemQuery = useItem(Number(id)).data;
+  const containerQuery = useBasicContainers().data;
 
   if (!id || !itemQuery) return <div>Item Id was not provided</div>;
 
@@ -18,7 +20,8 @@ function DetailedItemPage() {
   return (
     <Container className="detail-container">
       <h3>{itemQuery.name}</h3>
-      <DetailContext.Provider value={itemQuery}>
+      <DetailContext.Provider
+        value={{ data: itemQuery, menuData: containerQuery }}>
         <DetailBody />
       </DetailContext.Provider>
     </Container>

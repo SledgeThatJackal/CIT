@@ -46,7 +46,7 @@ import SelectComponentW from "@components/write/SelectComponentW";
 import { useItemTypes } from "@type/services/query";
 import { ZodItemType } from "@schema/General";
 import { useItemSettingsState } from "@item/hooks/persistent_states/useItemSettingsState";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Input = ({ column }: { column: Column<any, unknown> }) => {
@@ -151,17 +151,24 @@ const Input = ({ column }: { column: Column<any, unknown> }) => {
 
 function ItemTable() {
   const parentRef = React.useRef<HTMLDivElement>(null);
-  const location = useLocation();
+  const { type } = useParams();
   const typeQuery = useItemTypes().data;
 
   const { sorting, setSorting, isBulkCreate, toggleBulkCreate } =
     useItemSettingsState();
 
-  const [filter, setFilter] = useState<ZodItemType>(
-    location.state?.itemType || { id: -1, name: "" },
-  );
+  const [filter, setFilter] = useState<ZodItemType>({ id: -1, name: "" });
 
-  console.log(filter);
+  useEffect(() => {
+    setFilter(
+      typeQuery?.find(
+        (el) =>
+          el.name
+            .toLocaleLowerCase()
+            .localeCompare(type?.toLocaleLowerCase() ?? "") === 0,
+      ) || { id: -1, name: "" },
+    );
+  }, [type, typeQuery]);
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const {

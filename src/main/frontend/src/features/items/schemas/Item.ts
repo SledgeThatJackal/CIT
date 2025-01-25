@@ -28,6 +28,7 @@ type ItemAttributes = {
 const ContainerSchema = z.object({
   id: z.number(),
   name: z.string(),
+  description: z.string().optional(),
   scannerId: z.string(),
 });
 

@@ -42,10 +42,6 @@
   border-bottom-left-radius: 4px;
 }
 
-.detail-grid-row:last-child .detail-grid-column:last-child {
-  border-bottom-right-radius: 4px;
-}
-
 .detail-grid-column {
   box-sizing: border-box;
   background-color: var(--detail-table-body);
@@ -79,4 +75,30 @@
 
 .detail-grid-row:last-child .detail-grid-column {
   border-bottom: 2px solid var(--detail-table-border);
+}
+
+.detail-grid-button {
+  display: flex;
+  justify-content: end;
+}
+
+.detail-grid-button button {
+  background-color: transparent;
+  border: 2px solid var(--detail-table-border);
+  border-top: none;
+  border-radius: 0px 0px 5px 5px;
+  margin-right: 12px;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+.detail-grid-button button:hover {
+  background-color: transparent;
+  border-color: var(--detail-table-button-hover);
+}
+
+.detail-grid-button button:active {
+  background-color: rgb(22, 24, 36) !important;
+  border-color: rgb(35, 39, 52) !important;
 }

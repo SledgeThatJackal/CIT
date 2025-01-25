@@ -84,6 +84,14 @@ const RootLayout = () => {
                   onClick={() => setActiveKey("settings")}>
                   Settings
                 </Nav.Link>
+                <Nav.Link
+                  as={NavLink}
+                  to="/find"
+                  eventKey="find"
+                  className="nav-link"
+                  onClick={() => setActiveKey("find")}>
+                  Find
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
             <LogoutButton />
