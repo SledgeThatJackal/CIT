@@ -1,4 +1,28 @@
 # CIT
+v0.8.0
+- Items and Containers now have a detail page
+  - To access this page, you can use the barcode ID (scanner ID) or the item's ID to go to that page
+    - There's a button on the data grids (green button with a magnifying glass) that can also send you to that page
+  - These pages have all of the respective entities' data and a grid at the bottom with all of the associated entities
+    - This grid can update the quantity, add new links, remove links, or you can view that row's entity's detail page
+- Home Page now has data
+  - Container Table
+    - Displays the total number of containers
+  - Item Table
+    - Displays total number of items
+      - Show the number of items per type
+        - The type name is a navigation link to the data grid that filters it based on that type
+- The route to the item table now has an optional parameter that presets the type for the table on render based on the provided type
+  - ex. /item/{type} -> /item/LED
+- New Page: Find by Image
+  - This page now displays all images for containers and items
+    - This can be filtered by a container name, barcode ID, or an item name (filter is case insensitive and does substring matches)
+    - However, it only displays images for items that have at least one associated container
+      - It displays all images for any container (even if they don't have an associated item)
+  - Each image acts as a navigation link to the container detail page for that image
+    - If the image is from an item, you'll still navigate to its respective container
+      - If the item is in multiple containers, it will display that image multiple times
+
 v0.7.0
 - Added the ability to upload a zip file to the server and create containers associated with them
   - This sets up a basic container with the name coming from the folder name inside of the zip file
