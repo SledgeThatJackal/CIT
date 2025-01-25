@@ -28,7 +28,7 @@ const SelectComponentW = <T extends HasId>({
       onChange={(e) => setValue(Number(e.target.value))}
       onBlur={onBlur}
       disabled={isDisabled}
-      defaultValue={initialValue}>
+      value={initialValue}>
       {data ? (
         data
           .sort((a, b) =>
