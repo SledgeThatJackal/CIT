@@ -12,14 +12,10 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
+import java.sql.*;
 
 @Service
 public class EximService {
@@ -30,28 +26,34 @@ public class EximService {
     private static final Logger logger = LoggerFactory.getLogger(EximService.class);
 
     public Resource exportDatabase() throws Exception {
-        DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
-        ResultSet tables = metaData.getTables(null, null, null, new String[]{"TABLE"});
-
         File output = new File("cit_export.json");
 
-        logger.debug("Starting Database Export");
+        logger.debug("Starting Database Export. Export file path: {}", output.getAbsolutePath());
 
-        try(FileOutputStream fos = new FileOutputStream(output);
+        try(Connection connection = dataSource.getConnection();
+            FileOutputStream fos = new FileOutputStream(output);
             OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
             JsonGenerator generator = new JsonFactory().createGenerator(writer)) {
+
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet tables = metaData.getTables(null, null, null, new String[]{"TABLE"});
 
             generator.writeStartObject();
 
             while (tables.next()) {
                 String tableName = tables.getString("TABLE_NAME");
-                logger.debug("Starting on table: " + tableName);
 
+                if("flyway_schema_history".equalsIgnoreCase(tableName)) {
+                    logger.debug("Skipping table: {}", tableName);
+                    continue;
+                }
+
+                logger.debug("Starting on table: {}", tableName);
 
                 generator.writeFieldName(tableName);
                 generator.writeStartArray();
 
-                try (Statement stmt = dataSource.getConnection().createStatement();
+                try (Statement stmt = connection.createStatement();
                      ResultSet tableData = stmt.executeQuery("SELECT * FROM " + tableName)) {
 
                     streamJsonArray(tableData, generator);
@@ -63,6 +65,7 @@ public class EximService {
             generator.writeEndObject();
             generator.flush();
         } catch(Exception ex){
+            logger.debug("Error during export: {}", ex.getLocalizedMessage());
             throw new GeneralExportException("Location: EximService | Exception Type: " + ex.getClass(), ex);
         }
 
