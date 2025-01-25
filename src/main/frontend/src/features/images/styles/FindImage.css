@@ -21,7 +21,7 @@
   gap: 3px;
 }
 
-.image-div {
+.image-find-div {
   background-color: var(--detail-table-body);
   padding: 0.1em;
   color: var(--image-color);
@@ -30,16 +30,16 @@
   border-radius: 5px;
 }
 
-.image-div img {
+.image-find-img {
   border: 2px solid var(--image-color);
   border-radius: 5px;
 }
 
-.image-div img:hover {
+.image-find-img:hover {
   border-color: var(--image-hover);
 }
 
-.image-div:has(img:hover) {
+.image-find-div:has(.image-find-img:hover) {
   color: var(--image-hover);
 }
 
