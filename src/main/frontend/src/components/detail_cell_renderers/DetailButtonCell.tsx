@@ -8,9 +8,9 @@ const DetailButtonCell = ({ row }: CellContext<any, any>) => {
   const handleClick = () => {
     const data = row.original;
 
-    if ("item" in data) return `/item/${data.item.id}`;
+    if ("item" in data) return `/item/id/${data.item.id}`;
 
-    if ("container" in data) return `/container/${data.container.scannerId}`;
+    if ("container" in data) return `/container/id/${data.container.scannerId}`;
 
     return "/home";
   };

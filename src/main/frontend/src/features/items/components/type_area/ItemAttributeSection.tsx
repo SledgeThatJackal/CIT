@@ -23,6 +23,7 @@ const ItemAttributeSection = () => {
     setItemAttributes(context?.row.original.itemAttributes);
   }, [context]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleEdit = (itemAttr: any, value: string | number) => {
     const updatedElement = alterItemAttribute(itemAttr, value);
 

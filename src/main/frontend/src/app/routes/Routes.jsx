@@ -62,14 +62,20 @@ export const router = createBrowserRouter(
           path: "container",
           children: [
             { index: true, element: <ContainerPage /> },
-            { path: ":scannerId", element: <DetailedContainerPage /> },
+            { path: "id/:scannerId", element: <DetailedContainerPage /> },
           ],
         },
         {
           path: "item",
           children: [
-            { index: true, element: <ItemPage /> },
-            { path: ":id", element: <DetailedItemPage /> },
+            {
+              path: ":type?",
+              element: <ItemPage />,
+            },
+            {
+              path: "id/:id",
+              element: <DetailedItemPage />,
+            },
           ],
         },
         {
