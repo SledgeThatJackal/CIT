@@ -39,7 +39,11 @@ const FindImage = () => {
     }, 0);
   };
 
-  useEffect(() => handleClick(), []);
+  useEffect(() => {
+    setTimeout(() => {
+      handleClick();
+    }, 0);
+  }, []);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
@@ -106,7 +110,7 @@ const FindImage = () => {
             imageFindsQuery?.map((image, index) => (
               <div
                 key={`imageFind-${image.scannerId}-${index}`}
-                className="image-div text-center shadow"
+                className="image-find-div text-center shadow"
                 title={image.fileName}>
                 <label>{image.scannerId}</label>
                 <NavLink to={`/container/${image.scannerId}`}>
@@ -115,6 +119,7 @@ const FindImage = () => {
                     alt={`Image-${image.fileName}`}
                     width={"100px"}
                     height={"100px"}
+                    className="image-find-img"
                   />
                 </NavLink>
               </div>
