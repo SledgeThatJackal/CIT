@@ -10,6 +10,8 @@ import {
   DragEndEvent,
   DragStartEvent,
   UniqueIdentifier,
+  Active,
+  Over,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -17,7 +19,14 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ImageType } from "@schema/Image";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  Reducer,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import {
   Button,
   CloseButton,
@@ -49,6 +58,7 @@ const ImageInput = <T extends ImageType>({
   buttonWidth,
 }: ImageInputType<T>) => {
   const fileUploadRef = useRef<HTMLInputElement>(null);
+  const [trigger, setTrigger] = useState<boolean>(false);
 
   const handleButtonClick = () => {
     if (fileUploadRef.current) {
@@ -57,48 +67,62 @@ const ImageInput = <T extends ImageType>({
   };
 
   const onAdd = (image: T) => {
+    dispatch({
+      type: ImageActionKind.ADD,
+      image: image,
+    });
+
     handleAdd(image, data.length);
   };
 
   const sensors = useSensors(useSensor(PointerSensor));
 
-  const [items, setItems] = useState(data);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null);
+  const [images, dispatch] = useReducer<Reducer<ImageType[], ImageAction>>(
+    imagesReducer,
+    data,
+  );
 
-  const handleDragStart = (event: DragStartEvent) => {
+  const handleDragStart = useCallback((event: DragStartEvent) => {
     const { active } = event;
 
     setActiveId(active.id);
-  };
+  }, []);
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (over && active.id !== over.id) {
-      const oldPosition = items.findIndex(
-        (item) => item.fileName === active.id,
-      );
-      const newPosition = items.findIndex((item) => item.fileName === over.id);
+    dispatch({
+      type: ImageActionKind.REORDER,
+      active: active,
+      over: over,
+    });
 
-      setItems((currentItems) => {
-        const newItems = arrayMove(currentItems, oldPosition, newPosition);
-        onDragEnd(newItems);
+    setTrigger(true);
 
-        return newItems;
-      });
-    }
     setActiveId(null);
     setOverId(null);
-  };
+  }, []);
 
-  const removeImage = (index: number) => {
-    onRemove(index);
-  };
+  const removeImage = useCallback(
+    (index: number) => {
+      onRemove(index);
+
+      dispatch({
+        type: ImageActionKind.REMOVE,
+        id: images[index].id,
+      });
+    },
+    [onRemove, images],
+  );
 
   useEffect(() => {
-    setItems(data);
-  }, [data]);
+    if (trigger && data !== images) {
+      onDragEnd(images);
+      setTrigger(false);
+    }
+  }, [data, images, onDragEnd, trigger]);
 
   return (
     <React.Fragment>
@@ -158,8 +182,8 @@ const ImageInput = <T extends ImageType>({
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={(event) => setOverId(event.over?.id ?? null)}>
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          {items.map((field, index) => (
+        <SortableContext items={images} strategy={verticalListSortingStrategy}>
+          {images.map((field, index) => (
             <Row
               key={`image-${field.id}`}
               className="pb-2 pt-2 mt-2 align-items-center rounded"
@@ -203,3 +227,58 @@ const ImageRow = (image: ImageType) => {
 };
 
 export default ImageInput;
+
+enum ImageActionKind {
+  ADD = "ADD",
+  REORDER = "REORDER",
+  REMOVE = "REMOVE",
+}
+
+type ImageAction = {
+  type: ImageActionKind;
+  image?: ImageType;
+  id?: number;
+  active?: Active;
+  over?: Over | null;
+  onDragEnd?: (images: ImageType[]) => void;
+};
+
+function imagesReducer(images: ImageType[], action: ImageAction) {
+  switch (action.type) {
+    case ImageActionKind.ADD: {
+      if (action.image) return [...images, action.image];
+
+      return images;
+    }
+
+    case ImageActionKind.REORDER: {
+      const { over, active } = action;
+
+      if (over && active && action.id !== over.id) {
+        const oldPosition = images.findIndex(
+          (image) => image.fileName === active?.id,
+        );
+
+        const newPosition = images.findIndex(
+          (image) => image.fileName === over?.id,
+        );
+
+        const newImages = arrayMove(images, oldPosition, newPosition);
+
+        return newImages;
+      }
+
+      return images;
+    }
+
+    case ImageActionKind.REMOVE: {
+      const updatedImages = [...images];
+
+      return updatedImages.filter((image) => image.id !== action?.id);
+    }
+
+    default: {
+      throw new Error(`Unknown action type: ${action.type}`);
+    }
+  }
+}

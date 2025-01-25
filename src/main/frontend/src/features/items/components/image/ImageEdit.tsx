@@ -1,5 +1,5 @@
 import { useAttributeState } from "@item/hooks/useAttributeState";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Container } from "react-bootstrap";
 import ImageInput from "./ImageInput";
 import { ContainerImageType, ImageType, ItemImageType } from "@schema/Image";
@@ -70,12 +70,18 @@ const ImageEdit = () => {
     setData(images);
   }, [images, setData]);
 
+  const imageData = useMemo(
+    () =>
+      images
+        .sort((a, b) => a.imageOrder - b.imageOrder)
+        .map((field) => field.image),
+    [images],
+  );
+
   return (
     <Container>
       <ImageInput
-        data={images.map((field) => {
-          return field.image;
-        })}
+        data={imageData}
         onChange={onChange}
         onRemove={onRemove}
         handleAdd={handleAdd}
