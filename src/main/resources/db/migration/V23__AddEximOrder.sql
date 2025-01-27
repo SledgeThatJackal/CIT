@@ -1,0 +1,2 @@
+INSERT INTO settings_table (id, key, value) VALUES
+(nextval('settings_table_seq'), 'exim_order', 'itemtype_table,tags_table,images_table,settings_table,container_table,item_table,typeattributes_table,itemtag_table,itemimages_table,containerimages_table,containeritem_table,itemattributes_table');
