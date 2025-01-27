@@ -16,6 +16,7 @@ import {
   updateParentContainer,
   updateQuantity,
   updateTag,
+  uploadDatabaseData,
 } from "./api";
 
 // Containers
@@ -335,6 +336,20 @@ export function useCreateImage() {
       if (!error) {
         // do something most likely
       }
+    },
+  });
+}
+
+// Exim
+
+export function useUploadData() {
+  const { displayError } = useErrorState();
+
+  return useMutation({
+    mutationFn: (data: FormData) => uploadDatabaseData(data),
+
+    onError: (error: any) => {
+      displayError(error.response.data.message);
     },
   });
 }
