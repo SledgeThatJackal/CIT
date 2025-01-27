@@ -16,6 +16,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class EximService {
@@ -35,13 +37,13 @@ public class EximService {
             OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
             JsonGenerator generator = new JsonFactory().createGenerator(writer)) {
 
-            DatabaseMetaData metaData = connection.getMetaData();
-            ResultSet tables = metaData.getTables(null, null, null, new String[]{"TABLE"});
+            List<String> tableOrder = getOrder(connection);
+            Iterator<String> tables = tableOrder.iterator();
 
             generator.writeStartObject();
 
-            while (tables.next()) {
-                String tableName = tables.getString("TABLE_NAME");
+            while (tables.hasNext()) {
+                String tableName = tables.next();
 
                 if("flyway_schema_history".equalsIgnoreCase(tableName)) {
                     logger.debug("Skipping table: {}", tableName);
@@ -53,8 +55,10 @@ public class EximService {
                 generator.writeFieldName(tableName);
                 generator.writeStartArray();
 
+                String query = fetchQuery(tableName);
+
                 try (Statement stmt = connection.createStatement();
-                     ResultSet tableData = stmt.executeQuery("SELECT * FROM " + tableName)) {
+                     ResultSet tableData = stmt.executeQuery(query)) {
 
                     streamJsonArray(tableData, generator);
                 }
@@ -66,6 +70,7 @@ public class EximService {
             generator.flush();
         } catch(Exception ex){
             logger.debug("Error during export: {}", ex.getLocalizedMessage());
+            System.out.println(ex.getLocalizedMessage());
             throw new GeneralExportException("Location: EximService | Exception Type: " + ex.getClass(), ex);
         }
 
@@ -90,6 +95,40 @@ public class EximService {
             }
 
             generator.writeEndObject(); // Row End
+        }
+    }
+
+    private List<String> getOrder(Connection connection) throws SQLException {
+        String query = "SELECT value FROM settings_table WHERE key = 'exim_order'";
+
+        try(PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery()) {
+
+            if(rs.next()){
+                return List.of(rs.getString("value").split(","));
+            } else {
+                throw new RuntimeException("The order was not found in settings");
+            }
+        }
+    }
+
+    private String fetchQuery(String tableName) throws SQLException {
+        if(tableName.equalsIgnoreCase("container_table")) {
+            return "WITH RECURSIVE OrderedContainers AS (" +
+                        "SELECT *, 0 as level " +
+                        "FROM container_table " +
+                        "WHERE parent_id IS NULL " +
+                        "UNION ALL " +
+                        "SELECT c.*, oc.level + 1 " +
+                        "FROM container_table c " +
+                        "INNER JOIN OrderedContainers oc " +
+                        "ON c.parent_id = oc.id " +
+                    ") " +
+                    "SELECT * " +
+                    "FROM OrderedContainers " +
+                    "ORDER BY level;";
+        } else {
+            return  "SELECT * FROM " + tableName;
         }
     }
 }
