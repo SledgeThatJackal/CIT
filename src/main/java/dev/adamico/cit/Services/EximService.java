@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.adamico.cit.Exceptions.GeneralExportException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,12 @@ public class EximService {
 
     private final HashMap<String, HashMap<String, String>> tableSetup = new HashMap<>();
 
-    private final HashMap<String, HashMap<Integer, Integer>> ids = new HashMap<>();
+    private final HashMap<String, HashMap<Long, Long>> ids = new HashMap<>();
+
+    private final Set<String> rootRowTables = new HashSet<>(List.of("itemtype_table"));
+
+    private final HashMap<String, List<String>> uniqueRowTables = new HashMap<>();
+    private final HashMap<String, HashMap<String, Integer>> columnTypes = new HashMap<>();
 
     private final String HIERARCHICAL_VARIABLE = "level";
 
@@ -205,7 +211,15 @@ public class EximService {
                         initTableSetup(parser);
                     } else {
                         List<JsonNode> tableRows = getAllTableRows(parser);
+
+                        if(tableRows.isEmpty()) continue;
+
                         String query = createQueryString(tableRows.get(0), tableName);
+
+                        List<String> uniqueTables = uniqueRowTables.get(tableName);
+                        if(uniqueTables != null)
+                            query += String.format(" ON CONFLICT (%s) DO UPDATE SET %s = EXCLUDED.%s", String.join(", ", uniqueTables), PLACEHOLDER_COLUMN_NAME, PLACEHOLDER_COLUMN_NAME);
+
 
                         insertRows(tableName, tableRows, query);
 
@@ -216,13 +230,16 @@ public class EximService {
         }
     }
 
-    private void initTableSetup(JsonParser parser) throws IOException {
+    private void initTableSetup(JsonParser parser) throws Exception {
         while(parser.nextToken() != JsonToken.END_ARRAY) {
             JsonNode node = objectMapper.readTree(parser);
 
             String tableName = node.fieldNames().next();
 
             String query = String.format("UPDATE %s SET %s = NULL", tableName, PLACEHOLDER_COLUMN_NAME);
+
+            if(rootRowTables.contains(tableName)) query += " WHERE id != -1";
+
             jdbcTemplate.update(query);
 
             JsonNode currentTable = node.fields().next().getValue();
@@ -239,6 +256,47 @@ public class EximService {
             }
 
             tableSetup.put(tableName, tableKeys);
+
+            fetchColumnTypes(tableName);
+            fetchUniqueColumns(tableName);
+        }
+    }
+
+    private void fetchColumnTypes(String tableName) throws Exception {
+        try(Connection connection = dataSource.getConnection()){
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet rs = metaData.getColumns(null, null, tableName, null);
+            HashMap<String, Integer> columns = new HashMap<>();
+
+            while(rs.next())  {
+                String columnName = rs.getString("COLUMN_NAME");
+                int columnType = rs.getInt("DATA_TYPE");
+
+                columns.put(columnName, columnType);
+            }
+
+            columnTypes.put(tableName, columns);
+        }
+    }
+
+    private void fetchUniqueColumns(String tableName) throws Exception {
+        try(Connection connection = dataSource.getConnection()){
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet rs = metaData.getIndexInfo(null, null, tableName, true, false);
+            List<String> columns = new ArrayList<>();
+
+            while(rs.next()) {
+                String indexName = rs.getString("INDEX_NAME");
+                String columnName = rs.getString("COLUMN_NAME");
+
+                if(columnName != null && !columnName.isEmpty() && !indexName.toLowerCase().contains("pkey")){
+                    columns.add(columnName);
+                }
+            }
+
+            if(!columns.isEmpty()) {
+                uniqueRowTables.put(tableName, columns);
+            }
         }
     }
 
@@ -276,32 +334,22 @@ public class EximService {
             placeholders.append("?");
         }
 
-        return String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, columns, placeholders);
+        return String.format("INSERT INTO %s (%s, id) VALUES (%s, nextVal('%s_seq'))", tableName, columns, placeholders, tableName);
+    }
+
+    private List<JsonNode> filterRows(List<JsonNode> tableRows) {
+        return tableRows.stream().filter(node -> node.has("id") && node.get("id").asInt() != -1).toList();
     }
 
     private void insertRows(String tableName, List<JsonNode> tableRows, String query) throws SQLException {
         switch(tableName){
             case "container_table" -> insertRowsWithSelfRefFKey(tableName, tableRows, query);
-            case "itemtype_table" -> jdbcTemplate.batchUpdate(query, tableRows, 1000, (ps, row) -> {
-                int index = 1;
-                boolean hasRoot = true;
-
-                for(Iterator<String> it = row.fieldNames(); it.hasNext(); ) {
-                    String column = it.next();
-                    String value = row.get(column).asText();
-
-                    if(hasRoot && column.equals("id") && Integer.parseInt(value) == -1){
-                        hasRoot = false;
-                        continue;
-                    }
-
-                    ps.setObject(index++, value);
-                }
-            });
+            case "itemtype_table" -> insertRowsWithFKey(tableName, filterRows(tableRows), query);
             default -> insertRowsWithFKey(tableName, tableRows, query);
         }
     }
 
+    @Transactional
     private void insertRowsWithFKey(String tableName, List<JsonNode> tableRows, String query){
         jdbcTemplate.batchUpdate(query, tableRows, 1000, (ps, row) -> {
             int index = 1;
@@ -309,22 +357,52 @@ public class EximService {
 
             for (Iterator<String> it = row.fieldNames(); it.hasNext(); ) {
                 String column = it.next();
-                String value;
 
-                if(hasForeignKeys && tableSetup.get(tableName).containsKey(column)){
-                    value = getForeignKey(tableName, column, row.get(column).asInt());
-                } else {
-                    value = row.get(column).asText();
-                }
-
-                ps.setObject(index++, value);
+                setParameter(ps, column, row, tableName, index++, hasForeignKeys, true);
             }
         });
     }
 
+    @Transactional
+    private void setParameter(PreparedStatement ps, String column, JsonNode row, String tableName, int index, boolean hasForeignKeys, boolean optional) throws SQLException {
+        switch(columnTypes.get(tableName).get(column)){
+            case Types.INTEGER -> ps.setInt(index, row.get(column).asInt());
+            case Types.BIGINT -> {
+                String value = row.get(column).asText();
+                Long id;
+
+                try {
+                    id = Long.parseLong(value);
+                } catch (NumberFormatException ignored){
+                    id = null;
+                }
+
+                if(hasForeignKeys && optional && tableSetup.get(tableName).containsKey(column))
+                    id = getForeignKey(tableName, column, id);
+
+                if(id == null) {
+                    ps.setNull(index, Types.BIGINT);
+                } else {
+                    ps.setLong(index, id);
+                }
+            }
+            case Types.SMALLINT -> ps.setShort(index, (short) row.get(column).asInt());
+            case Types.DOUBLE -> ps.setDouble(index, row.get(column).asDouble());
+
+            default -> {
+                Object value = row.get(column).asText();
+                if(value.equals("null")) value = null;
+
+                ps.setObject(index, value);
+            }
+        }
+    }
+
+    @Transactional
     private void insertRowsWithSelfRefFKey(String tableName, List<JsonNode> tableRows, String query) throws SQLException {
         String updatedQuery = String.format("%s RETURNING id, %s", query, PLACEHOLDER_COLUMN_NAME);
         Map<Integer, List<JsonNode>> groupedRows = new HashMap<>();
+        boolean hasForeignKeys = hasForeignKeys(tableName);
 
         for(JsonNode node: tableRows) {
             int level = node.get(HIERARCHICAL_VARIABLE).asInt();
@@ -344,25 +422,22 @@ public class EximService {
 
                     for(Iterator<String> it = row.fieldNames(); it.hasNext(); ) {
                         String column = it.next();
-                        String value;
 
-                        if(tableSetup.get(tableName).containsKey(column)){
-                            value = getForeignKey(tableName, column, row.get(column).asInt());
-                        } else {
-                            value = row.get(column).asText();
-                        }
+                        if(HIERARCHICAL_VARIABLE.equals(column)) continue;
 
-                        statement.setObject(index++, value);
+                        setParameter(statement, column, row, tableName, index++, hasForeignKeys, level != 0);
                     }
 
                     statement.addBatch();
                 }
 
-                try(ResultSet rs = statement.executeQuery()) {
-                    HashMap<Integer, Integer> newIds = new HashMap<>();
+                statement.executeBatch();
+
+                try(ResultSet rs = statement.getGeneratedKeys()) {
+                    HashMap<Long, Long> newIds = new HashMap<>();
                     while(rs.next()){
-                        newIds.put((Integer) rs.getObject("id"),
-                                (Integer) rs.getObject(PLACEHOLDER_COLUMN_NAME));
+                        newIds.put((Long) rs.getObject("id"),
+                                   (Long) rs.getObject(PLACEHOLDER_COLUMN_NAME));
                     }
 
                     ids.put(tableName, newIds);
@@ -382,11 +457,11 @@ public class EximService {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery()){
 
-            HashMap<Integer, Integer> currentIds = new HashMap<>();
+            HashMap<Long, Long> currentIds = new HashMap<>();
 
             while(rs.next()){
-                Integer id = rs.getInt("id");
-                Integer placeholder = rs.getInt("placeholder");
+                Long id = rs.getLong("id");
+                Long placeholder = rs.getLong("placeholder");
 
                 currentIds.put(placeholder, id);
             }
@@ -400,10 +475,13 @@ public class EximService {
         return tableSetup.get(primaryTable).get(columnName);
     }
 
-    private String getForeignKey(String primaryTable, String columnName, Integer oldId) {
+    private Long getForeignKey(String primaryTable, String columnName, Long oldId) {
         String foreignTable = getForeignKeyTable(primaryTable, columnName);
 
-        return ids.get(foreignTable).get(oldId).toString();
+        if(primaryTable.equals("item_table") && columnName.equals("itemtype_id") && oldId == -1)
+            return oldId;
+
+        return ids.get(foreignTable).get(oldId);
     }
 
     private boolean hasForeignKeys(String tableName) {
