@@ -2,30 +2,25 @@ package dev.adamico.cit.Services;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.adamico.cit.Exceptions.GeneralExportException;
-import dev.adamico.cit.Repositories.EximFetch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Field;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class EximService {
@@ -34,11 +29,22 @@ public class EximService {
     private DataSource dataSource;
 
     @Autowired
-    EximFetch eximFetch;
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    private final HashMap<String, HashMap<String, String>> tableSetup = new HashMap<>();
+
+    private final HashMap<String, HashMap<Integer, Integer>> ids = new HashMap<>();
+
+    private final String HIERARCHICAL_VARIABLE = "level";
+
+    private final String PLACEHOLDER_COLUMN_NAME = "placeholder";
 
     private static final Logger logger = LoggerFactory.getLogger(EximService.class);
 
-    public Resource exportDatabase() throws Exception {
+    public Resource exportDatabase() {
         File output = new File("cit_export.json");
 
         logger.debug("Starting Database Export. Export file path: {}", output.getAbsolutePath());
@@ -52,6 +58,8 @@ public class EximService {
             Iterator<String> tables = tableOrder.iterator();
 
             generator.writeStartObject();
+
+            createTableSetupObject(connection, tableOrder, generator);
 
             while (tables.hasNext()) {
                 String tableName = tables.next();
@@ -88,6 +96,39 @@ public class EximService {
         return new FileSystemResource(output);
     }
 
+    private void createTableSetupObject(Connection connection, List<String> tables, JsonGenerator generator) throws Exception {
+        DatabaseMetaData metaData = connection.getMetaData();
+
+        logger.debug("Starting Table Setup");
+
+        generator.writeFieldName("tableSetup");
+        generator.writeStartArray();
+
+        for(String tableName: tables){
+            logger.debug("Starting setup table: {}", tableName);
+            generator.writeStartObject();
+
+            generator.writeFieldName(tableName);
+            generator.writeStartObject();
+
+            ResultSet foreignKeys = metaData.getImportedKeys(null, null, tableName);
+
+            while(foreignKeys.next()){
+                logger.debug("Getting current table's foreign keys");
+                String foreignTable = foreignKeys.getString("PKTABLE_NAME");
+                String columnName = foreignKeys.getString("FKCOLUMN_NAME");
+
+                generator.writeStringField(columnName, foreignTable);
+            }
+
+            generator.writeEndObject();
+            generator.writeEndObject();
+        }
+
+
+        generator.writeEndArray();
+    }
+
     private void streamJsonArray(ResultSet rs, JsonGenerator generator) throws Exception{
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -100,6 +141,8 @@ public class EximService {
 
             for(int i = 1; i <= columnCount; i++){
                 String columnName = metaData.getColumnName(i);
+                if(columnName.equals(PLACEHOLDER_COLUMN_NAME)) continue;
+
                 Object value = rs.getObject(i);
 
                 generator.writeObjectField(columnName, value);
@@ -123,7 +166,7 @@ public class EximService {
         }
     }
 
-    private String fetchQuery(String tableName) throws SQLException {
+    private String fetchQuery(String tableName) {
         if(tableName.equalsIgnoreCase("container_table")) {
             return "WITH RECURSIVE OrderedContainers AS (" +
                         "SELECT *, 0 as level " +
@@ -144,106 +187,226 @@ public class EximService {
     }
 
     public void importData(MultipartFile file) throws Exception {
-        try(InputStream is = file.getInputStream()){
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(is);
+        JsonFactory jsonFactory = new JsonFactory();
 
-            Iterator<Map.Entry<String, JsonNode>> tables = rootNode.fields();
+        try(InputStream is = file.getInputStream();
+            JsonParser parser = jsonFactory.createParser(is)) {
 
-            while(tables.hasNext()){
-                Map.Entry<String, JsonNode> tableEntry = tables.next();
+            if(parser.nextToken() != JsonToken.START_OBJECT){
+                throw new IllegalArgumentException("The JSON file is invalid: The root element in the file must be an object");
+            }
 
-                String tableName = tableEntry.getKey();
-                JsonNode tableRows = tableEntry.getValue();
+            while(parser.nextToken() != JsonToken.END_OBJECT){
+                String tableName = parser.currentName();
+                parser.nextToken();
 
-                System.out.println("Table: " + tableName);
+                if(parser.currentToken() == JsonToken.START_ARRAY){
+                    if(tableName.equals("tableSetup")) {
+                        initTableSetup(parser);
+                    } else {
+                        List<JsonNode> tableRows = getAllTableRows(parser);
+                        String query = createQueryString(tableRows.get(0), tableName);
 
-                switch(tableName) {
-                    case "container_table" -> {
-                        System.out.println("Container Table");
-                    }
-                    case "item_table" -> {
-                        System.out.println("Item Table");
-                    }
-                    case "typeattributes_table" -> {
-                        System.out.println("TypeAttributes Table");
-                    }
-                    case "itemtag_table" -> {
-                        System.out.println("Item Tag Table");
-                    }
-                    case "itemimages_table" -> {
-                        System.out.println("ItemImages Table");
-                    }
-                    case "containerimages_table" -> {
-                        System.out.println("ContainerImages Table");
-                    }
-                    case "containeritem_table" -> {
-                        System.out.println("ContainerItem Table");
-                    }
-                    case "itemattributes_table" -> {
-                        System.out.println("ItemAttributes Table");
-                    }
-                    default -> {
-                        Class<?> currentClass = eximFetch.fetchClass(tableName);
-                        JpaRepository currentRepository = eximFetch.fetchRepository(tableName);
+                        insertRows(tableName, tableRows, query);
 
-                        processIndependentTable(currentClass, tableRows, currentRepository);
+                        getNewIds(tableName);
                     }
                 }
             }
         }
     }
 
-    private <T> void processIndependentTable(Class<T> entityClass, JsonNode tableRows, JpaRepository repository){
-        if(tableRows.isArray()){
-            for(JsonNode rowNode: tableRows){
-                try {
-                    T entity = entityClass.getDeclaredConstructor().newInstance();
+    private void initTableSetup(JsonParser parser) throws IOException {
+        while(parser.nextToken() != JsonToken.END_ARRAY) {
+            JsonNode node = objectMapper.readTree(parser);
 
-                    Iterator<Map.Entry<String, JsonNode>> fields = rowNode.fields();
+            String tableName = node.fieldNames().next();
 
-                    while(fields.hasNext()){
-                        Map.Entry<String, JsonNode> field = fields.next();
+            String query = String.format("UPDATE %s SET %s = NULL", tableName, PLACEHOLDER_COLUMN_NAME);
+            jdbcTemplate.update(query);
 
-                        String key = field.getKey();
+            JsonNode currentTable = node.fields().next().getValue();
 
-                        String columnName = key.contains("_") ? covertToCamelCase(key) : key;
-                        JsonNode columnValue = field.getValue();
+            HashMap<String, String> tableKeys = new HashMap<>();
 
-                        Field entityField = entityClass.getDeclaredField(columnName);
-                        entityField.setAccessible(true);
+            for (Iterator<Map.Entry<String, JsonNode>> it = currentTable.fields(); it.hasNext(); ) {
+                Map.Entry<String, JsonNode> field = it.next();
 
-                        switch(entityField.getType().getSimpleName()){
-                            case "String" -> entityField.set(entity, columnValue.textValue());
-                            case "Double" -> entityField.set(entity, columnValue.doubleValue());
-                            case "Integer" -> entityField.set(entity, columnValue.intValue());
-                            case "Long" -> entityField.set(entity, columnValue.longValue());
-                            default -> throw new RuntimeException("Column: " + columnName + " does not exist.");
+                String columnName = field.getKey();
+                String foreignTable = field.getValue().textValue();
+
+                tableKeys.put(columnName, foreignTable);
+            }
+
+            tableSetup.put(tableName, tableKeys);
+        }
+    }
+
+    private List<JsonNode> getAllTableRows(JsonParser parser) throws IOException {
+            List<JsonNode> tableRows = new ArrayList<>();
+
+            while(parser.nextToken() != JsonToken.END_ARRAY) {
+                JsonNode rowNode = objectMapper.readTree(parser);
+                tableRows.add(rowNode);
+            }
+
+            return tableRows;
+    }
+
+    private String createQueryString(JsonNode rowNode, String tableName) {
+        StringBuilder columns = new StringBuilder();
+        StringBuilder placeholders = new StringBuilder();
+
+        for(Iterator<String> it = rowNode.fieldNames(); it.hasNext(); ) {
+            String column = it.next();
+
+            if(HIERARCHICAL_VARIABLE.equals(column)) continue;
+
+            if(!columns.isEmpty()) {
+                columns.append(", ");
+                placeholders.append(", ");
+            }
+
+            if("id".equals(column)) {
+                columns.append("placeholder");
+            } else {
+                columns.append(column);
+            }
+
+            placeholders.append("?");
+        }
+
+        return String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, columns, placeholders);
+    }
+
+    private void insertRows(String tableName, List<JsonNode> tableRows, String query) throws SQLException {
+        switch(tableName){
+            case "container_table" -> insertRowsWithSelfRefFKey(tableName, tableRows, query);
+            case "itemtype_table" -> jdbcTemplate.batchUpdate(query, tableRows, 1000, (ps, row) -> {
+                int index = 1;
+                boolean hasRoot = true;
+
+                for(Iterator<String> it = row.fieldNames(); it.hasNext(); ) {
+                    String column = it.next();
+                    String value = row.get(column).asText();
+
+                    if(hasRoot && column.equals("id") && Integer.parseInt(value) == -1){
+                        hasRoot = false;
+                        continue;
+                    }
+
+                    ps.setObject(index++, value);
+                }
+            });
+            default -> insertRowsWithFKey(tableName, tableRows, query);
+        }
+    }
+
+    private void insertRowsWithFKey(String tableName, List<JsonNode> tableRows, String query){
+        jdbcTemplate.batchUpdate(query, tableRows, 1000, (ps, row) -> {
+            int index = 1;
+            boolean hasForeignKeys = hasForeignKeys(tableName);
+
+            for (Iterator<String> it = row.fieldNames(); it.hasNext(); ) {
+                String column = it.next();
+                String value;
+
+                if(hasForeignKeys && tableSetup.get(tableName).containsKey(column)){
+                    value = getForeignKey(tableName, column, row.get(column).asInt());
+                } else {
+                    value = row.get(column).asText();
+                }
+
+                ps.setObject(index++, value);
+            }
+        });
+    }
+
+    private void insertRowsWithSelfRefFKey(String tableName, List<JsonNode> tableRows, String query) throws SQLException {
+        String updatedQuery = String.format("%s RETURNING id, %s", query, PLACEHOLDER_COLUMN_NAME);
+        Map<Integer, List<JsonNode>> groupedRows = new HashMap<>();
+
+        for(JsonNode node: tableRows) {
+            int level = node.get(HIERARCHICAL_VARIABLE).asInt();
+
+            groupedRows.computeIfAbsent(level, k -> new ArrayList<>()).add(node);
+        }
+
+        int level = 0;
+        while(groupedRows.containsKey(level)){
+            List<JsonNode> currentLevel = groupedRows.get(level);
+
+            try(Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(updatedQuery)){
+
+                for(JsonNode row: currentLevel){
+                    int index = 1;
+
+                    for(Iterator<String> it = row.fieldNames(); it.hasNext(); ) {
+                        String column = it.next();
+                        String value;
+
+                        if(tableSetup.get(tableName).containsKey(column)){
+                            value = getForeignKey(tableName, column, row.get(column).asInt());
+                        } else {
+                            value = row.get(column).asText();
                         }
+
+                        statement.setObject(index++, value);
                     }
 
-                    System.out.println(entity);
+                    statement.addBatch();
+                }
 
-                    System.out.println("Row\n");
+                try(ResultSet rs = statement.executeQuery()) {
+                    HashMap<Integer, Integer> newIds = new HashMap<>();
+                    while(rs.next()){
+                        newIds.put((Integer) rs.getObject("id"),
+                                (Integer) rs.getObject(PLACEHOLDER_COLUMN_NAME));
+                    }
 
-//                    repository.save(entity);
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    ids.put(tableName, newIds);
                 }
             }
+
+            level++;
         }
     }
 
-    private String covertToCamelCase(String snakeCase) {
-        String[] parts = snakeCase.split("_");
-        StringBuilder camelCase = new StringBuilder(parts[0].toLowerCase());
+    private void getNewIds(String tableName) throws SQLException {
+        String query = "SELECT id, placeholder " +
+                       "FROM " + tableName + " " +
+                       "WHERE placeholder IS NOT NULL";
 
-        for(int i = 1; i < parts.length; i++){
-            camelCase.append(parts[i].substring(0, 1).toUpperCase())
-                     .append(parts[i].substring((1)).toLowerCase());
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery()){
+
+            HashMap<Integer, Integer> currentIds = new HashMap<>();
+
+            while(rs.next()){
+                Integer id = rs.getInt("id");
+                Integer placeholder = rs.getInt("placeholder");
+
+                currentIds.put(placeholder, id);
+            }
+
+            ids.put(tableName, currentIds);
         }
 
-        return camelCase.toString();
+    }
+
+    private String getForeignKeyTable(String primaryTable, String columnName) {
+        return tableSetup.get(primaryTable).get(columnName);
+    }
+
+    private String getForeignKey(String primaryTable, String columnName, Integer oldId) {
+        String foreignTable = getForeignKeyTable(primaryTable, columnName);
+
+        return ids.get(foreignTable).get(oldId).toString();
+    }
+
+    private boolean hasForeignKeys(String tableName) {
+        return !tableSetup.get(tableName).isEmpty();
     }
 }
