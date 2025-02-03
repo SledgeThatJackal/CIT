@@ -26,4 +26,7 @@ public interface ContainerRepository extends JpaRepository<Container, Long> {
                    "AND c.id NOT IN (SELECT id FROM descendants)"
             , nativeQuery = true)
     List<Container> findAllByIsArea(boolean isArea, Long containerId);
+
+    @Query("SELECT c FROM Container c WHERE c.parentContainer IS NULL")
+    List<Container> findAllOrphans();
 }

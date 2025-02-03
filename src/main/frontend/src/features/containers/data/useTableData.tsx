@@ -65,7 +65,7 @@ export const useTableData = () => {
       columnHelper.display({
         id: "actions",
         header: () => <div className="text-center">Action(s)</div>,
-        size: 105,
+        size: 114,
         cell: ActionsCell,
         enableResizing: false,
         enableSorting: false,

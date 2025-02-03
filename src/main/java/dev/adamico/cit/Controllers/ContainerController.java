@@ -41,6 +41,12 @@ public class ContainerController {
         return containerService.findContainersByArea(isArea, containerId);
     }
 
+    @GetMapping("/orphan")
+    @JsonView(Views.Basic.class)
+    public List<Container> getOrphanContainers(){
+        return containerService.findOrphanContainers();
+    }
+
     @PostMapping("/create")
     public void createContainer(@RequestParam Long id, @RequestBody Container container){
         containerService.createContainer(container, id);

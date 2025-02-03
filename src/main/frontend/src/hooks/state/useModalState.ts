@@ -5,6 +5,7 @@ type ModalState = {
   title: string;
   buttonLabel: string;
   message?: string;
+  callerId?: number;
   component: React.ComponentType | null;
   onDelete?: () => void;
   openMessageModal: (
@@ -18,6 +19,7 @@ type ModalState = {
     buttonLabel: string,
     onDelete: () => void,
     component: React.ComponentType,
+    callerId?: number,
   ) => void;
   closeModal: () => void;
 };
@@ -40,7 +42,9 @@ export const useModalState = create<ModalState>((set) => ({
     buttonLabel: string,
     onDelete: () => void,
     component: React.ComponentType,
-  ) => set({ showModal: true, title, buttonLabel, onDelete, component }),
+    callerId?: number,
+  ) =>
+    set({ showModal: true, title, buttonLabel, onDelete, component, callerId }),
   closeModal: () =>
     set({
       showModal: false,

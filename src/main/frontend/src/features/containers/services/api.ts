@@ -1,4 +1,4 @@
-import { ContainerType } from "@container/schemas/Container";
+import { ContainerType, ZodContainerType } from "@container/schemas/Container";
 import AxiosInstance from "@services/AxiosInstance";
 
 export const getContainer = async (scannerId: string) => {
@@ -15,6 +15,11 @@ export const getContainersByArea = async (
       `/container/area?isArea=${isArea}&containerId=${containerId}`,
     )
   ).data;
+};
+
+export const getOrphanContainers = async () => {
+  return (await AxiosInstance.get<ZodContainerType[]>(`/container/orphan`))
+    .data;
 };
 
 export const deleteContainerImageLinks = async (data: { id: number }[]) => {

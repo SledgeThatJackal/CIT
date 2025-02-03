@@ -8,6 +8,7 @@ import { Container } from "react-bootstrap";
 
 import "@styles/ActionsCell.css";
 import DeleteCell from "@components/write/DeleteCell";
+import DescendantCell from "./DescendantCell";
 
 const ActionsCell = ({ row }: DisplayCell<ContainerType>) => {
   return (
@@ -15,6 +16,7 @@ const ActionsCell = ({ row }: DisplayCell<ContainerType>) => {
       <DetailCell row={row} />
       <DuplicateCell row={row} />
       <ItemCreateCell row={row} />
+      <DescendantCell id={row.original.id} />
       <DeleteCell id={row.original.id} />
     </Container>
   );

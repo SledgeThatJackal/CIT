@@ -44,6 +44,10 @@ public class ContainerService {
         return containerRepository.findAllByIsArea(isArea, containerId);
     }
 
+    public List<Container> findOrphanContainers() {
+        return containerRepository.findAllOrphans();
+    }
+
     public void saveContainer(Container container){
         containerRepository.save(container);
     }

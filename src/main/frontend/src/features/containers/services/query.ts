@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getContainer, getContainersByArea } from "./api";
+import { getContainer, getContainersByArea, getOrphanContainers } from "./api";
 
 export function useContainer(scannerId: string) {
   return useQuery({
@@ -17,6 +17,14 @@ export function useContainersByArea(
     queryKey: ["containers", isArea, containerId],
     queryFn: () => getContainersByArea(isArea, containerId),
     enabled: isEnabled,
+    staleTime: 1000 * 60 * 10,
+  });
+}
+
+export function useOrphanContainers() {
+  return useQuery({
+    queryKey: ["orphanContainers"],
+    queryFn: getOrphanContainers,
     staleTime: 1000 * 60 * 10,
   });
 }
