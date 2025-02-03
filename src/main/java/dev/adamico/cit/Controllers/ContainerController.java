@@ -35,6 +35,12 @@ public class ContainerController {
         return containerService.findContainerByScannerId(scannerId).orElseThrow();
     }
 
+    @GetMapping("/area")
+    @JsonView({Views.ContainerItem.class})
+    public List<Container> getContainersByArea(@RequestParam("isArea") boolean isArea, @RequestParam("containerId") Long containerId) {
+        return containerService.findContainersByArea(isArea, containerId);
+    }
+
     @PostMapping("/create")
     public void createContainer(@RequestParam Long id, @RequestBody Container container){
         containerService.createContainer(container, id);

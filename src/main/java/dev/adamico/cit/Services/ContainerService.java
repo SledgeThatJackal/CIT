@@ -40,6 +40,10 @@ public class ContainerService {
         return containerRepository.findByScannerId(scannerId);
     }
 
+    public List<Container> findContainersByArea(boolean isArea, Long containerId) {
+        return containerRepository.findAllByIsArea(isArea, containerId);
+    }
+
     public void saveContainer(Container container){
         containerRepository.save(container);
     }
