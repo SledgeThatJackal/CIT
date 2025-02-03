@@ -54,6 +54,9 @@ public class Container {
     @JsonView(Views.ContainerItem.class)
     private List<ContainerImage> images;
 
+    @JsonView(Views.ContainerItem.class)
+    private boolean isArea;
+
     @Transactional
     public void addParent(Container parent){
         this.parentContainer = parent;
