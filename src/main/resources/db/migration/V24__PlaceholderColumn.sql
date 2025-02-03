@@ -1,0 +1,12 @@
+ALTER TABLE container_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE containerimages_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE containeritem_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE images_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE item_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE itemattributes_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE itemimages_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE itemtag_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE itemtype_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE settings_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE tags_table ADD COLUMN placeholder VARCHAR(255);
+ALTER TABLE typeattributes_table ADD COLUMN placeholder VARCHAR(255);
