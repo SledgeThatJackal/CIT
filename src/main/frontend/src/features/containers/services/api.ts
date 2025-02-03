@@ -6,6 +6,17 @@ export const getContainer = async (scannerId: string) => {
     .data;
 };
 
+export const getContainersByArea = async (
+  isArea: boolean,
+  containerId: number,
+) => {
+  return (
+    await AxiosInstance.get<ContainerType[]>(
+      `/container/area?isArea=${isArea}&containerId=${containerId}`,
+    )
+  ).data;
+};
+
 export const deleteContainerImageLinks = async (data: { id: number }[]) => {
   await AxiosInstance.post(`/zip/delete`, data);
 };
