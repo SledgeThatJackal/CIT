@@ -1,0 +1,17 @@
+.container-create-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bs-body-bg);
+  color: rgba(var(--bs-body-color-rgb), 0.65);
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+}
+
+.container-create-checkbox .form-check-label {
+  user-select: none;
+}
+
+.container-create-checkbox .form-check-label:hover {
+  cursor: pointer;
+}

@@ -17,6 +17,8 @@ import ImageForm from "@item/components/image/ImageForm";
 import { useBooleanState } from "@hooks/state/useBooleanState";
 import { useActionState } from "@item/hooks/useActionState";
 
+import "../styles/ContainerCreate.css";
+
 const ContainerCreate = () => {
   const containerQuery = useDetailedContainers().data;
   const createContainerMutation = useCreateContainer();
@@ -118,6 +120,17 @@ const ContainerCreate = () => {
                 {containerForm.formState.errors.parentContainer?.message}
               </Form.Control.Feedback>
             </Form.Group>
+            <Col
+              md="1"
+              className="container-create-checkbox"
+              title="This is used to indicate if this container is an area rather than a container (like a room in a house)">
+              <Form.Check type="checkbox" {...containerForm.register("isArea")}>
+                <Form.Check.Input type="checkbox" id="container-area" />
+                <Form.Check.Label htmlFor="container-area">
+                  Area
+                </Form.Check.Label>
+              </Form.Check>
+            </Col>
             <Col md="2" as={Stack} direction="horizontal" gap={2}>
               <div className="vr" />
               <Button
