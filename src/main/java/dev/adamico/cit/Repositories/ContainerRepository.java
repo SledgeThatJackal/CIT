@@ -3,6 +3,7 @@ package dev.adamico.cit.Repositories;
 import dev.adamico.cit.Models.Container;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,14 @@ public interface ContainerRepository extends JpaRepository<Container, Long> {
             , nativeQuery = true)
     List<Container> findAllByIsArea(boolean isArea, Long containerId);
 
-    @Query("SELECT c FROM Container c WHERE c.parentContainer IS NULL")
-    List<Container> findAllOrphans();
+    @Query("SELECT c FROM Container c WHERE c.parentContainer IS NULL " +
+           "AND c.id != :id " +
+           "AND (:isArea = false " +
+           "OR c.isArea = true)"
+    )
+    List<Container> findAllOrphans(Long id, boolean isArea);
+
+    @Modifying
+    @Query(value = "UPDATE container_table SET parent_id = :parentId WHERE id IN (:ids)", nativeQuery = true)
+    void addParent(Long parentId, List<Long> ids);
 }

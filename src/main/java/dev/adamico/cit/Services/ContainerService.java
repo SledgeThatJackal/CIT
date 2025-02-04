@@ -44,8 +44,8 @@ public class ContainerService {
         return containerRepository.findAllByIsArea(isArea, containerId);
     }
 
-    public List<Container> findOrphanContainers() {
-        return containerRepository.findAllOrphans();
+    public List<Container> findOrphanContainers(Long id, boolean isArea) {
+        return containerRepository.findAllOrphans(id, isArea);
     }
 
     public void saveContainer(Container container){
@@ -94,6 +94,10 @@ public class ContainerService {
         }
 
         saveContainer(container);
+    }
+
+    public void addDescendants(Long parentId, List<Long> ids) {
+        containerRepository.addParent(parentId, ids);
     }
 
     public void deleteContainer(Long id){

@@ -10,6 +10,7 @@ const GenericModal = () => {
     buttonLabel,
     message,
     component: ComponentToRender,
+    variant = "danger",
     onDelete,
     closeModal,
   } = useModalState();
@@ -28,7 +29,7 @@ const GenericModal = () => {
         </Button>
 
         <Button
-          variant="danger"
+          variant={variant}
           onClick={() => {
             if (onDelete) onDelete();
 

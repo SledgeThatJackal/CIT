@@ -43,8 +43,8 @@ public class ContainerController {
 
     @GetMapping("/orphan")
     @JsonView(Views.Basic.class)
-    public List<Container> getOrphanContainers(){
-        return containerService.findOrphanContainers();
+    public List<Container> getOrphanContainers(@RequestParam("id") Long id, @RequestParam("isArea") boolean isArea){
+        return containerService.findOrphanContainers(id, isArea);
     }
 
     @PostMapping("/create")
@@ -60,6 +60,11 @@ public class ContainerController {
     @PutMapping("/edit-parent")
     public void updateParentContainer(@RequestParam("id") Long id, @RequestParam("parentId") Long parentId){
         containerService.updateParentContainer(id, parentId);
+    }
+
+    @PutMapping("/parent/{parentId}")
+    public void addDescendants(@PathVariable("parentId") Long parentId, @RequestBody List<Long> ids){
+        containerService.addDescendants(parentId, ids);
     }
 
     @DeleteMapping("/delete")

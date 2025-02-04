@@ -21,10 +21,19 @@ export function useContainersByArea(
   });
 }
 
-export function useOrphanContainers() {
+type OrphanContainersType = {
+  data: {
+    id?: number;
+    condition?: boolean;
+  };
+};
+
+export function useOrphanContainers({
+  data: { id, condition },
+}: OrphanContainersType) {
   return useQuery({
-    queryKey: ["orphanContainers"],
-    queryFn: getOrphanContainers,
-    staleTime: 1000 * 60 * 10,
+    queryKey: ["orphanContainers", id, condition],
+    queryFn: () => getOrphanContainers(id!, condition!),
+    enabled: !!id,
   });
 }

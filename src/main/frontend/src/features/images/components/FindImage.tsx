@@ -113,7 +113,7 @@ const FindImage = () => {
                 className="image-find-div text-center shadow"
                 title={image.fileName}>
                 <label>{image.scannerId}</label>
-                <NavLink to={`/container/${image.scannerId}`}>
+                <NavLink to={`/container/id/${image.scannerId}`}>
                   <img
                     src={`/api/image/${image.fileName}`}
                     alt={`Image-${image.fileName}`}

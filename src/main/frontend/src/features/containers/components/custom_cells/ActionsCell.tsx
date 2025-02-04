@@ -16,7 +16,7 @@ const ActionsCell = ({ row }: DisplayCell<ContainerType>) => {
       <DetailCell row={row} />
       <DuplicateCell row={row} />
       <ItemCreateCell row={row} />
-      <DescendantCell id={row.original.id} />
+      <DescendantCell row={row} />
       <DeleteCell id={row.original.id} />
     </Container>
   );

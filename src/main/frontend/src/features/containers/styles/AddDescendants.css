@@ -3,3 +3,42 @@
   grid-template-columns: 1fr 1fr;
   gap: 5px;
 }
+
+.descendants-item {
+  background-color: var(--container-body);
+  color: var(--container-body-border-alternate);
+  border-radius: 5px;
+  padding: 0.25em;
+  border: 2px solid var(--container-body-border-alternate);
+  cursor: pointer;
+}
+
+.descendants-item:hover {
+  background-color: var(--image-button-hover);
+  border-color: var(--image-button-hover-border);
+  color: var(--container-text-hover);
+}
+
+.descendants-check-input {
+  cursor: pointer;
+}
+
+.descendants-check-input:focus {
+  box-shadow: none;
+}
+
+.descendants-check-label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.descendants-item.checked {
+  background-color: var(--container-body-selected);
+  border-color: var(--container-body-selected-border);
+  color: var(--container-text-selected);
+}
+
+.descendants-item.checked:hover {
+  background-color: var(--containter-body-selected-hover);
+  border-color: var(--container-body-selected-border-hover);
+}
