@@ -2,6 +2,12 @@
   --container-body: rgb(61, 69, 78);
   --container-body-border: #7b8895;
   --container-body-border-alternate: #8c97a3;
+  --container-body-selected: rgb(85, 95, 105);
+  --container-body-selected-border: rgb(55, 65, 75);
+  --container-text-hover: #9aa4b0;
+  --container-text-selected: #bcc3d0;
+  --containter-body-selected-hover: rgb(100, 110, 120);
+  --container-body-selected-border-hover: rgb(115, 125, 135);
 
   --photo-selected-body: rgb(0, 117, 255);
   --photo-selected-border-hover: rgb(0, 94, 204);

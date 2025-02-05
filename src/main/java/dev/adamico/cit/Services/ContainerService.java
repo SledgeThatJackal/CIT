@@ -40,6 +40,14 @@ public class ContainerService {
         return containerRepository.findByScannerId(scannerId);
     }
 
+    public List<Container> findContainersByArea(boolean isArea, Long containerId) {
+        return containerRepository.findAllByIsArea(isArea, containerId);
+    }
+
+    public List<Container> findOrphanContainers(Long id, boolean isArea) {
+        return containerRepository.findAllOrphans(id, isArea);
+    }
+
     public void saveContainer(Container container){
         containerRepository.save(container);
     }
@@ -86,6 +94,10 @@ public class ContainerService {
         }
 
         saveContainer(container);
+    }
+
+    public void addDescendants(Long parentId, List<Long> ids) {
+        containerRepository.addParent(parentId, ids);
     }
 
     public void deleteContainer(Long id){

@@ -7,6 +7,7 @@ import ParentContainerCell from "../components/custom_cells/ParentContainerCell"
 import ImageCell from "@components/custom_cell_renderers/ImageCell";
 import React from "react";
 import ActionsCell from "@container/components/custom_cells/ActionsCell";
+import BooleanCell from "@components/custom_cell_renderers/BooleanCell";
 
 const columnHelper = createColumnHelper<ContainerType>();
 
@@ -52,10 +53,19 @@ export const useTableData = () => {
         cell: ParentContainerCell,
         sortUndefined: 1,
       }),
+      columnHelper.accessor("isArea", {
+        id: "isArea",
+        header: () => <div className="text-center">Area</div>,
+        size: 50,
+        cell: BooleanCell,
+        enableResizing: false,
+        enableSorting: false,
+        enableColumnFilter: false,
+      }),
       columnHelper.display({
         id: "actions",
         header: () => <div className="text-center">Action(s)</div>,
-        size: 105,
+        size: 114,
         cell: ActionsCell,
         enableResizing: false,
         enableSorting: false,

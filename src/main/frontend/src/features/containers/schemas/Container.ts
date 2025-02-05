@@ -9,6 +9,7 @@ export type ContainerType = {
   parentContainer?: ContainerType;
   containerItems?: ContainerItemType[];
   images?: ContainerImageType[];
+  isArea: boolean;
 };
 
 type ContainerItemType = {
@@ -35,6 +36,7 @@ export const ContainerItemSchema = z.object({
   itemId: z.number().optional(),
   containerId: z.number().optional(),
   quantity: z.number(),
+  isArea: z.boolean(),
 });
 
 const BaseContainerSchema = z.object({
@@ -44,6 +46,7 @@ const BaseContainerSchema = z.object({
   scannerId: z.string(),
   containerItems: z.array(ContainerItemSchema).optional(),
   images: z.array(ContainerImageSchema).optional(),
+  isArea: z.boolean(),
 });
 
 const ParentContainerSchema = z.object({

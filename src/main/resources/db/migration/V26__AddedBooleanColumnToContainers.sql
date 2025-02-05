@@ -1,0 +1,1 @@
+ALTER TABLE container_table ADD COLUMN is_area BOOLEAN DEFAULT false;

@@ -2,6 +2,7 @@ package dev.adamico.cit.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.adamico.cit.Views;
 import jakarta.persistence.*;
@@ -53,6 +54,10 @@ public class Container {
     @JsonIgnoreProperties("container")
     @JsonView(Views.ContainerItem.class)
     private List<ContainerImage> images;
+
+    @JsonView(Views.ContainerItem.class)
+    @JsonProperty("isArea")
+    private boolean isArea;
 
     @Transactional
     public void addParent(Container parent){
