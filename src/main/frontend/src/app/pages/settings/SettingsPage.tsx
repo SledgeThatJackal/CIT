@@ -1,5 +1,6 @@
 import DatabaseExportButton from "@components/general/DatabaseExportButton";
 import DatabaseImportButton from "@components/general/DatabaseImportButton";
+import BaseReportButton from "@settings/components/BaseReportButton";
 import React from "react";
 import { Col, Container, ListGroup, Row, Stack } from "react-bootstrap";
 import { Outlet, NavLink } from "react-router-dom";
@@ -14,6 +15,9 @@ const Settings = () => {
         </div>
         <div>
           <DatabaseImportButton />
+        </div>
+        <div>
+          <BaseReportButton />
         </div>
       </Stack>
       <Row>
