@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class BaseReport {
+public class ContainerContents {
     private String itemName;
     private String scannerId;
 
     @Override
     public String toString() {
-        return "BaseReport{" +
+        return "ContainerContents{" +
                 "itemName='" + itemName + '\'' +
                 ", scannerId='" + scannerId + '\'' +
                 '}';

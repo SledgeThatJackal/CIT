@@ -18,8 +18,9 @@ const generatePdf = async (contentPath) => {
 };
 
 const contentPath = process.argv[2];
+const fileName = process.argv[3];
 generatePdf(contentPath).then(pdfBuffer => {
-    fs.writeFileSync('output.pdf', pdfBuffer);
+    fs.writeFileSync(fileName, pdfBuffer);
 }).catch(err => {
     console.error("Error generating PDF: ", err);
 });
