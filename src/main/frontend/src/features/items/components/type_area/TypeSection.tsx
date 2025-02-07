@@ -19,7 +19,7 @@ import { ItemAttributeData } from "@item/schemas/Item";
 import FormFloatingLabel from "@components/forms/FormFloatingLabel";
 import { useTypeAttribute } from "@type/services/query";
 import { useSettingsData } from "@hooks/SettingsProvider";
-import { createSettingsMemo } from "@settings/data/SettingsMethods";
+import { useSettingsMemo } from "@settings/data/SettingsMethods";
 
 type TypeSectionProps = {
   typeId: number;
@@ -39,7 +39,7 @@ const TypeSection = ({
   const typeAttrQuery = useTypeAttribute(typeId).data;
   const settingsData = useSettingsData();
 
-  const delimiter = createSettingsMemo(settingsData, "itemDelimiter");
+  const delimiter = useSettingsMemo(settingsData, "itemDelimiter");
 
   const { fields, append, update } = useFieldArray({
     control: itemAttrControl,

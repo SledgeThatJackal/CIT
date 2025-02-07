@@ -1,28 +1,29 @@
 import React, { useState } from "react";
 import { CloseButton, Form, Stack } from "react-bootstrap";
-import { useDetailedContainers } from "@services/queries";
 import { CellContext } from "@tanstack/react-table";
 import { ContainerType } from "@container/schemas/Container";
+import { useContainersByArea } from "@container/services/query";
 
 const ParentContainerCell = ({
   getValue,
-  row: { index },
+  row,
   table,
 }: CellContext<ContainerType, ContainerType>) => {
-  const containersQuery = useDetailedContainers().data;
   const tableValue = getValue();
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  if (!containersQuery) {
-    return <div>No Containers Found</div>;
-  }
+  const containersQuery = useContainersByArea(
+    row.original.isArea,
+    row.original.id,
+    isEditing,
+  ).data;
 
   const initialValue = tableValue
-    ? containersQuery.find((container) => container.id === tableValue.id)?.id
+    ? containersQuery?.find((container) => container.id === tableValue.id)?.id
     : -1;
 
   const onChange = (selectedId: number) => {
-    table.options.meta?.updateParentContainer?.(index, selectedId);
+    table.options.meta?.updateParentContainer?.(row.index, selectedId);
 
     setIsEditing(false);
   };
@@ -35,12 +36,14 @@ const ParentContainerCell = ({
             onChange={(e) => onChange(Number(e.target.value))}
             onBlur={() => setIsEditing(false)}
             value={initialValue}>
-            <option value={-1} key={"default-option"}></option>
+            <option value={-1} key={"default-option"}>
+              {tableValue?.scannerId}
+            </option>
             {containersQuery ? (
               containersQuery
                 .filter(
                   (container) =>
-                    container.id !== table.options.meta?.getId?.(index),
+                    container.id !== table.options.meta?.getId?.(row.index),
                 )
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((container) => (
@@ -62,7 +65,7 @@ const ParentContainerCell = ({
         <div
           style={{ ...(tableValue === null && { height: "20px" }) }}
           onDoubleClick={() => setIsEditing(true)}>
-          {tableValue && tableValue.name}
+          {tableValue?.scannerId}
         </div>
       )}
     </>

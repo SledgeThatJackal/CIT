@@ -118,3 +118,14 @@ export const createImage = async (data: FormData) => {
     })
   ).data;
 };
+
+// Exim
+
+// Mutate
+export const uploadDatabaseData = async (data: FormData) => {
+  return (
+    await AxiosInstance.post(`/exim/import`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+  ).data;
+};

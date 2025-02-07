@@ -55,3 +55,7 @@ cit_export.json
 # RSA Keys
 private.key
 public.key
+
+### Report Generation Files ###
+output.pdf
+node_modules

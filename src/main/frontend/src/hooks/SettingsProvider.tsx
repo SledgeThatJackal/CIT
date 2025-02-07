@@ -4,6 +4,7 @@ import React, { createContext, useContext } from "react";
 
 const SettingsContext = createContext<SettingsType[]>([]);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const SettingsProvider = ({ children }: any) => {
   const settingsQuery = useSettings();
 

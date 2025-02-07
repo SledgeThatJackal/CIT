@@ -1,3 +1,4 @@
+import { Variant } from "react-bootstrap/esm/types";
 import { create } from "zustand";
 
 type ModalState = {
@@ -6,6 +7,8 @@ type ModalState = {
   buttonLabel: string;
   message?: string;
   component: React.ComponentType | null;
+  caller?: { id: number; condition: boolean };
+  variant?: Variant;
   onDelete?: () => void;
   openMessageModal: (
     title: string,
@@ -18,6 +21,8 @@ type ModalState = {
     buttonLabel: string,
     onDelete: () => void,
     component: React.ComponentType,
+    caller?: { id: number; condition: boolean },
+    variant?: Variant,
   ) => void;
   closeModal: () => void;
 };
@@ -40,7 +45,18 @@ export const useModalState = create<ModalState>((set) => ({
     buttonLabel: string,
     onDelete: () => void,
     component: React.ComponentType,
-  ) => set({ showModal: true, title, buttonLabel, onDelete, component }),
+    caller?: { id: number; condition: boolean },
+    variant?: Variant,
+  ) =>
+    set({
+      showModal: true,
+      title,
+      buttonLabel,
+      onDelete,
+      component,
+      variant,
+      caller,
+    }),
   closeModal: () =>
     set({
       showModal: false,
@@ -48,5 +64,7 @@ export const useModalState = create<ModalState>((set) => ({
       buttonLabel: "",
       onDelete: undefined,
       message: "",
+      caller: undefined,
+      variant: undefined,
     }),
 }));

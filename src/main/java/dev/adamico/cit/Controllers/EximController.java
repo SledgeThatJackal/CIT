@@ -10,9 +10,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/exim")
@@ -40,5 +39,8 @@ public class EximController { // EXport IMport
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
-
+    @PostMapping("/import")
+    public void importData(@RequestParam("file") MultipartFile file) throws Exception {
+        eximService.importData(file);
+    }
 }

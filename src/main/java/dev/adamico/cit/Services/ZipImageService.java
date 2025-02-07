@@ -79,7 +79,7 @@ public class ZipImageService {
     }
 
     private void createContainerAndImages(String scannerId, List<MultipartFile> imageFiles) throws Exception {
-        Container container = containerService.findContainerByScannerId(scannerId).orElse(new Container(null, scannerId, "", scannerId, null, null, null, null));
+        Container container = containerService.findContainerByScannerId(scannerId).orElse(new Container(null, scannerId, "", scannerId, null, null, null, null, false));
 
         List<Image> images = imageService.createImage(imageFiles);
         AtomicInteger index = new AtomicInteger();
