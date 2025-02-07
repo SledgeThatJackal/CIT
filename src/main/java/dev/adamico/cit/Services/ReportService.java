@@ -90,6 +90,8 @@ public class ReportService {
 
             Process process = processBuilder.start();
 
+            scriptOutput(process);
+
             int exitCode = process.waitFor();
             if(exitCode != 0) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
