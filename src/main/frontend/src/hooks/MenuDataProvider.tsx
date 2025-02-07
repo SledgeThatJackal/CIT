@@ -4,14 +4,13 @@ import React, { createContext, useContext } from "react";
 import { useBasicContainers, useImages, useTags } from "../services/queries";
 import { useItemTypes } from "@type/services/query";
 import { useItems } from "@item/services/query";
+import { ProviderType } from "@schema/Providers";
 
 const DataContext = createContext<unknown[]>([]);
 
-type MenuDataProviderProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children: any;
+interface MenuDataProviderProps extends ProviderType {
   type: string;
-};
+}
 
 export const MenuDataProvider = ({ children, type }: MenuDataProviderProps) => {
   const query = getQuery(type);

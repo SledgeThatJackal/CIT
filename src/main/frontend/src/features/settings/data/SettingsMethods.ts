@@ -3,7 +3,7 @@ import { SettingsType } from "@settings/schemas/Settings";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-export const createSettingsMemo = (settings: SettingsType[], key: string) => {
+export const useSettingsMemo = (settings: SettingsType[], key: string) => {
   return useMemo(() => {
     return (
       settings.find(
@@ -11,10 +11,10 @@ export const createSettingsMemo = (settings: SettingsType[], key: string) => {
           setting.key.toLocaleLowerCase() === key.toLocaleLowerCase(),
       )?.value || "null"
     );
-  }, [settings]);
+  }, [key, settings]);
 };
 
-export const createUseForm = (key: string, value: string) => {
+export const useSettingsForm = (key: string, value: string) => {
   return useForm<SettingsFormType>({
     defaultValues: {
       key: key,

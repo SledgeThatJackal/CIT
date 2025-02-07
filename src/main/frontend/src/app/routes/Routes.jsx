@@ -42,6 +42,8 @@ const TypeSettings = lazy(
 
 const FindPage = lazy(() => import("../pages/find/FindPage.tsx"));
 
+const ReportPage = lazy(() => import("../pages/report/ReportPage.tsx"));
+
 const SuspenseLayout = () => (
   <Suspense fallback={<>Loading...</>}>
     <RootLayout />
@@ -99,6 +101,10 @@ export const router = createBrowserRouter(
         {
           path: "find",
           children: [{ index: true, element: <FindPage /> }],
+        },
+        {
+          path: "report",
+          children: [{ index: true, element: <ReportPage /> }],
         },
       ],
     },
