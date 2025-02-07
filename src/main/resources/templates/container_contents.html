@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Report</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 8pt;
+      }
+      .report-body {
+        columns: 2;
+        column-gap: 2px 10px; /* Vertical | Horizontal */
+        page-break-inside: avoid;
+        column-fill: auto;
+        break-inside: avoid;
+        max-height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        page-break-after: always;
+      }
+      .report-grid-item {
+        display: grid;
+        grid-template-columns: 15px 1fr 1fr;
+        gap: 2px;
+        padding: 0.1em;
+        page-break-inside: avoid;
+      }
+      .report-grid:nth-child(even) {
+        background-color: lightgray;
+      }
+      .headerClass {
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+        height: auto;
+        background-color: #4a4a4a;
+        page-break-after: avoid;
+        padding: 0.3em;
+        color: whitesmoke;
+        justify-content: space-between;
+        align-items: center;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+      }
+      .container-name {
+        font-size: 14pt !important;
+        text-align: left;
+        margin-left: 5px;
+      }
+      .created-at {
+        text-align: right;
+        margin-right: 5px;
+      }
+
+      @media print {
+        @page {
+          size: 8.5in 11in;
+          margin: 7mm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="headerClass">
+      <span th:text="${containerName}" class="container-name"></span>
+      <span th:text="${createdAt}" class="created-at"></span>
+    </header>
+    <div class="report-body">
+      <div class="report-grid" th:each="report, iterStat : ${data}">
+        <div class="report-grid-item">
+          <div>
+            <strong
+              th:if="${iterStat.index == 0 or report.itemName.charAt(0) != data[iterStat.index - 1].itemName.charAt(0)}"
+              th:text="${report.itemName.substring(0, 1).toUpperCase()}"
+            ></strong>
+          </div>
+          <div th:text="${report.itemName}">Name</div>
+          <div th:text="${report.scannerId}">Barcode ID</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+.report-container {
+  padding: 0;
+  padding: 1rem;
+}
+
+.base-report-download {
+  color: black;
+  text-decoration: none;
+}

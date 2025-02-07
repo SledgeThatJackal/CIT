@@ -16,7 +16,8 @@
       "@tag/*": ["src/features/tags/*"],
       "@type/*": ["src/features/types/*"],
       "@settings/*": ["src/features/settings/*"],
-      "@home/*": ["src/features/home/*"]
+      "@home/*": ["src/features/home/*"],
+      "@report/*": ["src/features/reports/*"]
     },
     "strict": true,
     "moduleResolution": "node",

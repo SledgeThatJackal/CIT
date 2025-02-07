@@ -1,5 +1,5 @@
 import { useSettingsData } from "@hooks/SettingsProvider";
-import { createSettingsMemo } from "@settings/data/SettingsMethods";
+import { useSettingsMemo } from "@settings/data/SettingsMethods";
 import React from "react";
 import { Container, Row } from "react-bootstrap";
 import SettingsForm from "../SettingsForm";
@@ -8,7 +8,7 @@ const ContainerSettings = () => {
   const settingsData = useSettingsData();
 
   const delimterKey = "containerDelimiter";
-  const delimiter = createSettingsMemo(settingsData, delimterKey);
+  const delimiter = useSettingsMemo(settingsData, delimterKey);
 
   return (
     <Container fluid>

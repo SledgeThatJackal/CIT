@@ -1,4 +1,4 @@
-import { createUseForm } from "@settings/data/SettingsMethods";
+import { useSettingsForm } from "@settings/data/SettingsMethods";
 import { useEditSetting } from "@settings/services/mutation";
 import React from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
@@ -22,7 +22,7 @@ const SettingsForm = ({
   type,
   label,
 }: SettingsFormProps) => {
-  const currentForm = createUseForm(settingKey, settingValue);
+  const currentForm = useSettingsForm(settingKey, settingValue);
 
   const editSettingsMutation = useEditSetting();
 
