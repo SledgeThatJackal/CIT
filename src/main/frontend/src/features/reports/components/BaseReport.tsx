@@ -25,11 +25,16 @@ export default function BaseReport() {
             </option>
           ))}
       </Form.Select>
-      <Button size="sm" variant="info" disabled={selectedId == -1}>
+      <Button
+        size="sm"
+        variant="info"
+        disabled={selectedId == -1}
+        className="p-0 m-0 d-flex align-items-center">
         <a
+          type="button"
           href={`/report/base/${selectedId}`}
           download
-          className=" base-report-download">
+          className=" base-report-download btn btn-sm">
           Generate Report
         </a>
       </Button>
